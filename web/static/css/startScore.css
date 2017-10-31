@@ -1,0 +1,16 @@
+a {text-decoration: none; cursor: pointer; color:#333333; font-size:14px;}
+a:hover { text-decoration: none; }
+.clearfix::after{ display:block; content:''; height:0; overflow:hidden; clear:both;}
+/*星星样式*/
+/*.block{ width:100%; margin:0 0 20px 0; padding-top:10px; padding-left:50px; line-height:21px;}*/
+/*.block .star_score{ float:left;}*/
+/*.block p span{ color:#C00; font-size:16px; font-family:Georgia, "Times New Roman", Times, serif;}*/
+.star_score { width:160px; height:21px;  position:relative; }
+.star_score a{ height:21px; display:block; text-indent:-999em; position:absolute;left:0;}
+#score .star_score { background:url(../images/start/starky.png);}
+#score .star_score a:hover{ background:url(../images/start/starsy.png);left:0;}
+#score .star_score a.clibg{ background:url(../images/start/starsy.png);left:0;}
+/*星星样式*/
+.show_number{ padding-left:50px; padding-top:20px;}
+.show_number li{ width:240px; border:1px solid #ccc; padding:10px; margin-right:5px; margin-bottom:20px;}
+.show_number li span{ display:inline-block; line-height:21px;}

@@ -1,0 +1,67 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: 180365
+  Date: 2017/8/28
+  Time: 14:32
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>登陆</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <c:import url="../static.html"></c:import>
+  <script language="JavaScript">
+    layui.use(['jquery'],function () {
+        var $ = layui.jquery;
+    });
+  </script>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+  <div class="layui-header">
+    <div class="layui-logo">
+      <img src="${base}/static/images/logo/logo.png"/>
+    </div>
+    <ul class="layui-nav layui-layout-right">
+      <li class="layui-nav-item">
+        <a href="./">门户</a>
+      </li>
+    </ul>
+  </div>
+  <div class="layui-container layui-bg-black" style="width:500px;margin-top: 100px;height:500px;border-radius: 100%;padding-top: 120px;display: block;">
+    <div style="width:60%;display: block;margin:auto;position: relative;">
+      <form class="layui-form layui-form-panel" method="post">
+        <div class="layui-form-item">
+          <div class="layui-input-inline">
+            <img src="${base}/static/images/logo/login.png"/>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <%--<label class="layui-form-label">>账号</label>--%>
+            <div class="layui-input-inline">
+            <input type="text" name="usid" lay-verify="required|title" placeholder="请输入邮箱账号" autocomplete="off" class="layui-input" style="width:300px;" required/>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <%--<label class="layui-form-label">>密码</label>--%>
+          <div class="layui-input-inline">
+            <input type="password" name="pawd" lay-verify="pass" placeholder="请输入密码" autocomplete="off" class="layui-input" style="width:300px;" required/>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-input-inline">
+            <button type="submit" class="layui-btn layui-btn-radius" lay-filter="*">登陆</button>
+            <button type="reset" class="layui-btn layui-btn-radius layui-btn-primary">重置</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<br><br><br><br><br><br><br><br><br>
+</body>
+</html>
