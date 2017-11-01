@@ -1,9 +1,5 @@
 package com.gree;
 
-import com.gree.ant.vo.Cbase000VO;
-import org.nutz.dao.Dao;
-import org.nutz.ioc.Ioc;
-import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.mvc.NutConfig;
 import org.nutz.mvc.Setup;
 import org.slf4j.Logger;

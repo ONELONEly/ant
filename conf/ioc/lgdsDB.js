@@ -11,25 +11,40 @@ var ant = {
 		        }
 		 },
 
-/* BoneCp*/
-        dataSourceFX : {
-            type : "com.jolbox.bonecp.BoneCPDataSource",
-            events : {
+        /* BoneCp*/
+        // dataSourceFX : {
+        //     type : "com.jolbox.bonecp.BoneCPDataSource",
+        //     events : {
+        //
+        //         depose : 'close'
+        //     },
+        //     fields : {
+        //     	driverClass : {java :"$config.get('ant.driver')"},
+        //     	jdbcUrl : {java :"$config.get('ant.url')"},
+        //         username : {java :"$config.get('ant.user')"},
+        //         password : {java :"$config.get('ant.password')"},
+        //         idleConnectionTestPeriodInMinutes : 240,
+        //         idleMaxAgeInMinutes :60 ,
+        //         maxConnectionsPerPartition : 30,
+        //         minConnectionsPerPartition : 10,
+        //         partitionCount:3,
+        //         acquireIncrement :5,
+        //         statementsCacheSize : 100
+        //     }
+        // },
 
-                depose : 'close'
+        // druid连接池
+        dataSourceFX : {
+            type : "com.alibaba.druid.pool.DruidDataSource",
+            events : {
+                depose : "close"
             },
             fields : {
-            	driverClass : {java :"$config.get('ant.driver')"},
-            	jdbcUrl : {java :"$config.get('ant.url')"},
-                username : {java :"$config.get('ant.user')"},
-                password : {java :"$config.get('ant.password')"},
-                idleConnectionTestPeriodInMinutes : 240,
-                idleMaxAgeInMinutes :60 ,
-                maxConnectionsPerPartition : 30,
-                minConnectionsPerPartition : 10,
-                partitionCount:3,
-                acquireIncrement :5,
-                statementsCacheSize : 100
+                url : {java : "$config.get('ant.url')"},
+                username : {java : "$config.get('ant.user')"},
+                password : {java : "$config.get('ant.password')"},
+                maxWait : 15000, // 若不配置此项,如果数据库未启动,druid会一直等可用连接,卡住启动过程
+                defaultAutoCommit :false // 提高fastInsert的性能
             }
         },
         

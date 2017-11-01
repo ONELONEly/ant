@@ -12,6 +12,7 @@ import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.*;
+import org.nutz.mvc.impl.AdaptorErrorContext;
 import org.nutz.mvc.upload.TempFile;
 import org.nutz.mvc.upload.UploadAdaptor;
 import javax.servlet.ServletException;
@@ -681,69 +682,75 @@ public class TaskController {
     @At
     @POST
     @Ok("json")
-    public Map<String,Object> updateSta1(@Param("operate")Integer operate,@Param("stag")Integer stag,@Param("::list")List<Map<String,Object>> tbuss003VOs,@Param("remk")String remk,@Param("date")String date,@Param("fahh")Float fahh){
+    public Map<String,Object> updateSta1(@Param("operate")Integer operate,@Param("stag")Integer stag,
+                                         @Param("::list")List<Map<String,Object>> tbuss003VOs,@Param("remk")String remk,
+                                         @Param("date")String date,@Param("fahh")Float fahh, AdaptorErrorContext error){
         StringBuilder msg = new StringBuilder("传入参数为空");
         Integer code = 0;
         String status = "";
-        if(operate!=null && tbuss003VOs != null && StringUtil.checkString(remk)){
-            for (Map<String,Object> map:tbuss003VOs){
-                Tbuss003VO tbuss003VO = tbuss003MO.fetchTrans(map.get("taid").toString(),"tbuss010VOS",null);
-                List<Tbuss010VO> tbuss010VOList = tbuss003VO.getTbuss010VOS();
-                String csid = tbuss003VO.getCsid();
-                String cnam = tbuss003VO.getCnam();
-                String ksid = tbuss003VO.getKsid();
-                String knam = tbuss003VO.getKnam();
-                String taid = tbuss003VO.getTaid();
-                String titl = tbuss003VO.getTitl();
-                String sys = tbuss003VO.getSynonam();
-                tbuss003VO.setSta1(operate);
-                if(operate == 1){
-                    MailUtil.sendmail(csid,"牛逼的"+cnam+",大Boss又给你下发新任务了那，请尽快查看！否则小蚂怕你忘了呐！",taid,titl,sys);
-                    MailUtil.sendmail(ksid,"尊敬的"+knam+"，您的任务已下发，小蚂已极力催促了！请耐心等待！",taid,titl,sys);
-                    status = "下发";
-                    tbuss003VO.setXdat(new Date());
-                }else if(operate == 2){
-                    MailUtil.sendmail(ksid,"尊敬的"+knam+"，您的任务已在努力开发中！计划完成时间："+DateUtil.formatYMDHMDDate(date),taid,titl,sys);
-                    status = "执行中";
-                    if(StringUtil.checkString(date)){
-                        tbuss003VO.setAdat(new Date());
-                        tbuss003VO.setPdat(DateUtil.formatYMDHMDDate(date));
+        if(error == null) {
+            if (operate != null && tbuss003VOs != null && StringUtil.checkString(remk)) {
+                for (Map<String, Object> map : tbuss003VOs) {
+                    Tbuss003VO tbuss003VO = tbuss003MO.fetchTrans(map.get("taid").toString(), "tbuss010VOS", null);
+                    List<Tbuss010VO> tbuss010VOList = tbuss003VO.getTbuss010VOS();
+                    String csid = tbuss003VO.getCsid();
+                    String cnam = tbuss003VO.getCnam();
+                    String ksid = tbuss003VO.getKsid();
+                    String knam = tbuss003VO.getKnam();
+                    String taid = tbuss003VO.getTaid();
+                    String titl = tbuss003VO.getTitl();
+                    String sys = tbuss003VO.getSynonam();
+                    tbuss003VO.setSta1(operate);
+                    if (operate == 1) {
+                        MailUtil.sendmail(csid, "牛逼的" + cnam + ",大Boss又给你下发新任务了那，请尽快查看！否则小蚂怕你忘了呐！", taid, titl, sys);
+                        MailUtil.sendmail(ksid, "尊敬的" + knam + "，您的任务已下发，小蚂已极力催促了！请耐心等待！", taid, titl, sys);
+                        status = "下发";
+                        tbuss003VO.setXdat(new Date());
+                    } else if (operate == 2) {
+                        MailUtil.sendmail(ksid, "尊敬的" + knam + "，您的任务已在努力开发中！计划完成时间：" + DateUtil.formatYMDHMDDate(date), taid, titl, sys);
+                        status = "执行中";
+                        if (StringUtil.checkString(date)) {
+                            tbuss003VO.setAdat(new Date());
+                            tbuss003VO.setPdat(DateUtil.formatYMDHMDDate(date));
+                        }
+                        if (fahh != null) {
+                            tbuss003VO.setFahh(fahh);
+                        }
+                    } else if (operate == 3) {
+                        status = "被驳回";
+                    } else if (operate == 4) {
+                        status = "变更中";
+                    } else if (operate == 6) {
+                        MailUtil.sendmail(tbuss003VO.getRsid(), "尊敬的" + tbuss003VO.getRnam() + "，您的任务已竣工！请验收！", taid, titl, sys);
+                        MailUtil.sendmail(ksid, "尊敬的" + knam + "，您的任务已竣工！请验收！", taid, titl, sys);
+                        status = "验收中";
+                        tbuss003VO.setFdat(new Date());
+                    } else if (operate == 5) {
+                        MailUtil.sendmail(tbuss003VO.getTepr(), "亲爱的" + tbuss003VO.getTnam() + "，你知道么，小蚂想告诉你，你又有新的测试任务了！请尽兴的测试吧！", taid, titl, sys);
+                        MailUtil.sendmail(ksid, "尊敬的" + knam + "，您的任务已竣工！请测试！", taid, titl, sys);
+                        status = "测试中";
+                        tbuss003VO.setTdat(new Date());
+                    } else if (operate == 8) {
+                        status = "测试不通过";
+                    } else if (operate == 10) {
+                        status = "验收不通过";
+                    } else if (operate == 11) {
+                        if (stag != null) {
+                            tbuss003VO.setStag(stag);
+                        } else {
+                            return ResultUtil.getResult(0, "等级为空，请重新录入", null);
+                        }
                     }
-                    if(fahh != null){
-                        tbuss003VO.setFahh(fahh);
-                    }
-                }else if(operate == 3){
-                    status = "被驳回";
-                }else if(operate == 4){
-                    status = "变更中";
-                }else if(operate == 6){
-                    MailUtil.sendmail(tbuss003VO.getRsid(),"尊敬的"+tbuss003VO.getRnam()+"，您的任务已竣工！请验收！",taid,titl,sys);
-                    MailUtil.sendmail(ksid,"尊敬的"+knam+"，您的任务已竣工！请验收！",taid,titl,sys);
-                    status = "验收中";
-                    tbuss003VO.setFdat(new Date());
-                }else if(operate == 5){
-                    MailUtil.sendmail(tbuss003VO.getTepr(),"亲爱的"+tbuss003VO.getTnam()+"，你知道么，小蚂想告诉你，你又有新的测试任务了！请尽兴的测试吧！",taid,titl,sys);
-                    MailUtil.sendmail(ksid,"尊敬的"+knam+"，您的任务已竣工！请测试！",taid,titl,sys);
-                    status = "测试中";
-                    tbuss003VO.setTdat(new Date());
-                }else if(operate == 8){
-                    status = "测试不通过";
-                }else if(operate == 10){
-                    status = "验收不通过";
-                }else if(operate == 11){
-                    if(stag != null) {
-                        tbuss003VO.setStag(stag);
-                    }else{
-                        return ResultUtil.getResult(0,"等级为空，请重新录入",null);
+                    sendMail(tbuss010VOList, status, titl);
+                    code = tbuss003MO.updateByVO(tbuss003VO);
+                    if (code == 1) {
+                        tbuss004MO.insert(new Tbuss004VO(map.get("taid").toString(), operate, new Date(), remk));
                     }
                 }
-                sendMail(tbuss010VOList,status,titl);
-                code = tbuss003MO.updateByVO(tbuss003VO);
-                if(code == 1){
-                    tbuss004MO.insert(new Tbuss004VO(map.get("taid").toString(),operate,new Date(),remk));
-                }
+                msg = new StringBuilder(code == 1 ? "任务操作成功" : msg);
             }
-            msg = new StringBuilder(code == 1 ? "任务操作成功" : msg);
+        }else{
+            msg = new StringBuilder("请输入正确的工时！如（5.0）");
         }
         return ResultUtil.getResult(code, msg.toString(),null);
     }

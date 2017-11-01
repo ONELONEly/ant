@@ -10,6 +10,7 @@ import org.nutz.mvc.ioc.provider.ComboIocProvider;
  * @date ${.now?string["yyyy-MM-dd HH:mm:ss"]}.
  */
 @SetupBy(value = MainSetup.class)
+@ChainBy(args = {"/ioc/chain.js"})
 @Encoding(input = "UTF-8",output = "UTF-8")
 @IocBy(type = ComboIocProvider.class,args = {"*js","ioc/","*anno","com.gree","*tx","*async","48"})
 @AdaptBy(type = PairAdaptor.class)
