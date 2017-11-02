@@ -1,3 +1,4 @@
+<%--suppress ALL --%>
 <%--
   Created by IntelliJ IDEA.
   User: 180365
@@ -10,7 +11,7 @@
 <html>
 <head>
     <title>文档展示</title>
-    <c:import url="../../static1.html"></c:import>
+    <c:import url="../../static1.html"/>
     <script src="../static/js/jquery/jquery-1.8.2.min.js"></script>
     <script src="../static/js/jquery/jquery.jqprint-0.3.js"></script>
     <script language="JavaScript">

@@ -1,3 +1,4 @@
+<%--suppress ALL --%>
 <%--
   Created by IntelliJ IDEA.
   User: 180365
@@ -12,7 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>任务日志</title>
-    <c:import url="../../static1.html"></c:import>
+    <c:import url="../../static1.html"/>
 </head>
 <script language="JavaScript">
     layui.use(['layer','jquery'],function () {

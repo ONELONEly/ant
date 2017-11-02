@@ -1,3 +1,4 @@
+<%--suppress ALL --%>
 <%--
   Created by IntelliJ IDEA.
   User: 180365
@@ -13,7 +14,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>评分显示</title>
-    <c:import url="../../static1.html"></c:import>
+    <c:import url="../../static1.html"/>
     <script language="JavaScript">
         layui.use(["laydate","laypage","element","layer","table","jquery","form"],function () {
                 var laypage = layui.laypage, element = layui.element, layer = layui.layer,

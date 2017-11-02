@@ -1,3 +1,4 @@
+<%--suppress ALL --%>
 <%--
   Created by IntelliJ IDEA.
   User: 180365
@@ -12,7 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>文档管理</title>
-    <c:import url="../../static1.html"></c:import>
+    <c:import url="../../static1.html"/>
     <script language="JavaScript">
         layui.use(['form','jquery','table','layer','element'],function () {
             var $ = layui.jquery,form = layui.form,table = layui.table,

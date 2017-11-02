@@ -1,3 +1,4 @@
+<%--suppress ALL --%>
 <%--
   Created by IntelliJ IDEA.
   User: 180365
@@ -13,12 +14,7 @@
   <title>登陆</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <c:import url="../static.html"></c:import>
-  <script language="JavaScript">
-    layui.use(['jquery'],function () {
-        var $ = layui.jquery;
-    });
-  </script>
+  <c:import url="../static.html"/>
 </head>
 <body>
 <div class="layui-layout layui-layout-admin">
@@ -41,13 +37,11 @@
           </div>
         </div>
         <div class="layui-form-item">
-          <%--<label class="layui-form-label">>账号</label>--%>
             <div class="layui-input-inline">
             <input type="text" name="usid" lay-verify="required|title" placeholder="请输入邮箱账号" autocomplete="off" class="layui-input" style="width:300px;" required/>
           </div>
         </div>
         <div class="layui-form-item">
-          <%--<label class="layui-form-label">>密码</label>--%>
           <div class="layui-input-inline">
             <input type="password" name="pawd" lay-verify="pass" placeholder="请输入密码" autocomplete="off" class="layui-input" style="width:300px;" required/>
           </div>

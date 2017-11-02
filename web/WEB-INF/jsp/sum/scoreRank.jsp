@@ -1,3 +1,4 @@
+<%--suppress ALL --%>
 <%--
   Created by IntelliJ IDEA.
   User: 180365
@@ -14,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>成绩排名</title>
     <script src="../static/js/echarts.js" charset="utf-8"></script>
-    <c:import url="../../static1.html"></c:import>
+    <c:import url="../../static1.html"/>
     <script language="JavaScript">
         layui.use(['form','jquery'],function () {
             var $ = layui.jquery,form = layui.form;

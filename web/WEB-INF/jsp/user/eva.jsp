@@ -1,15 +1,9 @@
+<%--suppress ALL --%>
 <%--
   Created by IntelliJ IDEA.
   User: 180365
   Date: 2017/9/5
   Time: 15:28
-  To change this template use File | Settings | File Templates.
---%>
-<%--
-  Created by IntelliJ IDEA.
-  User: 180365
-  Date: 2017/8/29
-  Time: 15:11
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -20,7 +14,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>我的评价</title>
-    <c:import url="../../static1.html"></c:import>
+    <c:import url="../../static1.html"/>
     <script language="JavaScript">
         layui.use(["laydate","laypage","element","layer","table","jquery","form"],function () {
             var laydate = layui.laydate,

@@ -1,3 +1,4 @@
+<%--suppress ALL --%>
 <%--
   Created by IntelliJ IDEA.
   User: 180365
@@ -12,7 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>个人周报</title>
-    <c:import url="../../static1.html"></c:import>
+    <c:import url="../../static1.html"/>
     <script language="JavaScript">
         layui.use(['layedit','element','jquery','form','upload','table'],function () {
             var layedit = layui.layedit,element = layui.element,$ = layui.jquery,

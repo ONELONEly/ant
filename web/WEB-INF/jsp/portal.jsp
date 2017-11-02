@@ -1,3 +1,4 @@
+<%--suppress ALL --%>
 <%--
   Created by IntelliJ IDEA.
   User: 180365
@@ -13,7 +14,7 @@
     <title>门户</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <c:import url="../static.html"></c:import>
+    <c:import url="../static.html"/>
     <script language="JavaScript">
         layui.use(['element','carousel','jquery','table'],function () {
             var $ = layui.jquery,element = layui.element,carousel = layui.carousel,table = layui.table;

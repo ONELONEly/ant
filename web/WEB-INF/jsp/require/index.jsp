@@ -1,3 +1,4 @@
+<%--suppress ALL --%>
 <%--
   Created by IntelliJ IDEA.
   User: 180365
@@ -12,7 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
     <title>用户需求</title>
-    <kellyj:import url="../../static1.html"></kellyj:import>
+    <kellyj:import url="../../static1.html"/>
     <script language="JavaScript">
         layui.use(['jquery','form','table','layer'],function () {
             var $ = layui.jquery,form = layui.form,table = layui.table,

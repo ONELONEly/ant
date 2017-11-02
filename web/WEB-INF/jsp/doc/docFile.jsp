@@ -1,3 +1,4 @@
+<%--suppress ALL --%>
 <%--
   Created by IntelliJ IDEA.
   User: 180365
@@ -10,7 +11,7 @@
 <html>
 <head>
     <title>任务附件</title>
-    <c:import url="../../static1.html"></c:import>
+    <c:import url="../../static1.html"/>
     <script language="JavaScript">
         layui.use(['jquery','table'],function () {
             var $ = layui.jquery,table = layui.table;

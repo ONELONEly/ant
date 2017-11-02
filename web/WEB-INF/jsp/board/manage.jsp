@@ -1,3 +1,4 @@
+<%--suppress ALL --%>
 <%--
   Created by IntelliJ IDEA.
   User: 180365
@@ -14,7 +15,7 @@
     <title>看板</title>
     <script type="text/javascript" src="../static/js/startScore.js"></script>
     <link rel="stylesheet" href="../static/css/startScore.css" media="all">
-    <c:import url="../../static1.html"></c:import>
+    <c:import url="../../static1.html"/>
 </head>
 <script language="JavaScript">
     layui.use(['jquery','element','table','laydate','layer','form'],function () {

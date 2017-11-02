@@ -1,3 +1,7 @@
+<%--suppress ALL --%>
+<%--suppress JSUnresolvedVariable --%>
+<%--suppress ALL --%>
+<%--suppress ALL --%>
 <%--
   Created by IntelliJ IDEA.
   User: 180365
@@ -13,7 +17,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>首页</title>
     <script src="./static/js/echarts.js" charset="utf-8"></script>
-    <c:import url="../static.html"></c:import>
+    <c:import url="../static.html"/>
     <style>
         li{
             width: 12.5%;
