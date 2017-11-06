@@ -1,7 +1,4 @@
 <%--suppress ALL --%>
-<%--suppress JSUnresolvedVariable --%>
-<%--suppress ALL --%>
-<%--suppress ALL --%>
 <%--
   Created by IntelliJ IDEA.
   User: 180365
@@ -26,12 +23,12 @@
 </head>
 <body>
 <div class="x-body">
-    <div>
+    <div style="position:fixed;width: 100%;height:100%;">
         <div id="left" class="layui-side x-equal" style="margin-top:-20px;">
         </div>
         <div id="right" class="layui-layout-right layui-side x-equal">
         </div>
-        <div class="x-titleDiv" style="height: 60px;border-left: none;">
+        <div class="x-titleDiv" style="height: 25%;border-left: none;">
             <ul class="layui-nav" style="background-color: #fff;">
                 <li class="layui-nav-item"><a href="javaScript:" style="color: #000;text-align: center;"><span>未下发</span><span class="layui-badge" id="new"></span></a></li>
                 <li class="layui-nav-item"><a href="javaScript:" style="color: #000;text-align: center;"><span>已下发</span><span class="layui-badge" id="in1"></span></a></li>
@@ -44,7 +41,6 @@
             </ul>
         </div>
     </div>
-    <br/><br/><br/><br/><br/>
 </div>
 </body>
 <script language="JavaScript">

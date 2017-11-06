@@ -37,7 +37,7 @@
     <div class="x-titleDiv">
         <span style="font-size: xx-large;">&nbsp;智库</span>
     </div>
-    <table class="layui-table" lay-skin="nob" lay-data="{height:'full-200',url:'./queryAllDoc?ctyp=2&auth=1',id:'manage'}" lay-filter="manage">
+    <table class="layui-table" lay-skin="nob" lay-data="{height:'full-200',url:'./queryAllMessage?ctyp=2',id:'manage'}" lay-filter="manage">
         <thead>
         <tr>
             <th lay-data="{field:'tilt',width:400,toolbar:'#noteTpl'}">标题</th>

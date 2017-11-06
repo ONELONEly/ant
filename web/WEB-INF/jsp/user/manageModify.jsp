@@ -120,10 +120,10 @@
                     dataType:'json',
                     success:function (data) {
                         if(data.code === 1){
-                            layer.confirm(data.msg,{btn:['确定','返回'],offset:'100px',anim:4},function () {
-                                window.location.reload();
-                            },function () {
+                            layer.confirm(data.msg+",返回上一页？",{btn:['确定','刷新'],offset:'100px',anim:4},function () {
                                 window.location.replace("./manage");
+                            },function () {
+                                window.location.reload();
                             });
                         }else{
                             return layer.msg(data.msg);
@@ -227,7 +227,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">权限级别</label>
             <div class="layui-input-block">
-                <c:if test="${obj.user.STA3 == 0 || obj.user.STA3 == null}">
+                <c:if test="${obj.user.STA2 == 0 || obj.user.STA2 == null}">
                     <div class="layui-input-inline">
                         <input type="radio" name="STA2" value="0" title="个人" checked/>
                     </div>
@@ -244,7 +244,7 @@
                         <input type="radio" name="STA2" value="4" title="公司"/>
                     </div>
                 </c:if>
-                <c:if test="${obj.user.STA3 == 1}">
+                <c:if test="${obj.user.STA2 == 1}">
                     <div class="layui-input-inline">
                         <input type="radio" name="STA2" value="0" title="个人"/>
                     </div>
@@ -261,7 +261,7 @@
                         <input type="radio" name="STA2" value="4" title="公司"/>
                     </div>
                 </c:if>
-                <c:if test="${obj.user.STA3 == 2}">
+                <c:if test="${obj.user.STA2 == 2}">
                     <div class="layui-input-inline">
                         <input type="radio" name="STA2" value="0" title="个人"/>
                     </div>
@@ -278,7 +278,7 @@
                         <input type="radio" name="STA2" value="4" title="公司"/>
                     </div>
                 </c:if>
-                <c:if test="${obj.user.STA3 == 3}">
+                <c:if test="${obj.user.STA2 == 3}">
                     <div class="layui-input-inline">
                         <input type="radio" name="STA2" value="0" title="个人"/>
                     </div>
@@ -295,7 +295,7 @@
                         <input type="radio" name="STA2" value="4" title="公司"/>
                     </div>
                 </c:if>
-                <c:if test="${obj.user.STA3 == 4}">
+                <c:if test="${obj.user.STA2 == 4}">
                     <div class="layui-input-inline">
                         <input type="radio" name="STA2" value="0" title="个人"/>
                     </div>

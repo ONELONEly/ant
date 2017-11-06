@@ -1,6 +1,7 @@
 package com.gree.ant.controller;
 
 
+import com.gree.ant.mo.Cbase000MO;
 import com.gree.ant.mo.Cbase018MO;
 import com.gree.ant.mo.Tbuss009MO;
 import com.gree.ant.mo.Tbuss015MO;
@@ -11,7 +12,9 @@ import com.gree.ant.vo.Tbuss009VO;
 import com.gree.ant.vo.Tbuss015VO;
 import org.nutz.aop.interceptor.async.Async;
 import org.nutz.dao.Cnd;
+import org.nutz.dao.entity.annotation.Table;
 import org.nutz.dao.pager.Pager;
+import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -45,6 +48,9 @@ public class DocController {
 
     @Inject("refer:cbase018MO")
     private Cbase018MO cbase018MO;
+
+    @Inject("refer:cbase000MO")
+    private Cbase000MO cbase000MO;
 
 
     /**
@@ -204,6 +210,18 @@ public class DocController {
         return ResultUtil.getResult(code,msg,null);
     }
 
+    /**
+     * Update doc map.
+     *
+     * @param tbuss009VO 文档实体VO
+     * @param edit       文档的内容
+     * @param date       文档的创建日期
+     * @return the map
+     * @description 修改文档.
+     * @author create by jinyuk@foxmail.com.
+     * @version V1.0
+     * @createTime 2017 :11:06 11:11:55.
+     */
     @At
     @POST
     @Ok("json")
@@ -220,34 +238,126 @@ public class DocController {
         return ResultUtil.getResult(code,msg,null);
     }
 
+    /**
+     * Query all message map.
+     *
+     * @param ctyp    \文档类型
+     * @param session the session
+     * @return the map
+     * @description 查询文档类（公开信息、智库、学习文档等类型）
+     * @author create by jinyuk@foxmail.com.
+     * @version V1.0
+     * @createTime 2017 :11:06 11:11:13.
+     */
     @At
     @Filters
     @Ok("json:{dateFormat:'yyyy-MM-dd'}")
-    public Map<String,Object> queryAllDoc(@Param("page")Integer pageNumber,@Param("limit")Integer pageSize,
-          @Param("key")String key,@Param("ctyp")Integer ctyp,@Param("usid")String usid,@Param("auth")Integer auth,HttpSession session){
-        SqlExpressionGroup e1 = null;
+    public Map<String,Object> queryAllMessage(@Param("ctyp")Integer ctyp,HttpSession session){
+        String usid = StringUtil.getUsid(session);
+        SqlExpressionGroup e1 = Cnd.exps("sta2","=",0);
         SqlExpressionGroup e2 = null;
         SqlExpressionGroup e3 = null;
-        List<Tbuss009VO> tbuss009VOS;
-        String unam = StringUtil.getUsid(session);
-        if(StringUtil.checkString(key)){
-            e1 = Cnd.exps("doid","like","%"+key+"%").or("tilt","like","%"+key+"%");
+
+        if(usid != null) {
+            e3 = Cnd.exps("sta2", "=", 1).and("usid", "=", usid);
         }
+
+        SqlExpressionGroup e4 = Cnd.exps(e1).or(e3);
 
         if(ctyp != null){
             e2 = Cnd.exps("ctyp","=",ctyp);
         }
 
-        if(StringUtil.checkString(usid)){
-            e3 = Cnd.exps("usid","=",usid);
-        }
+        List<Tbuss009VO> tbuss009VOList = tbuss009MO.queryAllByCndPager(Cnd.where(e2).and(e4).desc("cdat"),null);
+        return TableUtil.makeJson(0,"成功",null,tbuss009VOList);
+    }
 
-        Integer count = tbuss009MO.countByCnd(Cnd.where(e1).and(e2).and(e3));
+    /**
+     * Query all user week doc map.
+     *
+     * @param pageNumber 页数
+     * @param pageSize   页的尺寸
+     * @param key        过滤关键词
+     * @param session    the session
+     * @return the map
+     * @description 查询用户的所有周报
+     * @author create by jinyuk@foxmail.com.
+     * @version V1.0
+     * @createTime 2017 :11:06 11:11:09.
+     */
+    @At
+    @Ok("json:{dateFormat:'yyyy-MM-dd'}")
+    public Map<String,Object> queryAllUserWeekDoc(@Param("page")Integer pageNumber,@Param("limit")Integer pageSize,
+                              @Param("key")String key,HttpSession session){
+
+        String usid = StringUtil.getUsid(session);
+        SqlExpressionGroup e0 = Cnd.exps("ctyp","=",1);
+        SqlExpressionGroup e1 = Cnd.exps("usid","=",usid);
+        SqlExpressionGroup e2 = null;
+        if(StringUtil.checkString(key)){
+            e2 = Cnd.exps("doid","like","%"+key+"%").or("tilt","like","%"+key+"%");
+        }
+        Integer count = tbuss009MO.countByCnd(Cnd.where(e0).and(e1).and(e2));
         Pager pager = TableUtil.formatPager(pageSize,pageNumber,count);
-        if(auth !=null){
-            tbuss009VOS = tbuss009MO.queryAllByCndPager(Cnd.where(e2).desc("cdat"),null);
+        List<Tbuss009VO> tbuss009VOList = tbuss009MO.queryAllByCndPager(Cnd.where(e0).and(e1).and(e2).desc("cdat"),pager);
+        return TableUtil.makeJson(0,"成功",count,tbuss009VOList);
+    }
+
+    /**
+     * Query all doc map.
+     *
+     * @param pageNumber 页数
+     * @param pageSize   页的尺寸
+     * @param key        过滤关键词
+     * @param session    the session
+     * @return the map
+     * @description 查询所有的文档.
+     * @author create by jinyuk@foxmail.com.
+     * @version V1.0
+     * @createTime 2017 :11:06 11:11:04.
+     */
+    @At
+    @Filters
+    @Ok("json:{dateFormat:'yyyy-MM-dd'}")
+    public Map<String,Object> queryAllDoc(@Param("page")Integer pageNumber,@Param("limit")Integer pageSize,
+          @Param("key")String key,HttpSession session){
+        String usid = StringUtil.getUsid(session);
+        Integer sta2 = cbase000MO.fetchByUsid(usid).getSTA2();
+        String stage = "";
+        List<Tbuss009VO> tbuss009VOS;
+        Pager pager;
+        Integer count;
+        SqlExpressionGroup e0 = Cnd.exps("sta2","=",0);
+        SqlExpressionGroup e1 = Cnd.exps("sta2","=",1).and("usid","=",usid);
+        SqlExpressionGroup e2 = Cnd.exps(e0).or(e1);
+        SqlExpressionGroup e3 = Cnd.exps("stat","=",5);
+        SqlExpressionGroup e4 = null;
+        SqlExpressionGroup e5 = null;
+        if(StringUtil.checkString(key)){
+            e5 = Cnd.exps("doid","like","%"+key+"%").or("tilt","like","%"+key+"%");
+        }
+        if(sta2 == 0){
+            e4 = Cnd.exps("stat","=",0).or(e3);
+            count = tbuss009MO.countByCnd(Cnd.where(e4).and(e5).and("usid","=",usid).or("csid","=",usid));
+            pager = TableUtil.formatPager(pageSize,pageNumber,count);
+            tbuss009VOS = tbuss009MO.queryAllByCndPager(Cnd.where(e4).and(e5).and("usid","=",usid).or("csid","=",usid),pager);
         }else {
-            tbuss009VOS = tbuss009MO.queryAllGropDoc(unam, Cnd.where("0", "=", 0).and(e1).and(e2).and(e3), pager);
+            if (sta2 == 1) {
+                e4 = Cnd.exps(e3).or("stat", "=", 1);
+                stage = "GROP";
+            } else if (sta2 == 2) {
+                e4 = Cnd.exps(e3).or("stat", "=", 2);
+                stage = "ACCO";
+            } else if (sta2 == 3) {
+                e4 = Cnd.exps(e3).or("stat", "=", 3);
+                stage = "DEPT";
+            } else if (sta2 == 4) {
+                e4 = Cnd.exps(e3).or("stat", "=", 4);
+                stage = "COMP";
+            }
+            count = tbuss009MO.countAllDoc(usid, Cnd.where("0", "=", 0).and(e5).and(e2).and(e4), stage);
+            pager = TableUtil.formatPager(pageSize, pageNumber, count);
+            tbuss009VOS = tbuss009MO.queryAllDoc(usid, Cnd.where("0", "=", 0).and(e5).and(e2).and(e4), stage, pager);
         }
         return TableUtil.makeJson(0,"成功",count,tbuss009VOS);
     }
@@ -315,6 +425,16 @@ public class DocController {
         return ResultUtil.getResult(code,null,null);
     }
 
+    /**
+     * Query all file map.
+     *
+     * @param doid 文档ID
+     * @return 标准的数据请求返回模式
+     * @description 根据文档id查询他关联的所有文件.
+     * @author create by jinyuk@foxmail.com.
+     * @version V1.0
+     * @createTime 2017 :11:06 04:11:07.
+     */
     @At
     @Ok("json")
     @Filters
@@ -327,6 +447,17 @@ public class DocController {
         return ResultUtil.getResult(0,"成功！",tbuss015VOList);
     }
 
+    /**
+     * Delete file map.
+     *
+     * @param duta     文档流水号
+     * @param fileName 文档的文件名
+     * @return the map
+     * @description 用一句话描述这个方法的作用.
+     * @author create by jinyuk@foxmail.com.
+     * @version V1.0
+     * @createTime 2017 :11:06 04:11:36.
+     */
     @At
     @POST
     @Ok("json")
@@ -374,7 +505,7 @@ public class DocController {
         return ResultUtil.getResult(code,msg,null);
     }
 
-//    @Async
+    @Async
     private void sendShareDocMail(String csid,Long doid,String usid,String tilt){
         if(csid.equals("1866")){
             Cbase018VO cbase018VO = cbase018MO.fetchTransByEMID(1866);

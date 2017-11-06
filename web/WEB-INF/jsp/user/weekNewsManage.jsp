@@ -119,7 +119,7 @@
     <div class="layui-inline">
         <button class="layui-btn layui-bg-black delete-btn"><i class="layui-icon">&#xe640;</i>批量删除</button>
     </div>
-    <table class="layui-table" lay-data="{height:'600',url:'${base}/doc/queryAllDoc?ctyp=1&usid=${obj}',page:true,limit:10,limits:[10,15,20,25,30,50],id:'manage'}" lay-filter="manage">
+    <table class="layui-table" lay-data="{height:'600',url:'${base}/doc/queryAllUserWeekDoc',page:true,limit:10,limits:[10,15,20,25,30,50],id:'manage'}" lay-filter="manage">
         <thead>
         <tr>
             <th lay-data="{checkbox:true,width:50,fixed:true}"></th>

@@ -72,7 +72,7 @@
         <div class="x-titleDiv">
             <span>&nbsp;公开文档</span>
         </div>
-        <table class="layui-table" lay-skin="nob" lay-data="{height:'300',url:'${base}/doc/queryAllDoc?ctyp=3&auth=1',id:'manage'}"  lay-filter="manage">
+        <table class="layui-table" lay-skin="nob" lay-data="{height:'300',url:'${base}/doc/queryAllMessage?ctyp=3',id:'manage'}"  lay-filter="manage">
             <thead>
             <tr>
                 <th lay-data="{field:'tilt',width:800,toolbar:'#noteTpl'}">标题</th>

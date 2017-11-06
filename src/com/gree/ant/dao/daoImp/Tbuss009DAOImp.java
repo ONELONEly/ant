@@ -1,6 +1,7 @@
 package com.gree.ant.dao.daoImp;
 
 import com.gree.ant.dao.Tbuss009DAO;
+import com.gree.ant.dao.daoImp.util.DAOUtil;
 import com.gree.ant.util.FileUtil;
 import com.gree.ant.vo.Tbuss009VO;
 import org.nutz.dao.Condition;
@@ -25,11 +26,11 @@ public class Tbuss009DAOImp implements Tbuss009DAO{
     private Dao dao;
 
     @Override
-    public List<Tbuss009VO> queryAllGropDoc(String usid, Condition cnd, Pager pager) {
+    public List<Tbuss009VO> queryAllDoc(String usid,Condition cnd,String stage,Pager pager) {
         String sqlStr = "select * from V_TBUSS009 a $condition and a.usid in (select b.usid from CBASE000 b where " +
-                "b.GROP = (select c.GROP from CBASE000 c where c.usid = @usid)) order by cdat desc";
+                "b."+stage+" = (select c."+stage+" from CBASE000 c where c.usid = @usid)) or csid = @csid order by cdat desc";
         Sql sql = Sqls.create(sqlStr);
-        sql.setParam("usid",usid);
+        sql.setParam("usid",usid).setParam("csid",usid);
         sql.setCondition(cnd);
         sql.setPager(pager);
         sql.setCallback(new SqlCallback() {
@@ -47,5 +48,15 @@ public class Tbuss009DAOImp implements Tbuss009DAO{
         });
         dao.execute(sql);
         return sql.getList(Tbuss009VO.class);
+    }
+
+    @Override
+    public Integer countAllDoc(String usid, Condition cnd, String stage) {
+        String sqlStr = "select count(*) from V_TBUSS009 a $condition and a.usid in (select b.usid from CBASE000 b where " +
+                "b."+stage+" = (select c."+stage+" from CBASE000 c where c.usid = @usid)) or csid = @csid order by cdat desc";
+        Sql sql = Sqls.create(sqlStr);
+        sql.setParam("usid",usid).setParam("csid",usid);
+        sql.setCondition(cnd);
+        return DAOUtil.getTiCount(sql,dao);
     }
 }

@@ -172,8 +172,8 @@
                 dataType:'json',
                 success:function (data) {
                     if(data.code === 1){
-                        layer.confirm(data.msg,function () {
-                            window.location.reload();
+                        layer.confirm(data.msg+"返回上一页？",{btn:['确定'],offset:'100px',anim:4},function () {
+                            window.location.replace("./manage");
                         });
                     }else{
                         layer.alert(data.msg);

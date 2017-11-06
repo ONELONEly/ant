@@ -89,10 +89,8 @@
                     dataType:'json',
                     success:function (data) {
                         if(data.code === 1){
-                            layer.confirm(data.msg,{btn:['确定','返回'],offset:'100px',anim:4},function () {
+                            layer.confirm(data.msg,{btn:['确定'],offset:'100px',anim:4},function () {
                                 window.location.reload();
-                            },function () {
-                                window.location.replace("./manage");
                             });
                         }else{
                             return layer.msg(data.msg);
@@ -111,7 +109,6 @@
 <div class="x-nav">
     <span class="layui-breadcrumb">
         <a href="javascript:"><cite style="cursor: pointer;">设置</cite></a>
-        <a href="./manage"><cite style="cursor: pointer;">用户管理</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">修改资料</cite></a>
         <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
     </span>

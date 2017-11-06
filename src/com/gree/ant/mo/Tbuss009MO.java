@@ -132,8 +132,13 @@ public class Tbuss009MO implements Tbuss009BasicMO{
     }
 
     @Override
-    public List<Tbuss009VO> queryAllGropDoc(String usid, Condition cnd, Pager pager) {
-        return tbuss009DAOImp.queryAllGropDoc(usid,cnd,pager);
+    public Integer countAllDoc(String usid, Condition cnd, String stage) {
+        return tbuss009DAOImp.countAllDoc(usid,cnd,stage);
+    }
+
+    @Override
+    public List<Tbuss009VO> queryAllDoc(String usid,Condition cnd,String stage,Pager pager) {
+        return tbuss009DAOImp.queryAllDoc(usid,cnd,stage,pager);
     }
 
     private List<Tbuss009VO> formatt09(List<ValueObject> voS){

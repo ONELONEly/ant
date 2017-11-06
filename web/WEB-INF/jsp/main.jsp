@@ -82,6 +82,7 @@
         if(count === 1){
             window.location.reload();
         }
+        element.init();
         $.ajax({
             type:'POST',
             url:'${base}/util/getNewTaskCount',

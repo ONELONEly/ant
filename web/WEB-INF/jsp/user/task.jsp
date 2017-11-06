@@ -158,7 +158,6 @@
                 var url = '${base}/task/printTask?list=' + param;
                 $("<form action='"+url+"' method='post'></form>").appendTo("body").submit().remove();
             });
-
         });
     </script>
 </head>

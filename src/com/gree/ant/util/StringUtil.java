@@ -58,6 +58,6 @@ public class StringUtil {
     }
 
     public static String getUsid(HttpSession session){
-        return session.getAttribute("usid") ==null?null:session.getAttribute("usid").toString();
+        return session.getAttribute("usid") == null?null:session.getAttribute("usid").toString();
     }
 }

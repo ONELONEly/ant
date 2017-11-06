@@ -8,7 +8,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -80,7 +81,7 @@
                     url:'${base}/task/insertImage',
                     type:'POST'
                 },
-                height:'800px'
+                height:'600px'
             };
             var note = layedit.build('doc',layeditOption);
 
@@ -126,7 +127,9 @@
                     dataType:'json',
                     success:function (data) {
                         if(data.code === 1){
-                            layer.confirm("文档修改成功",{offset:'100px'},function () {
+                            layer.confirm("文档修改成功,返回上一页？",{offset:'100px'},function(){
+                                window.location.replace("./manage")
+                            },function () {
                                 window.location.reload();
                             });
                         }
@@ -164,13 +167,15 @@
     </script>
 </head>
 <body>
-<div class="x-body">
+<div class="x-nav">
     <span class="layui-breadcrumb">
         <a href="javascript:"><cite style="cursor: pointer;">文档</cite></a>
         <a href="./manage"><cite style="cursor: pointer;">文档管理</cite></a>
         <a href="javascript:location.replace(location.href)"><cite style="cursor: pointer;">文档编辑</cite></a>
         <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
     </span>
+</div>
+<div class="x-body">
     <form class="layui-form layui-form-panel">
         <input type="hidden" value="${obj.doc.doid}" id="doid"/>
         <input type="hidden" value="${obj.doc.cdat}" id="cdat"/>

@@ -8,7 +8,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -79,7 +80,7 @@
                     url:'${base}/task/insertImage',
                     type:'POST'
                 },
-                height:'800px'
+                height:'600px'
             };
             var note = layedit.build('doc',layeditOption);
 
@@ -134,7 +135,9 @@
                     dataType:'json',
                     success:function (data) {
                         if(data.code === 1){
-                            layer.confirm("文档提交成功",{offset:'100px'},function () {
+                            layer.confirm("文档提交成功,返回上一页？",{offset:'100px'},function(){
+                                location.replace("./manage");
+                            },function () {
                                 window.location.reload();
                             });
                         }
@@ -144,106 +147,74 @@
                     }
                 });
             });
-
-//            table.on('tool(file)',function (obj) {
-//                var infor = obj.data;
-//                if(obj.event === 'del'){
-//                    $.ajax({
-//                        type:'POST',
-//                        url:'./deleteFile',
-//                        data:{
-//                            duta:infor.duta,
-//                            ffil:infor.ffil
-//                        },
-//                        dataType:'json',
-//                        success:function (res) {
-//                            if(res.code === 1){
-//                                obj.del();
-//                            }
-//                            return layer.msg(res.msg);
-//                        },
-//                        error:function (kellyj) {
-//                            return layer.msg("发生错误，错误码为："+kellyj.status);
-//                        }
-//                    });
-//                }
-//            });
         });
     </script>
 </head>
 <body>
-<div class="x-body">
-    <span class="layui-breadcrumb">
-        <a href="javascript:"><cite style="cursor: pointer;">文档</cite></a>
-        <a href="./manage"><cite style="cursor: pointer;">文档管理</cite></a>
-        <a href="javascript:location.replace(location.href)"><cite style="cursor: pointer;">文档编辑</cite></a>
-        <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
-    </span>
-    <form class="layui-form layui-form-panel">
-        <input type="hidden" value="${obj}" id="doid">
-        <div class="layui-form-item">
-            <div class="x-center">
-                <input type="text" class="layui-input x-center" name="tilt" id="tilt" placeholder="请输入标题" lay-verify="required|tilt" required/>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">文档类型</label>
-            <div class="layui-input-inline">
-                <select name="ctyp" id="ctyp" lay-verify="required|ctyp" lay-search="">
-                    <option value="" class="n-display" disabled selected>请选择文档类型</option>
-                </select>
-            </div>
-
-            <label class="layui-form-label">接收人</label>
-            <div class="layui-input-inline">
-                <select name="csid" id="csid" lay-verify="required|csid" lay-search="">
-                    <option value="" class="n-display" disabled selected>请选择接收人</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <textarea id="doc" class="n-display"></textarea>
-        </div>
-
-        <div class="layui-form-item">
-            <div class="layui-upload">
-                <button type="button" class="layui-btn layui-btn-radius layui-bg-black" id="uploadList">选择多文件</button>
-                <div class="layui-upload-list">
-                    <table class="layui-table">
-                        <thead>
-                        <tr>
-                            <th>文件名</th>
-                            <th>大小</th>
-                            <th>状态</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody id="fileList"></tbody>
-                    </table>
+<div>
+    <div class="x-nav">
+        <span class="layui-breadcrumb">
+            <a href="javascript:"><cite style="cursor: pointer;">文档</cite></a>
+            <a href="./manage"><cite style="cursor: pointer;">文档管理</cite></a>
+            <a href="javascript:location.replace(location.href)"><cite style="cursor: pointer;">文档编辑</cite></a>
+            <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        </span>
+    </div>
+    <div class="x-body">
+        <form class="layui-form layui-form-panel">
+            <input type="hidden" value="${obj}" id="doid">
+            <div class="layui-form-item">
+                <div class="x-center">
+                    <input type="text" class="layui-input x-center" name="tilt" id="tilt" placeholder="请输入标题" lay-verify="required|tilt" required/>
                 </div>
             </div>
-            <button type="button" class="layui-btn layui-btn-radius layui-bg-red" id="upload" lay-submit="">上传文件</button>
-        </div>
-        <%--<table class="layui-table" lay-data="{height:'400',url:'./queryAllFile?doid=${obj.doc.doid}',page:false,id:'file'}" lay-filter="file">--%>
-            <%--<thead>--%>
-            <%--<tr>--%>
-                <%--<th lay-data="{field:'ffil',width:1200}">文件名</th>--%>
-                <%--<th lay-data="{field:'fsiz',width:300}">大小</th>--%>
-                <%--<th lay-data="{fixed:'right',align:'center',width:200,templet:'#operate'}">操作</th>--%>
-            <%--</tr>--%>
-            <%--</thead>--%>
-        <%--</table>--%>
-        <%--<script type="text/html" id="operate">--%>
-            <%--<a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del">删除</a>--%>
-        <%--</script>--%>
-        <div class="layui-form-item">
-            <div class="layui-input-inline">
-                <button type="button" class="layui-btn layui-btn-radius layui-bg-green" lay-filter="put" lay-submit="">提交</button>
+            <div class="layui-form-item">
+                <label class="layui-form-label">文档类型</label>
+                <div class="layui-input-inline">
+                    <select name="ctyp" id="ctyp" lay-verify="required|ctyp" lay-search="">
+                        <option value="" class="n-display" disabled selected>请选择文档类型</option>
+                    </select>
+                </div>
+
+                <label class="layui-form-label">接收人</label>
+                <div class="layui-input-inline">
+                    <select name="csid" id="csid" lay-verify="required|csid" lay-search="">
+                        <option value="" class="n-display" disabled selected>请选择接收人</option>
+                    </select>
+                </div>
             </div>
-        </div>
-        <br/><br/><br/><br/><br/><br/>
-    </form>
+
+            <div class="layui-form-item">
+                <textarea id="doc" class="n-display"></textarea>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn layui-btn-radius layui-bg-black" id="uploadList">选择多文件</button>
+                    <div class="layui-upload-list">
+                        <table class="layui-table">
+                            <thead>
+                            <tr>
+                                <th>文件名</th>
+                                <th>大小</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="fileList"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <button type="button" class="layui-btn layui-btn-radius layui-bg-red" id="upload" lay-submit="">上传文件</button>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <button type="button" class="layui-btn layui-btn-radius layui-bg-green" lay-filter="put" lay-submit="">提交</button>
+                </div>
+            </div>
+            <br/><br/><br/><br/><br/><br/>
+        </form>
+    </div>
 </div>
 </body>
 </html>
