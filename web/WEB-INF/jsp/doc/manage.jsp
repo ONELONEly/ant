@@ -21,7 +21,7 @@
 
             form.on("submit(search)",function (data) {
                 var infor = data.field;
-                ctyp = $("input[name='ctyp']:checked").val();
+                ctyp = $("select[name='ctyp']:selected").val();
                 table.reload("manage",{
                     where:{
                         key:infor.msg,

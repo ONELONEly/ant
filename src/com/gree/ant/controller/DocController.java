@@ -12,9 +12,7 @@ import com.gree.ant.vo.Tbuss009VO;
 import com.gree.ant.vo.Tbuss015VO;
 import org.nutz.aop.interceptor.async.Async;
 import org.nutz.dao.Cnd;
-import org.nutz.dao.entity.annotation.Table;
 import org.nutz.dao.pager.Pager;
-import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -320,21 +318,27 @@ public class DocController {
     @Filters
     @Ok("json:{dateFormat:'yyyy-MM-dd'}")
     public Map<String,Object> queryAllDoc(@Param("page")Integer pageNumber,@Param("limit")Integer pageSize,
-          @Param("key")String key,HttpSession session){
+          @Param("key")String key,@Param("ctyp")Integer ctyp,HttpSession session){
         String usid = StringUtil.getUsid(session);
         Integer sta2 = cbase000MO.fetchByUsid(usid).getSTA2();
         String stage = "";
         List<Tbuss009VO> tbuss009VOS;
         Pager pager;
         Integer count;
+        SqlExpressionGroup e = Cnd.exps("stat","=",0).and("usid","=",usid);
         SqlExpressionGroup e0 = Cnd.exps("sta2","=",0);
         SqlExpressionGroup e1 = Cnd.exps("sta2","=",1).and("usid","=",usid);
         SqlExpressionGroup e2 = Cnd.exps(e0).or(e1);
-        SqlExpressionGroup e3 = Cnd.exps("stat","=",5);
+        SqlExpressionGroup e3 = Cnd.exps("stat","=",5).or(e);
         SqlExpressionGroup e4 = null;
         SqlExpressionGroup e5 = null;
+        SqlExpressionGroup e6 = null;
         if(StringUtil.checkString(key)){
-            e5 = Cnd.exps("doid","like","%"+key+"%").or("tilt","like","%"+key+"%");
+            e5 = Cnd.exps("doid","like","%"+key+"%").or("tilt","like","%"+key+"%")
+                    .or("unam","like","%"+key+"%");
+        }
+        if(ctyp != null){
+            e6 = Cnd.exps("ctyp","=",ctyp);
         }
         if(sta2 == 0){
             e4 = Cnd.exps("stat","=",0).or(e3);
@@ -355,9 +359,9 @@ public class DocController {
                 e4 = Cnd.exps(e3).or("stat", "=", 4);
                 stage = "COMP";
             }
-            count = tbuss009MO.countAllDoc(usid, Cnd.where("0", "=", 0).and(e5).and(e2).and(e4), stage);
+            count = tbuss009MO.countAllDoc(usid, Cnd.where("0", "=", 0).and(e5).and(e2).and(e4).and(e6), stage);
             pager = TableUtil.formatPager(pageSize, pageNumber, count);
-            tbuss009VOS = tbuss009MO.queryAllDoc(usid, Cnd.where("0", "=", 0).and(e5).and(e2).and(e4), stage, pager);
+            tbuss009VOS = tbuss009MO.queryAllDoc(usid, Cnd.where("0", "=", 0).and(e5).and(e2).and(e4).and(e6), stage, pager);
         }
         return TableUtil.makeJson(0,"成功",count,tbuss009VOS);
     }

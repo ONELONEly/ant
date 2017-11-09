@@ -27,8 +27,8 @@ public class Tbuss009DAOImp implements Tbuss009DAO{
 
     @Override
     public List<Tbuss009VO> queryAllDoc(String usid,Condition cnd,String stage,Pager pager) {
-        String sqlStr = "select * from V_TBUSS009 a $condition and a.usid in (select b.usid from CBASE000 b where " +
-                "b."+stage+" = (select c."+stage+" from CBASE000 c where c.usid = @usid)) or csid = @csid order by cdat desc";
+        String sqlStr = "select * from V_TBUSS009 a $condition and (a.usid in (select b.usid from CBASE000 b where " +
+                "b."+stage+" = (select c."+stage+" from CBASE000 c where c.usid = @usid)) or csid = @csid) order by cdat desc";
         Sql sql = Sqls.create(sqlStr);
         sql.setParam("usid",usid).setParam("csid",usid);
         sql.setCondition(cnd);
@@ -52,8 +52,8 @@ public class Tbuss009DAOImp implements Tbuss009DAO{
 
     @Override
     public Integer countAllDoc(String usid, Condition cnd, String stage) {
-        String sqlStr = "select count(*) from V_TBUSS009 a $condition and a.usid in (select b.usid from CBASE000 b where " +
-                "b."+stage+" = (select c."+stage+" from CBASE000 c where c.usid = @usid)) or csid = @csid order by cdat desc";
+        String sqlStr = "select count(*) from V_TBUSS009 a $condition and (a.usid in (select b.usid from CBASE000 b where " +
+                "b."+stage+" = (select c."+stage+" from CBASE000 c where c.usid = @usid)) or csid = @csid) order by cdat desc";
         Sql sql = Sqls.create(sqlStr);
         sql.setParam("usid",usid).setParam("csid",usid);
         sql.setCondition(cnd);

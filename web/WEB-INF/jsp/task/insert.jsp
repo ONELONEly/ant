@@ -28,7 +28,7 @@
            }
          };
 
-         var fileUploadOption = {
+         var files,fileUploadOption = {
              elem:'#uploadList',
              url:'${base}/task/uploadFiles',
              data:{
@@ -39,21 +39,21 @@
              auto:false,
              bindAction:'#upload',
              choose:function (obj) {
-                 var files = obj.pushFile();//将每次选择的文件追加到文件队列
+                 files = obj.pushFile();//将每次选择的文件追加到文件队列
                  obj.preview(function (index,file,result) {//读取本地文件
                      var tr = $(['<tr id="upload-'+ index +'">'
                          ,'<td>'+ file.name +'</td>'
                          ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
                          ,'<td>等待上传</td>'
                          ,'<td>'
-                         ,'<button class="layui-btn layui-btn-mini demo-reload layui-hide">重传</button>'
+//                         ,'<button class="layui-btn layui-btn-mini demo-re layui-hide">重传</button>'
                          ,'<button class="layui-btn layui-btn-mini layui-btn-danger demo-delete">删除</button>'
                          ,'</td>'
                          ,'</tr>'].join(''));
                      
-                     tr.find(".demo-reload").on('click',function () {//单个重传
-                         obj.upload(index,file);
-                     });
+//                     tr.find(".demo-re").on('click',function () {//单个重传
+//                         obj.upload(index,file);
+//                     });
                      
                      tr.find(".demo-delete").on('click',function () {//单个删除
                          delete files[index];
@@ -75,7 +75,7 @@
              error:function (index,upload) {
                  var tr = fileList.find("tr#upload-"+index),tds = tr.children();
                  tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
-                 tds.eq(3).find(".demo-reload").removeClass('layui-hide');
+                 tds.eq(3).find(".demo-re").removeClass('layui-hide');
              }
          };
 
