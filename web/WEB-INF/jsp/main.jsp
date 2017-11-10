@@ -11,29 +11,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>蚂蚁啃骨头</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>蚂蚁啃骨头</title>
     <c:import url="../static.html"/>
+    <link rel="stylesheet" href="./static//layui/css/layui.css" media="all">
+    <link rel="stylesheet" type="text/css" href="./build/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./build/css/app.css" media="all">
 </head>
 <body>
-<div class="layui-layout-admin layui-layout">
-    <%--style="border-bottom:3px solid forestgreen"--%>
+<div class="layui-layout layui-layout-admin kit-layout-admin">
     <div class="layui-header">
         <div class="layui-logo">
             <img src="${base}/static/images/logo/logo.png"/>
         </div>
-        <ul class="layui-nav layui-layout-right" lay-filter="side">
+        <ul class="layui-nav layui-layout-right kit-nav" lay-filter="kitNavbar" kit-navbar>
             <c:forEach var="one" items="${obj.oneLevel}">
                 <li class="layui-nav-item">
-                    <a href="javascript:" _href="${one.purl}"><cite>${one.dsca}</cite></a>
+                    <a href="javascript:;" data-url="${one.purl}" data-icon="&#xe628;" data-title="${one.dsca}" kit-target data-id='${one.dsca}'><i class="layui-icon">&#xe628;</i><span>${one.dsca}</span></a>
                 </li>
             </c:forEach>
             <li class="layui-nav-item">
-                <a href="javascript:" _href="./user/board"><cite class="n-display">个人看板</cite><span class="usid n-display">${obj.user.USID}</span>${obj.user.DSCA}<span class="layui-badge" id="newTask">5</span></a>
+                <a href="javascript:" data-url="./user/board" data-icon="&#xe628;" data-title="个人看板" kit-target data-id='个人看板'><cite class="n-display">个人看板</cite><span>${obj.user.DSCA}</span><span class="usid n-display">${obj.user.USID}</span><span class="layui-badge" id="newTask"></span></a>
             </li>
             <li class="layui-nav-item">
-                <a href="javascript:" _href="./user/modify">
+                <a href="javascript:" data-url="./user/modify" data-icon="&#xe628;" data-title="修改资料" kit-target data-id='修改资料'>
                     <cite class="n-display">修改资料</cite>
                     <img class="header-img" src="./user/getUserHeader" id="head">
                 </a>
@@ -43,16 +45,18 @@
             </li>
         </ul>
     </div>
-    <div class="layui-side layui-bg-black">
+
+    <div class="layui-side layui-bg-black kit-side">
         <div class="layui-side-scroll">
-            <ul class="layui-nav layui-nav-tree site-demo-nav" lay-filter="side">
+            <div class="kit-side-fold"><i class="layui-icon">&#xe62a;</i></div>
+            <ul class="layui-nav layui-nav-tree" lay-filter="kitNavbar" kit-navbar>
                 <c:forEach var="second" items="${obj.secondLevel}">
                     <li class="layui-nav-item">
-                        <a href="javascript:">${second.dsca}</a>
+                        <a href="javascript:;"><i class="layui-icon">&#xe628;</i><span>${second.dsca}</span></a>
                         <dl class="layui-nav-child">
                             <c:forEach var="third" items="${obj.thirdLevel}">
                                 <c:if test="${third.cbase003VO.pono == second.pono}">
-                                    <dd><a href="javascript:" _href="${third.purl}"><cite>${third.dsca}</cite></a></dd>
+                                    <a href="javascript:;" data-url="${third.purl}" data-icon="&#xe658;" data-title="${third.dsca}" kit-target data-id='${third.dsca}'><i class="layui-icon">&#xe658;</i><span>${third.dsca}</span></a>
                                 </c:if>
                             </c:forEach>
                         </dl>
@@ -61,28 +65,32 @@
             </ul>
         </div>
     </div>
-    <div class="layui-tab layui-tab-card site-demo-title x-main" lay-filter="bodyTab" lay-allowclose="true">
-        <div class="x-slide_left"></div>
-        <span class="n-display count">${count}</span>
-        <ul class="layui-tab-title">
-            <li class="layui-this"><cite>首页</cite><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></li>
-        </ul>
-        <div class="layui-tab-content site-demo site-demo-body">
-            <div class="layui-tab-item layui-show">
-                <iframe src="./main" frameborder="0" class="x-iframe"></iframe>
-            </div>
-        </div>
+
+    <div class="layui-body" id="container">
+    </div>
+
+    <div class="layui-footer x-center">
+        <span>技术开发团队：GREE-ANT GNAW BONE</span>
     </div>
 </div>
-</body>
-<script language="JavaScript">
-    layui.use(["element",'jquery','layer'],function () {
-        var element = layui.element,$ = layui.jquery,layer = layui.layer,count = $(".count").text();
-        sessionStorage.setItem("usid",$(".usid").text());
-        if(count === 1){
-            window.location.reload();
-        }
-        element.init();
+<script src="./static/layui/layui.js"></script>
+<script>
+    var message;
+    layui.config({
+        base: './build/js/'
+    }).use(['app', 'message'], function() {
+        var app = layui.app, $ = layui.jquery, layer = layui.layer;
+        //将message设置为全局以便子页面调用
+        message = layui.message;
+        //主入口
+        app.set({
+            type: 'iframe'
+        }).init();
+
+        $(".layui-this").html("<i class='layui-icon'>&#xe68e;</i>首页");
+        $(".layui-tab-content div").eq(0).find("iframe").attr("src","./main");
+        $(".kit-tab-tool").html("<i class='layui-icon' style='font-size:xx-large;'>&#xe620;</i>");
+
         $.ajax({
             type:'POST',
             url:'${base}/util/getNewTaskCount',
@@ -96,4 +104,5 @@
         });
     });
 </script>
+</body>
 </html>

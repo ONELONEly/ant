@@ -51,8 +51,6 @@ public class MainController {
     public Map<String,Object> index(HttpSession session){
         Map<String,Object> resultMap = new HashMap<>();
         String usid = session.getAttribute("usid").toString();
-        Integer count = Integer.parseInt(session.getAttribute("count").toString());
-        session.setAttribute("count",count+1);
         List<Cbase002VO> oneLevel = new ArrayList<>();
         List<Cbase002VO> secondLevel = new ArrayList<>();
         List<Cbase002VO> thirdLevel = new ArrayList<>();
@@ -73,7 +71,6 @@ public class MainController {
         resultMap.put("oneLevel",oneLevel);
         resultMap.put("secondLevel",secondLevel);
         resultMap.put("thirdLevel",thirdLevel);
-        resultMap.put("count",count);
         return resultMap;
     }
 
