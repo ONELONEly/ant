@@ -69,7 +69,9 @@
                     dataType:'json',
                     success:function (data) {
                         if(data.code === 1){
-                            layer.confirm("周报提交成功",{offset:'100px'},function () {
+                            layer.confirm("周报提交成功,返回上一页",{offset:'100px'},function(){
+                                window.location.replace("./weekNewsManage");
+                            },function () {
                                 window.location.reload();
                             });
                         }else{
@@ -87,7 +89,8 @@
 <body>
 <div class="x-body">
     <span class="layui-breadcrumb">
-        <a href="javascript:"><cite style="cursor: pointer;">个人</cite></a>
+        <a href="javascript:"><cite style="cursor: pointer;">我的</cite></a>
+        <a href="./weekNewsManage"><cite style="cursor: pointer;">周报管理</cite></a>
         <a href="javascript:location.replace(location.href)"><cite style="cursor: pointer;">个人周报</cite></a>
         <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
     </span>

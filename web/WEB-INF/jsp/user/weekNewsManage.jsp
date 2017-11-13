@@ -139,7 +139,7 @@
         <a href="javascript:" class="layui-table-link" lay-event="show">{{d.tilt}}</a>
     </script>
     <div class="layui-hide" id="operate">
-        <a class="layui-btn layui-btn-mini" href="../doc/edit?doid={{d.doid}}">编辑</a>
+        <a class="layui-btn layui-btn-mini" href="../doc/edit?doid={{d.doid}}&key=rose">编辑</a>
         <a class="layui-btn layui-btn-mini layui-bg-black" lay-event="del">删除</a>
     </div>
     <br><br><br><br><br><br><br><br><br>

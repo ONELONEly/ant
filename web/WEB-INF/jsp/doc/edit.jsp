@@ -128,7 +128,7 @@
                     success:function (data) {
                         if(data.code === 1){
                             layer.confirm("文档修改成功,返回上一页？",{offset:'100px'},function(){
-                                window.location.replace("./manage")
+                                window.location.replace($("#choose").attr("href"))
                             },function () {
                                 window.location.reload();
                             });
@@ -169,8 +169,14 @@
 <body>
 <div class="x-nav">
     <span class="layui-breadcrumb">
-        <a href="javascript:"><cite style="cursor: pointer;">文档</cite></a>
-        <a href="./manage"><cite style="cursor: pointer;">文档管理</cite></a>
+        <c:if test="${obj.key == true}">
+            <a href="javascript:"><cite style="cursor: pointer;">我的</cite></a>
+            <a href="../user/weekNewsManage" id="choose"><cite style="cursor: pointer;">周报管理</cite></a>
+        </c:if>
+        <c:if test="${obj.key == false}">
+            <a href="javascript:"><cite style="cursor: pointer;">文档</cite></a>
+            <a href="./manage" id="choose"><cite style="cursor: pointer;">文档管理</cite></a>
+        </c:if>
         <a href="javascript:location.replace(location.href)"><cite style="cursor: pointer;">文档编辑</cite></a>
         <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
     </span>

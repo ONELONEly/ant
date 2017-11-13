@@ -93,11 +93,16 @@ public class DocController {
      */
     @At
     @Ok("jsp:jsp.doc.edit")
-    public Map<String,Object> edit(@Param("doid")Long doid){
+    public Map<String,Object> edit(@Param("doid")Long doid,@Param("key")String key){
         Tbuss009VO tbuss009VO = tbuss009MO.fetchByID(doid);
+        Boolean primary = false;
         Map<String,Object> resultMap = new HashMap<>();
         resultMap.put("doc",tbuss009VO);
         resultMap.put("note",FileUtil.convertClob(tbuss009VO.getNote()));
+        if(StringUtil.checkString(key)){
+            primary = true;
+        }
+        resultMap.put("key",primary);
         return resultMap;
     }
 
