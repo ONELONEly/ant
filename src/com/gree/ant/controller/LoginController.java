@@ -2,6 +2,8 @@ package com.gree.ant.controller;
 import com.gree.ant.mo.Cbase000MO;
 import com.gree.ant.util.LDAPLogin;
 import com.gree.ant.util.ResultUtil;
+import org.apache.shiro.SecurityUtils;
+import org.nutz.integration.shiro.SimpleShiroToken;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.*;
@@ -60,7 +62,7 @@ public class LoginController {
     @At
     @Ok(">>:/")
     public String loginOut(HttpServletRequest request){
-        request.getSession().setAttribute("usid",null);
+        SecurityUtils.getSubject().logout();
         return "success!";
     }
 
@@ -81,13 +83,9 @@ public class LoginController {
     @Ok("re:>>:/index")
     public String loginCheck(@Param("usid") String usid, @Param("pawd")String pawd, HttpSession session){
         if(usid != null && pawd !=null) {
-            if (cbase000MO.loginCheck(usid, pawd)) {
-                session.setAttribute("count",0);
+            if (cbase000MO.loginCheck(usid, pawd) || LDAPLogin.authenticate(usid, pawd) != null) {
                 session.setAttribute("usid", usid);
-                return null;
-            } else if (LDAPLogin.authenticate(usid, pawd) != null) {
-                session.setAttribute("usid", usid);
-                session.setAttribute("count",0);
+                SecurityUtils.getSubject().login(new SimpleShiroToken(usid));
                 return null;
             }
         }

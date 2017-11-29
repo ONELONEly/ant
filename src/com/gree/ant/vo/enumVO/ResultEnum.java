@@ -1,11 +1,7 @@
 package com.gree.ant.vo.enumVO;
 
 public enum ResultEnum {
-    UNKNOWN_ERROR(-1,"未知错误"),
-    SUCCESS(1,"成功"),
-    NOTPERMISSION(-1,"对不起你没有权限"),
-    FILEUPLOAD_ERROR(110,"上传图片失败"),
-    DONTLOGIN(111,"对不起，清先登录"),
+    PRINCIPAL_NULL(999,"PrincipalCollection method argument cannot be null")
     ;
 
     private Integer code;

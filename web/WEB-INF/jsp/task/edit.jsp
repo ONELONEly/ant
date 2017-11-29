@@ -219,7 +219,14 @@
 <div class="x-nav">
     <span class="layui-breadcrumb">
         <a href="javascript:" style="line-height: 40px;"><cite style="cursor: pointer;">首页</cite></a>
-        <a href="./manage"><cite style="cursor: pointer;">任务管理</cite></a>
+        <c:choose>
+            <c:when test="${obj.key}">
+                <a href="../require/manage"><cite style="cursor: pointer;">需求管理</cite></a>
+            </c:when>
+            <c:otherwise>
+                <a href="./manage"><cite style="cursor: pointer;">任务管理</cite></a>
+            </c:otherwise>
+        </c:choose>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">编辑任务</cite></a>
         <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
     </span>

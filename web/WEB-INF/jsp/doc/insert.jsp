@@ -13,7 +13,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>个人周报</title>
+    <title>文档添加</title>
     <c:import url="../../static1.html"/>
     <script language="JavaScript">
         layui.use(['layedit','element','jquery','form','upload','table'],function () {
@@ -21,6 +21,11 @@
                 form = layui.form,upload = layui.upload,table = layui.table;
 
             var fileList = $("#fileList"),doid = $("#doid").val();
+
+            $("#check-table").on('click',function () {
+                var tr = filedList.find("tr");
+                console.log(tr.length);
+            });
 
             var files,fileUploadOption = {
                 elem:'#uploadList',
@@ -156,7 +161,7 @@
         <span class="layui-breadcrumb">
             <a href="javascript:"><cite style="cursor: pointer;">文档</cite></a>
             <a href="./manage"><cite style="cursor: pointer;">文档管理</cite></a>
-            <a href="javascript:location.replace(location.href)"><cite style="cursor: pointer;">文档编辑</cite></a>
+            <a href="javascript:location.replace(location.href)"><cite style="cursor: pointer;">文档添加</cite></a>
             <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
         </span>
     </div>
@@ -206,13 +211,13 @@
                     </div>
                 </div>
                 <button type="button" class="layui-btn layui-btn-radius layui-bg-red" id="upload" lay-submit="">上传文件</button>
+                <button type="button" class="layui-btn layui-btn-radius layui-btn-warm" id="check-table">检测</button>
             </div>
             <div class="layui-form-item">
                 <div class="layui-input-inline">
                     <button type="button" class="layui-btn layui-btn-radius layui-bg-green" lay-filter="put" lay-submit="">提交</button>
                 </div>
             </div>
-            <br/><br/><br/><br/><br/><br/>
         </form>
     </div>
 </div>

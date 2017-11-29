@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>蚂蚁啃骨头</title>
     <c:import url="../static.html"/>
-    <link rel="stylesheet" href="./static//layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="./static/layui/css/layui.css" media="all">
     <link rel="stylesheet" type="text/css" href="./build/css/font-awesome.min.css">
     <link rel="stylesheet" href="./build/css/app.css" media="all">
 </head>
@@ -56,8 +56,10 @@
                         <dl class="layui-nav-child">
                             <c:forEach var="third" items="${obj.thirdLevel}">
                                 <c:if test="${third.cbase003VO.pono == second.pono}">
-                                    <a href="javascript:;" data-url="${third.purl}" data-icon="&#xe658;" data-title="${third.dsca}" kit-target data-id='${third.dsca}'><i class="layui-icon">&#xe658;</i><span>${third.dsca}</span></a>
-                                </c:if>
+                                    <dd>
+                                        <a href="javascript:;" data-url="${third.purl}" data-icon="&#xe658;" data-title="${third.dsca}" kit-target data-id='${third.dsca}'><i class="layui-icon">&#xe658;</i>&nbsp;<span>${third.dsca}</span></a>
+                                    </dd>
+                                    </c:if>
                             </c:forEach>
                         </dl>
                     </li>
@@ -82,6 +84,8 @@
         var app = layui.app, $ = layui.jquery, layer = layui.layer;
         //将message设置为全局以便子页面调用
         message = layui.message;
+        sessionStorage.setItem("usid",$("#usid").val())
+
         //主入口
         app.set({
             type: 'iframe'
@@ -89,7 +93,7 @@
 
         $(".layui-this").html("<i class='layui-icon'>&#xe68e;</i>首页");
         $(".layui-tab-content div").eq(0).find("iframe").attr("src","./main");
-        $(".kit-tab-tool").html("<i class='layui-icon' style='font-size:xx-large;'>&#xe620;</i>");
+        $(".kit-tab-tool").html("<i class='layui-icon' style='font-size:x-large;'>&#xe620;</i>");
 
         $.ajax({
             type:'POST',

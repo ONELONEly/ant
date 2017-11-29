@@ -250,7 +250,10 @@
         form.on('submit(tReturn)',function () {
             var choose = table.checkStatus('manage');
             var data = choose.data;
-            operate(data,8,"执行测试不通过行为",null,null,null);
+            layer.prompt({title:'请输入反馈信息！',formType:2,offset:'100px'},function (remk,index) {
+                operate(data,8,remk,null,null,null);
+                layer.close(index);
+            });
         });
 
         form.on('submit(rPass)',function () {
@@ -279,7 +282,7 @@
         form.on('submit(rReturn)',function () {
             var choose = table.checkStatus('manage');
             var data = choose.data;
-            layer.prompt({title:'请输入备注信息！',formType:2,offset:'100px'},function (remk,index) {
+            layer.prompt({title:'请输入反馈信息！',formType:2,offset:'100px'},function (remk,index) {
                 operate(data,10,remk,null,null,null);
                 layer.close(index);
             });

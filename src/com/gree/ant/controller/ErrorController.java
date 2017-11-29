@@ -32,6 +32,19 @@ public class ErrorController {
     }
 
     /**
+     * Not author.
+     *
+     * @description 没有权限
+     * @author create by jinyuk@foxmail.com.
+     * @version V1.0
+     * @createTime 2017 :11:13 10:11:02.
+     */
+    @At("/403")
+    @Ok("jsp:jsp.error.403")
+    public void notAuthor(){
+    }
+
+    /**
      * Not find.
      *
      * @description 未发现请求资源.

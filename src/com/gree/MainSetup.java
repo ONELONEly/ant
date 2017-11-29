@@ -1,9 +1,15 @@
 package com.gree;
 
+import org.nutz.dao.Dao;
+import org.nutz.integration.shiro.NutShiro;
+import org.nutz.ioc.Ioc;
+import org.nutz.lang.Encoding;
 import org.nutz.mvc.NutConfig;
 import org.nutz.mvc.Setup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.nio.charset.Charset;
 
 /**
  * The type Main setup.
@@ -24,6 +30,15 @@ public class MainSetup implements Setup{
      */
     @Override
     public void init(NutConfig nc) {
+        NutShiro.DefaultLoginURL = "/login";
+        NutShiro.DefaultNoAuthURL = "/403";
+
+        if(!Charset.defaultCharset().name().equalsIgnoreCase(Encoding.UTF8)){
+            logger.warn("This project must running in UTF-8,pls add -Dfile.encoding=UTF-8 to JAVA_OPTS!");
+        }
+
+        Ioc ioc = nc.getIoc();
+        Dao dao = ioc.get(Dao.class,"daoFX");
     }
 
     /**

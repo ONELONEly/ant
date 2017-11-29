@@ -97,11 +97,13 @@ public class TaskController {
      */
     @At
     @Ok("jsp:jsp.task.edit")
-    public Map<String,Object> edit(@Param("taid")String taid){
+    public Map<String,Object> edit(@Param("taid")String taid,@Param("state")String state){
         Tbuss003VO tbuss003VO = tbuss003MO.fetchByTaid(taid);
+        Boolean key = StringUtil.checkString(state);
         Map<String,Object> resultMap = new HashMap<>();
         resultMap.put("task",tbuss003VO);
         resultMap.put("note",FileUtil.convertClob(tbuss003VO.getNote()));
+        resultMap.put("key",key);
         return resultMap;
     }
 

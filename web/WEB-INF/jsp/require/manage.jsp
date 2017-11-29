@@ -132,7 +132,7 @@
         <a href="javascript:" class="layui-table-link" lay-event="show">{{d.titl}}</a>
     </script>
     <div class="layui-hide" id="operate">
-        <a href='../task/edit?taid={{d.taid}}' class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
+        <a href='../task/edit?taid={{d.taid}}&state=require' class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
         <a class="layui-btn layui-btn-mini  layui-bg-black" lay-event="del">删除</a>
     </div>
     <br/><br/><br/><br/><br/><br/><br/><br/>

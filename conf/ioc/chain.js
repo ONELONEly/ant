@@ -7,6 +7,7 @@ var chain = {
             "org.nutz.mvc.impl.processor.UpdateRequestAttributesProcessor",
             "org.nutz.mvc.impl.processor.EncodingProcessor",
             "org.nutz.mvc.impl.processor.ModuleProcessor",
+            "org.nutz.integration.shiro.NutShiroProcessor", // shiro
             "org.nutz.mvc.impl.processor.ActionFiltersProcessor",
             "org.nutz.mvc.impl.processor.AdaptorProcessor",
             "org.nutz.mvc.impl.processor.MethodInvokeProcessor",
