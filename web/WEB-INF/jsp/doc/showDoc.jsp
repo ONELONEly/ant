@@ -60,7 +60,7 @@
 <div class="x-body">
     <div class="x-titleDiv">
         <span class="tilt" style="font-size: xx-large;">&nbsp;${obj.doc.tilt}</span>
-        <a href="./docFile?doid=${obj.doc.doid}" class="layui-btn layui-btn-mini layui-bg-black">附件</a>
+        <a href="./docFile?doid=${obj.doc.doid}" class="layui-btn layui-btn-xs layui-bg-black">附件</a>
     </div>
     <div>${obj.note}</div>
     <div class="layui-layout-right x-margin">

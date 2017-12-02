@@ -45,8 +45,8 @@
                             ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
                             ,'<td>等待上传</td>'
                             ,'<td>'
-//                            ,'<button class="layui-btn layui-btn-mini demo-re layui-hide">重传</button>'
-                            ,'<button class="layui-btn layui-btn-mini layui-btn-danger demo-delete">删除</button>'
+//                            ,'<button class="layui-btn layui-btn-xs demo-re layui-hide">重传</button>'
+                            ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
                             ,'</td>'
                             ,'</tr>'].join(''));
 
@@ -162,7 +162,7 @@
             <a href="javascript:"><cite style="cursor: pointer;">文档</cite></a>
             <a href="./manage"><cite style="cursor: pointer;">文档管理</cite></a>
             <a href="javascript:location.replace(location.href)"><cite style="cursor: pointer;">文档添加</cite></a>
-            <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+            <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
         </span>
     </div>
     <div class="x-body">

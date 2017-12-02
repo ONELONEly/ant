@@ -26,13 +26,6 @@
 
             var roid = $("#roid").val();
 
-
-//            table.reload('permission',{
-//                where:{
-//                    roid:roid
-//                }
-//            });
-
             form.verify({
                 pono:function (value) {
                     if(value === null){
@@ -54,6 +47,7 @@
                     success:function (res) {
                         if(res.code === 1){
                             table.reload("permission");
+                            init();
                         }
                         return layer.msg(res.msg);
                     },
@@ -80,6 +74,7 @@
                                 if(res.code === 1){
                                     obj.del();
                                     layer.close(index);
+                                    init();
                                 }
                                 return layer.msg(res.msg);
                             },
@@ -109,6 +104,7 @@
                     success:function (res) {
                         if(res.code === 1){
                             table.reload("permission")
+                            init();
                         }
                         return layer.msg(res.msg);
                     },
@@ -118,25 +114,29 @@
                 });
             });
 
-            $.ajax({
-                type:'GET',
-                url:'${base}/util/findC02',
-                data:{
-                    roid:roid
-                },
-                dataType:'json',
-                success:function (res) {
-                    var data = res.c2;
-                    for(var i = 0;i<data.length;i++){
-                        var option = "<option value='"+data[i].pono+"'>"+data[i].dsca+"("+data[i].stypnam+")"+"</option>";
-                        $("#pono").append(option);
+            init();
+            function init() {
+                $.ajax({
+                    type:'GET',
+                    url:'${base}/util/findC02',
+                    data:{
+                        roid:roid
+                    },
+                    dataType:'json',
+                    success:function (res) {
+                        var data = res.c2;
+                        var option = "<option value='' class='n-display' disabled selected>请选择添加的权限</option>";
+                        for(var i = 0;i<data.length;i++){
+                            option += "<option value='"+data[i].pono+"'>"+data[i].dsca+"("+data[i].stypnam+")"+"</option>";
+                        }
+                        $("#pono").html(option);
+                        form.render();
+                    },
+                    error:function (kj) {
+                        layer.alert("发生错误:"+kj.status);
                     }
-                    form.render();
-                },
-                error:function (kj) {
-                    layer.alert("发生错误:"+kj.status);
-                }
-            });
+                });
+            }
 
         });
     </script>
@@ -147,7 +147,7 @@
         <a href="javascript:"><cite style="cursor: pointer;">设置</cite></a>
         <a href="./index"><cite style="cursor: pointer;">角色管理</cite></a>
         <a href="javascript:location.replace(location.href);" style="cursor: pointer;"><cite>角色权限</cite></a>
-        <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
     </span>
 </div>
 <div class="x-body">
@@ -184,7 +184,7 @@
         </thead>
     </table>
     <div class="layui-hide" id="operate">
-        <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del">删除</a>
+        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
     </div>
     <br/><br/><br/><br/><br/><br/><br/><br/>
 </div>

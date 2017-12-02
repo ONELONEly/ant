@@ -120,7 +120,7 @@
     <span class="layui-breadcrumb">
         <a href="javascript:" style="line-height: 40px;"><cite style="cursor:pointer;">我的</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor:pointer;">用户需求</cite></a>
-        <a href="javascript:location.reload();" class="layui-btn layui-btn-radius layui-btn-small l-refresh" title="刷新"><i class="layui-icon l-center">&#x1002;</i></a>
+        <a href="javascript:location.reload();" class="layui-btn layui-btn-radius layui-btn-sm l-refresh" title="刷新"><i class="layui-icon l-center">&#x1002;</i></a>
     </span>
 </div>
 <div class="x-body">
@@ -157,8 +157,8 @@
         <a href="javascript:" class="layui-table-link" lay-event="show">{{d.titl}}</a>
     </script>
     <script type="text/html" id="operate">
-        <a href="./modify?taid={{d.taid}}" class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
-        <a href="javascript:" class="layui-btn layui-btn-mini layui-bg-black" lay-event="del">删除</a>
+        <a href="./modify?taid={{d.taid}}" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a href="javascript:" class="layui-btn layui-btn-xs layui-bg-black" lay-event="del">删除</a>
     </script>
 </div>
 </body>

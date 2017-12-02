@@ -143,7 +143,7 @@
     <span class="layui-breadcrumb">
         <a href="javascript:"><cite style="cursor: pointer;">统计</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">查询报表</cite></a>
-        <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
     </span>
 </div>
 <div class="x-body">

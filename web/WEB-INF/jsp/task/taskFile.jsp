@@ -23,7 +23,7 @@
     <span class="layui-breadcrumb">
         <a href="./showTask?taid=${obj}" style="line-height: 40px;"><cite style="cursor: pointer;">任务详情</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">任务附件</cite></a>
-        <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
     </span>
 </div>
 <div class="x-body">
@@ -37,7 +37,7 @@
         </thead>
     </table>
     <script type="text/html" id="operate">
-        <a class="layui-btn layui-btn-mini layui-bg-black" href="./downloadFile?duta={{d.duta}}&ffil={{d.ffil}}">下载</a>
+        <a class="layui-btn layui-btn-xs layui-bg-black" href="./downloadFile?duta={{d.duta}}&ffil={{d.ffil}}">下载</a>
     </script>
 </div>
 </body>

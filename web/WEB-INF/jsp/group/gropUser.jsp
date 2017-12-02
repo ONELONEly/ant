@@ -47,6 +47,7 @@
                     success:function (res) {
                         if(res.code === 1){
                             table.reload("user");
+                            init();
                         }
                         return layer.msg(res.msg);
                     },
@@ -73,6 +74,7 @@
                                 if(res.code === 1){
                                     obj.del();
                                     layer.close(index);
+                                    init();
                                 }
                                 return layer.msg(res.msg);
                             },
@@ -102,6 +104,7 @@
                     success:function (res) {
                         if(res.code === 1){
                             table.reload("user")
+                            init();
                         }
                         return layer.msg(res.msg);
                     },
@@ -111,23 +114,26 @@
                 });
             });
 
-            $.ajax({
-                type:'GET',
-                url:'${base}/util/findC0',
-                dataType:'json',
-                success:function (res) {
-                    var data = res.c0;
-                    for(var i = 0;i<data.length;i++){
-                        var option = "<option value='"+data[i].id+"'>"+data[i].dsca+"</option>";
-                        $("#usid").append(option);
+            init();
+            function init() {
+                $.ajax({
+                    type:'GET',
+                    url:'${base}/util/findC0',
+                    dataType:'json',
+                    success:function (res) {
+                        var data = res.c0;
+                        var option = "<option value='' class='n-display' disabled selected>请选择添加的用户</option>";
+                        for(var i = 0;i<data.length;i++){
+                            option += "<option value='"+data[i].id+"'>"+data[i].dsca+"</option>";
+                        }
+                        $("#usid").html(option);
+                        form.render();
+                    },
+                    error:function (kj) {
+                        layer.alert("发生错误:"+kj.status);
                     }
-                    form.render();
-                },
-                error:function (kj) {
-                    layer.alert("发生错误:"+kj.status);
-                }
-            });
-
+                });
+            }
         });
     </script>
 </head>
@@ -137,7 +143,7 @@
         <a href="javascript:"><cite style="cursor: pointer;">设置</cite></a>
         <a href="./index"><cite style="cursor: pointer;">团队管理</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">团队用户</cite></a>
-        <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
     </span>
 </div>
 <div class="x-body">
@@ -172,7 +178,7 @@
         </thead>
     </table>
     <div class="layui-hide" id="operate">
-        <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del">删除</a>
+        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
     </div>
     <br/><br/><br/><br/><br/><br/><br/><br/>
 </div>

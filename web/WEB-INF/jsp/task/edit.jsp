@@ -47,8 +47,8 @@
                         ,'<td>'+ (file.size/1024).toFixed(1) +'kb</td>'
                         ,'<td>等待上传</td>'
                         ,'<td>'
-//                        ,'<button class="layui-btn layui-btn-mini demo-reload layui-hide">重传</button>'
-                        ,'<button class="layui-btn layui-btn-mini layui-btn-danger demo-delete">删除</button>'
+//                        ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
+                        ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
                         ,'</td>'
                         ,'</tr>'].join(''));
 
@@ -228,7 +228,7 @@
             </c:otherwise>
         </c:choose>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">编辑任务</cite></a>
-        <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
     </span>
 </div>
 <div class="x-body">
@@ -463,7 +463,7 @@
             </thead>
         </table>
         <script type="text/html" id="operate">
-            <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del">删除</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
         </script>
         <div class="layui-form-item">
             <button type="button" class="layui-btn layui-btn-radius" id="update" lay-filter="update" lay-submit>修改任务</button>

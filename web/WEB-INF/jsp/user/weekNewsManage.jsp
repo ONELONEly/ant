@@ -99,7 +99,7 @@
 <span class="layui-breadcrumb">
     <a href="javascript:" style="line-height: 40px;"><cite style="cursor: pointer;">我的</cite></a>
     <a href="javascript:location.replace(location.href)"><cite style="cursor: pointer;">个人周报</cite></a>
-    <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+    <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
 </span>
 </div>
 <div class="x-body">
@@ -139,8 +139,8 @@
         <a href="javascript:" class="layui-table-link" lay-event="show">{{d.tilt}}</a>
     </script>
     <div class="layui-hide" id="operate">
-        <a class="layui-btn layui-btn-mini" href="../doc/edit?doid={{d.doid}}&key=rose">编辑</a>
-        <a class="layui-btn layui-btn-mini layui-bg-black" lay-event="del">删除</a>
+        <a class="layui-btn layui-btn-xs" href="../doc/edit?doid={{d.doid}}&key=rose">编辑</a>
+        <a class="layui-btn layui-btn-xs layui-bg-black" lay-event="del">删除</a>
     </div>
     <br><br><br><br><br><br><br><br><br>
 </div>

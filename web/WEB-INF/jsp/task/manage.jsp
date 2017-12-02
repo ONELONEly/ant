@@ -164,7 +164,7 @@
     <span class="layui-breadcrumb">
         <a href="javascript:"><cite style="cursor: pointer;">设置</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">任务管理</cite></a>
-        <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
     </span>
 </div>
 <div class="x-body">
@@ -222,8 +222,8 @@
         <a href="javascript:" class="layui-table-link" lay-event="show">{{d.titl}}</a>
     </script>
     <div class="layui-hide" id="operate">
-        <a href='./edit?taid={{d.taid}}' class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
-        <a class="layui-btn layui-btn-mini  layui-bg-black" lay-event="del">删除</a>
+        <a href='./edit?taid={{d.taid}}' class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-xs  layui-bg-black" lay-event="del">删除</a>
     </div>
     <br/><br/><br/><br/><br/><br/><br/><br/>
 </div>

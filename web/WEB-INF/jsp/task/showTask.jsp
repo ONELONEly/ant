@@ -27,7 +27,7 @@
 <div class="x-body">
     <div class="x-titleDiv">
         <span style="font-size: xx-large;">&nbsp;${obj.task.titl}</span>
-        <a href="./taskFile?taid=${obj.task.taid}" class="layui-btn layui-btn-mini layui-bg-black">附件</a>
+        <a href="./taskFile?taid=${obj.task.taid}" class="layui-btn layui-btn-xs layui-bg-black">附件</a>
     </div>
     <div>${obj.note}</div>
     <div class="layui-layout-right x-margin">

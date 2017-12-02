@@ -70,7 +70,7 @@
                 },
                 error:function () {
                     var operate = $('#operate');
-                    operate.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                    operate.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
                     operate.find('demo-reload').on('click',function () {
                         uploadInsert.upload();
                     });
@@ -144,7 +144,7 @@
         <a href="javascript:"><cite style="cursor: pointer;">设置</cite></a>
         <a href="./manage"><cite style="cursor: pointer;">用户管理</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">修改资料</cite></a>
-        <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
     </span>
 </div>
 
@@ -158,7 +158,7 @@
         <hr>
         <div class="layui-form-item x-center">
             <div class="layui-input-block">
-                <input type="button" class="layui-btn layui-btn-small" id="modify" value="上传"/>
+                <input type="button" class="layui-btn layui-btn-sm" id="modify" value="上传"/>
             </div>
         </div>
 

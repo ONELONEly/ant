@@ -423,9 +423,9 @@ public class Tbuss003VO extends ValueObject{
 
     public void setEye(Integer coun) {
         if(coun == 1) {
-            this.eye = "<a href='javascript:' class='layui-btn layui-btn-mini layui-btn-danger' lay-event='out'>取消</a>";
+            this.eye = "<a href='javascript:' class='layui-btn layui-btn-xs layui-btn-danger' lay-event='out'>取消</a>";
         }else{
-            this.eye = "<a href='javascript:' class='layui-btn layui-btn-mini layui-bg-black' lay-event='in'>关注</a>";
+            this.eye = "<a href='javascript:' class='layui-btn layui-btn-xs layui-bg-black' lay-event='in'>关注</a>";
         }
     }
 

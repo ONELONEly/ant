@@ -215,7 +215,7 @@
         <a href="javascript:"><cite style="cursor: pointer;">首页</cite></a>
         <a href="javascript:"><cite style="cursor: pointer;">项目</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">绩效</cite></a>
-        <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
     </span>
 </div>
 <div class="x-body">
@@ -286,11 +286,11 @@
         <a href="${base}/grade/projectRule?ptno={{d.ptno}}" class="layui-table-link">修改</a>
     </script>
     <div class="layui-hide" id="operate">
-        <a class="layui-btn layui-btn-mini" href="./edit?ptno={{d.ptno}}">编辑</a>
-        <a class="layui-btn layui-btn-mini layui-bg-black" lay-event="del">删除</a>
-        <a class="layui-btn layui-btn-mini" lay-event="count">结算</a>
-        <a class="layui-btn layui-btn-mini layui-bg-black" lay-event="push">推送领导</a>
-        <a class="layui-btn layui-btn-mini" href="./printGrade?ptno={{d.ptno}}">生成绩效表</a>
+        <a class="layui-btn layui-btn-xs" href="./edit?ptno={{d.ptno}}">编辑</a>
+        <a class="layui-btn layui-btn-xs layui-bg-black" lay-event="del">删除</a>
+        <a class="layui-btn layui-btn-xs" lay-event="count">结算</a>
+        <a class="layui-btn layui-btn-xs layui-bg-black" lay-event="push">推送领导</a>
+        <a class="layui-btn layui-btn-xs" href="./printGrade?ptno={{d.ptno}}">生成绩效表</a>
     </div>
     <br><br><br><br><br><br><br><br><br>
 </div>

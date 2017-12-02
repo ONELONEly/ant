@@ -40,7 +40,7 @@
                         dataType:'json',
                         success:function (res) {
                             obj.update({
-                                eye:"<a href='javascript:' class='layui-btn layui-btn-mini layui-btn-danger' lay-event='out'>取消</a>"
+                                eye:"<a href='javascript:' class='layui-btn layui-btn-xs layui-btn-danger' lay-event='out'>取消</a>"
                             });
                             return layer.msg(res.msg);
                         },
@@ -58,7 +58,7 @@
                         dataType:'json',
                         success:function (res) {
                             obj.update({
-                                eye:"<a href='javascript:' class='layui-btn layui-btn-mini layui-bg-black' lay-event='in'>关注</a>"
+                                eye:"<a href='javascript:' class='layui-btn layui-btn-xs layui-bg-black' lay-event='in'>关注</a>"
                             });
                             return layer.msg(res.msg);
                         },
@@ -78,7 +78,7 @@
         <a href="javascript:"><cite style="cursor: pointer;">项目</cite></a>
         <a href="./index"><cite style="cursor: pointer;">绩效</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">任务</cite></a>
-        <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
     </span>
 </div>
 <div class="x-body">
