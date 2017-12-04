@@ -98,11 +98,15 @@
         $(".delete-btn").on("click",function () {
             var check = table.checkStatus('manage');
             var data = check.data;
+            var param = {};
+            for(var i = 0;i < data.length;i++){
+                param[i] = data[i].taid;
+            }
             $.ajax({
                 type:'POST',
                 url:'${base}/task/deleteTask',
                 data:{
-                    list:data
+                    list:param
                 },
                 dataType:'json',
                 success:function (res) {
@@ -122,11 +126,15 @@
         $(".copy-btn").on('click',function () {
             var check = table.checkStatus('manage');
             var data = check.data;
+            var param = {};
+            for(var i = 0;i < data.length;i++){
+                param[i] = data[i].taid;
+            }
             $.ajax({
                 type:'POST',
                 url:'${base}/task/copyTask',
                 data:{
-                    list:data
+                    list:param
                 },
                 dataType:'json',
                 success:function (res) {

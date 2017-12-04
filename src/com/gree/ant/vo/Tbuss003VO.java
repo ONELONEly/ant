@@ -459,7 +459,7 @@ public class Tbuss003VO extends ValueObject{
 
     public void setPerc(Double perc) {
         String res = "%";
-        if(perc == null || perc <= 0){
+        if(perc == null){
             res = 0+res;
         }else if(perc>1){
             res = 100 + res;
@@ -470,6 +470,8 @@ public class Tbuss003VO extends ValueObject{
             }else{
                 res = rose.substring(0,2)+res;
             }
+        }else{
+            res = 100 +res;
         }
         this.perc = res;
     }

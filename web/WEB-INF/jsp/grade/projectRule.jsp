@@ -81,12 +81,16 @@
             $(".delete-btn").on("click",function () {
                 var check = table.checkStatus('rule');
                 var data = check.data;
+                var param = {};
+                for(var i = 0;i < data.length;i++){
+                    param[i] = data[i].pjno;
+                }
                 $.ajax({
                     type:'POST',
                     url:'${base}/grade/deleteProjectRule',
                     data:{
                         ptno:ptno,
-                        list:data
+                        list:param
                     },
                     dataType:'json',
                     success:function (res) {

@@ -443,7 +443,7 @@ public class UtilController {
         SqlExpressionGroup e4 = null;
         SqlExpressionGroup e5 = null;
         if(StringUtil.checkString(user)){
-            e1 = Cnd.exps("csid","=",usid);
+            e1 = Cnd.exps("csid","=",usid).and("puno","!=","PU0007");
         }
 
         if(StringUtil.checkString(unam)){
@@ -504,7 +504,7 @@ public class UtilController {
     @Ok("json")
     public Map<String,Object> getKSIDCount(@Param("key") String key,@Param("ptno") String ptno,HttpServletRequest request){
         String usid = request.getSession().getAttribute("usid").toString();
-        SqlExpressionGroup e1 = Cnd.exps("ksid","=",usid);
+        SqlExpressionGroup e1 = Cnd.exps("ksid","=",usid).and("puno","!=","PU0007");
         SqlExpressionGroup e4 = null;
         SqlExpressionGroup e5 = null;
         if(key != null){

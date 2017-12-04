@@ -375,7 +375,7 @@ public class DocController {
      * Delete doc map.
      *
      * @param doid         文档编号
-     * @param tbuss009Maps 文档的集合
+     * @param doids 文档的集合
      * @return the map
      * @description 删除文档
      * @author create by jinyuk@foxmail.com.
@@ -385,15 +385,15 @@ public class DocController {
     @At
     @POST
     @Ok("json")
-    public Map<String,Object> deleteDoc(@Param("doid")Long doid, @Param("::list")List<Map<String,Object>> tbuss009Maps){
+    public Map<String,Object> deleteDoc(@Param("doid")Long doid, @Param("::list")String[] doids){
         Integer code = 0;
         String msg = "";
         if(doid != null){
             tbuss015MO.deleteByDoid(doid);
             code = tbuss009MO.deleteByDoid(doid);
-        }else if(tbuss009Maps!=null){
-            for(Map<String,Object> tbuss009Map:tbuss009Maps){
-                Long id = Long.parseLong(tbuss009Map.get("doid").toString());
+        }else if(doids!=null){
+            for(String DOID:doids){
+                Long id = Long.parseLong(DOID);
                 tbuss015MO.deleteByDoid(id);
                 code = tbuss009MO.deleteByDoid(id);
             }

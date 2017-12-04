@@ -547,8 +547,8 @@ public class TaskController {
     /**
      * Delete rule map.
      *
-     * @param pjno        the pjno
-     * @param cbase011VOS the cbase 011 vos
+     * @param pjno        绩效评估编号
+     * @param pjnos       绩效评估编号集合
      * @return the map
      * @description 删除规则
      * @author create by jinyuk@foxmail.com.
@@ -558,14 +558,14 @@ public class TaskController {
     @At
     @POST
     @Ok("json")
-    public Map<String,Object> deleteRule(@Param("pjno")String pjno, @Param("::list")List<Map<String,Object>> cbase011VOS){
+    public Map<String,Object> deleteRule(@Param("pjno")String pjno, @Param("::list")String[] pjnos){
         String msg;
         Integer code = 0;
         if(pjno!=null){
             code = cbase011MO.deleteByPjno(pjno);
-        }else if(cbase011VOS != null){
-            for (Map cbase011VO : cbase011VOS) {
-                code = cbase011MO.deleteByPjno(cbase011VO.get("pjno").toString());
+        }else if(pjnos != null){
+            for (String PJNO:pjnos) {
+                code = cbase011MO.deleteByPjno(PJNO);
             }
         }
         msg = code == 1 ? "删除成功" : "删除失败";
@@ -606,10 +606,10 @@ public class TaskController {
     /**
      * Delete task map.
      *
-     * @param taid        the taid
-     * @param tbuss003VOs the tbuss 003 v os
+     * @param taid  任务编号
+     * @param taids 任务编号集合
      * @return the map
-     * @description 用一句话描述这个方法的作用.
+     * @description 通过任务编号删除任务.
      * @author create by jinyuk@foxmail.com.
      * @version V1.0
      * @createTime 2017 :09:19 01:09:25.
@@ -617,14 +617,14 @@ public class TaskController {
     @At
     @POST
     @Ok("json")
-    public Map<String,Object> deleteTask(@Param("taid")String taid, @Param("::list")List<Map<String,Object>> tbuss003VOs){
+    public Map<String,Object> deleteTask(@Param("taid")String taid, @Param("::list")String[] taids){
         String msg ;
         Integer code = 0;
         if(StringUtil.checkString(taid)){
             code = tbuss003MO.deleteByTaid(taid);
-        }else if(tbuss003VOs != null){
-            for (Map tbuss003Map : tbuss003VOs) {
-                code = tbuss003MO.deleteByTaid(tbuss003Map.get("taid").toString());
+        }else if(taids != null){
+            for (String TAID:taids) {
+                code = tbuss003MO.deleteByTaid(TAID);
             }
         }
         msg = code == 1 ? "删除成功" : "删除失败";
@@ -634,7 +634,7 @@ public class TaskController {
     /**
      * Copy task map.
      *
-     * @param tbuss003VOs the tbuss 003 v os
+     * @param taids 任务编号集合
      * @return the map
      * @description 复制选中的任务。（是否添加复制文件待开发）
      * @author create by jinyuk@foxmail.com.
@@ -644,12 +644,12 @@ public class TaskController {
     @At
     @POST
     @Ok("json")
-    public Map<String,Object> copyTask(@Param("::list")List<Map<String,Object>> tbuss003VOs){
+    public Map<String,Object> copyTask(@Param("::list")String[] taids){
         String msg ;
         Integer code = 0;
-        if(tbuss003VOs != null){
-            for (Map tbuss003Map : tbuss003VOs) {
-               Tbuss003VO tbuss003VO = tbuss003MO.fetchByTaid(tbuss003Map.get("taid").toString());
+        if(taids != null){
+            for (String taid:taids) {
+               Tbuss003VO tbuss003VO = tbuss003MO.fetchByTaid(taid);
                tbuss003VO.setTaid("JK"+FileUtil.getRandomName());
                tbuss003VO.setCdat(new Date());
                tbuss003VO.setSta1(0);
@@ -672,9 +672,9 @@ public class TaskController {
     /**
      * Update sta 1 map.
      *
-     * @param operate     the operate
-     * @param tbuss003VOs the tbuss 003 v os
-     * @param remk        the remk
+     * @param operate 执行的操作
+     * @param taids 任务编号集合
+     * @param remk  执行操作备注
      * @return the map
      * @description 修改任务的状态
      * @author create by jinyuk@foxmail.com.
@@ -685,15 +685,15 @@ public class TaskController {
     @POST
     @Ok("json")
     public Map<String,Object> updateSta1(@Param("operate")Integer operate,@Param("stag")Integer stag,
-                                         @Param("::list")List<Map<String,Object>> tbuss003VOs,@Param("remk")String remk,
+                                         @Param("::list")String[] taids,@Param("remk")String remk,
                                          @Param("date")String date,@Param("fahh")Float fahh, AdaptorErrorContext error){
         StringBuilder msg = new StringBuilder("传入参数为空");
         Integer code = 0;
         String status = "";
         if(error == null) {
-            if (operate != null && tbuss003VOs != null && StringUtil.checkString(remk)) {
-                for (Map<String, Object> map : tbuss003VOs) {
-                    Tbuss003VO tbuss003VO = tbuss003MO.fetchTrans(map.get("taid").toString(), "tbuss010VOS", null);
+            if (operate != null && taids != null && StringUtil.checkString(remk)) {
+                for (String TAID : taids) {
+                    Tbuss003VO tbuss003VO = tbuss003MO.fetchTrans(TAID, "tbuss010VOS", null);
                     List<Tbuss010VO> tbuss010VOList = tbuss003VO.getTbuss010VOS();
                     String csid = tbuss003VO.getCsid();
                     String cnam = tbuss003VO.getCnam();
@@ -746,7 +746,7 @@ public class TaskController {
                     sendMail(tbuss010VOList, status, titl);
                     code = tbuss003MO.updateByVO(tbuss003VO);
                     if (code == 1) {
-                        tbuss004MO.insert(new Tbuss004VO(map.get("taid").toString(), operate, new Date(), remk));
+                        tbuss004MO.insert(new Tbuss004VO(TAID, operate, new Date(), remk));
                     }
                 }
                 msg = new StringBuilder(code == 1 ? "任务操作成功" : msg);
@@ -970,7 +970,7 @@ public class TaskController {
      * @createTime 2017 :09:13 03:09:40.
      */
     private Condition composeCnd(String usid,String key,Integer sta,Integer type,String ptno,Boolean order){
-        SqlExpressionGroup e0 = Cnd.exps("0","=",0);
+        SqlExpressionGroup e0 = Cnd.exps("puno","!=","PU0007");
         SqlExpressionGroup e1 = null;
         SqlExpressionGroup e2 = null;
         SqlExpressionGroup e3 = null;

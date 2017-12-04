@@ -81,11 +81,15 @@
             $(".delete-btn").on("click",function () {
                 var check = table.checkStatus('manage');
                 var data = check.data;
+                var param = {};
+                for(var i = 0;i < data.length;i++){
+                    param[i] = data[i].doid;
+                }
                 $.ajax({
                     type:'POST',
                     url:'${base}/doc/deleteDoc',
                     data:{
-                        list:data
+                        list:param
                     },
                     dataType:'json',
                     success:function (res) {

@@ -402,7 +402,7 @@ public class UserController {
      * Delete user map.
      *
      * @param usid        用户ID
-     * @param cbase000VOs the cbase 000 v os
+     * @param usids       用户ID集合
      * @return the map
      * @description 删除单条用户信息
      * @author create by jinyuk@foxmail.com.
@@ -412,15 +412,15 @@ public class UserController {
     @At
     @POST
     @Ok("json")
-    public Map<String,Object> deleteUser(@Param("usid")String usid, @Param("::list")List<Map<String,Object>> cbase000VOs){
+    public Map<String,Object> deleteUser(@Param("usid")String usid, @Param("::list")String[] usids){
         String msg = "传入参数为空";
         Integer code = 0;
         if(usid!=null){
             code = cbase000MO.deleteByUsid(usid);
             msg = code == 1 ? "删除成功" : "删除失败";
-        }else if(cbase000VOs != null){
-            for (Map cbase000VO : cbase000VOs) {
-                code = cbase000MO.deleteByUsid(cbase000VO.get("USID").toString());
+        }else if(usids != null){
+            for (String USID : usids) {
+                code = cbase000MO.deleteByUsid(USID);
             }
             msg = code == 1 ? "删除成功" : "删除失败";
         }

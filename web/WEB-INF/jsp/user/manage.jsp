@@ -88,11 +88,15 @@
             $(".delete-btn").on("click",function () {
                 var check = table.checkStatus('manage');
                 var data = check.data;
+                var param = {};
+                for(var i = 0;i < data.length;i++){
+                    param[i] = data[i].USID;
+                }
                 $.ajax({
                     type:'POST',
                     url:'${base}/user/deleteUser',
                     data:{
-                        list:data
+                        list:param
                     },
                     dataType:'json',
                     success:function (res) {

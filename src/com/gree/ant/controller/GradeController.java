@@ -259,18 +259,16 @@ public class GradeController {
 
     @At
     @Ok("json")
-    public Map<String, Object> deleteGrade(@Param("ptno")String ptno,@Param("::list")List<Map<String,Object>> tbuss001S){
+    public Map<String, Object> deleteGrade(@Param("ptno")String ptno,@Param("::list")String[] ptnos){
         Integer code = 0;
         String msg;
-        System.out.println(ptno == null);
-        System.out.println(tbuss001S == null);
         if(ptno !=null) {
             tbuss005MO.deleteByPtno(ptno);
             code = tbuss001MO.deleteByName(ptno);
-        }else if(tbuss001S != null){
-            for(Map<String,Object> tbuss001VO:tbuss001S){
-                tbuss005MO.deleteByPtno(tbuss001VO.get("ptno").toString());
-                code = tbuss001MO.deleteByName(tbuss001VO.get("ptno").toString());
+        }else if(ptnos != null){
+            for(String PTNO:ptnos){
+                tbuss005MO.deleteByPtno(PTNO);
+                code = tbuss001MO.deleteByName(PTNO);
             }
         }
         msg = code == 1?"删除成功！":"删除失败!";
@@ -438,8 +436,8 @@ public class GradeController {
     /**
      * Delete project rule map.
      *
-     * @param pjno        the pjno
-     * @param cbase011VOS 多条规则的List集合
+     * @param pjno   规则编号
+     * @param pjnos 多条规则的编号集合
      * @param ptno        项目编号
      * @return the map
      * @description 根据传入条件判断并删除项目规则
@@ -450,15 +448,15 @@ public class GradeController {
     @At
     @POST
     @Ok("json")
-    public Map<String,Object> deleteProjectRule(@Param("pjno")String pjno,@Param("::list")List<Map<String,Object>> cbase011VOS,@Param("ptno")String ptno){
+    public Map<String,Object> deleteProjectRule(@Param("pjno")String pjno,@Param("::list")String[] pjnos,@Param("ptno")String ptno){
         Integer code = 0;
         String msg = "删除失败";
         if(ptno !=null) {
             if (pjno != null) {
                 code = tbuss002MO.delete(new Tbuss002VO(pjno,ptno));
-            }else if(cbase011VOS !=null){
-                for(Map<String,Object> map : cbase011VOS){
-                    code = tbuss002MO.delete(new Tbuss002VO(map.get("pjno").toString(),ptno));
+            }else if(pjnos !=null){
+                for(String PJNO:pjnos){
+                    code = tbuss002MO.delete(new Tbuss002VO(PJNO,ptno));
                 }
             }
             msg = code == 1?"删除成功":"删除失败";
