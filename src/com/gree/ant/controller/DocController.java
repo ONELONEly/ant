@@ -271,7 +271,7 @@ public class DocController {
             e2 = Cnd.exps("ctyp","=",ctyp);
         }
 
-        List<Tbuss009VO> tbuss009VOList = tbuss009MO.queryAllByCndPager(Cnd.where(e2).and(e4).desc("cdat"),null);
+        List<Tbuss009VO> tbuss009VOList = tbuss009MO.queryAllDocNormal(Cnd.where(e2).and(e4).desc("cdat"),null);
         return TableUtil.makeJson(0,"成功",null,tbuss009VOList);
     }
 
@@ -302,7 +302,7 @@ public class DocController {
         }
         Integer count = tbuss009MO.countByCnd(Cnd.where(e0).and(e1).and(e2));
         Pager pager = TableUtil.formatPager(pageSize,pageNumber,count);
-        List<Tbuss009VO> tbuss009VOList = tbuss009MO.queryAllByCndPager(Cnd.where(e0).and(e1).and(e2).desc("cdat"),pager);
+        List<Tbuss009VO> tbuss009VOList = tbuss009MO.queryAllDocNormal(Cnd.where(e0).and(e1).and(e2).desc("cdat"),pager);
         return TableUtil.makeJson(0,"成功",count,tbuss009VOList);
     }
 
@@ -349,7 +349,7 @@ public class DocController {
             e4 = Cnd.exps("stat","=",0).or(e3);
             count = tbuss009MO.countByCnd(Cnd.where(e4).and(e5).and("usid","=",usid).or("csid","=",usid));
             pager = TableUtil.formatPager(pageSize,pageNumber,count);
-            tbuss009VOS = tbuss009MO.queryAllByCndPager(Cnd.where(e4).and(e5).and("usid","=",usid).or("csid","=",usid),pager);
+            tbuss009VOS = tbuss009MO.queryAllDocNormal(Cnd.where(e4).and(e5).and("usid","=",usid).or("csid","=",usid),pager);
         }else {
             if (sta2 == 1) {
                 e4 = Cnd.exps(e3).or("stat", "=", 1);

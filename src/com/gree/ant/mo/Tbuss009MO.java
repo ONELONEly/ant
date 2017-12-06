@@ -141,6 +141,11 @@ public class Tbuss009MO implements Tbuss009BasicMO{
         return tbuss009DAOImp.queryAllDoc(usid,cnd,stage,pager);
     }
 
+    @Override
+    public List<Tbuss009VO> queryAllDocNormal(Condition cnd, Pager pager) {
+        return tbuss009DAOImp.queryAllDocNormal(cnd,pager);
+    }
+
     private List<Tbuss009VO> formatt09(List<ValueObject> voS){
         Iterator<ValueObject> iterator = voS.iterator();
         List<Tbuss009VO> tbuss009VOS = new ArrayList<>();

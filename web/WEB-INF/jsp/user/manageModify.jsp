@@ -55,14 +55,14 @@
                 method:"POST",
                 size:1000,
                 accept:'file',
-                choose:function (obj) {
+                before:function (obj) {
                     obj.preview(function (index,file,result) {
                         $("#head").attr("src",result);
+                        $("#head",window.parent.document).attr("src",result);
                     });
                 },
                 done:function (res) {
                     if(res.code === 1){
-                        window.location.reload();
                         return layer.msg(res.msg);
                     }else{
                         return layer.msg(res.msg);

@@ -946,7 +946,7 @@ public class TaskController {
             e0 = Cnd.exps("grop","like","%"+grop+"%");
         }
         cnd1 = Cnd.where(e0).and(e1);
-        List<Tbuss003VO> tbuss003VOS = tbuss003MO.queryAllTask(cnd0,cnd1,null);
+        List<Tbuss003VO> tbuss003VOS = tbuss003MO.queryAllTaskPrint(cnd0,cnd1,null);
         try {
             TaskExcel.export(tbuss003VOS,request,response);
         } catch (ServletException | IOException | WriteException e) {

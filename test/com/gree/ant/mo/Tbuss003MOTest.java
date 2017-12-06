@@ -21,7 +21,6 @@ public class Tbuss003MOTest {
     @Test
     public void queryAllByCnd() throws Exception {
         String usid = "180365";
-        System.out.println(tbuss003MO.queryGropAllTask(usid,null, Cnd.where("0","=",0)));
     }
 
     @Test

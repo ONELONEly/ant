@@ -133,5 +133,16 @@ public interface Tbuss009BasicMO {
      */
     List<Tbuss009VO> queryAllDoc(String usid, Condition cnd,String stage,Pager pager);
 
-
+    /**
+     * Query all dt list.
+     *
+     * @param cnd   过滤字段
+     * @param pager 分页字段
+     * @return 文档集合 list
+     * @description 查询文档的详情，除去具体内容
+     * @author create by jinyuk@foxmail.com.
+     * @version V1.0
+     * @createTime 2017 :12:05 02:12:34.
+     */
+    List<Tbuss009VO> queryAllDocNormal(Condition cnd,Pager pager);
 }

@@ -27,27 +27,24 @@ public class Tbuss009DAOImp implements Tbuss009DAO{
 
     @Override
     public List<Tbuss009VO> queryAllDoc(String usid,Condition cnd,String stage,Pager pager) {
-        String sqlStr = "select * from V_TBUSS009 a $condition and (a.usid in (select b.usid from CBASE000 b where " +
+        String sqlStr = "select a.DOID,a.CDAT,a.USID,a.CSID,a.CTYP,a.STAT,a.STA2,a.TILT,a.UNAM,a.CNAM,a.CTYPNAM,a.STATNAM,a.STA2NAM " +
+                "from V_TBUSS009 a $condition and (a.usid in (select b.usid from CBASE000 b where " +
                 "b."+stage+" = (select c."+stage+" from CBASE000 c where c.usid = @usid)) or csid = @csid) order by cdat desc";
         Sql sql = Sqls.create(sqlStr);
         sql.setParam("usid",usid).setParam("csid",usid);
         sql.setCondition(cnd);
         sql.setPager(pager);
-        sql.setCallback(new SqlCallback() {
-            @Override
-            public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
-                List<Tbuss009VO> tbuss009VOList = new ArrayList<>();
-                while(rs.next()){
-                    tbuss009VOList.add(new Tbuss009VO(rs.getLong("doid"),
-                            rs.getDate("cdat"),rs.getString("usid"),rs.getString("unam"),rs.getString("csid"),
-                            rs.getString("cnam"),rs.getString("ctyp"),rs.getString("ctypnam"),rs.getInt("stat"),
-                            rs.getString("statnam"),rs.getInt("sta2"),rs.getString("sta2nam"),rs.getString("tilt")));
-                }
-                return tbuss009VOList;
-            }
-        });
-        dao.execute(sql);
-        return sql.getList(Tbuss009VO.class);
+        return DAOUtil.getT9(sql,dao);
+    }
+
+    @Override
+    public List<Tbuss009VO> queryAllDocNormal(Condition cnd, Pager pager) {
+        String sqlStr = "select a.DOID,a.CDAT,a.USID,a.CSID,a.CTYP,a.STAT,a.STA2,a.TILT,a.UNAM,a.CNAM,a.CTYPNAM,a.STATNAM," +
+                "a.STA2NAM from v_tbuss009 a $condition";
+        Sql sql = Sqls.create(sqlStr);
+        sql.setCondition(cnd);
+        sql.setPager(pager);
+        return DAOUtil.getT9(sql,dao);
     }
 
     @Override

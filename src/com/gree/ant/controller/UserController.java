@@ -298,7 +298,6 @@ public class UserController {
         Integer code = 0;
         if(cbase000VO !=null && cbase000MO.fetchByUsid(cbase000VO.getUSID()) == null){
             cbase000VO.setBLOB(FileUtil.formatBlobByByte(FileUtil.getNormalHeader(request)));
-            System.out.print(cbase000VO.getACCO()+cbase000VO.getGROP());
             cbase000MO.insert(cbase000VO);
             msg = "插入成功";
             code = 1;

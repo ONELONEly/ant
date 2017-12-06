@@ -28,7 +28,7 @@ public class Tbuss003MO implements Tbuss003BasicMO{
 
     @Override
     public List<Tbuss003VO> queryAllByCnd(Condition cnd, Pager pager) {
-        return formatt03(baseDAOImp.queryByCndPager(new Tbuss003VO(),cnd,pager));
+        return tbuss003DAOImp.queryAllByCndPager(cnd, pager);
     }
 
     @Override
@@ -109,13 +109,23 @@ public class Tbuss003MO implements Tbuss003BasicMO{
     }
 
     @Override
-    public Integer countGropTask(String usid, Condition condition) {
-        return tbuss003DAOImp.countGropTask(usid, condition);
+    public List<Tbuss003VO> queryAllTask(Condition cnd0, Condition cnd1, Pager pager) {
+        return tbuss003DAOImp.queryAllTask(cnd0,cnd1,pager);
     }
 
     @Override
-    public List<Tbuss003VO> queryAllTask(Condition cnd0, Condition cnd1, Pager pager) {
-        return tbuss003DAOImp.queryAllTask(cnd0,cnd1,pager);
+    public List<Tbuss003VO> queryGropAllTaskPrint(String usid, Pager pager, Condition condition) {
+        return tbuss003DAOImp.queryGropAllTaskPrint(usid, pager, condition);
+    }
+
+    @Override
+    public List<Tbuss003VO> queryAllTaskPrint(Condition cnd0, Condition cnd1, Pager pager) {
+        return tbuss003DAOImp.queryAllTaskPrint(cnd0, cnd1, pager);
+    }
+
+    @Override
+    public Integer countGropTask(String usid, Condition condition) {
+        return tbuss003DAOImp.countGropTask(usid, condition);
     }
 
     @Override

@@ -132,18 +132,6 @@ public interface Tbuss003BasicMO {
      */
     List<Tbuss003VO> queryGropAllTask(String usid, Pager pager,Condition condition);
 
-    /**
-     * Count grop task integer.
-     *
-     * @param usid      用户ID
-     * @param condition 过滤字段
-     * @return the integer
-     * @description 通过USID 、Condition统计个人组内共有多少任务
-     * @author create by jinyuk@foxmail.com.
-     * @version V1.0
-     * @createTime 2017 :10:26 01:10:51.
-     */
-    Integer countGropTask(String usid,Condition condition);
 
     /**
      * Query all task list.
@@ -158,6 +146,48 @@ public interface Tbuss003BasicMO {
      * @createTime 2017 :10:26 02:10:58.
      */
     List<Tbuss003VO> queryAllTask(Condition cnd0,Condition cnd1,Pager pager);
+
+    /**
+     * Query grop all task list.
+     *
+     * @param usid      用户ID
+     * @param pager     分页字段
+     * @param condition 过滤字段
+     * @return the list
+     * @description 通过USID 、Pager、Condition查询个人组内的所有任务（打印时使用）
+     * @author create by jinyuk@foxmail.com.
+     * @version V1.0
+     * @createTime 2017 :10:26 10:10:55.
+     */
+    List<Tbuss003VO> queryGropAllTaskPrint(String usid, Pager pager,Condition condition);
+
+    /**
+     * Query all task list.
+     *
+     * @param cnd0  任务表的过滤字段
+     * @param cnd1  绩效表的过滤字段
+     * @param pager 分页字段
+     * @return the list
+     * @description 通过CND0, CND1 ，Pager获取所有任务.（打印时使用）
+     * @author create by jinyuk@foxmail.com.
+     * @version V1.0
+     * @createTime 2017 :10:26 02:10:58.
+     */
+    List<Tbuss003VO> queryAllTaskPrint(Condition cnd0,Condition cnd1,Pager pager);
+
+    /**
+     * Count grop task integer.
+     *
+     * @param usid      用户ID
+     * @param condition 过滤字段
+     * @return the integer
+     * @description 通过USID 、Condition统计个人组内共有多少任务
+     * @author create by jinyuk@foxmail.com.
+     * @version V1.0
+     * @createTime 2017 :10:26 01:10:51.
+     */
+    Integer countGropTask(String usid,Condition condition);
+
 
     /**
      * Count all task integer.

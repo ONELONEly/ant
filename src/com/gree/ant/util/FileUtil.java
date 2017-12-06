@@ -1,5 +1,7 @@
 package com.gree.ant.util;
 
+import org.nutz.lang.Encoding;
+import org.nutz.lang.Lang;
 import org.nutz.mvc.upload.TempFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialClob;
 import java.io.*;
+import java.net.URLEncoder;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.SQLException;
@@ -472,6 +475,35 @@ public class FileUtil {
      */
     public static String getDateName(){
         return new SimpleDateFormat("yyyyMMddHHmmdd").format(new Date());
+    }
+
+    /**
+     * Gen http resp header content disposition string.
+     *
+     * @param fnm 文件名
+     * @param ua  user-agent
+     * @return the string
+     * @description 设置文件的respHeader,解决返回文件名乱码问题
+     * @author create by jinyuk@foxmail.com.
+     * @version V1.0
+     * @createTime 2017 :12:06 09:12:31.
+     */
+    public static String genHttpRespHeaderContentDisposition(String fnm, String ua) {
+        try {
+            // Safari 狗屎
+            if (null != ua && ua.contains(" Safari/")) {
+                String e_fnm = new String(fnm.getBytes("UTF-8"), "ISO8859-1");
+                return "attachment; filename=\"" + e_fnm + "\"";
+            }
+            // 其他用标准
+            else {
+                String e_fnm = URLEncoder.encode(fnm, Encoding.UTF8);
+                return "attachment; filename*=utf-8'zh_cn'" + e_fnm;
+            }
+        }
+        catch (UnsupportedEncodingException e) {
+            throw Lang.wrapThrow(e);
+        }
     }
 
     /**

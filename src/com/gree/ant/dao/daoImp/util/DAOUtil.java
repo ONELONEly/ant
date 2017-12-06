@@ -1,6 +1,7 @@
 package com.gree.ant.dao.daoImp.util;
 
 import com.gree.ant.vo.Tbuss001VO;
+import com.gree.ant.vo.Tbuss009VO;
 import com.gree.ant.vo.util.ResultVO;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
@@ -73,6 +74,35 @@ public class DAOUtil {
         });
         dao.execute(sql);
         return sql.getList(Tbuss001VO.class);
+    }
+
+    /**
+     * Get t 9 list.
+     *
+     * @param sql the sql
+     * @param dao the dao
+     * @return Tbuss009集合
+     * @description 获得Tbuss009的返回实体结果集
+     * @author create by jinyuk@foxmail.com.
+     * @version V1.0
+     * @createTime 2017 :12:05 03:12:34.
+     */
+    public static List<Tbuss009VO> getT9(Sql sql, Dao dao){
+        sql.setCallback(new SqlCallback() {
+            @Override
+            public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
+                List<Tbuss009VO> tbuss009VOList = new ArrayList<>();
+                while(rs.next()){
+                    tbuss009VOList.add(new Tbuss009VO(rs.getLong("doid"),
+                            rs.getDate("cdat"),rs.getString("usid"),rs.getString("unam"),rs.getString("csid"),
+                            rs.getString("cnam"),rs.getString("ctyp"),rs.getString("ctypnam"),rs.getInt("stat"),
+                            rs.getString("statnam"),rs.getInt("sta2"),rs.getString("sta2nam"),rs.getString("tilt")));
+                }
+                return tbuss009VOList;
+            }
+        });
+        dao.execute(sql);
+        return sql.getList(Tbuss009VO.class);
     }
 
 

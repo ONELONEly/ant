@@ -1,6 +1,7 @@
 package com.gree;
 
 import org.nutz.integration.shiro.ShiroSessionProvider;
+import org.nutz.mvc.EntryDeterminer;
 import org.nutz.mvc.adaptor.PairAdaptor;
 import org.nutz.mvc.annotation.*;
 import org.nutz.mvc.filter.CheckSession;
