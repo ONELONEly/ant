@@ -335,7 +335,6 @@ public class FileUtil {
             String suffix = getFileSuffix(fileName);
             String savePath = getSavePath(suffix);
             String realName = duta.substring(2);
-            System.out.println(savePath+realName+suffix);
             File file = new File(savePath+realName+suffix);
             if (file.exists()) {
                 file.delete() ;
@@ -410,6 +409,21 @@ public class FileUtil {
     public static String getFileSuffix(String fileName){
         Integer position = fileName.indexOf(".");
         return fileName.substring(position);
+    }
+
+    /**
+     * Get file origion string.
+     *
+     * @param filePath 文件的地址
+     * @return 文件的名称和尾缀
+     * @description 获得文件的全称（名称和尾缀）.
+     * @author create by jinyuk@foxmail.com.
+     * @version V1.0
+     * @createTime 2017 :12:12 09:12:37.
+     */
+    public static String getFileOrigion(String filePath){
+        Integer postion = filePath.lastIndexOf("\\");
+        return filePath.substring(postion+1);
     }
 
     /**

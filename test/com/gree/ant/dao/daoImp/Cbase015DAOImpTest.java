@@ -18,6 +18,7 @@ public class Cbase015DAOImpTest {
 
     @Test
     public void deleteByStaid() throws Exception {
+        System.out.println(cbase015DAOImp.queryAll());
     }
 
 }

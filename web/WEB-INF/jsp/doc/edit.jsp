@@ -412,7 +412,7 @@
         </script>
         <div class="layui-form-item">
             <div class="layui-input-inline">
-                <button type="button" class="button layui-btn-big layui-btn-radius layui-bg-green" lay-filter="put" lay-submit="">修改</button>
+                <button type="button" class="button layui-btn-radius layui-bg-green" lay-filter="put" lay-submit="">修改</button>
             </div>
         </div>
         <br/><br/><br/><br/><br/><br/>

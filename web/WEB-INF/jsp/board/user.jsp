@@ -144,11 +144,15 @@
         });
 
         function operate(data,code,remk,stage){
+            var param = {};
+            for(var i = 0;i < data.length;i++){
+                param[i] = data[i].taid;
+            }
             $.ajax({
                 type:'POST',
                 url:'${base}/task/updateSta1',
                 data:{
-                    list:data,
+                    list:param,
                     operate:code,
                     remk:remk,
                     stag:stage
