@@ -139,6 +139,37 @@ public class Tbuss009VO extends ValueObject{
      */
     private String tilt;
 
+    private String sdat;
+
+    private String week;
+
+    private String grop;
+
+    public void setWeek(String week) {
+        this.week = week;
+    }
+
+    public void setGrop(String grop) {
+        this.grop = grop;
+    }
+
+    public String getWeek() {
+        return week;
+    }
+
+    public String getGrop() {
+        return grop;
+    }
+
+    public void setSdat(String sdat) {
+        this.sdat = sdat;
+    }
+
+    public String getSdat() {
+
+        return sdat;
+    }
+
     @Many(target = Tbuss015VO.class,field = "doid")
     private List<Tbuss015VO> tbuss015VOS;
 

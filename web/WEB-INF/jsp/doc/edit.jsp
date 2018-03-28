@@ -109,7 +109,7 @@
 
             form.on('submit(put)',function (data) {
                 var infor = data.field,content = layedit.getContent(note),
-                cdat = $("#cdat").val(),usid = $("#usid").val();
+                    cdat = $("#cdat").val(),usid = $("#usid").val();
                 $.ajax({
                     type:'POST',
                     url:'${base}/doc/updateDoc',
@@ -207,30 +207,52 @@
                 </select>
             </div>
         </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">日期</label>
+            <div class="layui-input-inline">
+                <select name="ctyp" id="ctyp" lay-verify="required|ctyp" lay-search="" disabled>
+                    <option value="${obj.doc.sdat}" class="n-display" disabled selected>${obj.doc.sdat}</option>
+                </select>
+            </div>
+
+            <label class="layui-form-label">周数</label>
+            <div class="layui-input-inline">
+                <select name="csid" id="csid" lay-verify="required|csid" lay-search="" disabled>
+                    <option value="${obj.doc.csid}" class="n-display" disabled selected>${obj.doc.week}</option>
+                </select>
+            </div>
+
+            <label class="layui-form-label">团队</label>
+            <div class="layui-input-inline">
+                <select name="csid" id="csid" lay-verify="required|csid" lay-search="" disabled>
+                    <option value="${obj.doc.grop}" class="n-display" disabled selected>${obj.doc.grop}</option>
+                </select>
+            </div>
+        </div>
 
         <div class="layui-form-item">
             <textarea id="doc" class="n-display">${obj.note}</textarea>
         </div>
         <div class="layui-form-item">
             <c:if test="${obj.doc.stat == null}">
-                    <div class="layui-input-inline">
-                        <input type="radio" name="stat" value="0" class="layui-form-radio" title="私有"/>
-                    </div>
-                    <div class="layui-input-inline">
-                        <input type="radio" name="stat" value="1" class="layui-form-radio" title="组内"/>
-                    </div>
-                    <div class="layui-input-inline">
-                        <input type="radio" name="stat" value="2" class="layui-form-radio" title="科室"/>
-                    </div>
-                    <div class="layui-input-inline">
-                        <input type="radio" name="stat" value="3" class="layui-form-radio" title="部门"/>
-                    </div>
-                    <div class="layui-input-inline">
-                        <input type="radio" name="stat" value="4" class="layui-form-radio" title="公司"/>
-                    </div>
-                    <div class="layui-input-inline">
-                        <input type="radio" name="stat" value="5" class="layui-form-radio" title="完全公开"/>
-                    </div>
+                <div class="layui-input-inline">
+                    <input type="radio" name="stat" value="0" class="layui-form-radio" title="私有"/>
+                </div>
+                <div class="layui-input-inline">
+                    <input type="radio" name="stat" value="1" class="layui-form-radio" title="组内"/>
+                </div>
+                <div class="layui-input-inline">
+                    <input type="radio" name="stat" value="2" class="layui-form-radio" title="科室"/>
+                </div>
+                <div class="layui-input-inline">
+                    <input type="radio" name="stat" value="3" class="layui-form-radio" title="部门"/>
+                </div>
+                <div class="layui-input-inline">
+                    <input type="radio" name="stat" value="4" class="layui-form-radio" title="公司"/>
+                </div>
+                <div class="layui-input-inline">
+                    <input type="radio" name="stat" value="5" class="layui-form-radio" title="完全公开"/>
+                </div>
             </c:if>
             <c:if test="${obj.doc.stat == 0}">
                 <div class="layui-input-inline">
@@ -399,16 +421,16 @@
             <button type="button" class="layui-btn layui-btn-radius layui-bg-red" id="upload" lay-submit="">上传文件</button>
         </div>
         <table class="layui-table" lay-data="{height:'400',url:'./queryAllFile?doid=${obj.doc.doid}',page:false,id:'file'}" lay-filter="file">
-        <thead>
-        <tr>
-        <th lay-data="{field:'ffil',width:1200}">文件名</th>
-        <th lay-data="{field:'fsiz',width:300}">大小</th>
-        <th lay-data="{fixed:'right',align:'center',width:200,templet:'#operate'}">操作</th>
-        </tr>
-        </thead>
+            <thead>
+            <tr>
+                <th lay-data="{field:'ffil',width:1200}">文件名</th>
+                <th lay-data="{field:'fsiz',width:300}">大小</th>
+                <th lay-data="{fixed:'right',align:'center',width:200,templet:'#operate'}">操作</th>
+            </tr>
+            </thead>
         </table>
         <script type="text/html" id="operate">
-        <a class="layui-btn layui-btn-xs layui-bg-black" lay-event="del">删除</a>
+            <a class="layui-btn layui-btn-xs layui-bg-black" lay-event="del">删除</a>
         </script>
         <div class="layui-form-item">
             <div class="layui-input-inline">

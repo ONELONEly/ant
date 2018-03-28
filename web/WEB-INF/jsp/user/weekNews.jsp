@@ -1,4 +1,3 @@
-<%--suppress ALL --%>
 <%--
   Created by IntelliJ IDEA.
   User: 180365
@@ -13,11 +12,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>个人周报</title>
-    <c:import url="../../static1.html"/>
+    <c:import url="../../static1.html"></c:import>
     <script language="JavaScript">
-        layui.use(['layedit','element','jquery','form','layer'],function () {
+        layui.use(['layedit','element','jquery','form','layer','laydate'],function () {
             var layedit = layui.layedit,element = layui.element,$ = layui.jquery,
-            form = layui.form,layer = layui.layer,doid = $("doid").val();
+                form = layui.form,layer = layui.layer,laydate=layui.laydate,doid = $("doid").val();
 
             var layeditOption = {
                 uploadImage:{
@@ -27,6 +26,19 @@
                 height:'800px'
             };
             var note = layedit.build('doc',layeditOption);
+
+            var start = {
+                elem:'#sdat',
+                type:'month',
+                choose: function (value) {
+                    console.log(value);
+                }
+            }
+
+
+
+            laydate.render(start);
+
 
             $.ajax({
                 type:'GET',
@@ -46,6 +58,25 @@
                 }
             });
 
+            $.ajax({
+                type:'GET',
+                url:'${base}/util/findC9',
+                dataType:'json',
+                success:function (data) {
+                    var grops = data.c9;
+                    console.log(data);
+                    var option = "";
+                    for(var i = 0;i<grops.length;i++){
+                        option += "<option value='"+grops[i].id+"' class='n-display'>"+grops[i].dsca+"</option>";
+                    }
+                    $("#grop").append(option);
+                    form.render();
+                },
+                error:function (kj) {
+                    layer.alert("发生错误:"+kj.status);
+                }
+            });
+
             form.verify({
                 csid:function (value) {
                     if(value === null){
@@ -54,24 +85,50 @@
                 }
             });
 
+            form.verify({
+                week:function (value) {
+                    if(value === null){
+                        return "请选择周数";
+                    }
+                }
+            });
+            form.verify({
+                sdat:function (value) {
+                    if(value === null){
+                        return "请选择日期";
+                    }
+                }
+            });
+
+            form.verify({
+                grop:function (value) {
+                    if(value === null){
+                        return "请选择团队";
+                    }
+                }
+            });
+
+
             form.on('submit(put)',function (data) {
-                var infor = data.field,content = layedit.getContent(note);
-                console.log(infor);
+                var infor = data.field;
+                content = layedit.getContent(note);
+                console.log(data);
                 $.ajax({
                     type:'POST',
                     url:'${base}/doc/insertDoc',
                     data:{
-                      doid:infor.doid,
-                      tilt:infor.tilt,
-                      csid:infor.csid,
-                      note:content
+                        doid:infor.doid,
+                        tilt:infor.tilt,
+                        csid:infor.csid,
+                        sdat:infor.sdat,
+                        week:infor.week,
+                        grop:infor.grop,
+                        note:content
                     },
                     dataType:'json',
                     success:function (data) {
                         if(data.code === 1){
-                            layer.confirm("周报提交成功,返回上一页",{offset:'100px'},function(){
-                                window.location.replace("./weekNewsManage");
-                            },function () {
+                            layer.confirm("周报提交成功",{offset:'100px'},function () {
                                 window.location.reload();
                             });
                         }else{
@@ -89,10 +146,9 @@
 <body>
 <div class="x-body">
     <span class="layui-breadcrumb">
-        <a href="javascript:"><cite style="cursor: pointer;">我的</cite></a>
-        <a href="./weekNewsManage"><cite style="cursor: pointer;">周报管理</cite></a>
+        <a href="javascript:"><cite style="cursor: pointer;">个人</cite></a>
         <a href="javascript:location.replace(location.href)"><cite style="cursor: pointer;">个人周报</cite></a>
-        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
     </span>
     <form class="layui-form layui-form-panel">
         <input type="hidden" value="${obj}" name="doid" id="doid"/>
@@ -106,6 +162,25 @@
             <div class="layui-input-inline">
                 <select name="csid" id="csid" lay-verify="required|csid" lay-search="">
                     <option value="" class="n-display" disabled selected>请选择接收人</option>
+                </select>
+            </div>
+
+            <div class="layui-input-inline">
+                <input type="text" name="sdat" id="sdat" placeholder="请选择日期" lay-verify="required|sdat" autocomplete="off" class="layui-input" required/>
+            </div>
+
+            <div class="layui-input-inline">
+                <select name="week" id="week" lay-verify="required|week" lay-search="">
+                    <option value="" class="n-display" disabled selected>请选择周数</option>
+                    <option value="1" class="n-display" >第一周</option>
+                    <option value="2" class="n-display" >第二周</option>
+                    <option value="3" class="n-display" >第三周</option>
+                    <option value="4" class="n-display" >第四周</option>
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select name="grop" id="grop" lay-verify="required|grop" lay-filter="grop">
+                    <option value="" class="n-display" disabled selected>请选择团队</option>
                 </select>
             </div>
         </div>
