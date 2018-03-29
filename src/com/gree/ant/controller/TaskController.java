@@ -55,6 +55,9 @@ public class TaskController {
     @Inject("refer:tbuss010MO")
     private Tbuss010MO tbuss010MO;
 
+    @Inject("refer:tbuss003MO_Ds")
+    private Tbuss003MO_Ds tbuss003MO_Ds;
+
     /**
      * Insert string.
      *
@@ -686,7 +689,10 @@ public class TaskController {
     @Ok("json")
     public Map<String,Object> updateSta1(@Param("operate")Integer operate,@Param("stag")Integer stag,
                                          @Param("::list")String[] taids,@Param("remk")String remk,
-                                         @Param("date")String date,@Param("fahh")Float fahh, AdaptorErrorContext error){
+                                         @Param("date")String date,@Param("fahh")Float fahh, AdaptorErrorContext error,HttpSession session)throws Exception{
+        System.out.println("测试进入了updateSta1");
+        System.out.println("operate"+operate);
+        Cbase000VO cbase000VO=(Cbase000VO)session.getAttribute("cbase000VO");
         StringBuilder msg = new StringBuilder("传入参数为空");
         Integer code = 0;
         String status = "";
@@ -739,6 +745,7 @@ public class TaskController {
                     } else if (operate == 11) {
                         if (stag != null) {
                             tbuss003VO.setStag(stag);
+                            tbuss003MO_Ds.insertBug(tbuss003VO,cbase000VO);
                         } else {
                             return ResultUtil.getResult(0, "等级为空，请重新录入", null);
                         }

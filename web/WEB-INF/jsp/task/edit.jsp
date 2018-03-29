@@ -336,60 +336,60 @@
             <div class="layui-input-inline">
                 <label class="layui-form-label">优先级:</label>
             </div>
-            <c:if test="${obj.task.sta2 == 0 || obj.task.sta2 == null}">
+            <c:if test="${obj.task.sta2 == 33 || obj.task.sta2 == null}">
                 <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="0" class="layui-form-radio" title="低" checked/>
+                    <input type="radio" name="sta2" value="33" class="layui-form-radio" title="低" checked/>
                 </div>
                 <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="1" class="layui-form-radio" title="中"/>
+                    <input type="radio" name="sta2" value="32" class="layui-form-radio" title="中"/>
                 </div>
                 <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="2" class="layui-form-radio" title="高"/>
+                    <input type="radio" name="sta2" value="36" class="layui-form-radio" title="高"/>
                 </div>
                 <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="3" class="layui-form-radio" title="紧急"/>
-                </div>
-            </c:if>
-            <c:if test="${obj.task.sta2 == 1}">
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="0" class="layui-form-radio" title="低"/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="1" class="layui-form-radio" title="中" checked/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="2" class="layui-form-radio" title="高"/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="3" class="layui-form-radio" title="紧急"/>
+                    <input type="radio" name="sta2" value="37" class="layui-form-radio" title="紧急"/>
                 </div>
             </c:if>
-            <c:if test="${obj.task.sta2 == 2}">
+            <c:if test="${obj.task.sta2 == 32}">
                 <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="0" class="layui-form-radio" title="低"/>
+                    <input type="radio" name="sta2" value="33" class="layui-form-radio" title="低"/>
                 </div>
                 <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="1" class="layui-form-radio" title="中"/>
+                    <input type="radio" name="sta2" value="32" class="layui-form-radio" title="中" checked/>
                 </div>
                 <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="2" class="layui-form-radio" title="高" checked/>
+                    <input type="radio" name="sta2" value="36" class="layui-form-radio" title="高"/>
                 </div>
                 <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="3" class="layui-form-radio" title="紧急"/>
+                    <input type="radio" name="sta2" value="37" class="layui-form-radio" title="紧急"/>
                 </div>
             </c:if>
-            <c:if test="${obj.task.sta2 == 3}">
+            <c:if test="${obj.task.sta2 == 36}">
                 <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="0" class="layui-form-radio" title="低"/>
+                    <input type="radio" name="sta2" value="33" class="layui-form-radio" title="低"/>
                 </div>
                 <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="1" class="layui-form-radio" title="中"/>
+                    <input type="radio" name="sta2" value="32" class="layui-form-radio" title="中"/>
                 </div>
                 <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="2" class="layui-form-radio" title="高"/>
+                    <input type="radio" name="sta2" value="36" class="layui-form-radio" title="高" checked/>
                 </div>
                 <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="3" class="layui-form-radio" title="紧急" checked/>
+                    <input type="radio" name="sta2" value="37" class="layui-form-radio" title="紧急"/>
+                </div>
+            </c:if>
+            <c:if test="${obj.task.sta2 == 37}">
+                <div class="layui-input-inline">
+                    <input type="radio" name="sta2" value="33" class="layui-form-radio" title="低"/>
+                </div>
+                <div class="layui-input-inline">
+                    <input type="radio" name="sta2" value="32" class="layui-form-radio" title="中"/>
+                </div>
+                <div class="layui-input-inline">
+                    <input type="radio" name="sta2" value="36" class="layui-form-radio" title="高"/>
+                </div>
+                <div class="layui-input-inline">
+                    <input type="radio" name="sta2" value="37" class="layui-form-radio" title="紧急" checked/>
                 </div>
             </c:if>
         </div>

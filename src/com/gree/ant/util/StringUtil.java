@@ -1,6 +1,11 @@
 package com.gree.ant.util;
 
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.sql.Clob;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 
 /**
@@ -59,5 +64,26 @@ public class StringUtil {
 
     public static String getUsid(HttpSession session){
         return session.getAttribute("usid") == null?null:session.getAttribute("usid").toString();
+    }
+
+    public static String ClobToString(Clob clob) throws SQLException, IOException {
+        String reString = "";
+        Reader is = clob.getCharacterStream();// 得到流
+        BufferedReader br = new BufferedReader(is);
+        String s = br.readLine();
+        StringBuffer sb = new StringBuffer();
+        while (s != null) {// 执行循环将字符串全部取出付值给StringBuffer由StringBuffer转成STRING
+            sb.append(s);
+            s = br.readLine();
+        }
+        reString = sb.toString();
+
+        if(br!=null){
+            br.close();
+        }
+        if(is!=null){
+            is.close();
+        }
+        return reString;
     }
 }

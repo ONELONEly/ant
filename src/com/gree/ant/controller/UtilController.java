@@ -5,13 +5,16 @@ import com.gree.ant.util.DateUtil;
 import com.gree.ant.util.FileUtil;
 import com.gree.ant.util.ResultUtil;
 import com.gree.ant.util.StringUtil;
-import com.gree.ant.vo.*;
+import com.gree.ant.vo.Cbase011VO;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.mvc.annotation.*;
+import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.Ok;
+import org.nutz.mvc.annotation.POST;
+import org.nutz.mvc.annotation.Param;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -70,6 +73,18 @@ public class UtilController {
     @Inject("refer:tbuss003MO")
     private Tbuss003MO tbuss003MO;
 
+    @Inject("refer:tbuss003MO_Ds")
+    private Tbuss003MO_Ds tbuss003MO_Ds;
+
+    @At
+    @Ok("json")
+    public Map<String,Object> findT3DS_jied(String syno){
+        System.out.println("测试进入后台");
+        Map<String,Object> map = new HashMap<>();
+        map.put("jieds",tbuss003MO_Ds.findT3DS_jied(syno));
+        return map;
+    }
+
     /**
      * Find c 6 c 9 map.
      *
@@ -82,11 +97,13 @@ public class UtilController {
     @At
     @Ok("json")
     public Map<String,Object> findC1C6C9C17(){
+        System.out.println("进入后台测试");
         Map<String,Object> map = new HashMap<>();
         map.put("dept",cbase006MO.queryAllDD());
         map.put("grop",cbase009MO.queryAllGD());
         map.put("acco",cbase017MO.queryAllAD());
         map.put("comp",cbase001MO.queryAllCD());
+        map.put("jieds",tbuss003MO_Ds.findT3DS_jied("16280"));
         return map;
     }
 
