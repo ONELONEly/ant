@@ -149,33 +149,30 @@
         });
 
 
-
-        form.on("select(syno)",function (data) {
-            alert('测试');
-            var trans = data.field;
+        form.on('select(syno)',function (data) {
+            var tOption ="";
             $.ajax({
                 type:'POST',
                 url:'${base}/util/findT3DS_jied',
                 data:{
-                    syno:trans.syno,
+                    syno:data.value
                 },
                 dataType:'json',
                 success:function (data) {
-                    var jieds = data.jieds;
-                    var uOption = "";
-                    for(var i = 0;i<user.length;i++){
-                        uOption += "<option value='"+jieds[i].SubProjectID+"'>"+jieds[i].Title+"</option>";
-                    }
 
-                    $("#jied").append(uOption);
+                        var jieds = data.jieds;
+                        for (var m = 0; m < jieds.length; m++) {
+                            tOption += "<option value='" + jieds[m].SubProjectID + "'>" + jieds[m].Title + "</option>";
+                        }
+                        $("#jied").html("");
+                        $("#jied").append(tOption);
+                        form.render();
 
-                    form.render();
                 },
-                error:function (kellyj) {
-                    layer.alert("发生错误，错误码为:"+kellyj.status);
+                error:function (kj) {
+                    layer.alert("发生错误:"+kj.status);
                 }
             });
-
         });
 
 
@@ -199,13 +196,14 @@
                     tepr:trans.tepr,
                     puno:trans.puno,
                     ptno:trans.ptno,
+                    jied:trans.jied,
                     edit:noteContent
                 },
                 dataType:'json',
                 success:function (data) {
                     if(data.code === 1){
                         layer.confirm(data.msg+"返回上一页？",{btn:['确定'],offset:'100px',anim:4},function () {
-                            window.location.replace("./manage");
+                            window.location.replace("${base}/user/task");
                         });
                     }else{
                         layer.alert(data.msg);
@@ -398,13 +396,13 @@
                 <label class="layui-form-label">严重程度:</label>
             </div>
             <div class="layui-input-inline">
-                <input type="radio" name="sta3" value="0" class="layui-form-radio" title="一般" checked/>
+                <input type="radio" name="sta3" value="3" class="layui-form-radio" title="一般" checked/>
             </div>
             <div class="layui-input-inline">
-                <input type="radio" name="sta3" value="1" class="layui-form-radio" title="严重"/>
+                <input type="radio" name="sta3" value="2" class="layui-form-radio" title="严重"/>
             </div>
             <div class="layui-input-inline">
-                <input type="radio" name="sta3" value="2" class="layui-form-radio" title="关键"/>
+                <input type="radio" name="sta3" value="1" class="layui-form-radio" title="关键"/>
             </div>
         </div>
 

@@ -51,6 +51,7 @@ public class LoginController {
         return ResultUtil.getResult(1,"",null);
     }
 
+
     /**
      * Login out string.
      *

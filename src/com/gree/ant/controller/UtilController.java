@@ -79,9 +79,8 @@ public class UtilController {
     @At
     @Ok("json")
     public Map<String,Object> findT3DS_jied(String syno){
-        System.out.println("测试进入后台");
         Map<String,Object> map = new HashMap<>();
-        map.put("jieds",tbuss003MO_Ds.findT3DS_jied(syno));
+       map.put("jieds",tbuss003MO_Ds.findT3DS_jied(syno));
         return map;
     }
 
@@ -97,13 +96,12 @@ public class UtilController {
     @At
     @Ok("json")
     public Map<String,Object> findC1C6C9C17(){
-        System.out.println("进入后台测试");
+
         Map<String,Object> map = new HashMap<>();
         map.put("dept",cbase006MO.queryAllDD());
         map.put("grop",cbase009MO.queryAllGD());
         map.put("acco",cbase017MO.queryAllAD());
         map.put("comp",cbase001MO.queryAllCD());
-        map.put("jieds",tbuss003MO_Ds.findT3DS_jied("16280"));
         return map;
     }
 
@@ -119,11 +117,13 @@ public class UtilController {
     @At
     @Ok("json")
     public Map<String,Object> findC0C13C14(HttpSession session){
+        Condition c=Cnd.where("puno","!=","PU0007").and("puno","!=","PU0006");
+
         String usid = StringUtil.getUsid(session);
         Map<String,Object> map = new HashMap<>();
         map.put("user",cbase000MO.queryAllUD());
         map.put("sys",cbase013MO.queryAllByCnd(null,null));
-        map.put("stage",cbase014MO.queryAllByCnd(null,null));
+        map.put("stage",cbase014MO.queryAllByCnd(c,null));
         map.put("project",tbuss001MO.queryAllPD(Cnd.where("grop","=",cbase000MO.fetchByUsid(usid).getGROP())));
         return map;
     }
@@ -460,7 +460,8 @@ public class UtilController {
         SqlExpressionGroup e4 = null;
         SqlExpressionGroup e5 = null;
         if(StringUtil.checkString(user)){
-            e1 = Cnd.exps("csid","=",usid).and("puno","!=","PU0007");
+           // e1 = Cnd.exps("csid","=",usid).and("puno","!=","PU0007");
+            e1 = Cnd.exps("csid","=",usid);
         }
 
         if(StringUtil.checkString(unam)){

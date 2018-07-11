@@ -106,6 +106,7 @@
                     sta2:trans.sta2,
                     sta3:trans.sta3,
                     syno:trans.syno,
+                    jied:trans.jied,
                     tepr:trans.tepr,
                     puno:trans.puno,
                     ptno:trans.ptno,
@@ -115,7 +116,7 @@
                 success:function (data) {
                     if(data.code === 1){
                         layer.confirm(data.msg+"返回上一页？",{btn:['确定'],offset:'100px',anim:4},function () {
-                            window.location.replace("./manage");
+                            window.location.replace("${base}/user/task");
                         });
                     }else{
                         layer.alert(data.msg);
@@ -150,6 +151,32 @@
                     }
                 });
             }
+        });
+
+        form.on('select(syno)',function (data) {
+            var tOption ="";
+            $.ajax({
+                type:'POST',
+                url:'${base}/util/findT3DS_jied',
+                data:{
+                    syno:data.value
+                },
+                dataType:'json',
+                success:function (data) {
+
+                    var jieds = data.jieds;
+                    for (var m = 0; m < jieds.length; m++) {
+                        tOption += "<option value='" + jieds[m].SubProjectID + "'>" + jieds[m].Title + "</option>";
+                    }
+                    $("#jied").html("");
+                    $("#jied").append(tOption);
+                    form.render();
+
+                },
+                error:function (kj) {
+                    layer.alert("发生错误:"+kj.status);
+                }
+            });
         });
 
         form.on('select(ptno)',function (data) {
@@ -323,6 +350,16 @@
             </div>
 
             <div class="layui-input-inline">
+                <label class="layui-form-label">阶段:</label>
+            </div>
+            <div class="layui-input-inline">
+                <select name="jied" id="jied" lay-filter="jied" lay-verify="jied" lay-search>
+                    <option value="${obj.task.jied}" class="n-display" disabled selected>${obj.jieddsca}</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-inline">
                 <label class="layui-form-label">任务类型:</label>
             </div>
             <div class="layui-input-inline">
@@ -331,7 +368,6 @@
                 </select>
             </div>
         </div>
-
         <div class="layui-form-item">
             <div class="layui-input-inline">
                 <label class="layui-form-label">优先级:</label>
@@ -352,7 +388,7 @@
             </c:if>
             <c:if test="${obj.task.sta2 == 32}">
                 <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="33" class="layui-form-radio" title="低"/>
+                    <input type="radio" name="sta2" value="33" cl0ass="layui-form-radio" title="低"/>
                 </div>
                 <div class="layui-input-inline">
                     <input type="radio" name="sta2" value="32" class="layui-form-radio" title="中" checked/>
@@ -398,37 +434,37 @@
             <div class="layui-input-inline">
                 <label class="layui-form-label">严重程度:</label>
             </div>
-            <c:if test="${obj.task.sta3 == 0 || obj.task.sta3 == null}">
+            <c:if test="${obj.task.sta3 == 3 || obj.task.sta3 == null}">
                 <div class="layui-input-inline">
-                    <input type="radio" name="sta3" value="0" class="layui-form-radio" title="一般" checked/>
+                    <input type="radio" name="sta3" value="3" class="layui-form-radio" title="一般" checked/>
                 </div>
                 <div class="layui-input-inline">
-                    <input type="radio" name="sta3" value="1" class="layui-form-radio" title="严重"/>
+                    <input type="radio" name="sta3" value="2" class="layui-form-radio" title="严重"/>
                 </div>
                 <div class="layui-input-inline">
-                    <input type="radio" name="sta3" value="2" class="layui-form-radio" title="关键"/>
-                </div>
-            </c:if>
-            <c:if test="${obj.task.sta3 == 1}">
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta3" value="0" class="layui-form-radio" title="一般"/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta3" value="1" class="layui-form-radio" title="严重" checked/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta3" value="2" class="layui-form-radio" title="关键"/>
+                    <input type="radio" name="sta3" value="1" class="layui-form-radio" title="关键"/>
                 </div>
             </c:if>
             <c:if test="${obj.task.sta3 == 2}">
                 <div class="layui-input-inline">
-                    <input type="radio" name="sta3" value="0" class="layui-form-radio" title="一般"/>
+                    <input type="radio" name="sta3" value="3" class="layui-form-radio" title="一般"/>
                 </div>
                 <div class="layui-input-inline">
-                    <input type="radio" name="sta3" value="1" class="layui-form-radio" title="严重"/>
+                    <input type="radio" name="sta3" value="2" class="layui-form-radio" title="严重" checked/>
                 </div>
                 <div class="layui-input-inline">
-                    <input type="radio" name="sta3" value="2" class="layui-form-radio" title="关键" checked/>
+                    <input type="radio" name="sta3" value="1" class="layui-form-radio" title="关键"/>
+                </div>
+            </c:if>
+            <c:if test="${obj.task.sta3 == 1}">
+                <div class="layui-input-inline">
+                    <input type="radio" name="sta3" value="3" class="layui-form-radio" title="一般"/>
+                </div>
+                <div class="layui-input-inline">
+                    <input type="radio" name="sta3" value="2" class="layui-form-radio" title="严重"/>
+                </div>
+                <div class="layui-input-inline">
+                    <input type="radio" name="sta3" value="1" class="layui-form-radio" title="关键" checked/>
                 </div>
             </c:if>
         </div>

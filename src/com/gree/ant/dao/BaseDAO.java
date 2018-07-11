@@ -275,6 +275,8 @@ public abstract class BaseDAO {
      */
     public abstract List<ValueObject> queryByCndPager(ValueObject  vo, Condition cnd, Pager pager);
 
+    public abstract List<ValueObject> queryByCnd(ValueObject  vo, Condition cnd);
+
     /**
      * Query by cnd pager list.
      *

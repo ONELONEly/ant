@@ -18,7 +18,9 @@ import java.util.Map;
  */
 public interface Tbuss003BasicMO_Ds {
      List<Map> findT3DS_jied(String syno);
-     void insertBug (Tbuss003VO tbuss003VO, Cbase000VO cbase000VO)throws Exception;
+     int insertBug (Tbuss003VO tbuss003VO, Cbase000VO cbase000VO)throws Exception;
+     String insertBugJieKou (Tbuss003VO tbuss003VO, Cbase000VO cbase000VO)throws Exception;
+     //insertBugJieKou
      List<Cbase013VO> synchronizationDSSystem();
 
 }

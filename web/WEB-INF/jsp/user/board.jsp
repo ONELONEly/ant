@@ -70,6 +70,13 @@
             trigger: 'click'
         });
 
+        laydate.render({
+            elem:'#finishTime',
+            type:'datetime',
+            theme:'#393D49',
+            trigger: 'click'
+        });
+
         form.on('radio',function (data) {
             var value = data.value;
             if(value === '0') {
@@ -173,22 +180,22 @@
         });
 
         table.on('tool(manage)',function (obj) {
-           var data = obj.data;
-           if(obj.event === 'show'){
-               layer.open({
-                   type:2,
-                   content:'../task/showTask?taid='+data.taid,
-                   area:['90%','80%'],
-                   title:'任务',
-                   offset:'10px'
-               });
-           }
+            var data = obj.data;
+            if(obj.event === 'show'){
+                layer.open({
+                    type:2,
+                    content:'../task/showTask?taid='+data.taid,
+                    area:['90%','80%'],
+                    title:'任务',
+                    offset:'10px'
+                });
+            }
         });
 
         form.on('submit(put)',function () {
             var choose = table.checkStatus('manage');
             var data = choose.data;
-            operate(data,1,"执行下发行为",null,null,null);
+            operate(data,1,"执行下发行为",null,null,null,null);
         });
 
         form.on('submit(carry)',function () {
@@ -203,14 +210,15 @@
                 anim:4,
                 offset:'100px',
                 yes:function () {
-                    var value = $("#dateUtil").val(),fahh = $("#fahhUtil").val();
+                    //finishTime
+                    var value = $("#dateUtil").val(),fahh = $("#fahhUtil").val(),finish = $("#finishTime").val();;
                     if (value === null || value === "") {
                         layer.tips('请选择时间','#dateUtil');
                     } else if(fahh === null || fahh === ""){
                         layer.tips("请输入工时","#fahhUtil");
                     } else {
                         layer.prompt({title: '请输入备注信息！', formType: 2, offset: '100px'}, function (remk) {
-                            operate(data,2,remk,value,null,fahh);
+                            operate(data,2,remk,value,null,fahh,finish);
                             layer.closeAll();
                         });
                     }
@@ -221,14 +229,14 @@
         form.on('submit(return)',function () {
             var choose = table.checkStatus('manage');
             var data = choose.data;
-            operate(data,0,"执行驳回行为",null,null,null);
+            operate(data,0,"执行驳回行为",null,null,null,null);
         });
 
         form.on('submit(modify)',function () {
             var choose = table.checkStatus('manage');
             var data = choose.data;
             layer.prompt({title:'请输入备注信息！',formType:2,offset:'100px'},function (remk,index) {
-                operate(data,4,remk,null,null,null);
+                operate(data,4,remk,null,null,null,null);
                 layer.close(index);
             });
         });
@@ -237,7 +245,7 @@
             var choose = table.checkStatus('manage');
             var data = choose.data;
             layer.prompt({title:'请输入备注信息！',formType:2,offset:'100px'},function (remk,index) {
-                operate(data,5,remk,null,null,null);
+                operate(data,5,remk,null,null,null,null);
                 layer.close(index);
             });
         });
@@ -245,20 +253,20 @@
         form.on('submit(get)',function () {
             var choose = table.checkStatus('manage');
             var data = choose.data;
-            operate(data,6,"执行交付校验行为",null,null,null);
+            operate(data,6,"执行交付校验行为",null,null,null,null);
         });
 
         form.on('submit(tPass)',function () {
             var choose = table.checkStatus('manage');
             var data = choose.data;
-            operate(data,6,"执行测试通过行为",null,null,null);
+            operate(data,6,"执行测试通过行为",null,null,null,null);
         });
 
         form.on('submit(tReturn)',function () {
             var choose = table.checkStatus('manage');
             var data = choose.data;
             layer.prompt({title:'请输入反馈信息！',formType:2,offset:'100px'},function (remk,index) {
-                operate(data,8,remk,null,null,null);
+                operate(data,8,remk,null,null,null,null);
                 layer.close(index);
             });
         });
@@ -279,7 +287,7 @@
                     if (value === null || value === "") {
                         layer.tips('请选择等级','#score');
                     } else {
-                        operate(data,11,"执行校验通过行为",null,value-1,null);
+                        operate(data,11,"执行校验通过行为",null,value-1,null,null);
                         layer.closeAll();
                     }
                 }
@@ -290,14 +298,14 @@
             var choose = table.checkStatus('manage');
             var data = choose.data;
             layer.prompt({title:'请输入反馈信息！',formType:2,offset:'100px'},function (remk,index) {
-                operate(data,10,remk,null,null,null);
+                operate(data,10,remk,null,null,null,null);
                 layer.close(index);
             });
         });
 
 
 
-        function operate(data,code,remk,date,stage,fahh){
+        function operate(data,code,remk,date,stage,fahh,finish){
             var param = {};
             for(var i = 0;i < data.length;i++){
                 param[i] = data[i].taid;
@@ -311,7 +319,8 @@
                     remk:remk,
                     date:date,
                     stag:stage,
-                    fahh:fahh
+                    fahh:fahh,
+                    fini:finish
                 },
                 dataType:'json',
                 success:function (res) {
@@ -359,7 +368,7 @@
             getCount();
 
             $.ajax({
-               type:'GET',
+                type:'GET',
                 url:'${base}/util/findT1',
                 dataType:'json',
                 success:function (res) {
@@ -479,7 +488,10 @@
     <br><br><br><br><br><br><br><br><br>
 </div>
 <div class="layui-form-item carryUtil n-display">
-    <input type="text" name="date" id="dateUtil" placeholder="请选择时间" class="layui-input x-center"/>
+
+    <input type="text" name="finishTime" id="finishTime" placeholder="请选择开始时间" class="layui-input x-center"/>
+    <input type="text" name="date" id="dateUtil" placeholder="请选择完成时间" class="layui-input x-center"/>
+
     <input type="text" name="fahh" id="fahhUtil" placeholder="请输入工时(如:2.5)" class="layui-input x-center"/>
 </div>
 </body>

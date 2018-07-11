@@ -119,6 +119,9 @@
                         ctyp:infor.ctyp,
                         stat:infor.stat,
                         sta2:infor.sta2,
+                        sdat:infor.sdat,
+                        week:infor.week,
+                        grop:infor.grop,
                         date:cdat,
                         usid:usid,
                         doid:doid,
@@ -210,7 +213,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">日期</label>
             <div class="layui-input-inline">
-                <select name="ctyp" id="ctyp" lay-verify="required|ctyp" lay-search="" disabled>
+                <select name="sdat" id="sdat" lay-verify="required|sdat" lay-search="" disabled>
                     <option value="${obj.doc.sdat}" class="n-display" disabled selected>${obj.doc.sdat}</option>
                 </select>
             </div>
@@ -224,7 +227,7 @@
 
             <label class="layui-form-label">团队</label>
             <div class="layui-input-inline">
-                <select name="csid" id="csid" lay-verify="required|csid" lay-search="" disabled>
+                <select name="grop" id="grop" lay-verify="required|grop" lay-search="" disabled>
                     <option value="${obj.doc.grop}" class="n-display" disabled selected>${obj.doc.grop}</option>
                 </select>
             </div>
@@ -434,7 +437,7 @@
         </script>
         <div class="layui-form-item">
             <div class="layui-input-inline">
-                <button type="button" class="button layui-btn-radius layui-bg-green" lay-filter="put" lay-submit="">修改</button>
+                <button type="button" class="button layui-btn layui-btn-radius layui-bg-green" lay-filter="put" lay-submit="">修改</button>
             </div>
         </div>
         <br/><br/><br/><br/><br/><br/>

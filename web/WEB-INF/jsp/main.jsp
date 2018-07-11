@@ -32,13 +32,22 @@
                 </li>
             </c:forEach>
             <li class="layui-nav-item">
-                <a href="javascript:" data-url="./user/board" data-icon="&#xe628;" data-title="个人看板" kit-target data-id='个人看板'><cite class="n-display">个人看板</cite><span>${obj.user.DSCA}</span><span class="usid n-display">${obj.user.USID}</span><span class="layui-badge" id="newTask"></span></a>
+            <a href="javascript:" data-url="./user/board" data-icon="&#xe628;" data-title="个人看板" kit-target data-id='个人看板'><cite class="n-display">个人看板</cite><span>${obj.user.DSCA}</span><span class="usid n-display">${obj.user.USID}</span><span class="layui-badge" id="newTask"></span></a>
+        </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">解决方案</a>
+                <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                    <dd><a href="${base}/uic/test">移动模块</a></dd>
+                    <dd> <a href="javascript:;" data-url="${base}/uic/test" data-icon="&#xe628;" data-title="测试" kit-target data-id='测试'><i class="layui-icon">&#xe628;</i><span>测试</span></a></dd>
+                    <dd><a href="">电商平台</a></dd>
+                </dl>
             </li>
             <li class="layui-nav-item">
                 <a href="javascript:" data-url="./user/modify" data-icon="&#xe628;" data-title="修改资料" kit-target data-id='修改资料'>
                     <cite class="n-display">修改资料</cite>
                     <img class="header-img" src="./user/getUserHeader" id="head">
                 </a>
+
             </li>
             <li class="layui-nav-item">
                 <a href="./loginOut">退出</a>

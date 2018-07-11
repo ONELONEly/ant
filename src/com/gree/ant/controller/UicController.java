@@ -1,9 +1,15 @@
 package com.gree.ant.controller;
 
 
-import com.gree.ant.mo.*;
+import com.gree.ant.mo.Cbase000MO;
+import com.gree.ant.mo.Cbase018MO;
+import com.gree.ant.mo.Tbuss009MO;
+import com.gree.ant.mo.Tbuss015MO;
 import com.gree.ant.util.*;
-import com.gree.ant.vo.*;
+import com.gree.ant.vo.Cbase000VO;
+import com.gree.ant.vo.Cbase018VO;
+import com.gree.ant.vo.Tbuss009VO;
+import com.gree.ant.vo.Tbuss015VO;
 import org.nutz.aop.interceptor.async.Async;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.pager.Pager;
@@ -28,9 +34,10 @@ import java.util.*;
  * @title DocController
  * @createTime 2017 :09:21 09:09:10.
  */
-@At("/doc")
+@At("/uic")
+@Filters
 @IocBean
-public class DocController {
+public class UicController {
 
     @Inject("refer:tbuss009MO")
     private Tbuss009MO tbuss009MO;
@@ -44,9 +51,6 @@ public class DocController {
     @Inject("refer:cbase000MO")
     private Cbase000MO cbase000MO;
 
-    @Inject("refer:cbase016MO")
-    private Cbase016MO cbase016MO;
-
 
     /**
      * Manage map.
@@ -57,11 +61,22 @@ public class DocController {
      * @version V1.0
      * @createTime 2017 :09:21 10:09:26.
      */
-    @At
-    @Ok("jsp:jsp.doc.manage")
-    public Map<String,Object> manage(){
+
+   @At
+    @Ok("jsp:jsp.index_uic")
+    public Map<String,Object> index_uic(){
         return null;
     }
+
+    @At
+    @Ok("jsp:jsp.test")
+    public Map<String,Object> test(){
+        System.out.println("测试");
+        return null;
+    }
+
+
+
 
     /**
      * Insert map.
@@ -145,14 +160,11 @@ public class DocController {
      * @createTime 2017 :09:22 10:09:17.
      */
     @At
-    @Ok("jsp:jsp.doc.knowledgeDoc1")
-    @Filters
-    public  Map<String, Object> knowledgeDoc(String type){
-        Map<String,Object> resultMap = new HashMap<>();
-        Cbase016VO cbase016VO=cbase016MO.fetchByName(type);
-        resultMap.put("c16",cbase016VO);
-        return resultMap;
+    @Ok("jsp:jsp.doc.knowledgeDoc")
+    public String knowledgeDoc(){
+        return "success";
     }
+
     /**
      * Show doc string.
      *
@@ -304,7 +316,7 @@ public class DocController {
     @At
     @Ok("json:{dateFormat:'yyyy-MM-dd'}")
     public Map<String,Object> queryAllUserWeekDoc(@Param("page")Integer pageNumber,@Param("limit")Integer pageSize,
-                              @Param("key")String key,HttpSession session){
+                                                  @Param("key")String key,HttpSession session){
 
         String usid = StringUtil.getUsid(session);
         SqlExpressionGroup e0 = Cnd.exps("ctyp","=",1);
@@ -460,7 +472,7 @@ public class DocController {
         for (TempFile file : files) {
             Map<String,Object> map = FileUtil.upload(file);
             Tbuss015VO tbuss015VO = new Tbuss015VO("ff"+FileUtil.getFileName(map.get("duta").toString()), map.get("title").toString(),doid,
-                     Integer.parseInt(map.get("fileSize").toString()), usid,new Date());
+                    Integer.parseInt(map.get("fileSize").toString()), usid,new Date());
             tbuss015MO.insert(tbuss015VO);
             code = 1;
         }
@@ -482,7 +494,7 @@ public class DocController {
     @Filters
     public Map<String,Object> queryAllFile(@Param("doid")Long doid){
         List<Tbuss015VO> tbuss015VOList = new ArrayList<>();
-         Tbuss009VO tbuss009VO = tbuss009MO.fetchTransByIDPrimary(doid,"tbuss015VOS",null);
+        Tbuss009VO tbuss009VO = tbuss009MO.fetchTransByIDPrimary(doid,"tbuss015VOS",null);
         if(tbuss009VO != null){
             tbuss015VOList = tbuss009VO.getTbuss015VOS();
         }

@@ -191,7 +191,7 @@ public class GradeController {
             e2 = Cnd.exps("grop","=",grop);
             count = tbuss001MO.countByCnd(Cnd.where(e1).and(e2));
             pager = TableUtil.formatPager(pageSize,pageNumber,count);
-            tbuss001VOList = tbuss001MO.queryAllByCnd(Cnd.where(e1).and(e2),pager);
+            tbuss001VOList = tbuss001MO.queryAllByCnd(Cnd.where(e1).and(e2).desc("pdat"),pager);
         }else if(author == 2){
             count = tbuss001MO.countByAcco(acco,date);
             pager = TableUtil.formatPager(pageSize,pageNumber,count);
@@ -220,6 +220,7 @@ public class GradeController {
      * @createTime 2017 :09:05 03:09:24.
      */
     @At
+
     @Ok("json")
     public Map<String, Object> markTemplate(@Param("..") Pager pager,@Param("grop")String grop,@Param("ptno")String ptno){
         Map<String,Object> map = new HashMap<>();

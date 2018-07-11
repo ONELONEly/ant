@@ -17,15 +17,16 @@ import java.util.List;
  * @title Tbuss003DAO
  * @createTime 2017 :10:21 05:10:14.
  */
-public interface Tbuss003DAO_Ds {
+public interface JieKou_Tbuss003DAO_Ds {
 
    int insertRuleCustomerFieldTrackExt(Tbuss003VO tbuss003VO, int BugID, Cbase000VO cbase000VO);
-   int inserRuleBug(Tbuss003VO tbuss003VO, int BugID, int PersonID, String note_ds, String CrntVersionID)throws SQLException;
+   String inserRuleBug(Tbuss003VO tbuss003VO,Cbase000VO cbase000VO, int PersonID, String note_ds, String CrntVersionID)throws SQLException;
    String StringChange(Clob note)throws Exception;
    int findPersonIDByLogin(String usid, String unam);
    int selectMAX();
    List<Cbase013VO> findAllSystemByDs();
    void delerefromCbase013();
+   String updateBugStatus(String bugId);
 
 
 }

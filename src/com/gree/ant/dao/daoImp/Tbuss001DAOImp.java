@@ -11,13 +11,13 @@ import org.nutz.dao.pager.Pager;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.sql.SqlCallback;
 import org.nutz.ioc.loader.annotation.Inject;
+import org.nutz.ioc.loader.annotation.IocBean;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import org.nutz.ioc.loader.annotation.IocBean;
 
 @IocBean
 public class Tbuss001DAOImp implements Tbuss001DAO{
@@ -45,7 +45,7 @@ public class Tbuss001DAOImp implements Tbuss001DAO{
 
     @Override
     public List<Tbuss001VO> queryAllByAcco(String acco, String pdat, Pager pager) {
-        String sqlStr = "select t.* from v_tbuss001 t where t.usid in (select c.usid from cbase000 c where c.acco = @acco) and pdat like @pdat";
+        String sqlStr = "select t.* from v_tbuss001 t where t.usid in (select c.usid from cbase000 c where c.acco = @acco) and pdat like @pdat order by t.pdat desc";
         Sql sql = Sqls.create(sqlStr);
         sql.setPager(pager);
         sql.setParam("acco",acco).setParam("pdat","%"+pdat+"%");
@@ -54,7 +54,7 @@ public class Tbuss001DAOImp implements Tbuss001DAO{
 
     @Override
     public List<Tbuss001VO> queryAllByDept(String dept,String pdat, Pager pager) {
-        String sqlStr = "select t.* from v_tbuss001 t where t.usid in (select c.usid from cbase000 c where c.dept = @dept) and pdat like @pdat";
+        String sqlStr = "select t.* from v_tbuss001 t where t.usid in (select c.usid from cbase000 c where c.dept = @dept) and pdat like @pdat order by t.pdat desc";
         Sql sql = Sqls.create(sqlStr);
         sql.setPager(pager);
         sql.setParam("dept",dept).setParam("pdat","%"+pdat+"%");
