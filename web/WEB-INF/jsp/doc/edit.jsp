@@ -210,6 +210,9 @@
                 </select>
             </div>
         </div>
+
+        <c:if test="${obj.doc.ctyp==1}">
+
         <div class="layui-form-item">
             <label class="layui-form-label">日期</label>
             <div class="layui-input-inline">
@@ -232,7 +235,7 @@
                 </select>
             </div>
         </div>
-
+        </c:if>
         <div class="layui-form-item">
             <textarea id="doc" class="n-display">${obj.note}</textarea>
         </div>
