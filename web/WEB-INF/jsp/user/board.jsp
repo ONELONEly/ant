@@ -453,7 +453,7 @@
         </div>
     </form>
     <div class="layui-box">
-        <table class="layui-table" lay-data="{height:'600',url:'${base}/task/userQueryAllTask',initSort:{field:'cdat',type:'desc'},page:true,limit:10,limits:[10,15,20,25,30,50],id:'manage'}" lay-filter="manage">
+        <table class="layui-table" lay-data="{height:'500',url:'${base}/task/userQueryAllTask',initSort:{field:'cdat',type:'desc'},page:true,limit:10,limits:[10,15,20,25,30,50],id:'manage'}" lay-filter="manage">
             <thead>
             <tr>
                 <th lay-data="{checkbox:true,width:50,fixed:true}"></th>

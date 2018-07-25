@@ -199,7 +199,7 @@
         <button class="layui-btn layui-bg-black copy-btn"><i class="layui-icon">&#xe6af;</i>复制</button>
         <button class="layui-btn export-btn"><i class="layui-icon">&#xe6af;</i>导出Excel</button>
     </div>
-    <table class="layui-table" lay-data="{height:'full-400',url:'${base}/task/userQueryAllTask?ksid=usid',initSort:{field:'cdat',type:'desc'},page:true,limit:10,limits:[10,15,20,25,30,50],id:'manage'}" lay-filter="manage">
+    <table class="layui-table" lay-data="{height:'500',url:'${base}/task/userQueryAllTask?ksid=usid',initSort:{field:'cdat',type:'desc'},page:true,limit:10,limits:[10,15,20,25,30,50],id:'manage'}" lay-filter="manage">
         <thead>
         <tr>
             <th lay-data="{checkbox:true,width:50}"></th><%--,fixed:true--%>
