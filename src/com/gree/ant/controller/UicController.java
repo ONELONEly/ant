@@ -34,7 +34,6 @@ import java.util.*;
  * @title DocController
  * @createTime 2017 :09:21 09:09:10.
  */
-@At("/uic")
 @Filters
 @IocBean
 public class UicController {
@@ -63,8 +62,8 @@ public class UicController {
      */
 
    @At
-    @Ok("jsp:jsp.index_uic")
-    public Map<String,Object> index_uic(){
+    @Ok("jsp:jsp.gdc")
+    public Map<String,Object> gdc(){
         return null;
     }
 
@@ -75,7 +74,11 @@ public class UicController {
         return null;
     }
 
-
+    @At
+    @Ok("jsp:jsp.doc.imgs")
+    public Map<String,Object> imgs(){
+        return null;
+    }
 
 
     /**
@@ -179,6 +182,17 @@ public class UicController {
     @Filters
     @Ok("jsp:jsp.doc.showDoc")
     public Map<String, Object> showDoc(@Param("doid")Long doid){
+        Tbuss009VO tbuss009VO = tbuss009MO.fetchByID(doid);
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("note",FileUtil.convertClob(tbuss009VO.getNote()));
+        resultMap.put("doc",tbuss009VO);
+        return resultMap;
+    }
+
+    @At
+    @Filters
+    @Ok("jsp:jsp.doc.showDoc1")
+    public Map<String, Object> showDoc1(@Param("doid")Long doid){
         Tbuss009VO tbuss009VO = tbuss009MO.fetchByID(doid);
         Map<String,Object> resultMap = new HashMap<>();
         resultMap.put("note",FileUtil.convertClob(tbuss009VO.getNote()));

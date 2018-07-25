@@ -175,6 +175,27 @@ public class DocController {
     }
 
     /**
+     * Show doc string.
+     *
+     * @param doid the note string
+     * @return the string
+     * @description 展示文档入口
+     * @author create by jinyuk@foxmail.com.
+     * @version V1.0
+     * @createTime 2017 :09:22 11:09:36.
+     */
+    @At
+    @Filters
+    @Ok("jsp:jsp.doc.showDoc1")
+    public Map<String, Object> showDoc1(@Param("doid")Long doid){
+        Tbuss009VO tbuss009VO = tbuss009MO.fetchByID(doid);
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("note",FileUtil.convertClob(tbuss009VO.getNote()));
+        resultMap.put("doc",tbuss009VO);
+        return resultMap;
+    }
+
+    /**
      * User week news map.
      *
      * @return the map

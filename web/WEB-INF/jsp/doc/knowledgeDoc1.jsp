@@ -18,17 +18,6 @@
         layui.use(['form','jquery','table','layer','element'],function () {
             var $ = layui.jquery, form = layui.form, table = layui.table,
                 layer = layui.layer, elemnt = layui.element;
-
-            table.on('tool(manage)',function (obj) {
-                var data = obj.data;
-                layer.open({
-                    type:2,
-                    content:['./showDoc?doid='+data.doid],
-                    area: ['90%', '80%'],
-                    title:'文档',
-                    offset:'10px'
-                });
-            });
         });
 
     </script>
@@ -43,7 +32,7 @@
 <div class="x-body">
     <div class="x-titleDiv">
         <span style="font-size: xx-large;">&nbsp;${obj.c16.dsca}</span>
-    </div>
+    </div>${obj.data.doid}
     <table class="layui-table" lay-skin="nob" lay-data="{height:'full',url:'./queryAllMessage?ctyp=${obj.c16.ctyp}',id:'manage'}" lay-filter="manage">
         <thead>
         <tr>
@@ -54,9 +43,8 @@
         </thead>
     </table>
     <script type="text/html" id="noteTpl">
-        <a href="javascript:" class="layui-table-link" lay-event="show">{{d.tilt}}</a>
+        <a href="./showDoc1?doid={{d.doid}}" class="layui-table-link" lay-event="show">{{d.tilt}}</a>
     </script>
-    <br><br><br><br><br><br><br><br><br>
 </div>
 </body>
 </html>

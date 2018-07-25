@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>门户</title>
+    <title>绩效管理系统</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <c:import url="../static.html"/>
@@ -57,13 +57,6 @@
         <div class="layui-carousel" id="carousel">
             <div class="x-center" style="background: #23262e;" carousel-item>
                 <div style="background: #23262e;line-height: 400px;"><img src="${base}/static/images/allS-s.jpg"/></div>
-                <div style="background: #23262e;line-height: 400px;"><img src="${base}/static/images/allS.jpg"/></div>
-                <div style="background: #23262e;line-height: 400px;"><img src="${base}/static/images/all.jpg"/></div>
-                <div style="background: #23262e;line-height: 400px;"><img src="${base}/static/images/ryan.jpg"/></div>
-                <div style="background: #23262e;line-height: 400px;"><img src="${base}/static/images/yuanyin.jpg"/></div>
-                <div style="background: #23262e;line-height: 400px;"><img src="${base}/static/images/yy.jpg"/></div>
-                <div style="background: #23262e;line-height: 400px;"><img src="${base}/static/images/tong.jpg"/></div>
-                <div style="background: #23262e;line-height: 400px;"><img src="${base}/static/images/jinyu.jpg"/></div>
             </div>
         </div>
     </div>
@@ -72,12 +65,10 @@
         <div class="x-titleDiv">
             <span>&nbsp;公开文档</span>
         </div>
-        <table class="layui-table" lay-skin="nob" lay-data="{height:'300',url:'${base}/doc/queryAllMessage?ctyp=3',id:'manage'}"  lay-filter="manage">
+        <table class="layui-table" lay-skin="nob" lay-data="{height:'200',url:'${base}/doc/queryAllMessage?ctyp=3',id:'manage'}"  lay-filter="manage">
             <thead>
             <tr>
-                <th lay-data="{field:'tilt',width:800,toolbar:'#noteTpl'}">标题</th>
-                <th lay-data="{field:'unam',width:150}">创建人</th>
-                <th lay-data="{field:'cdat',width:150}">创建时间</th>
+                <th lay-data="{field:'tilt',toolbar:'#noteTpl'}">标题</th>
             </tr>
             </thead>
         </table>

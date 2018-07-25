@@ -11,12 +11,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>登陆</title>
+  <title>绩效管理系统</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <c:import url="../static.html"/>
 </head>
-<body>
+<body bgcolor="#16181d">
 <div class="layui-layout layui-layout-admin">
   <div class="layui-header">
     <div class="layui-logo">
@@ -28,8 +28,8 @@
       </li>
     </ul>
   </div>
-  <div class="layui-container layui-bg-black" style="width:500px;margin-top: 100px;height:500px;border-radius: 100%;padding-top: 120px;display: block;">
-    <div style="width:60%;display: block;margin:auto;position: relative;">
+  <div  style="width:500px;vertical-align:middle;margin:auto; margin-top: 150px;">
+
       <form class="layui-form layui-form-panel" method="post">
         <div class="layui-form-item">
           <div class="layui-input-inline">
@@ -38,12 +38,12 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-input-inline">
-            <input type="text" name="usid" lay-verify="required|title" placeholder="请输入邮箱账号" autocomplete="off" class="layui-input" style="width:300px;" required/>
+            <input type="text" name="usid" lay-verify="required|title" placeholder="请输入邮箱账号" autocomplete="off" class="layui-input" style="width:400px;" required/>
           </div>
         </div>
         <div class="layui-form-item">
           <div class="layui-input-inline">
-            <input type="password" name="pawd" lay-verify="pass" placeholder="请输入密码" autocomplete="off" class="layui-input" style="width:300px;" required/>
+            <input type="password" name="pawd" lay-verify="pass" placeholder="请输入密码" autocomplete="off" class="layui-input" style="width:400px;" required/>
           </div>
         </div>
         <div class="layui-form-item">
@@ -53,9 +53,8 @@
           </div>
         </div>
       </form>
-    </div>
+
   </div>
 </div>
-<br><br><br><br><br><br><br><br><br>
 </body>
 </html>
