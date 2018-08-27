@@ -12,7 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>首页</title>
+    <title>看板</title>
     <script src="./static/js/echarts.js" charset="utf-8"></script>
     <c:import url="../static.html"/>
     <style>
@@ -29,7 +29,7 @@
         <div id="right" class="layui-layout-right layui-side x-equal">
         </div>
         <div class="x-titleDiv" style="height: 25%;border-left: none;">
-            <ul class="layui-nav" style="background-color: #fff;">
+            <ul class="layui-nav" style="background-color: #f2f2f2;">
                 <li class="layui-nav-item"><a href="javaScript:" style="color: #000;text-align: center;"><span>未下发</span><span class="layui-badge" id="new"></span></a></li>
                 <li class="layui-nav-item"><a href="javaScript:" style="color: #000;text-align: center;"><span>已下发</span><span class="layui-badge" id="in1"></span></a></li>
                 <li class="layui-nav-item"><a href="javaScript:" style="color: #000;text-align: center;"><span>执行中</span><span class="layui-badge" id="in2"></span></a></li>

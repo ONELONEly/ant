@@ -1,15 +1,9 @@
 package com.gree.ant.controller;
 
 
-import com.gree.ant.mo.Cbase000MO;
-import com.gree.ant.mo.Cbase018MO;
-import com.gree.ant.mo.Tbuss009MO;
-import com.gree.ant.mo.Tbuss015MO;
+import com.gree.ant.mo.*;
 import com.gree.ant.util.*;
-import com.gree.ant.vo.Cbase000VO;
-import com.gree.ant.vo.Cbase018VO;
-import com.gree.ant.vo.Tbuss009VO;
-import com.gree.ant.vo.Tbuss015VO;
+import com.gree.ant.vo.*;
 import org.nutz.aop.interceptor.async.Async;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.pager.Pager;
@@ -49,6 +43,9 @@ public class DocController {
 
     @Inject("refer:cbase000MO")
     private Cbase000MO cbase000MO;
+
+    @Inject("refer:cbase016MO")
+    private Cbase016MO cbase016MO;
 
 
     /**
@@ -148,11 +145,14 @@ public class DocController {
      * @createTime 2017 :09:22 10:09:17.
      */
     @At
-    @Ok("jsp:jsp.doc.knowledgeDoc")
-    public String knowledgeDoc(){
-        return "success";
+    @Ok("jsp:jsp.doc.knowledgeDoc1")
+    @Filters
+    public  Map<String, Object> knowledgeDoc(String type){
+        Map<String,Object> resultMap = new HashMap<>();
+        Cbase016VO cbase016VO=cbase016MO.fetchByName(type);
+        resultMap.put("c16",cbase016VO);
+        return resultMap;
     }
-
     /**
      * Show doc string.
      *
@@ -183,10 +183,20 @@ public class DocController {
      * @version V1.0
      * @createTime 2017 :09:21 09:09:10.
      */
+    /**
+     * User week news map.
+     *
+     * @return the map
+     * @description 文档提交
+     * @author create by jinyuk@foxmail.com.
+     * @version V1.0
+     * @createTime 2017 :09:21 09:09:10.
+     */
     @At
     @POST
     @Ok("json")
-    public Map<String,Object> insertDoc(@Param("note")String note,@Param("doid")Long doid,@Param("tilt")String tilt,@Param("csid")String csid,@Param("ctyp")String ctyp, HttpServletRequest request){
+    public Map<String,Object> insertDoc(@Param("note")String note,@Param("doid")Long doid,@Param("tilt")String tilt,@Param("csid")String csid,@Param("ctyp")String ctyp,@Param("grop")String grop,@Param("week")String week,@Param("sdat")String sdat, HttpServletRequest request){
+
         Integer code = 0;
         String msg = "";
         String usid = request.getSession().getAttribute("usid").toString();
@@ -197,6 +207,9 @@ public class DocController {
             tbuss009VO.setCdat(new Date());
             tbuss009VO.setUsid(usid);
             tbuss009VO.setCsid(csid);
+            tbuss009VO.setSdat(sdat);
+            tbuss009VO.setWeek(week);
+            tbuss009VO.setGrop(grop);
             if(StringUtil.checkString(ctyp)){
                 tbuss009VO.setCtyp(ctyp);
             }else {
@@ -323,7 +336,8 @@ public class DocController {
     @Filters
     @Ok("json:{dateFormat:'yyyy-MM-dd'}")
     public Map<String,Object> queryAllDoc(@Param("page")Integer pageNumber,@Param("limit")Integer pageSize,
-          @Param("key")String key,@Param("ctyp")Integer ctyp,HttpSession session){
+                                          @Param("key")String key,@Param("ctyp")Integer ctyp,@Param("week")String week,@Param("sdat")String sdat,@Param("grop")String grop,HttpSession session){
+        System.out.println("ctyp"+ctyp);
         String usid = StringUtil.getUsid(session);
         Integer sta2 = cbase000MO.fetchByUsid(usid).getSTA2();
         String stage = "";
@@ -338,23 +352,42 @@ public class DocController {
         SqlExpressionGroup e4 = null;
         SqlExpressionGroup e5 = null;
         SqlExpressionGroup e6 = null;
+        SqlExpressionGroup e7 = null;
+        SqlExpressionGroup e8 = null;
+        SqlExpressionGroup e9 = null;
+
         if(StringUtil.checkString(key)){
             e5 = Cnd.exps("doid","like","%"+key+"%").or("tilt","like","%"+key+"%")
                     .or("unam","like","%"+key+"%");
         }
-        if(ctyp != null){
+        if(ctyp!=null){
+            System.out.println("类型不为空"+ctyp);
             e6 = Cnd.exps("ctyp","=",ctyp);
         }
+        if(StringUtil.checkString(week)){
+            System.out.println("周数不为空"+week);
+            e7 = Cnd.exps("week","=",week);
+        }
+        if(StringUtil.checkString(sdat)){
+            System.out.println("日期不为空"+sdat);
+            e8 = Cnd.exps("sdat","=",sdat);
+        }
+        if(StringUtil.checkString(grop)){
+            System.out.println("团队不为空"+grop);
+            e9 = Cnd.exps("grop","=",grop);
+        }
+
+
         if(sta2 == 0){
             e4 = Cnd.exps("stat","=",0).or(e3);
-            count = tbuss009MO.countByCnd(Cnd.where(e4).and(e5).and("usid","=",usid).or("csid","=",usid));
+            count = tbuss009MO.countByCnd(Cnd.where(e4).and(e5).and(e6).and("usid","=",usid).and(e7).and(e8).and(e9));
             pager = TableUtil.formatPager(pageSize,pageNumber,count);
-            tbuss009VOS = tbuss009MO.queryAllDocNormal(Cnd.where(e4).and(e5).and("usid","=",usid).or("csid","=",usid),pager);
+            tbuss009VOS = tbuss009MO.queryAllDocNormal(Cnd.where(e4).and(e5).and(e6).and("usid","=",usid).and(e7).and(e8).and(e9),pager);
         }else {
             if (sta2 == 1) {
                 e4 = Cnd.exps(e3).or("stat", "=", 1);
-                stage = "GROP";
-            } else if (sta2 == 2) {
+                stage = "GROP";}
+            else if (sta2 == 2) {
                 e4 = Cnd.exps(e3).or("stat", "=", 2);
                 stage = "ACCO";
             } else if (sta2 == 3) {
@@ -364,9 +397,9 @@ public class DocController {
                 e4 = Cnd.exps(e3).or("stat", "=", 4);
                 stage = "COMP";
             }
-            count = tbuss009MO.countAllDoc(usid, Cnd.where("0", "=", 0).and(e5).and(e2).and(e4).and(e6), stage);
+            count = tbuss009MO.countAllDoc(usid, Cnd.where("0", "=", 0).and(e5).and(e2).and(e4).and(e6).and(e7).and(e8).and(e9), stage);
             pager = TableUtil.formatPager(pageSize, pageNumber, count);
-            tbuss009VOS = tbuss009MO.queryAllDoc(usid, Cnd.where("0", "=", 0).and(e5).and(e2).and(e4).and(e6), stage, pager);
+            tbuss009VOS = tbuss009MO.queryAllDoc(usid, Cnd.where("0", "=", 0).and(e5).and(e2).and(e4).and(e6).and(e7).and(e8).and(e9), stage, pager);
         }
         return TableUtil.makeJson(0,"成功",count,tbuss009VOS);
     }

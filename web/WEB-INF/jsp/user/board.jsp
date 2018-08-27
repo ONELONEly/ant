@@ -476,7 +476,6 @@
             <p class="x-margin">您的评分：<span class="stage"></span> 级</p>
         </div>
     </div>
-    <br><br><br><br><br><br><br><br><br>
 </div>
 <div class="layui-form-item carryUtil n-display">
     <input type="text" name="date" id="dateUtil" placeholder="请选择时间" class="layui-input x-center"/>
