@@ -1,6 +1,8 @@
 package com.gree.ant.dao;
 
 import com.gree.ant.vo.Tbuss003VO;
+import com.gree.ant.vo.util.TaskUtilVO;
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 
@@ -114,4 +116,8 @@ public interface Tbuss003DAO {
      * @createTime 2017 :10:26 01:10:51.
      */
     Integer countGropTask(String usid,Condition condition);
+
+    Integer countTaskUtilByCnd(Condition cnd);
+
+    List<TaskUtilVO> queryAllTaskByPagerCnd(Pager pager, Cnd cnd);
 }

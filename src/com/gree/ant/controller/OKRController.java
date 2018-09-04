@@ -2,6 +2,7 @@ package com.gree.ant.controller;
 
 import com.gree.ant.mo.Tbuss011MO;
 import com.gree.ant.util.ResultUtil;
+import com.gree.ant.util.StringUtil;
 import com.gree.ant.util.TableUtil;
 import com.gree.ant.vo.Tbuss011VO;
 import org.nutz.dao.pager.Pager;
@@ -11,8 +12,6 @@ import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +39,18 @@ public class OKRController {
         return "success";
     }
 
+    @At("/test")
+    @Ok("jsp:jsp.okr.test")
+    public String test(){
+        return "success";
+    }
+
+    @At("/taskChoose")
+    @Ok("jsp:jsp.okr.taskChoose")
+    public String taskChoose(){
+        return "success";
+    }
+
     /**
      * @param tbuss011VO 单条OKR记录
      * @return 返回标准的响应结果集
@@ -51,12 +62,13 @@ public class OKRController {
     @At("/insert")
     @Ok("json")
     public Map<String,Object> insert(@Param("..")Tbuss011VO tbuss011VO){
-        Map<String,Object> resultMap = new HashMap<>();
         int code = 0;
-        String msg = "插入失败";
-        tbuss011VO = tbuss011MO.insert(tbuss011VO);
-        if(tbuss011VO.getASID() != null){
-            code = 1;
+        String msg = "请录入所有的必填项";
+        if(StringUtil.checkString(tbuss011VO.getASID(),tbuss011VO.getBOSS(),tbuss011VO.getMDAT())) {
+            tbuss011VO = tbuss011MO.insert(tbuss011VO);
+            if (tbuss011VO.getOKID() != null) {
+                code = 1;
+            }
         }
         msg = code == 1?"成功插入OKR记录":msg;
         return ResultUtil.getResult(code,msg,null);

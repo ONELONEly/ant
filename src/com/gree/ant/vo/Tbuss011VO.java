@@ -1,15 +1,12 @@
 package com.gree.ant.vo;
 
-import org.nutz.dao.entity.annotation.Id;
-import org.nutz.dao.entity.annotation.Prev;
-import org.nutz.dao.entity.annotation.SQL;
-import org.nutz.dao.entity.annotation.Table;
+import org.nutz.dao.entity.annotation.*;
 
 
 /**
- * @description OKR管理表实体
  * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
  * @version 1.0
+ * @description OKR管理表实体
  */
 @Table("TBUSS011")
 public class Tbuss011VO extends ValueObject{
@@ -28,13 +25,27 @@ public class Tbuss011VO extends ValueObject{
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      */
     private String ASID;
+
+    /**
+     * @description 管理对象名称
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     */
+    @Readonly
+    private String ANAM;
     /**
      * @description 直接领导
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      */
     private String BOSS;
+
     /**
-     * @description 管理周期（默认当月）
+     * @description 直系领导名称
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     */
+    @Readonly
+    private String BNAM;
+    /**
+     * @description 管理周期 （默认当月）
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      */
     private String MDAT;
@@ -44,15 +55,29 @@ public class Tbuss011VO extends ValueObject{
      */
     private String GOAL;
     /**
-     * @description 周期（多少天）
+     * @description 周期 （多少天）
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      */
     private Integer NDAT;
+
+    /**
+     * @description 周期描述
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     */
+    @Readonly
+    private String NNDAT;
     /**
      * @description 类型
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      */
     private Integer TYPE;
+
+    /**
+     * @description 类型描述
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     */
+    @Readonly
+    private String NTYPE;
     /**
      * @description 权重
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
@@ -69,7 +94,7 @@ public class Tbuss011VO extends ValueObject{
      */
     private String ACHI;
     /**
-     * @description KRS权重（全部加起来一定为100）
+     * @description KRS权重 （全部加起来一定为100）
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      */
     private Integer KRPROP;
@@ -79,7 +104,14 @@ public class Tbuss011VO extends ValueObject{
      */
     private String KRPERF;
 
+    /**
+     * @description 自评分
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     */
+    private Integer ZGRAD;
+
     public Tbuss011VO() {
+
     }
 
     public Integer getOKID() {
@@ -98,12 +130,28 @@ public class Tbuss011VO extends ValueObject{
         this.ASID = ASID;
     }
 
+    public String getANAM() {
+        return ANAM;
+    }
+
+    public void setANAM(String ANAM) {
+        this.ANAM = ANAM;
+    }
+
     public String getBOSS() {
         return BOSS;
     }
 
     public void setBOSS(String BOSS) {
         this.BOSS = BOSS;
+    }
+
+    public String getBNAM() {
+        return BNAM;
+    }
+
+    public void setBNAM(String BNAM) {
+        this.BNAM = BNAM;
     }
 
     public String getMDAT() {
@@ -130,6 +178,14 @@ public class Tbuss011VO extends ValueObject{
         this.NDAT = NDAT;
     }
 
+    public String getNNDAT() {
+        return NNDAT;
+    }
+
+    public void setNNDAT(String NNDAT) {
+        this.NNDAT = NNDAT;
+    }
+
     public Integer getTYPE() {
         return TYPE;
     }
@@ -138,12 +194,28 @@ public class Tbuss011VO extends ValueObject{
         this.TYPE = TYPE;
     }
 
+    public String getNTYPE() {
+        return NTYPE;
+    }
+
+    public void setNTYPE(String NTYPE) {
+        this.NTYPE = NTYPE;
+    }
+
     public Integer getPROP() {
         return PROP;
     }
 
     public void setPROP(Integer PROP) {
         this.PROP = PROP;
+    }
+
+    public String getPERF() {
+        return PERF;
+    }
+
+    public void setPERF(String PERF) {
+        this.PERF = PERF;
     }
 
     public String getACHI() {
@@ -162,19 +234,19 @@ public class Tbuss011VO extends ValueObject{
         this.KRPROP = KRPROP;
     }
 
-    public String getPERF() {
-        return PERF;
-    }
-
-    public void setPERF(String PERF) {
-        this.PERF = PERF;
-    }
-
     public String getKRPERF() {
         return KRPERF;
     }
 
     public void setKRPERF(String KRPERF) {
         this.KRPERF = KRPERF;
+    }
+
+    public Integer getZGRAD() {
+        return ZGRAD;
+    }
+
+    public void setZGRAD(Integer ZGRAD) {
+        this.ZGRAD = ZGRAD;
     }
 }
