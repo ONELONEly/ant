@@ -1,5 +1,8 @@
 package com.gree.ant.controller;
 
+import com.gree.ant.dao.daoImp.BaseDAOImp;
+import com.gree.ant.dao.daoImp.JieKou_Tbuss003DAOImp_Ds;
+import com.gree.ant.dao.daoImp.Tbuss003DAOImp_Ds;
 import com.gree.ant.mo.*;
 import com.gree.ant.util.*;
 import com.gree.ant.util.excel.TaskExcel;
@@ -15,14 +18,15 @@ import org.nutz.mvc.annotation.*;
 import org.nutz.mvc.impl.AdaptorErrorContext;
 import org.nutz.mvc.upload.TempFile;
 import org.nutz.mvc.upload.UploadAdaptor;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Clob;
+import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Date;
 
 /**
  * The type Task controller.
@@ -37,8 +41,7 @@ import java.util.Date;
 @IocBean
 public class TaskController {
 
-    @Inject("refer:tbuss003MO")
-    private Tbuss003MO tbuss003MO;
+
 
     @Inject("refer:cbase015MO")
     private Cbase015MO cbase015MO;
@@ -54,6 +57,22 @@ public class TaskController {
 
     @Inject("refer:tbuss010MO")
     private Tbuss010MO tbuss010MO;
+
+    @Inject("refer:tbuss003MO_Ds")
+    private Tbuss003MO_Ds tbuss003MO_Ds;
+
+    @Inject("refer:jieKou_Tbuss003DAOImp_Ds")
+    private JieKou_Tbuss003DAOImp_Ds jieKou_Tbuss003DAOImp_Ds;
+
+    @Inject("refer:baseDAOImp")
+    private BaseDAOImp baseDAOImp;
+
+    @Inject("refer:tbuss003MO")
+    private Tbuss003MO tbuss003MO;
+
+    @Inject("refer:tbuss003DAOImp_Ds")
+    private Tbuss003DAOImp_Ds tbuss003DAOImp_Ds;
+
 
     /**
      * Insert string.
@@ -99,11 +118,17 @@ public class TaskController {
     @Ok("jsp:jsp.task.edit")
     public Map<String,Object> edit(@Param("taid")String taid,@Param("state")String state){
         Tbuss003VO tbuss003VO = tbuss003MO.fetchByTaid(taid);
+       //阶段的描述
+
         Boolean key = StringUtil.checkString(state);
         Map<String,Object> resultMap = new HashMap<>();
         resultMap.put("task",tbuss003VO);
-        resultMap.put("note",FileUtil.convertClob(tbuss003VO.getNote()));
         resultMap.put("key",key);
+        resultMap.put("note",FileUtil.convertClob(tbuss003VO.getNote()));
+        if(tbuss003VO.getJied()!=null){
+        String jieddsca=tbuss003MO_Ds.findT3DS_jiedDacaBySyno(tbuss003VO.getJied());
+        resultMap.put("jieddsca",jieddsca);
+        }
         return resultMap;
     }
 
@@ -669,7 +694,41 @@ public class TaskController {
         return ResultUtil.getResult(code,msg,null);
     }
 
-    /**
+
+
+
+/*
+    */
+/**
+     * Update sta 1 map.
+     *
+     * @param operate 执行的操作
+     * @param taids 任务编号集合
+     * @param remk  执行操作备注
+     * @return the map
+     * @description 修改任务的状态
+     * @author create by jinyuk@foxmail.com.
+     * @version V1.0
+     * @createTime 2017 :09:19 01:09:25.
+     *//*
+
+    @At
+    @POST
+    @Ok("json")
+    public Map<String,Object> updateSta1(@Param("operate")Integer operate, @Param("stag")Integer stag,
+                                         @Param("::list")String[] taids, @Param("remk")String remk,
+                                         @Param("date")String date, @Param("fahh")Float fahh, AdaptorErrorContext error, HttpSession session)throws Exception{
+
+        //tbuss003MO_Ds.test4();
+        tbuss003MO_Ds.insertBugJieKou();
+       // tbuss003MO_Ds.update();
+
+       return ResultUtil.getResult(0, "推送DS失败", null);
+    }
+*/
+
+
+   /* *//**
      * Update sta 1 map.
      *
      * @param operate 执行的操作
@@ -684,12 +743,16 @@ public class TaskController {
     @At
     @POST
     @Ok("json")
-    public Map<String,Object> updateSta1(@Param("operate")Integer operate,@Param("stag")Integer stag,
-                                         @Param("::list")String[] taids,@Param("remk")String remk,
-                                         @Param("date")String date,@Param("fahh")Float fahh, AdaptorErrorContext error){
+    public Map<String,Object> updateSta1(@Param("operate")Integer operate, @Param("stag")Integer stag,
+                                         @Param("::list")String[] taids, @Param("remk")String remk,
+                                         @Param("date")String date, @Param("fahh")Float fahh,@Param("fini")String fini, AdaptorErrorContext error, HttpSession session)throws Exception{
+        System.out.println("完成时间"+date);
+        System.out.println("开始时间"+fini);
+        Cbase000VO cbase000VO=(Cbase000VO)session.getAttribute("cbase000VO");
         StringBuilder msg = new StringBuilder("传入参数为空");
         Integer code = 0;
         String status = "";
+        String insertBugCode="";
         if(error == null) {
             if (operate != null && taids != null && StringUtil.checkString(remk)) {
                 for (String TAID : taids) {
@@ -711,9 +774,23 @@ public class TaskController {
                     } else if (operate == 2) {
                         MailUtil.sendmail(ksid, "尊敬的" + knam + "，您的任务已在努力开发中！计划完成时间：" + DateUtil.formatYMDHMDDate(date), taid, titl, sys);
                         status = "执行中";
-                        if (StringUtil.checkString(date)) {
+                        if (StringUtil.checkString(date)||StringUtil.checkString(fini)) {
                             tbuss003VO.setAdat(new Date());
-                            tbuss003VO.setPdat(DateUtil.formatYMDHMDDate(date));
+
+                            Date date1=null;
+                            SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            date1=formatter.parse(date);
+
+                            Date fini1=null;
+                            SimpleDateFormat formatter1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            fini1=formatter1.parse(fini);
+
+
+                            tbuss003VO.setPdat(date1);
+                            tbuss003VO.setIdat(fini1);
+                            System.out.println("tbuss003VO.getPdat()"+tbuss003VO.getPdat());
+                            System.out.println("tbuss003VO.getIdat()"+tbuss003VO.getIdat());
+
                         }
                         if (fahh != null) {
                             tbuss003VO.setFahh(fahh);
@@ -737,14 +814,21 @@ public class TaskController {
                     } else if (operate == 10) {
                         status = "验收不通过";
                     } else if (operate == 11) {
+                        System.out.println("stag"+stag);
                         if (stag != null) {
                             tbuss003VO.setStag(stag);
+                           // insertBugCode=tbuss003MO_Ds.insertBug(tbuss003VO,cbase000VO);
+
+                          insertBugCode=tbuss003MO_Ds.insertBugJieKou(tbuss003VO,cbase000VO);
+                            if(!insertBugCode.equals("Success")){
+                            return ResultUtil.getResult(0, "推送DS失败", null);}
                         } else {
                             return ResultUtil.getResult(0, "等级为空，请重新录入", null);
                         }
                     }
                     sendMail(tbuss010VOList, status, titl);
                     code = tbuss003MO.updateByVO(tbuss003VO);
+
                     if (code == 1) {
                         tbuss004MO.insert(new Tbuss004VO(TAID, operate, new Date(), remk));
                     }
@@ -756,7 +840,6 @@ public class TaskController {
         }
         return ResultUtil.getResult(code, msg.toString(),null);
     }
-
     /**
      * Query all rule map.
      *
@@ -970,7 +1053,7 @@ public class TaskController {
      * @createTime 2017 :09:13 03:09:40.
      */
     private Condition composeCnd(String usid,String key,Integer sta,Integer type,String ptno,Boolean order){
-        SqlExpressionGroup e0 = Cnd.exps("puno","!=","PU0007");
+        SqlExpressionGroup e0 = Cnd.exps("0","=","0");
         SqlExpressionGroup e1 = null;
         SqlExpressionGroup e2 = null;
         SqlExpressionGroup e3 = null;

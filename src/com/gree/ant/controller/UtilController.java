@@ -1,17 +1,20 @@
 package com.gree.ant.controller;
 
+import com.gree.ant.dao.daoImp.util.DAOUtil;
 import com.gree.ant.mo.*;
-import com.gree.ant.util.DateUtil;
-import com.gree.ant.util.FileUtil;
-import com.gree.ant.util.ResultUtil;
-import com.gree.ant.util.StringUtil;
-import com.gree.ant.vo.*;
+import com.gree.ant.util.*;
+import com.gree.ant.vo.Cbase011VO;
+import com.gree.ant.vo.util.TaskUtilVO;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
+import org.nutz.dao.pager.Pager;
 import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.mvc.annotation.*;
+import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.Ok;
+import org.nutz.mvc.annotation.POST;
+import org.nutz.mvc.annotation.Param;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -70,6 +73,17 @@ public class UtilController {
     @Inject("refer:tbuss003MO")
     private Tbuss003MO tbuss003MO;
 
+    @Inject("refer:tbuss003MO_Ds")
+    private Tbuss003MO_Ds tbuss003MO_Ds;
+
+    @At
+    @Ok("json")
+    public Map<String,Object> findT3DS_jied(String syno){
+        Map<String,Object> map = new HashMap<>();
+       map.put("jieds",tbuss003MO_Ds.findT3DS_jied(syno));
+        return map;
+    }
+
     /**
      * Find c 6 c 9 map.
      *
@@ -82,6 +96,7 @@ public class UtilController {
     @At
     @Ok("json")
     public Map<String,Object> findC1C6C9C17(){
+
         Map<String,Object> map = new HashMap<>();
         map.put("dept",cbase006MO.queryAllDD());
         map.put("grop",cbase009MO.queryAllGD());
@@ -102,11 +117,13 @@ public class UtilController {
     @At
     @Ok("json")
     public Map<String,Object> findC0C13C14(HttpSession session){
+        Condition c=Cnd.where("puno","!=","PU0007").and("puno","!=","PU0006");
+
         String usid = StringUtil.getUsid(session);
         Map<String,Object> map = new HashMap<>();
         map.put("user",cbase000MO.queryAllUD());
         map.put("sys",cbase013MO.queryAllByCnd(null,null));
-        map.put("stage",cbase014MO.queryAllByCnd(null,null));
+        map.put("stage",cbase014MO.queryAllByCnd(c,null));
         map.put("project",tbuss001MO.queryAllPD(Cnd.where("grop","=",cbase000MO.fetchByUsid(usid).getGROP())));
         return map;
     }
@@ -350,6 +367,15 @@ public class UtilController {
         return ResultUtil.getResult(code,"",cbase011VOS);
     }
 
+    @At
+    @Ok("json")
+    public Map<String,Object> findTaskUtil(@Param("page")Integer pageNumber, @Param("limit")Integer pageSize,
+                                         @Param("order")String order, @Param("sort")String sort, @Param("..")TaskUtilVO taskUtilVO){
+        Integer count = tbuss003MO.countByTaskUtil(taskUtilVO);
+        Pager pager = TableUtil.formatPager(pageSize,pageNumber,count);
+        return TableUtil.makeJson(0,"",count,tbuss003MO.queryAllByPagerMsg(pager,taskUtilVO,sort,order));
+    }
+
     /**
      * Normal output stream.
      *
@@ -443,7 +469,8 @@ public class UtilController {
         SqlExpressionGroup e4 = null;
         SqlExpressionGroup e5 = null;
         if(StringUtil.checkString(user)){
-            e1 = Cnd.exps("csid","=",usid).and("puno","!=","PU0007");
+           // e1 = Cnd.exps("csid","=",usid).and("puno","!=","PU0007");
+            e1 = Cnd.exps("csid","=",usid);
         }
 
         if(StringUtil.checkString(unam)){

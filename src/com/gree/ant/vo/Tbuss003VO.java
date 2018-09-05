@@ -305,6 +305,16 @@ public class Tbuss003VO extends ValueObject{
      */
     private Date adat;
 
+    private Date idat;
+
+    public Date getIdat() {
+        return idat;
+    }
+
+    public void setIdat(Date idat) {
+        this.idat = idat;
+    }
+
     /**
      * The Stage.
      *
@@ -313,6 +323,7 @@ public class Tbuss003VO extends ValueObject{
      * @version V1.0
      * @createTime 2017 :10:18 06:10:51.
      */
+
     private Integer stag;
 
     /**
@@ -346,6 +357,16 @@ public class Tbuss003VO extends ValueObject{
      * @createTime 2017 :10:31 03:10:05.
      */
     private Float fahh;
+
+    private String jied;
+
+    public void setJied(String jied) {
+        this.jied = jied;
+    }
+
+    public String getJied() {
+        return jied;
+    }
 
     @One(target = Cbase011VO.class,field = "ptyp")
     private Cbase011VO cbase011VO;

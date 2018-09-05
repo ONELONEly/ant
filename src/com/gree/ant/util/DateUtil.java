@@ -94,7 +94,7 @@ public class DateUtil {
      * @createTime 2017 :10:17 05:10:32.
      */
     public static Date formatYMDHMDDate(String date){
-        Date day = new Date();
+        Date day = null;
         SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd HH:mm:dd");
         try {
             day = simple.parse(date);

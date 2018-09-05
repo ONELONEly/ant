@@ -341,6 +341,18 @@ public class BaseDAOImp extends BaseDAO{
         return voS;
     }
 
+
+    @Override
+    public List<ValueObject> queryByCnd(ValueObject vo, Condition cnd) {
+        Iterator iterator = dao.query(vo.getClass(),cnd).iterator();
+        List<ValueObject> voS = new ArrayList<>();
+        while (iterator.hasNext()) {
+            ValueObject po = (ValueObject) iterator.next();
+            voS.add(po);
+        }
+        return voS;
+    }
+
     /**
      * Query by cnd pager list.
      *

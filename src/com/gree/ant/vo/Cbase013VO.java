@@ -60,6 +60,11 @@ public class Cbase013VO extends ValueObject{
         this.syno = syno;
     }
 
+    public Cbase013VO(String syno, String dsca) {
+        this.syno = syno;
+        this.dsca = dsca;
+    }
+
     public Cbase013VO(String syno, String dsca, String sadd, String tadd) {
         this.syno = syno;
         this.dsca = dsca;

@@ -15,30 +15,66 @@
     <title>文档管理</title>
     <c:import url="../../static1.html"/>
     <script language="JavaScript">
-        layui.use(['form','jquery','table','layer','element'],function () {
+        layui.use(['form','jquery','table','layer','element','laydate'],function () {
             var $ = layui.jquery,form = layui.form,table = layui.table,
-                layer = layui.layer,elemnt = layui.element,key='',ctyp='';
+                layer = layui.layer,elemnt = layui.element,laydate=layui.laydate,key='',ctyp='',week='',sdat='';
 
             form.on("submit(search)",function (data) {
                 var infor = data.field;
+                var grop=$(".grop").val();
                 ctyp = $("select[name='ctyp']:selected").val();
+
+
                 table.reload("manage",{
                     where:{
                         key:infor.msg,
-                        ctyp:ctyp
+                        ctyp:infor.ctyp,
+                        sdat:infor.sdat,
+                        week:infor.week,
+                        grop:infor.grop
                     }
                 });
                 return false;
             });
 
-            form.on("select(ctyp)",function (data) {
-                key = $("#msg").val();
-                table.reload("manage",{
-                    where:{
-                        key:key,
-                        ctyp:data.value
+            laydate.render({
+                elem: '#sdat'
+                ,type: 'month'
+            });
+
+            /*       form.on("select(ctyp)",function (data) {
+             key = $("#msg").val();
+             table.reload("manage",{
+             where:{
+             key:key,
+             ctyp:data.value
+             }
+             })
+             });*/
+
+
+
+            $.ajax({
+                type:'GET',
+                url:'${base}/util/findC9',
+                dataType:'json',
+                success:function (data) {
+                    var grops = data.c9;
+                    console.log(grops);
+                    /*console.log(data);
+                     console.log(grops);*/
+                    var option = "";
+                    for(var i = 0;i<grops.length;i++){
+
+
+                        option += "<option value='"+grops[i].id+"' class='n-display'>"+grops[i].dsca+"</option>";
                     }
-                })
+                    $("#grop").append(option);
+                    form.render();
+                },
+                error:function (kj) {
+                    layer.alert("发生错误:"+kj.status);
+                }
             });
 
             table.on('tool(manage)', function(obj){
@@ -125,10 +161,8 @@
                 <div class="layui-input-inline">
                     <input type="text" name="msg" id="msg" placeholder="请输入查询信息" lay-verify="msg" class="layui-input"/>
                 </div>
-                <div class="layui-input-inline">
-                    <button class="layui-btn layui-btn-radius" lay-filter="search" lay-submit>查询</button>
-                    <a href="./insert" class="layui-btn layui-btn-radius" lay-filter="set">创建</a>
-                </div>
+            </div>
+            <div class="layui-form-item">
                 <div class="layui-input-inline">
                     <select name="ctyp" id="ctyp" lay-filter="ctyp" lay-search="">
                         <option value="" disabled selected>请选择文档类型</option>
@@ -137,6 +171,28 @@
                         <option value="3">公开文档</option>
                         <option value="4">学习文档</option>
                     </select>
+                </div>
+                <div class="layui-input-inline">
+                    <input type="text" name="sdat" id="sdat" placeholder="请选择日期" class="layui-input" required/>
+                </div>
+
+                <div class="layui-input-inline">
+                    <select name="week" id="week" lay-filter="week" lay-search="">
+                        <option value=""  disabled selected>请选择周数</option>
+                        <option value="1" >第一周</option>
+                        <option value="2" >第二周</option>
+                        <option value="3" >第三周</option>
+                        <option value="4" >第四周</option>
+                    </select>
+                </div>
+                <div class="layui-input-inline">
+                    <select name="grop" id="grop" lay-verify="grop" class="grop" lay-filter="grop" lay-search="">
+                        <option value="" class="n-display" disabled selected>请选择团队</option>
+                    </select>
+                </div>
+                <div class="layui-input-inline">
+                    <button class="layui-btn layui-btn-radius" lay-filter="search" lay-submit>查询</button>
+                    <a href="./insert" class="layui-btn layui-btn-radius" lay-filter="set">创建</a>
                 </div>
             </div>
         </div>

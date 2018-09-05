@@ -29,4 +29,5 @@ public interface Cbase016BasicMO {
      * @createTime 2017 :09:20 06:09:40.
      */
     List<Cbase016VO> queryAllByCndPager(Condition cnd, Pager pager);
+
 }

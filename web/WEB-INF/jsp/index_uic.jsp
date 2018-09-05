@@ -95,7 +95,7 @@
             <div class="layui-tab-content site-demo site-demo-body" style="height: 800px;">
                 <div class="layui-tab-item layui-show">
 
-                    <iframe src="${base}/doc/knowledgeDoc?type=11" frameborder="0" id="myiframe" class="x-frame" style="padding:0px;width: 100%;height: 800px"></iframe>
+                    <iframe src="${base}/doc/knowledgeDoc?type=7" frameborder="0" id="myiframe" class="x-frame" style="padding:0px;width: 100%;height: 800px"></iframe>
                 </div>
             </div>
         </div>

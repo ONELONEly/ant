@@ -1,6 +1,7 @@
 package com.gree.ant.mo.basic;
 
 import com.gree.ant.vo.Tbuss003VO;
+import com.gree.ant.vo.util.TaskUtilVO;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 
@@ -201,4 +202,8 @@ public interface Tbuss003BasicMO {
      * @createTime 2017 :10:26 02:10:58.
      */
     Integer countAllTask(Condition cnd0,Condition cnd1);
+
+    Integer countByTaskUtil(TaskUtilVO taskUtilVO);
+
+    List<TaskUtilVO> queryAllByPagerMsg(Pager pager,TaskUtilVO taskUtilVO,String sort,String order);
 }

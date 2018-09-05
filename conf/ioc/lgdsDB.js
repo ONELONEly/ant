@@ -1,9 +1,9 @@
 /**
- * 
+ *
  */
 
 var ant = {
-		
+
 		 config : {
 		        type : "org.nutz.ioc.impl.PropertiesProxy",
 		        fields : {
@@ -47,10 +47,31 @@ var ant = {
                 defaultAutoCommit :false // 提高fastInsert的性能
             }
         },
-        
-        
+
+
         daoFX : {
             type : "org.nutz.dao.impl.NutDao",
             args : [{refer:"dataSourceFX"}]
+        },
+    dataSource1:{
+        type:"org.nutz.dao.impl.SimpleDataSource",
+        fields : {
+            driverClassName:"com.microsoft.sqlserver.jdbc.SQLServerDriver",
+            url :"jdbc:sqlserver://10.2.4.175:1433 ;databaseName=NewDS",
+            username : "ERPTEST",
+            password : "ERP_TEST_2018",
+
+        },
+        events:{
+            depose:"close"
+
         }
+    },
+    dao1:{
+        type:"org.nutz.dao.impl.NutDao",
+        args:[{refer:"dataSource1"}]
+
+    }
+
+
 };

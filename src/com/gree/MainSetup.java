@@ -32,13 +32,15 @@ public class MainSetup implements Setup{
     public void init(NutConfig nc) {
         NutShiro.DefaultLoginURL = "/login";
         NutShiro.DefaultNoAuthURL = "/403";
-
         if(!Charset.defaultCharset().name().equalsIgnoreCase(Encoding.UTF8)){
             logger.warn("This project must running in UTF-8,pls add -Dfile.encoding=UTF-8 to JAVA_OPTS!");
         }
 
         Ioc ioc = nc.getIoc();
         Dao dao = ioc.get(Dao.class,"daoFX");
+      // ioc.get(NutQuartzCronJobFactory.class);
+       // TimerUtil t=ioc.get(TimerUtil.class);
+       // t.timer5();
     }
 
     /**

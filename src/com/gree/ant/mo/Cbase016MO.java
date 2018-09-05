@@ -36,6 +36,11 @@ public class Cbase016MO implements Cbase016BasicMO{
         return formatC16(baseDAOImp.queryByCndPager(new Cbase016VO(),cnd,pager));
     }
 
+
+    public Cbase016VO fetchByName(String ctyp) {
+        return (Cbase016VO) baseDAOImp.fetchByName(new Cbase016VO(),ctyp);
+    }
+
     private List<Cbase016VO> formatC16(List<ValueObject> voS){
         Iterator<ValueObject> iterator = voS.iterator();
         List<Cbase016VO> cbase016VOS = new ArrayList<>();

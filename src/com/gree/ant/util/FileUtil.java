@@ -27,10 +27,10 @@ public class FileUtil {
     private static Integer BUFFER_SIZE = 1024;
 
     //1.本地文件存储地址
-//    private static String IMAGE_SAVEPATH = "E:\\filePath\\";
-//    private static String FILE_SAVEPATH = "E:\\filePath\\";
-//    private static String BASIC_SAVEPATH = "E:\\filePath\\";
-//    private static String NORMALIMAGE = "static\\images\\header.jpg";
+/*    private static String IMAGE_SAVEPATH = "E:\\filePath\\";
+    private static String FILE_SAVEPATH = "E:\\filePath\\";
+    private static String BASIC_SAVEPATH = "E:\\filePath\\";
+   private static String NORMALIMAGE = "static\\images\\header.jpg";*/
 
     //2.本地访问服务器文件存储地址
 //    private static String IMAGE_SAVEPATH = "\\\\10.1.18.83\\ant\\image\\";
@@ -39,10 +39,12 @@ public class FileUtil {
 //    private static String NORMALIMAGE = "static\\images\\header.jpg";
 
     //3.服务器文件存储地址
+
     private static String IMAGE_SAVEPATH = "\\\\192.13.183.83\\ant\\image\\";
     private static String FILE_SAVEPATH = "\\\\192.13.183.83\\ant\\file\\";
     private static String BASIC_SAVEPATH = "\\\\192.13.183.83\\ant\\";
     private static String NORMALIMAGE = "static\\images\\header.jpg";
+
 
     /**
      * Copy integer.
@@ -203,7 +205,9 @@ public class FileUtil {
         }
         return blob;
     }
-
+    public static String getRandomName5(){
+        return   ""+(int)(10000+Math.random()*(99999-10000));
+    }
     /**
      * Get os by byte output stream.
      *
@@ -267,6 +271,10 @@ public class FileUtil {
         String suffix = getFileSuffix(oldFileName);
         String fileName = getRandomName13()+suffix;
         String savePath = getSavePath(suffix);
+        System.out.println("oldFileName====="+oldFileName);
+        System.out.println("suffix========"+suffix);
+        System.out.println("fileName======"+fileName);
+        System.out.println("savePath======"+savePath);
         Integer fileSize = 0;
         checkSavePath(savePath);
         Date date = null;
