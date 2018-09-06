@@ -219,7 +219,6 @@
         <a href="javascript:"><cite style="cursor: pointer;">首页</cite></a>
         <a href="javascript:"><cite style="cursor: pointer;">项目</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">绩效</cite></a>
-        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
     </span>
 </div>
 <div class="x-body">
@@ -238,8 +237,10 @@
                     <label for="team"></label><select name="team" lay-filter="team" id="team" lay-search>
                         <option value="" style="display:none;" disabled selected>请选择Team</option>
                     </select>
+
                 </div>
-                <button class="layui-btn layui-btn-radius" lay-filter="add" lay-submit="">增加</button>
+                <div class="layui-input-inline">
+                <button class="layui-btn layui-btn-radius" lay-filter="add" lay-submit="">增加</button> </div>
             </div>
         </div>
     </form>
@@ -262,7 +263,7 @@
             <button class="layui-btn layui-bg-black delete-btn"><i class="layui-icon">&#xe640;</i>批量删除</button>
             <button class="layui-btn layui-bg-black copy-btn"><i class="layui-icon">&#xe6af;</i>复制</button>
         </div>
-        <table class="layui-table" lay-data="{height:'full-400',url:'${base}/grade/queryAll',initSort:{field:'pdat',type:'desc'},page:true,limit:10,limits:[10,15,20,25,30,50],id:'grade'}" lay-filter="grade">
+        <table class="layui-table" lay-data="{height:500,url:'${base}/grade/queryAll',initSort:{field:'pdat',type:'desc'},page:true,limit:10,limits:[10,15,20,25,30,50],id:'grade'}" lay-filter="grade">
             <thead>
             <tr>
                 <th lay-data="{checkbox:true,width:50,fixed:true}"></th>
@@ -296,7 +297,7 @@
         <a class="layui-btn layui-btn-xs layui-bg-black" lay-event="push">推送领导</a>
         <a class="layui-btn layui-btn-xs" href="./printGrade?ptno={{d.ptno}}">生成绩效表</a>
     </div>
-    <br><br><br><br><br><br><br><br><br>
+
 </div>
 </body>
 </html>

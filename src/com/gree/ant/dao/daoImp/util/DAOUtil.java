@@ -1,8 +1,10 @@
 package com.gree.ant.dao.daoImp.util;
 
+import com.gree.ant.util.HTMLUtil;
 import com.gree.ant.vo.Tbuss001VO;
 import com.gree.ant.vo.Tbuss009VO;
 import com.gree.ant.vo.util.ResultVO;
+import com.gree.ant.vo.util.TaskUtilVO;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
@@ -105,6 +107,22 @@ public class DAOUtil {
         return sql.getList(Tbuss009VO.class);
     }
 
+    public static List<TaskUtilVO> getTU(Sql sql, Dao dao){
+        sql.setCallback(new SqlCallback() {
+            @Override
+            public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
+                List<TaskUtilVO> taskUtilVOList = new ArrayList<>();
+                while(rs.next()){
+                    taskUtilVOList.add(new TaskUtilVO(rs.getString("csid"),rs.getString("cnam"),rs.getString("pdat"),
+                            rs.getString("titl"),rs.getString("taid"), HTMLUtil.delHTMLTag(rs.getString("note"))));
+                }
+                return taskUtilVOList;
+            }
+        });
+        dao.execute(sql);
+        return sql.getList(TaskUtilVO.class);
+    }
+
 
     /**
      * Get ti count integer.
@@ -121,7 +139,7 @@ public class DAOUtil {
         sql.setCallback(new SqlCallback() {
             @Override
             public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
-                Integer res = 0;
+                int res = 0;
                 if(rs.next()) {
                     res =  rs.getInt(1);
                 }

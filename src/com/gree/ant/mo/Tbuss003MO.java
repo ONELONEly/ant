@@ -3,8 +3,11 @@ package com.gree.ant.mo;
 import com.gree.ant.dao.daoImp.BaseDAOImp;
 import com.gree.ant.dao.daoImp.Tbuss003DAOImp;
 import com.gree.ant.mo.basic.Tbuss003BasicMO;
+import com.gree.ant.util.StringUtil;
 import com.gree.ant.vo.Tbuss003VO;
 import com.gree.ant.vo.ValueObject;
+import com.gree.ant.vo.util.TaskUtilVO;
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -131,6 +134,53 @@ public class Tbuss003MO implements Tbuss003BasicMO{
     @Override
     public Integer countAllTask(Condition cnd0, Condition cnd1) {
         return tbuss003DAOImp.countAllTask(cnd0,cnd1);
+    }
+
+    @Override
+    public Integer countByTaskUtil(TaskUtilVO taskUtilVO) {
+        Cnd cnd = Cnd.NEW();
+        if(taskUtilVO.getCnam() != null){
+            cnd.and("cnam","like","%"+taskUtilVO.getCnam()+"%");
+        }
+        if(taskUtilVO.getCsid() != null){
+            cnd.and("csid","like","%"+taskUtilVO.getCsid()+"%");
+        }
+        if(taskUtilVO.getPdat() != null){
+            cnd.and("pdat","like","%"+taskUtilVO.getPdat()+"%");
+        }
+        if(taskUtilVO.getTaid() != null){
+            cnd.and("taid","like","%"+taskUtilVO.getTaid()+"%");
+        }
+        if(taskUtilVO.getTitl() != null){
+            cnd.and("titl","like","%"+taskUtilVO.getTitl()+"%");
+        }
+        return tbuss003DAOImp.countTaskUtilByCnd(cnd);
+    }
+
+    @Override
+    public List<TaskUtilVO> queryAllByPagerMsg(Pager pager, TaskUtilVO taskUtilVO,String sort,String order) {
+        Cnd cnd = Cnd.NEW();
+        if(taskUtilVO.getCnam() != null){
+            cnd.and("cnam","like","%"+taskUtilVO.getCnam()+"%");
+        }
+        if(taskUtilVO.getCsid() != null){
+            cnd.and("csid","like","%"+taskUtilVO.getCsid()+"%");
+        }
+        if(taskUtilVO.getPdat() != null){
+            cnd.and("pdat","like","%"+taskUtilVO.getPdat()+"%");
+        }
+        if(taskUtilVO.getTaid() != null){
+            cnd.and("taid","like","%"+taskUtilVO.getTaid()+"%");
+        }
+        if(taskUtilVO.getTitl() != null){
+            cnd.and("titl","like","%"+taskUtilVO.getTitl()+"%");
+        }
+        if(StringUtil.checkString(sort,order,sort)) {
+            cnd.orderBy(order, sort);
+        }else{
+            cnd.orderBy("pdat","desc");
+        }
+        return tbuss003DAOImp.queryAllTaskByPagerCnd(pager,cnd);
     }
 
     /**

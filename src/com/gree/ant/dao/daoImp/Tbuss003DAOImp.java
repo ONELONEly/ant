@@ -4,6 +4,8 @@ import com.gree.ant.dao.Tbuss003DAO;
 import com.gree.ant.dao.daoImp.util.DAOUtil;
 import com.gree.ant.util.FileUtil;
 import com.gree.ant.vo.Tbuss003VO;
+import com.gree.ant.vo.util.TaskUtilVO;
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
@@ -129,6 +131,25 @@ public class Tbuss003DAOImp implements Tbuss003DAO{
         sql.setParam("usid",usid);
         sql.setCondition(condition);
         return DAOUtil.getTiCount(sql,dao);
+    }
+
+    @Override
+    public Integer countTaskUtilByCnd(Condition cnd) {
+        String sqlStr = "select count(*) from (select t3.taid,t3.titl,t3.csid,(select c0.dsca from cbase000 c0 where c0.usid = t3.csid) as cnam," +
+                "(select t1.pdat from tbuss001 t1 where t1.ptno = t3.ptno) as pdat from tbuss003 t3) $condition";
+        Sql sql = Sqls.create(sqlStr);
+        sql.setCondition(cnd);
+        return DAOUtil.getTiCount(sql,dao);
+    }
+
+    @Override
+    public List<TaskUtilVO> queryAllTaskByPagerCnd(Pager pager, Cnd cnd) {
+        String sqlStr = "select * from (select t3.taid,t3.titl,t3.note,t3.csid,(select c0.dsca from cbase000 c0 where c0.usid = t3.csid) as cnam," +
+                "(select t1.pdat from tbuss001 t1 where t1.ptno = t3.ptno) as pdat from tbuss003 t3) $condition";
+        Sql sql =Sqls.create(sqlStr);
+        sql.setPager(pager);
+        sql.setCondition(cnd);
+        return DAOUtil.getTU(sql,dao);
     }
 
     /**

@@ -12,7 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>智库</title>
+    <title>会议纪要</title>
     <c:import url="../../static1.html"/>
     <script language="JavaScript">
         layui.use(['form','jquery','table','layer','element'],function () {
@@ -35,7 +35,7 @@
 <body>
 <div class="x-body">
     <div class="x-titleDiv">
-        <span style="font-size: xx-large;">&nbsp;智库</span>
+        <span style="font-size: xx-large;">&nbsp;会议纪要</span>
     </div>
     <table class="layui-table" lay-skin="nob" lay-data="{height:'full',url:'./queryAllMessage?ctyp=2',id:'manage'}" lay-filter="manage">
         <thead>

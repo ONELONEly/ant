@@ -1,23 +1,18 @@
 package com.gree.ant.util;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Properties;
-
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Properties;
 
 
 /**
@@ -424,7 +419,7 @@ public class MailUtil {
 				+ " <LI><U>"+titl+"</U><FONT><U>"
 				+ sys+">>>任务单号："+cono
 				+ "("+ notes+ ") ;"
-				+ "</U></FONT> 。 <FONT color=green>注：请及时<A HREF='http://10.1.18.83:8080/ant'>"+"登录"+"</A>"+"系统处理。亲，记得用Chrome 谷歌浏览器登录！</FONT></LI></TD></TR></TR>"
+				+ "</U></FONT> 。 <FONT color=green>注：请及时<A HREF='http://10.1.18.83:887/ant'>"+"登录"+"</A>"+"系统处理。亲，记得用Chrome 谷歌浏览器登录！</FONT></LI></TD></TR></TR>"
 				+ "<TR>"
 				+ "<TD colSpan=2>"
 				+ "<LI><FONT color=red><B>注:</B></FONT> "
@@ -448,7 +443,7 @@ public class MailUtil {
 				+ "    <TD colSpan=2>"
 				+ " <LI>尊敬的领导，"+grop+"团队绩效表("+ptno+")，计划表已发送到您的邮箱！"
 				+ "<FONT><U>"
-				+ "请<A href='http://10.1.18.83:8080/ant/grade/printAllGrade?ptno=" +ptno
+				+ "请<A href='http://10.1.18.83:887/ant/grade/printAllGrade?ptno=" +ptno
 				+"'>下载</A>"
 				+ "</U></FONT></LI></TD></TR></TR>"
 				+ "<TR>"
@@ -473,7 +468,7 @@ public class MailUtil {
 				+ "    <TD colSpan=2>"
 				+ " <LI>亲爱的"+csid+"，有一个分享文档("+tilt+")送达，请登录"
 				+ "<FONT>"
-				+ "<A href='http://10.1.18.83:8080/ant/doc/showDoc?doid=" +doid
+				+ "<A href='http://10.1.18.83:887/ant/doc/showDoc?doid=" +doid
 				+"'>查看</A>"
 				+ "</FONT>,来自("+usid+")</LI></TD></TR></TR>"
 				+ "<TR>"
@@ -498,7 +493,7 @@ public class MailUtil {
 				+ "    <TD colSpan=2>"
 				+ " <LI>亲爱的"+csid+"，您关注的任务"+taid+"("+tilt+")状态更新为(-->>"+status+"<<--)，详情请"
 				+ "<FONT>"
-				+ "<A href='http://10.1.18.83:8080/ant>"
+				+ "<A href='http://10.1.18.83:887/ant>"
 				+"'>登录</A>查看"
 				+ "</FONT></LI></TD></TR></TR>"
 				+ "<TR>"

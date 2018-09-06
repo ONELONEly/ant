@@ -1,13 +1,13 @@
 package com.gree.ant.controller;
 
+import com.gree.ant.dao.daoImp.util.DAOUtil;
 import com.gree.ant.mo.*;
-import com.gree.ant.util.DateUtil;
-import com.gree.ant.util.FileUtil;
-import com.gree.ant.util.ResultUtil;
-import com.gree.ant.util.StringUtil;
+import com.gree.ant.util.*;
 import com.gree.ant.vo.Cbase011VO;
+import com.gree.ant.vo.util.TaskUtilVO;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
+import org.nutz.dao.pager.Pager;
 import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -365,6 +365,15 @@ public class UtilController {
              }
         }
         return ResultUtil.getResult(code,"",cbase011VOS);
+    }
+
+    @At
+    @Ok("json")
+    public Map<String,Object> findTaskUtil(@Param("page")Integer pageNumber, @Param("limit")Integer pageSize,
+                                         @Param("order")String order, @Param("sort")String sort, @Param("..")TaskUtilVO taskUtilVO){
+        Integer count = tbuss003MO.countByTaskUtil(taskUtilVO);
+        Pager pager = TableUtil.formatPager(pageSize,pageNumber,count);
+        return TableUtil.makeJson(0,"",count,tbuss003MO.queryAllByPagerMsg(pager,taskUtilVO,sort,order));
     }
 
     /**
