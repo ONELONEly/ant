@@ -82,9 +82,44 @@
         };
 
         form.verify({
-            cnam:function (value) {
-                if(value === null){
+            ptno:function (value) {
+                if(checkForm(value)){
+                    return "请选择项目";
+                }
+            },
+            ptyp:function (value) {
+                if(checkForm(value)){
+                    return "请选择类型";
+                }
+            },
+            csid:function (value) {
+                if(checkForm(value)){
                     return "请选择接收人";
+                }
+            },
+            tepr:function (value) {
+                if(checkForm(value)){
+                    return "请选择测试用户";
+                }
+            },
+            ksid:function (value) {
+                if(checkForm(value)){
+                    return "请选择关键用户";
+                }
+            },
+            rsid:function (value) {
+                if(checkForm(value)){
+                    return "请选择验收人";
+                }
+            },
+            syno:function (value) {
+                if(checkForm(value)){
+                    return "请选择系统";
+                }
+            },
+            puno:function (value) {
+                if(checkForm(value)){
+                    return "请选择任务阶段";
                 }
             }
         });

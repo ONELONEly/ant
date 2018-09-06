@@ -7,3 +7,11 @@ function checkString(content) {
     }
     return content;
 }
+
+function checkForm(content) {
+    var status = true;
+    if(content !== undefined && content !== null && content.length > 0){
+        status = false;
+    }
+    return status;
+}

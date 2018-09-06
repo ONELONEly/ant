@@ -26,7 +26,7 @@
     <div style="position:fixed;width: 100%;height:100%;">
         <div id="left" class="layui-side x-equal" style="margin-top:-20px;">
         </div>
-        <div id="right" class="layui-layout-right layui-side x-equal">
+        <div id="right" class="layui-layout-right x-equal">
         </div>
         <div class="x-titleDiv" style="height: 25%;border-left: none;">
             <ul class="layui-nav" style="background-color: #f2f2f2;">

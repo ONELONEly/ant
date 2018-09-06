@@ -746,8 +746,7 @@ public class TaskController {
     public Map<String,Object> updateSta1(@Param("operate")Integer operate, @Param("stag")Integer stag,
                                          @Param("::list")String[] taids, @Param("remk")String remk,
                                          @Param("date")String date, @Param("fahh")Float fahh,@Param("fini")String fini, AdaptorErrorContext error, HttpSession session)throws Exception{
-        System.out.println("完成时间"+date);
-        System.out.println("开始时间"+fini);
+
         Cbase000VO cbase000VO=(Cbase000VO)session.getAttribute("cbase000VO");
         StringBuilder msg = new StringBuilder("传入参数为空");
         Integer code = 0;
@@ -774,23 +773,20 @@ public class TaskController {
                     } else if (operate == 2) {
                         MailUtil.sendmail(ksid, "尊敬的" + knam + "，您的任务已在努力开发中！计划完成时间：" + DateUtil.formatYMDHMDDate(date), taid, titl, sys);
                         status = "执行中";
-                        if (StringUtil.checkString(date)||StringUtil.checkString(fini)) {
+                        if (StringUtil.checkString(date) && StringUtil.checkString(fini)) {
                             tbuss003VO.setAdat(new Date());
 
-                            Date date1=null;
+                            Date date_v;
                             SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            date1=formatter.parse(date);
+                            date_v=formatter.parse(date);
 
-                            Date fini1=null;
+                            Date fini_v;
                             SimpleDateFormat formatter1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            fini1=formatter1.parse(fini);
+                            fini_v=formatter1.parse(fini);
 
 
-                            tbuss003VO.setPdat(date1);
-                            tbuss003VO.setIdat(fini1);
-                            System.out.println("tbuss003VO.getPdat()"+tbuss003VO.getPdat());
-                            System.out.println("tbuss003VO.getIdat()"+tbuss003VO.getIdat());
-
+                            tbuss003VO.setPdat(date_v);
+                            tbuss003VO.setIdat(fini_v);
                         }
                         if (fahh != null) {
                             tbuss003VO.setFahh(fahh);
