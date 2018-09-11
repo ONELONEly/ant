@@ -33,8 +33,8 @@ public class Cbase010MO implements Cbase010BasicMO{
     }
 
     @Override
-    public Boolean queryByCnd(Condition cnd) {
-        return baseDAOImp.queryByCndPager(new Cbase010VO(),cnd,null).size() == 0;
+    public List<Cbase010VO> queryByCnd(Condition cnd) {
+        return formatC10(baseDAOImp.queryByCndPager(new Cbase010VO(),cnd,null));
     }
 
     private List<Cbase010VO> formatC10(List<ValueObject> voS){

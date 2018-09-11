@@ -1,6 +1,8 @@
 package com.gree.ant.vo;
 
 
+import com.gree.ant.vo.util.Cbase011_Grade_Trans;
+import com.gree.ant.vo.util.Tbuss003_Grade_Trans;
 import org.nutz.dao.entity.annotation.*;
 
 import java.util.Date;
@@ -144,6 +146,12 @@ public class Tbuss001VO extends ValueObject{
     @Many(target = Tbuss005VO.class,field = "ptno")
     private List<Tbuss005VO> tbuss005VOS;
 
+    @Readonly
+    private List<Tbuss003_Grade_Trans> grade_trans;
+
+    @Readonly
+    private List<Cbase011_Grade_Trans> c11_grade_trans;
+
     public Tbuss001VO() {
     }
 
@@ -271,5 +279,21 @@ public class Tbuss001VO extends ValueObject{
 
     public void setGrop(String grop) {
         this.grop = grop;
+    }
+
+    public List<Tbuss003_Grade_Trans> getGrade_trans() {
+        return grade_trans;
+    }
+
+    public void setGrade_trans(List<Tbuss003_Grade_Trans> grade_trans) {
+        this.grade_trans = grade_trans;
+    }
+
+    public List<Cbase011_Grade_Trans> getC11_grade_trans() {
+        return c11_grade_trans;
+    }
+
+    public void setC11_grade_trans(List<Cbase011_Grade_Trans> c11_grade_trans) {
+        this.c11_grade_trans = c11_grade_trans;
     }
 }

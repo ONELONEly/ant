@@ -96,7 +96,7 @@ public class Tbuss001DAOImp implements Tbuss001DAO{
 
     @Override
     public List<String> queryAllPdat() {
-        String sqlStr = "select distinct(pdat) from tbuss001 order by pdat asc";
+        String sqlStr = "select distinct(pdat) from tbuss001 order by pdat desc";
         Sql sql = Sqls.create(sqlStr);
         sql.setCallback(new SqlCallback() {
             @Override

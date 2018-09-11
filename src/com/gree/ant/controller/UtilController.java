@@ -339,6 +339,7 @@ public class UtilController {
     public Map<String,Object> findPdat(){
         Map<String,Object> map = new HashMap<>();
         map.put("pdat",tbuss001MO.queryAllPdat());
+        map.put("grop",cbase009MO.queryAllGD());
         return map;
     }
 

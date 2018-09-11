@@ -16,6 +16,8 @@
     <script src="./static/js/echarts.js" charset="utf-8"></script>
     <c:import url="../static.html"/>
     <style>
+
+
         li{
             width: 12.5%;
         }
@@ -105,7 +107,7 @@
                 rightEchart.setOption(rightOption,true);
             },
             error:function (kj) {
-                layer.alert("发生错误:"+kj.status);
+                layer.alert("发生错误:"+kj.status,{offset:'10px'});
             }
         });
 
@@ -128,7 +130,7 @@
                 $("#done").text(res.done);
             },
             error:function (kellyj) {
-                layer.alert("发生错误,错误码为:"+kellyj.status);
+                layer.alert("发生错误,错误码为:"+kellyj.status,{offset:'10px'});
             }
         });
     });

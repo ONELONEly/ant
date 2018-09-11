@@ -15,96 +15,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>评分细节</title>
     <c:import url="../../static1.html"/>
-    <script language="JavaScript">
-        layui.use(["laydate","laypage","element","layer","table","jquery","form"],function () {
-            var laypage = layui.laypage,
-                element = layui.element,
-                layer = layui.layer,
-                table = layui.table,
-                form = layui.form,
-                $ = layui.jquery;
-
-            form.on("submit(set)",function (data) {
-                var infor = data.field;
-                $.ajax({
-                    type:'POST',
-                    url:'${base}/task/insertRuleScore',
-                    data:{
-                        'pjno':infor.pjno,
-                        "opco":infor.score,
-                        "remk":infor.remk
-                    },
-                    dataType:'json',
-                    success:function (res) {
-                        if(res.code === 1){
-                            layer.alert(res.msg);
-                            table.reload("score");
-                        }else{
-                            layer.alert(res.msg);
-                        }
-                    },
-                    error:function (kj) {
-                        layer.alert("发生错误:"+kj.status);
-                    }
-                });
-                return false;
-            });
-
-            table.on('tool(score)', function(obj){
-                var data = obj.data;
-                if(obj.event === 'del'){
-                    layer.confirm('真的删除行么', function(index){
-                        $.ajax({
-                            type:'POST',
-                            url:'${base}/task/deleteRuleScore',
-                            data:{
-                                'pjno':data.pjno,
-                                "opco":data.opco
-                            },
-                            dataType:'json',
-                            success:function (res) {
-                                if(res.code === 1){
-                                    layer.alert(res.msg);
-                                    obj.del();
-                                    layer.close(index);
-                                }else{
-                                    layer.alert(res.msg);
-                                }
-                            },
-                            error:function (kj) {
-                                layer.alert("发生错误:"+kj.status);
-                            }
-                        });
-                    });
-                }
-            });
-
-            $(".delete-btn").on("click",function () {
-                var check = table.checkStatus('score');
-                var data = check.data;
-                $.ajax({
-                    type:'POST',
-                    url:'${base}/task/deleteRuleScore',
-                    data:{
-                        list:data
-                    },
-                    dataType:'json',
-                    success:function (res) {
-                        if(res.code === 1){
-                            layer.alert(res.msg);
-                            table.reload("score")
-                        }else{
-                            layer.alert(res.msg);
-                        }
-                    },
-                    error:function (kj) {
-                        layer.alert("发生错误:"+kj.status);
-                    }
-                });
-            });
-
-        });
-    </script>
 </head>
 <body>
 <div class="x-nav">
@@ -112,7 +22,7 @@
         <a href="javascript:"><cite style="cursor: pointer;">设置</cite></a>
         <a href="./rule"><cite style="cursor: pointer;">任务规则</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">评分细节</cite></a>
-        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center layui-icon-refresh"></i></a>
     </span>
 </div>
 <div class="x-body">
@@ -137,22 +47,112 @@
     <div class="layui-inline">
         <button class="layui-btn layui-btn-danger delete-btn"><i class="layui-icon">&#xe640;</i>批量删除</button>
     </div>
-    <table class="layui-table" lay-data="{height:'full-400',url:'${base}/task/queryAllRuleScore?pjno=${obj}',id:'score'}" lay-filter="score">
+    <table class="layui-table" lay-data="{url:'${base}/task/queryAllRuleScore?pjno=${obj}',id:'score'}" lay-filter="score">
         <thead>
         <tr>
             <th lay-data="{checkbox:true,width:50}"></th>
-            <th lay-data="{field:'pjno',width:150}">编号</th>
-            <th lay-data="{field:'opco',edit:true,width:150}">分值</th>
-            <th lay-data="{field:'remk',width:150}">备注</th>
-            <th lay-data="{fixed: 'right', toolbar: '#operate', width:150, align:'center'}">操作</th>
+            <th lay-data="{field:'pjno',align:'center',width:'20%'}">编号</th>
+            <th lay-data="{field:'opco',edit:true,align:'center',width:'25%'}">分值</th>
+            <th lay-data="{field:'remk',align:'center',width:'25%'}">备注</th>
+            <th lay-data="{fixed: 'right', toolbar: '#operate', width:'30%'-50, align:'center'}">操作</th>
         </tr>
         </thead>
     </table>
     <div class="layui-hide" id="operate">
         <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
     </div>
-    <br/><br/><br/><br/><br/><br/><br/><br/>
+
 </div>
+<script language="JavaScript">
+    layui.use(["laydate","laypage","element","layer","table","jquery","form"],function () {
+        var laypage = layui.laypage,
+            element = layui.element,
+            layer = layui.layer,
+            table = layui.table,
+            form = layui.form,
+            $ = layui.jquery;
+
+        form.on("submit(set)",function (data) {
+            var infor = data.field;
+            $.ajax({
+                type:'POST',
+                url:'${base}/task/insertRuleScore',
+                data:{
+                    'pjno':infor.pjno,
+                    "opco":infor.score,
+                    "remk":infor.remk
+                },
+                dataType:'json',
+                success:function (res) {
+                    if(res.code === 1){
+                        layer.alert(res.msg,{offset:'10px'});
+                        table.reload("score");
+                    }else{
+                        layer.alert(res.msg);
+                    }
+                },
+                error:function (kj) {
+                    layer.alert("发生错误:"+kj.status,{offset:'10px'});
+                }
+            });
+            return false;
+        });
+
+        table.on('tool(score)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('真的删除行么',{offset:'10px'}, function(index){
+                    $.ajax({
+                        type:'POST',
+                        url:'${base}/task/deleteRuleScore',
+                        data:{
+                            'pjno':data.pjno,
+                            "opco":data.opco
+                        },
+                        dataType:'json',
+                        success:function (res) {
+                            if(res.code === 1){
+                                layer.alert(res.msg,{offset:'10px'});
+                                obj.del();
+                                layer.close(index);
+                            }else{
+                                layer.alert(res.msg,{offset:'10px'});
+                            }
+                        },
+                        error:function (kj) {
+                            layer.alert("发生错误:"+kj.status,{offset:'10px'});
+                        }
+                    });
+                });
+            }
+        });
+
+        $(".delete-btn").on("click",function () {
+            var check = table.checkStatus('score');
+            var data = check.data;
+            $.ajax({
+                type:'POST',
+                url:'${base}/task/deleteRuleScore',
+                data:{
+                    list:data
+                },
+                dataType:'json',
+                success:function (res) {
+                    if(res.code === 1){
+                        layer.alert(res.msg);
+                        table.reload("score")
+                    }else{
+                        layer.alert(res.msg);
+                    }
+                },
+                error:function (kj) {
+                    layer.alert("发生错误:"+kj.status);
+                }
+            });
+        });
+
+    });
+</script>
 </body>
 </html>
 

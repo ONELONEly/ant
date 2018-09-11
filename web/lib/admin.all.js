@@ -52,7 +52,7 @@ function(e) {
                 if (t === e.seconds) {
                     if (!/^1\d{10}$/.test(n)) return i.focus(),
                     layer.msg("请输入正确的手机号");
-                    if ("object" == typeof e.ajax) {
+                    if ("object" === typeof e.ajax) {
                         var l = e.ajax.success;
                         delete e.ajax.success
                     }

@@ -19,7 +19,7 @@
     <span class="layui-breadcrumb">
         <a href="javascript:"><cite>设置</cite></a>
         <a href="javascript:location.replace(location.href)"><cite>OKR管理</cite></a>
-        <a href="javascript:location.replace(location.href)" class="layui-btn layui-btn-radius layui-btn-sm l-refresh" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a href="javascript:location.replace(location.href)" class="layui-btn layui-btn-radius layui-btn-sm l-refresh" title="刷新"><i class="layui-icon l-center layui-icon-refresh"></i></a>
     </span>
 </div>
 <div class="x-body">

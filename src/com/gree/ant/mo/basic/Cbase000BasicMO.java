@@ -152,7 +152,7 @@ public interface Cbase000BasicMO {
      * @version V1.0
      * @createTime 2017 :10:27 04:10:01.
      */
-    List<GradeVO> queryAllGradeByPdat(String pdat);
+    List<GradeVO> queryAllGradeByPdat(String pdat,String grop);
 
     /**
      * Query all user list.

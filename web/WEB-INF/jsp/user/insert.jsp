@@ -15,110 +15,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>添加用户</title>
     <c:import url="../../static1.html"/>
-    <script language="JavaScript">
-        layui.use(['element','form','jquery','upload'],function () {
-            var element = layui.element,form = layui.form,$ = layui.jquery,upload = layui.upload;
-
-
-            $.ajax({
-            type:'POST',
-            url:'${base}/util/findC1C6C9C17',
-            dataType:'json',
-            success:function (data) {
-            var dept = data.dept,grop = data.grop,acco = data.acco,comp = data.comp;
-            var dOption = "",gOption = "",aOption = "",cOption = "'";
-            for(var i = 0;i<dept.length;i++){
-                dOption += "<option value='"+dept[i].id+"'>"+dept[i].dsca+"</option>";
-            }
-            for(var j = 0;j<grop.length;j++){
-                gOption += "<option value='"+grop[j].id+"'>"+grop[j].dsca+"</option>";
-            }
-            for(var m = 0;m<acco.length;m++){
-                aOption += "<option value='"+acco[m].id+"'>"+acco[m].dsca+"</option>";
-            }
-            for(var n = 0;n<comp.length;n++){
-                cOption += "<option value='"+comp[n].id+"'>"+comp[n].dsca+"</option>";
-            }
-            $("#dept").append(dOption);
-            $("#grop").append(gOption);
-            $("#acco").append(aOption);
-            $("#comp").append(cOption);
-            form.render();
-            },
-            error:function (kellyj) {
-            layer.msg("发生错误:"+kellyj.status);
-            }
-            });
-
-            form.verify({
-                usid:function (value) {
-                    if(value.length === 0){
-                        return "请输入用户ID";
-                    }
-                },
-                dsca:function (value) {
-                    if(value.length === 0){
-                        return "请输入用户名称";
-                    }
-                },
-                pawd:function (value) {
-                    if(value.length === 0){
-                        return "请输入用户密码";
-                    }
-                },
-                dept:function (value) {
-                    if(value === null){
-                        return "请选择用户部门";
-                    }
-                },
-                jwwj:function (value) {
-                    if(value.length === 0){
-                        return "请输入用户岗位";
-                    }
-                },
-                grop:function (value) {
-                    if(value === null){
-                        return "请选择用户所属团队";
-                    }
-                },
-                acco:function (value) {
-                    if(value === null){
-                        return "请选择用户科室";
-                    }
-                },
-                comp:function (value) {
-                    if(value === null){
-                        return "请选择用户公司";
-                    }
-                }
-            });
-
-            form.on("submit(insert)",function (data) {
-                console.log(data.field);
-                $.ajax({
-                    type:'POST',
-                    url:'${base}/user/insert',
-                    data:data.field,
-                    dataType:'json',
-                    success:function (res) {
-                        if(res.code === 1){
-                            layer.confirm(res.msg,{btn:['确定','返回'],offset:'100px',anim:4},function () {
-                                window.location.reload();
-                            },function () {
-                                window.location.replace("./manage");
-                            });
-                        }else{
-                            layer.alert(res.msg);
-                        }
-                    },
-                    error:function (kj) {
-                        layer.alert("发生错误:"+kj.status);
-                    }
-                });
-                return false;
-            });
-        });
-    </script>
 </head>
 <body>
 <div class="x-nav">
@@ -126,7 +22,7 @@
         <a href="javascript:"><cite style="cursor: pointer;">首页</cite></a>
         <a href="./manage"><cite style="cursor: pointer;">用户管理</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">添加用户</cite></a>
-        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center layui-icon-refresh"></i></a>
     </span>
 </div>
 
@@ -230,7 +126,111 @@
             </div>
         </div>
     </form>
-    <br><br><br><br><br><br><br><br><br>
+
 </div>
+<script language="JavaScript">
+    layui.use(['element','form','jquery','upload'],function () {
+        var element = layui.element,form = layui.form,$ = layui.jquery,upload = layui.upload;
+
+
+        $.ajax({
+            type:'POST',
+            url:'${base}/util/findC1C6C9C17',
+            dataType:'json',
+            success:function (data) {
+                var dept = data.dept,grop = data.grop,acco = data.acco,comp = data.comp;
+                var dOption = "",gOption = "",aOption = "",cOption = "'";
+                for(var i = 0;i<dept.length;i++){
+                    dOption += "<option value='"+dept[i].id+"'>"+dept[i].dsca+"</option>";
+                }
+                for(var j = 0;j<grop.length;j++){
+                    gOption += "<option value='"+grop[j].id+"'>"+grop[j].dsca+"</option>";
+                }
+                for(var m = 0;m<acco.length;m++){
+                    aOption += "<option value='"+acco[m].id+"'>"+acco[m].dsca+"</option>";
+                }
+                for(var n = 0;n<comp.length;n++){
+                    cOption += "<option value='"+comp[n].id+"'>"+comp[n].dsca+"</option>";
+                }
+                $("#dept").append(dOption);
+                $("#grop").append(gOption);
+                $("#acco").append(aOption);
+                $("#comp").append(cOption);
+                form.render();
+            },
+            error:function (kellyj) {
+                layer.msg("发生错误:"+kellyj.status,{offset:'10px'});
+            }
+        });
+
+        form.verify({
+            usid:function (value) {
+                if(checkForm(value)){
+                    return "请输入用户ID";
+                }
+            },
+            dsca:function (value) {
+                if(checkForm(value)){
+                    return "请输入用户名称";
+                }
+            },
+            pawd:function (value) {
+                if(checkForm(value)){
+                    return "请输入用户密码";
+                }
+            },
+            dept:function (value) {
+                if(checkForm(value)){
+                    return "请选择用户部门";
+                }
+            },
+            jwwj:function (value) {
+                if(checkForm(value)){
+                    return "请输入用户岗位";
+                }
+            },
+            grop:function (value) {
+                if(checkForm(value)){
+                    return "请选择用户所属团队";
+                }
+            },
+            acco:function (value) {
+                if(checkForm(value)){
+                    return "请选择用户科室";
+                }
+            },
+            comp:function (value) {
+                if(checkForm(value)){
+                    return "请选择用户公司";
+                }
+            }
+        });
+
+        form.on("submit(insert)",function (data) {
+            console.log(data.field);
+            $.ajax({
+                type:'POST',
+                url:'${base}/user/insert',
+                data:data.field,
+                dataType:'json',
+                success:function (res) {
+                    if(res.code === 1){
+                        layer.confirm(res.msg,{btn:['确定','返回'],offset:'100px',anim:4},function () {
+                            window.location.reload();
+                        },function () {
+                            window.location.replace("./manage");
+                        });
+                    }else{
+                        layer.alert(res.msg);
+                    }
+                },
+                error:function (kj) {
+                    layer.alert("发生错误:"+kj.status);
+                }
+            });
+            return false;
+        });
+    });
+</script>
 </body>
 </html>

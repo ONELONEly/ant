@@ -228,7 +228,7 @@ public class GroupController {
         String grop = cbase010VO.getGrop();
         String usid = cbase010VO.getUsid();
         if(StringUtil.checkString(grop) && StringUtil.checkString(usid)) {
-            if(cbase010MO.queryByCnd(Cnd.where("grop","=",grop).and("usid","=",usid))) {
+            if(cbase010MO.queryByCnd(Cnd.where("grop","=",grop).and("usid","=",usid)).size() == 0) {
                 cbase010VO = cbase010MO.insert(cbase010VO);
                 if (cbase010VO != null) {
                     code = 1;

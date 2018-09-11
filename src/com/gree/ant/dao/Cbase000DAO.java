@@ -46,14 +46,13 @@ public interface Cbase000DAO {
     /**
      * Query all grade by pdat list.
      *
-     * @param pdat 月份
      * @return the list
      * @description 通过月份查询所有人的成绩排名
      * @author create by jinyuk@foxmail.com.
      * @version V1.0
      * @createTime 2017 :10:27 04:10:01.
      */
-    List<GradeVO> queryAllGradeByPdat(String pdat);
+    List<GradeVO> queryAllGradeByPdat(Condition cnd,Condition condition);
 
     /**
      * Query all user list.

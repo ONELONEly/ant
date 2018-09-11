@@ -15,221 +15,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>菜单管理</title>
     <c:import url="../../static1.html"/>
-    <script language="JavaScript">
-        layui.use(["laydate","laypage","element","layer","table","jquery","form"],function () {
-            var laypage = layui.laypage, element = layui.element, layer = layui.layer,
-                table = layui.table, form = layui.form, $ = layui.jquery;
-            var styp = "";
-            $(document).ready(function () {
-            });
-
-            form.on("submit(search)",function (data) {
-                var infor = data.field;
-                console.log(infor);
-                table.reload("menu",{
-                    where:{
-                        key:infor.msg
-                    }
-                });
-                return false;
-            });
-
-            form.verify({
-                styp: function (value) {
-                    if (value === null) {
-                        return "请选择菜单类型";
-                    }
-                }
-            });
-
-            function verify() {
-                if(styp === '2') {
-                    form.verify({
-                        styp: function (value) {
-                            if (value === null) {
-                                return "请选择菜单类型";
-                            }
-                        },
-                        pono: function (value) {
-                            if (value === null) {
-                                return "请选择父节点";
-                            }
-                        },
-                        flno: function (value) {
-                            if (value.length === 0 || value.length !== 3) {
-                                return "请输入菜单编号且菜单编号长度为3";
-                            }
-                        },
-                        dsca: function (value) {
-                            if (value.length === 0) {
-                                return "请输入菜单描述";
-                            }
-                        },
-                        purl: function (value) {
-                            if (value === null) {
-                                return "请输入菜单链接地址";
-                            }
-                        }
-                    });
-                }else{
-                    form.verify({
-                        styp: function (value) {
-                            if (value === null) {
-                                return "请选择菜单类型";
-                            }
-                        },
-                        pono: function (value) {
-
-                        },
-                        flno: function (value) {
-                            if (value.length === 0 || value.length !== 3) {
-                                return "请输入菜单编号且菜单编号长度为3";
-                            }
-                        },
-                        dsca: function (value) {
-                            if (value.length === 0) {
-                                return "请输入菜单描述";
-                            }
-                        },
-                        purl: function (value) {
-
-                        }
-                    });
-                }
-            }
-
-            form.on("submit(set)",function (data) {
-                $.ajax({
-                    type:'POST',
-                    url:'./insertMenu',
-                    data:data.field,
-                    dataType:'json',
-                    success:function (res) {
-                        if(res.code === 1){
-                            $("#flno").val('');
-                            $("#purl").val('');
-                            table.reload("menu");
-                        }
-                        return layer.msg(res.msg);
-                    },
-                    error:function (kj) {
-                        layer.alert("发生错误:"+kj.status);
-                    }
-                });
-                return false;
-            });
-
-            table.on('edit(menu)',function (obj) {
-                $.ajax({
-                    type:'POST',
-                    url:'./updateMenu',
-                    data:obj.data,
-                    dataType:'json',
-                    success:function (res) {
-                        if(res.code === 0){
-                            table.reload("menu");
-                        }
-                        return layer.msg(res.msg);
-                    },
-                    error:function (kj) {
-                        layer.alert("发生错误:"+kj.status);
-                    }
-                });
-            });
-
-            table.on('tool(menu)', function(obj){
-                var data = obj.data;
-                if(obj.event === 'del'){
-                    layer.confirm('真的删除行么',{offset:'100px'},function(index){
-                        console.log(data);
-                        $.ajax({
-                            type:'POST',
-                            url:'./deleteMenu',
-                            data:{
-                                pono:data.pono
-                            },
-                            dataType:'json',
-                            success:function (res) {
-                                if(res.code === 1){
-                                    layer.close(index);
-                                    table.reload('menu');
-                                }
-                                layer.msg(res.msg);
-                            },
-                            error:function (kj) {
-                                layer.alert("发生错误:"+kj.status);
-                            }
-                        });
-                    });
-                }
-            });
-
-            form.on("select(styp)",function (obj) {
-                styp = obj.value;
-                if(styp === '2'){
-                    $.ajax({
-                        type:'GET',
-                        url:'${base}/util/findC2',
-                        dataType:'json',
-                        success:function (data) {
-                            var pono = data.c2;
-                            var option = "<option value='' disabled selected>请选择父节点</option>";
-                            for(var i = 0;i<pono.length;i++){
-                                option += "<option value='"+pono[i].pono+"'>"+pono[i].dsca+"</option>";
-                            }
-                            $("#pono").html(option);
-                            form.render();
-                        },
-                        error:function (kj) {
-                            layer.alert("发生错误:"+kj.status);
-                        }
-                    });
-                    $(".flno").show();
-                    $(".purl").show();
-                }else if(styp === '0'){
-                    $("#pono").val('');
-                    $(".flno").hide();
-                    $(".purl").show();
-                }else{
-                    $("#pono").val('');
-                    $(".flno").hide();
-                    $(".purl").hide();
-                }
-                verify();
-            });
-
-            $(".delete-btn").on("click",function () {
-                var check = table.checkStatus('menu');
-                var data = check.data;
-                var param = [];
-                for(var i = 0;i<data.length;i++){
-                    param[i] = data[i].pono;
-                }
-                $.ajax({
-                    type:'POST',
-                    url:'./deleteMenu',
-                    data:{
-                        list:param
-                    },
-                    dataType:'json',
-                    success:function (res) {
-                        table.reload('menu');
-                        return layer.msg(res.msg);
-                    },
-                    error:function (kj) {
-                        return layer.msg("发生错误:"+kj.status);
-                    }
-                });
-            });
-        });
-    </script>
 </head>
 <body>
 <div class="x-nav">
     <span class="layui-breadcrumb">
         <a href="javascript:"><cite style="cursor: pointer;">设置</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">菜单管理</cite></a>
-        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center layui-icon-refresh"></i></a>
     </span>
 </div>
 <div class="x-body">
@@ -279,24 +71,231 @@
     <div class="layui-inline">
         <button class="layui-btn layui-bg-black delete-btn"><i class="layui-icon">&#xe640;</i>批量删除</button>
     </div>
-    <table class="layui-table" lay-data="{height:'full-400',url:'./queryAllMenu',initSort:{field:'pono',type:'desc'},page:true,limit:10,limits:[10,15,20,25,30,50],id:'menu'}" lay-filter="menu">
+    <table class="layui-table" lay-data="{url:'./queryAllMenu',initSort:{field:'pono',type:'desc'},page:true,limit:10,limits:[10,15,20,25,30,50],id:'menu'}" lay-filter="menu">
         <thead>
         <tr>
             <th lay-data="{checkbox:true,width:50,fixed:true}"></th>
-            <th lay-data="{field:'pono',width:150,sort:true}">菜单编号</th>
-            <th lay-data="{field:'dsca',edit:true,width:150}">描述</th>
-            <th lay-data="{field:'styp',edit:true,width:150}">类型</th>
-            <th lay-data="{field:'stypnam',width:150}">类型</th>
-            <th lay-data="{field:'purl',edit:true,width:150}">地址</th>
-            <th lay-data="{fixed: 'right', toolbar: '#operate', width:150, align:'center'}">操作</th>
+            <th lay-data="{field:'pono',align:'center',width:'20%',sort:true}">菜单编号</th>
+            <th lay-data="{field:'dsca',edit:true,align:'center',width:'20%'}">描述</th>
+            <th lay-data="{field:'stypnam',align:'center',width:'20%'-50}">类型</th>
+            <th lay-data="{field:'purl',edit:true,align:'center',width:'20%'}">地址</th>
+            <th lay-data="{fixed: 'right', toolbar: '#operate', width:'20%', align:'center'}">操作</th>
         </tr>
         </thead>
     </table>
     <div class="layui-hide" id="operate">
         <a class="layui-btn layui-btn-xs layui-bg-black" lay-event="del">删除</a>
     </div>
-    <br><br><br><br><br><br><br><br><br>
+
 </div>
+<script language="JavaScript">
+    layui.use(["laydate","laypage","element","layer","table","jquery","form"],function () {
+    var laypage = layui.laypage, element = layui.element, layer = layui.layer,
+    table = layui.table, form = layui.form, $ = layui.jquery;
+    var styp = "";
+    $(document).ready(function () {
+    });
+
+    form.on("submit(search)",function (data) {
+    var infor = data.field;
+    console.log(infor);
+    table.reload("menu",{
+    where:{
+    key:infor.msg
+    }
+    });
+    return false;
+    });
+
+    form.verify({
+    styp: function (value) {
+    if (value === null) {
+    return "请选择菜单类型";
+    }
+    }
+    });
+
+    function verify() {
+    if(styp === '2') {
+    form.verify({
+    styp: function (value) {
+    if (value === null) {
+    return "请选择菜单类型";
+    }
+    },
+    pono: function (value) {
+    if (value === null) {
+    return "请选择父节点";
+    }
+    },
+    flno: function (value) {
+    if (value.length === 0 || value.length !== 3) {
+    return "请输入菜单编号且菜单编号长度为3";
+    }
+    },
+    dsca: function (value) {
+    if (value.length === 0) {
+    return "请输入菜单描述";
+    }
+    },
+    purl: function (value) {
+    if (value === null) {
+    return "请输入菜单链接地址";
+    }
+    }
+    });
+    }else{
+    form.verify({
+    styp: function (value) {
+    if (value === null) {
+    return "请选择菜单类型";
+    }
+    },
+    pono: function (value) {
+
+    },
+    flno: function (value) {
+    if (value.length === 0 || value.length !== 3) {
+    return "请输入菜单编号且菜单编号长度为3";
+    }
+    },
+    dsca: function (value) {
+    if (value.length === 0) {
+    return "请输入菜单描述";
+    }
+    },
+    purl: function (value) {
+
+    }
+    });
+    }
+    }
+
+    form.on("submit(set)",function (data) {
+    $.ajax({
+    type:'POST',
+    url:'./insertMenu',
+    data:data.field,
+    dataType:'json',
+    success:function (res) {
+    if(res.code === 1){
+    $("#flno").val('');
+    $("#purl").val('');
+    table.reload("menu");
+    }
+    return layer.msg(res.msg,{offset:'10px'});
+    },
+    error:function (kj) {
+    layer.alert("发生错误:"+kj.status,{offset:'10px'});
+    }
+    });
+    return false;
+    });
+
+    table.on('edit(menu)',function (obj) {
+    $.ajax({
+    type:'POST',
+    url:'./updateMenu',
+    data:obj.data,
+    dataType:'json',
+    success:function (res) {
+    if(res.code === 0){
+    table.reload("menu");
+    }
+    return layer.msg(res.msg,{offset:'10px'});
+    },
+    error:function (kj) {
+    layer.alert("发生错误:"+kj.status,{offset:'10px'});
+    }
+    });
+    });
+
+    table.on('tool(menu)', function(obj){
+    var data = obj.data;
+    if(obj.event === 'del'){
+    layer.confirm('真的删除行么',{offset:'100px'},function(index){
+    console.log(data);
+    $.ajax({
+    type:'POST',
+    url:'./deleteMenu',
+    data:{
+    pono:data.pono
+    },
+    dataType:'json',
+    success:function (res) {
+    if(res.code === 1){
+    layer.close(index);
+    table.reload('menu');
+    }
+    layer.msg(res.msg,{offset:'10px'});
+    },
+    error:function (kj) {
+    layer.alert("发生错误:"+kj.status,{offset:'10px'});
+    }
+    });
+    });
+    }
+    });
+
+    form.on("select(styp)",function (obj) {
+    styp = obj.value;
+    if(styp === '2'){
+    $.ajax({
+    type:'GET',
+    url:'${base}/util/findC2',
+    dataType:'json',
+    success:function (data) {
+    var pono = data.c2;
+    var option = "<option value='' disabled selected>请选择父节点</option>";
+    for(var i = 0;i<pono.length;i++){
+    option += "<option value='"+pono[i].pono+"'>"+pono[i].dsca+"</option>";
+    }
+    $("#pono").html(option);
+    form.render();
+    },
+    error:function (kj) {
+    layer.alert("发生错误:"+kj.status,{offset:'10px'});
+    }
+    });
+    $(".flno").show();
+    $(".purl").show();
+    }else if(styp === '0'){
+    $("#pono").val('');
+    $(".flno").hide();
+    $(".purl").show();
+    }else{
+    $("#pono").val('');
+    $(".flno").hide();
+    $(".purl").hide();
+    }
+    verify();
+    });
+
+    $(".delete-btn").on("click",function () {
+    var check = table.checkStatus('menu');
+    var data = check.data;
+    var param = [];
+    for(var i = 0;i<data.length;i++){
+    param[i] = data[i].pono;
+    }
+    $.ajax({
+    type:'POST',
+    url:'./deleteMenu',
+    data:{
+    list:param
+    },
+    dataType:'json',
+    success:function (res) {
+    table.reload('menu');
+    return layer.msg(res.msg,{offset:'10px'});
+    },
+    error:function (kj) {
+    return layer.msg("发生错误:"+kj.status,{offset:'10px'});
+    }
+    });
+    });
+    });
+</script>
 </body>
 </html>
 

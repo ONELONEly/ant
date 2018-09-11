@@ -148,7 +148,32 @@ public class TaskController {
         Tbuss003VO tbuss003VO = tbuss003MO.fetchByTaid(taid);
         Map<String,Object> resultMap = new HashMap<>();
         resultMap.put("note",FileUtil.convertClob(tbuss003VO.getNote()));
+        tbuss003VO.setNote(null);
         resultMap.put("task",tbuss003VO);
+        return resultMap;
+    }
+
+    /**
+     * @param taid
+     * @return 任務展示界面
+     * @description 展示任務的所有詳情
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     */
+    @At
+    @Ok("jsp:jsp.task.showTaskAll")
+    public Map<String, Object> showTask_all(@Param("taid")String taid){
+        Map<String,Object> resultMap = new HashMap<>();
+        Tbuss003VO tbuss003VO = tbuss003MO.fetchByTaid(taid);
+
+        resultMap.put("note",FileUtil.convertClob(tbuss003VO.getNote()));
+        tbuss003VO.setNote(null);
+        resultMap.put("task",tbuss003VO);
+        String jieddsca = "";
+        if(StringUtil.checkString(tbuss003VO.getJied())) {
+             jieddsca = tbuss003MO_Ds.findT3DS_jiedDacaBySyno(tbuss003VO.getJied());
+        }
+        resultMap.put("jieddsca",jieddsca);
         return resultMap;
     }
 
@@ -354,8 +379,8 @@ public class TaskController {
     public Map<String,Object> insertTask(@Param("..")Tbuss003VO tbuss003VO,@Param("edit") String edit,HttpServletRequest request){
         String usid = request.getSession().getAttribute("usid").toString();
         String msg = "任务添加失败";
-        Integer code = 0;
-        if(tbuss003VO!=null && StringUtil.checkString(edit)){
+        int code = 0;
+        if(tbuss003VO!=null && edit != null){
             Clob note = FileUtil.formatClobByString(edit);
             tbuss003VO.setNote(note);
             tbuss003VO.setCdat(new Date());
@@ -453,13 +478,13 @@ public class TaskController {
     @Ok("json")
     public Map<String,Object> insertRuleScore(@Param("..")Cbase012VO cbase012VO){
         String msg = "分值不能为空";
-        Integer code = 0;
+        int code = 0;
         if(cbase012VO.getOpco() != null && cbase012VO.getPjno() != null){
             String pjno = cbase012VO.getPjno();
             String opco = cbase012VO.getOpco();
             String type = opco.substring(0,1);
-            Integer num = opco.indexOf(".");
-            if("-".equals(type) || "+".equals(type) && num!=-1) {
+            int num = opco.indexOf(".");
+            if(("-".equals(type) || "+".equals(type)) && num!=-1) {
                 if(cbase012MO.insertCheck(pjno,opco)) {
                     cbase012MO.insert(cbase012VO);
                     msg = "插入成功";
@@ -814,7 +839,6 @@ public class TaskController {
                         if (stag != null) {
                             tbuss003VO.setStag(stag);
                            // insertBugCode=tbuss003MO_Ds.insertBug(tbuss003VO,cbase000VO);
-
                           insertBugCode=tbuss003MO_Ds.insertBugJieKou(tbuss003VO,cbase000VO);
                             if(!insertBugCode.equals("Success")){
                             return ResultUtil.getResult(0, "推送DS失败", null);}

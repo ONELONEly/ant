@@ -25,47 +25,6 @@
         img{-ms-interpolation-mode:bicubic;}
         img{width:100%;}
     </style>
-    <script language="JavaScript">
-        layui.use(['jquery','table','layer'],function () {
-            var $ = layui.jquery,table = layui.table,layer = layui.layer,usid = sessionStorage.getItem("usid"),
-                doid = $(".doid").text(),tilt=$(".tilt").text();
-            $(".print").on('click',function () {
-                $(".x-body").jqprint();
-            });
-
-            $(".share").on('click',function () {
-                if(usid !== null) {
-                    layer.prompt({
-                        title: '请输入分享的邮箱号',
-                        btn: ['确认'],
-                        formType: 2,
-                        anim: 4,
-                        offset: '100px'
-                    }, function (res, index) {
-                        $.ajax({
-                            type: 'POST',
-                            url: './shareDoc',
-                            data: {
-                                doid: doid,
-                                tilt: tilt,
-                                csid: res
-                            },
-                            dataType: 'json',
-                            success: function (obj) {
-                                layer.close(index);
-                                return layer.msg(obj.msg);
-                            },
-                            error: function (kellyj) {
-                                return layer.msg("发生错误,错误码为：" + kellyj.status);
-                            }
-                        });
-                    });
-                }else{
-                    layer.alert("请先登录！");
-                }
-            });
-        });
-    </script>
 </head>
 <body>
 <div class="x-body">
@@ -78,5 +37,46 @@
     <br>
     <a href="./docFile?doid=${obj.doc.doid}" class="layui-btn layui-btn-xs layui-bg-black">附件</a>
 </div>
+<script language="JavaScript">
+    layui.use(['jquery','table','layer'],function () {
+        var $ = layui.jquery,table = layui.table,layer = layui.layer,usid = sessionStorage.getItem("usid"),
+            doid = $(".doid").text(),tilt=$(".tilt").text();
+        $(".print").on('click',function () {
+            $(".x-body").jqprint();
+        });
+
+        $(".share").on('click',function () {
+            if(usid !== null) {
+                layer.prompt({
+                    title: '请输入分享的邮箱号',
+                    btn: ['确认'],
+                    formType: 2,
+                    anim: 4,
+                    offset: '100px'
+                }, function (res, index) {
+                    $.ajax({
+                        type: 'POST',
+                        url: './shareDoc',
+                        data: {
+                            doid: doid,
+                            tilt: tilt,
+                            csid: res
+                        },
+                        dataType: 'json',
+                        success: function (obj) {
+                            layer.close(index);
+                            return layer.msg(obj.msg,{offset:'10px'});
+                        },
+                        error: function (kellyj) {
+                            return layer.msg("发生错误,错误码为：" + kellyj.status,{offset:'10px'});
+                        }
+                    });
+                });
+            }else{
+                layer.alert("请先登录！");
+            }
+        });
+    });
+</script>
 </body>
 </html>

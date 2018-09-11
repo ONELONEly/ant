@@ -12,16 +12,6 @@
 <head>
     <title>任务展示</title>
     <c:import url="../../static1.html"/>
-    <script src="../static/js/jquery/jquery-1.8.2.min.js"></script>
-    <script src="../static/js/jquery/jquery.jqprint-0.3.js"></script>
-    <script language="JavaScript">
-        layui.use(['jquery','table'],function () {
-            var $ = layui.jquery,table = layui.table;
-            $(".print").on('click',function () {
-                $(".x-body").jqprint();
-            });
-        });
-    </script>
 </head>
 <body>
 <div class="x-body">
@@ -29,11 +19,20 @@
         <span style="font-size: xx-large;">&nbsp;${obj.task.titl}</span>
         <a href="./taskFile?taid=${obj.task.taid}" class="layui-btn layui-btn-xs layui-bg-black">附件</a>
     </div>
-    <div>${obj.note}</div>
+    <blockquote class="layui-elem-quote layui-quote-nm">${obj.note}</blockquote>
     <div class="layui-layout-right x-margin">
         <button class="layui-btn layui-btn-radius layui-bg-black print">打印</button>
-        <%--<button class="layui-btn layui-btn-radius layui-bg-green share">分享</button>--%>
     </div>
 </div>
+<script src="../static/js/jquery/jquery-1.8.2.min.js"></script>
+<script src="../static/js/jquery/jquery.jqprint-0.3.js"></script>
+<script language="JavaScript">
+    layui.use(['jquery','table'],function () {
+        var $ = layui.jquery,table = layui.table;
+        $(".print").on('click',function () {
+            $(".x-body").jqprint();
+        });
+    });
+</script>
 </body>
 </html>

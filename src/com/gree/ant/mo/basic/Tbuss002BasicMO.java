@@ -3,6 +3,8 @@ package com.gree.ant.mo.basic;
 import com.gree.ant.vo.Tbuss002VO;
 import org.nutz.dao.Condition;
 
+import java.util.List;
+
 /**
  * The type Tbuss 002 basic mo.
  *
@@ -48,5 +50,5 @@ public interface Tbuss002BasicMO {
      * @version V1.0
      * @createTime 2017 :09:18 02:09:52.
      */
-    Boolean queryByCnd(Condition cnd);
+    List<Tbuss002VO> queryByCnd(Condition cnd);
 }

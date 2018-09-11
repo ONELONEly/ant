@@ -12,27 +12,22 @@
 <head>
     <title>任务附件</title>
     <c:import url="../../static1.html"/>
-    <script language="JavaScript">
-        layui.use(['jquery','table'],function () {
-            var $ = layui.jquery,table = layui.table;
-        });
-    </script>
 </head>
 <body>
 <div class="x-nav">
     <span class="layui-breadcrumb">
         <a href="./showDoc?doid=${obj}" style="line-height: 40px;"><cite style="cursor: pointer;">文档详情</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">文档附件</cite></a>
-        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center layui-icon-refresh"></i></a>
     </span>
 </div>
 <div class="x-body">
-    <table class="layui-table" lay-data="{height:'400',url:'./queryAllFile?doid=${obj}',page:false,id:'file'}" lay-filter="file">
+    <table class="layui-table" lay-data="{url:'./queryAllFile?doid=${obj}',page:false,id:'file'}" lay-filter="file">
         <thead>
         <tr>
-            <th lay-data="{field:'ffil',width:1000}">文件名</th>
-            <th lay-data="{field:'fsiz',width:300}">大小</th>
-            <th lay-data="{fixed:'right',align:'center',width:200,templet:'#operate'}">操作</th>
+            <th lay-data="{field:'ffil',align:'center',width:'50%'}">文件名</th>
+            <th lay-data="{field:'fsiz',align:'center',width:'20%'}">大小</th>
+            <th lay-data="{fixed:'right',align:'center',width:'30%',templet:'#operate'}">操作</th>
         </tr>
         </thead>
     </table>
@@ -40,6 +35,11 @@
         <a class="layui-btn layui-btn-xs layui-bg-black" href="../task/downloadFile?duta={{d.duta}}&ffil={{d.ffil}}">下载</a>
     </script>
 </div>
+<script language="JavaScript">
+    layui.use(['jquery','table'],function () {
+        var $ = layui.jquery,table = layui.table;
+    });
+</script>
 </body>
 </html>
 

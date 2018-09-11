@@ -16,6 +16,26 @@
     <title>评分显示</title>
     <c:import url="../../static1.html"/>
 </head>
+<body>
+<div class="x-nav">
+    <span class="layui-breadcrumb">
+        <a href="javascript:"><cite style="cursor: pointer;">首页</cite></a>
+        <a href="javascript:"><cite style="cursor: pointer;">项目</cite></a>
+        <a href="./index"><cite style="cursor: pointer;">绩效</cite></a>
+        <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">评分</cite></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center layui-icon-refresh"></i></a>
+    </span>
+</div>
+<div class="x-body">
+    <hr/>
+    <form class="layui-form">
+        <input type="hidden" value="${obj.grop}" id="grop"/>
+        <input type="hidden" value="${obj.ptno}" id="ptno"/>
+        <div class="layui-collapse">
+        </div>
+
+    </form>
+</div>
 <script language="JavaScript">
     layui.use(['element','form','jquery'],function () {
         var element = layui.element,$ = layui.jquery,form = layui.form;
@@ -70,26 +90,6 @@
         return "";
     }
 </script>
-<body>
-<div class="x-nav">
-    <span class="layui-breadcrumb">
-        <a href="javascript:"><cite style="cursor: pointer;">首页</cite></a>
-        <a href="javascript:"><cite style="cursor: pointer;">项目</cite></a>
-        <a href="./index"><cite style="cursor: pointer;">绩效</cite></a>
-        <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">评分</cite></a>
-        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
-    </span>
-</div>
-<div class="x-body">
-    <hr/>
-    <form class="layui-form">
-        <input type="hidden" value="${obj.grop}" id="grop"/>
-        <input type="hidden" value="${obj.ptno}" id="ptno"/>
-        <div class="layui-collapse">
-        </div>
-        <br><br><br><br><br><br><br><br>
-    </form>
-</div>
 </body>
 </html>
 

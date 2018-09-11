@@ -360,6 +360,13 @@ public class Tbuss003VO extends ValueObject{
 
     private String jied;
 
+    /**
+     * @description 绩效表描述
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     */
+    @Readonly
+    private String t1dsca;
+
     public void setJied(String jied) {
         this.jied = jied;
     }
@@ -378,6 +385,7 @@ public class Tbuss003VO extends ValueObject{
     private List<Tbuss010VO> tbuss010VOS;
 
     public Tbuss003VO() {
+
     }
 
     /**
@@ -401,6 +409,22 @@ public class Tbuss003VO extends ValueObject{
         this.fdat = fdat;
         this.tdat = tdat;
         this.adat = adat;
+    }
+
+    public Tbuss003VO(String taid, String titl, Date cdat, String cnam, String sta1nam, Date pdat, String knam, String synonam, String punonam, Date fdat, Date tdat, Date adat,Float fahh) {
+        this.taid = taid;
+        this.titl = titl;
+        this.cdat = cdat;
+        this.cnam = cnam;
+        this.sta1nam = sta1nam;
+        this.pdat = pdat;
+        this.knam = knam;
+        this.synonam = synonam;
+        this.punonam = punonam;
+        this.fdat = fdat;
+        this.tdat = tdat;
+        this.adat = adat;
+        this.fahh = fahh;
     }
 
     /**
@@ -448,6 +472,14 @@ public class Tbuss003VO extends ValueObject{
         }else{
             this.eye = "<a href='javascript:' class='layui-btn layui-btn-xs layui-bg-black' lay-event='in'>关注</a>";
         }
+    }
+
+    public String getT1dsca() {
+        return t1dsca;
+    }
+
+    public void setT1dsca(String t1dsca) {
+        this.t1dsca = t1dsca;
     }
 
     public Float getFahh() {

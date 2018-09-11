@@ -15,101 +15,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>修改个人资料</title>
     <c:import url="../../static1.html"/>
-    <script language="JavaScript">
-        layui.use(['element','form','jquery','upload'],function () {
-            var element = layui.element,form = layui.form,$ = layui.jquery,upload = layui.upload;
-
-            var uploadInsert = upload.render({
-                elem:"#modify",
-                url:'${base}/user/modifyHeader?usid=${obj.user.USID}',
-                method:"POST",
-                size:1000,
-                accept:'file',
-                before:function (obj) {
-                    obj.preview(function (index,file,result) {
-                        $("#head").attr("src",result);
-                        $("#head",window.parent.document).attr("src",result);
-                    });
-                },
-                done:function (res) {
-                    if(res.code === 1){
-                        return layer.msg(res.msg);
-                    }else{
-                        return layer.msg(res.msg);
-                    }
-                },
-                error:function () {
-                    var operate = $('#operate');
-                    operate.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-                    operate.find('demo-reload').on('click',function () {
-                        uploadInsert.upload();
-                    });
-                }
-            });
-
-            form.verify({
-                dsca:function (value) {
-                    if(value.length === 0){
-                        return "请输入名称"
-                    }
-                },
-                rePawd:function (value) {
-                    if(value.length === 0){
-                        return "请确认密码"
-                    }
-                },
-                cpid:function (value) {
-                    if(value.length === 0){
-                        return "请输入厂牌号码"
-                    }
-                },
-                tel1:function (value) {
-                    if(value.length === 0){
-                        return "请输入电话号码"
-                    }
-                },
-                mail:function (value) {
-                    if(value.length === 0){
-                        return "请输入邮箱号码"
-                    }
-                },
-                jwwj:function (value) {
-                    if(value.length === 0){
-                        return "请输入岗位"
-                    }
-                }
-            });
-
-            form.on("submit(modify)",function (data){
-                $.ajax({
-                    type:'POST',
-                    url:'${base}/user/modify?',
-                    data:data.field,
-                    dataType:'json',
-                    success:function (data) {
-                        if(data.code === 1){
-                            layer.confirm(data.msg,{btn:['确定'],offset:'100px',anim:4},function () {
-                                window.location.reload();
-                            });
-                        }else{
-                            return layer.msg(data.msg);
-                        }
-                    },
-                    error:function (kj) {
-                        layer.alert("发生错误:"+kj.status);
-                    }
-                });
-                return false;
-            });
-        });
-    </script>
 </head>
 <body>
 <div class="x-nav">
     <span class="layui-breadcrumb">
         <a href="javascript:"><cite style="cursor: pointer;">设置</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">修改资料</cite></a>
-        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center layui-icon-refresh"></i></a>
     </span>
 </div>
 
@@ -220,7 +132,94 @@
             </div>
         </div>
     </form>
-    <br><br><br><br><br><br><br><br><br>
 </div>
+<script language="JavaScript">
+    layui.use(['element','form','jquery','upload'],function () {
+        var element = layui.element,form = layui.form,$ = layui.jquery,upload = layui.upload;
+
+        var uploadInsert = upload.render({
+            elem:"#modify",
+            url:'${base}/user/modifyHeader?usid=${obj.user.USID}',
+            method:"POST",
+            size:1000,
+            accept:'file',
+            before:function (obj) {
+                obj.preview(function (index,file,result) {
+                    $("#head").attr("src",result);
+                    $("#head",window.parent.document).attr("src",result);
+                });
+            },
+            done:function (res) {
+                if(res.code === 1){
+                    return layer.msg(res.msg,{offset:'10px'});
+                }else{
+                    return layer.msg(res.msg,{offset:'10px'});
+                }
+            },
+            error:function () {
+                var operate = $('#operate');
+                operate.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                operate.find('demo-reload').on('click',function () {
+                    uploadInsert.upload();
+                });
+            }
+        });
+
+        form.verify({
+            dsca:function (value) {
+                if(checkForm(value)){
+                    return "请输入名称"
+                }
+            },
+            rePawd:function (value) {
+                if(checkForm(value)){
+                    return "请确认密码"
+                }
+            },
+            cpid:function (value) {
+                if(checkForm(value)){
+                    return "请输入厂牌号码"
+                }
+            },
+            tel1:function (value) {
+                if(checkForm(value)){
+                    return "请输入电话号码"
+                }
+            },
+            mail:function (value) {
+                if(checkForm(value)){
+                    return "请输入邮箱号码"
+                }
+            },
+            jwwj:function (value) {
+                if(checkForm(value)){
+                    return "请输入岗位"
+                }
+            }
+        });
+
+        form.on("submit(modify)",function (data){
+            $.ajax({
+                type:'POST',
+                url:'${base}/user/modify?',
+                data:data.field,
+                dataType:'json',
+                success:function (data) {
+                    if(data.code === 1){
+                        layer.confirm(data.msg,{btn:['确定'],offset:'100px',anim:4},function () {
+                            window.location.reload();
+                        });
+                    }else{
+                        return layer.msg(data.msg,{offset:'10px'});
+                    }
+                },
+                error:function (kj) {
+                    layer.alert("发生错误:"+kj.status);
+                }
+            });
+            return false;
+        });
+    });
+</script>
 </body>
 </html>

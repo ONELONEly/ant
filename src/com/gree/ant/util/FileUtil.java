@@ -167,19 +167,21 @@ public class FileUtil {
      * @createTime 2017 :09:07 01:09:26.
      */
     public static String convertClob(Clob clob){
-        String result = null;
-        try {
-            Reader reader =  clob.getCharacterStream();
-            BufferedReader br = new BufferedReader(reader);
-            String s = br.readLine();
-            StringBuilder sb = new StringBuilder();
-            while(s!=null){
-                sb.append(s);
-                s = br.readLine();
+        String result = "";
+        if(clob != null) {
+            try {
+                Reader reader = clob.getCharacterStream();
+                BufferedReader br = new BufferedReader(reader);
+                String s = br.readLine();
+                StringBuilder sb = new StringBuilder();
+                while (s != null) {
+                    sb.append(s);
+                    s = br.readLine();
+                }
+                result = sb.toString();
+            } catch (IOException | SQLException e) {
+                e.printStackTrace();
             }
-            result = sb.toString();
-        } catch (IOException|SQLException e) {
-            e.printStackTrace();
         }
         return result;
     }

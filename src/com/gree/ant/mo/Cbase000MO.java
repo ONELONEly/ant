@@ -3,10 +3,12 @@ package com.gree.ant.mo;
 import com.gree.ant.dao.daoImp.BaseDAOImp;
 import com.gree.ant.dao.daoImp.Cbase000DAOImp;
 import com.gree.ant.mo.basic.Cbase000BasicMO;
+import com.gree.ant.util.StringUtil;
 import com.gree.ant.vo.Cbase000VO;
 import com.gree.ant.vo.ValueObject;
 import com.gree.ant.vo.util.GradeVO;
 import com.gree.ant.vo.util.ResultVO;
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -87,8 +89,17 @@ public class Cbase000MO implements Cbase000BasicMO{
     }
 
     @Override
-    public List<GradeVO> queryAllGradeByPdat(String pdat) {
-        return cbase000DAOImp.queryAllGradeByPdat(pdat);
+    public List<GradeVO> queryAllGradeByPdat(String pdat,String grop) {
+        Cnd cnd = Cnd.NEW();
+        Cnd cnd2 = Cnd.NEW();
+        if(StringUtil.checkString(pdat)){
+            cnd = cnd.and("pdat","like","%"+pdat+"%");
+        }
+        if(StringUtil.checkString(grop)){
+            cnd = cnd.and("grop","=",grop);
+            cnd2 = cnd2.and("grop","=",grop);
+        }
+        return cbase000DAOImp.queryAllGradeByPdat(cnd,cnd2);
     }
 
     @Override

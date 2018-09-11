@@ -53,7 +53,6 @@ public class Tbuss003MO_Ds implements Tbuss003BasicMO_Ds {
         for (int i = 0; i < jiedStrings.size() ; i++) {
             Map<String,Object> map=new HashMap();
             String jied=tbuss003DAOImp_Ds.findT3DS_jiedDacaBySyno(Integer.parseInt(jiedStrings.get(i)));
-            System.out.println("Title"+jied);
             map.put("SubProjectID",Integer.parseInt(jiedStrings.get(i)));
             map.put("Title",jied);
             jiedStrings1.add(map);
@@ -127,14 +126,11 @@ public class Tbuss003MO_Ds implements Tbuss003BasicMO_Ds {
         }
         //去LanguageCfgLookupValues表通过名称找出id
         String CrntVersionID=tbuss003DAOImp_Ds.findIdByDscaLang(projectName);
-
-
         //找出ds系统对应邮箱号的插入任务的人的id
         int PersonID=tbuss003DAOImp_Ds.findPersonIDByLogin(tbuss003VO.getCsid(),tbuss003VO.getUnam());
           /*任务内容从clob转换成String,内容在去除掉ant系统自带的html的内容*/
         String note_ds=tbuss003DAOImp_Ds.StringChange(tbuss003VO.getNote());
         //插入ds系统的任务表Bug
-
         //jieKou_Tbuss003DAOImp_Ds
         String insertRuleJson=jieKou_Tbuss003DAOImp_Ds.inserRuleBug(tbuss003VO,cbase000VO,PersonID,note_ds,CrntVersionID);
         String[] results=insertRuleJson.split(",");

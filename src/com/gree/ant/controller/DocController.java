@@ -147,7 +147,7 @@ public class DocController {
     @At
     @Ok("jsp:jsp.doc.knowledgeDoc1")
     @Filters
-    public  Map<String, Object> knowledgeDoc(String type){
+    public  Map<String, Object> knowledgeDoc(@Param("type") String type){
         Map<String,Object> resultMap = new HashMap<>();
         Cbase016VO cbase016VO=cbase016MO.fetchByName(type);
         resultMap.put("c16",cbase016VO);

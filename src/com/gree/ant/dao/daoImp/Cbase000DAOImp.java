@@ -47,11 +47,11 @@ public class Cbase000DAOImp implements Cbase000DAO {
     }
 
     @Override
-    public List<GradeVO> queryAllGradeByPdat(String pdat) {
+    public List<GradeVO> queryAllGradeByPdat(Condition cnd,Condition condition) {
         String sqlStr = "SELECT * from(SELECT a.USID,a.DSCA,(SELECT sum(CONS) from TBUSS005 b where b.CSID = a.USID and b.PTNO in\n" +
-                "(SELECT c.PTNO from TBUSS001 c WHERE  c.PDAT = @pdat))res from CBASE000 a)e ORDER BY res asc NULLS FIRST";
+                "(SELECT c.PTNO from TBUSS001 c $condition))res from CBASE000 a where usid in (select usid from cbase010 $condition1))e ORDER BY res asc NULLS FIRST";
         Sql sql = Sqls.create(sqlStr);
-        sql.setParam("pdat",pdat);
+        sql.setVar("condition",cnd).setVar("condition1",condition);
         sql.setCallback(new SqlCallback() {
             @Override
             public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {

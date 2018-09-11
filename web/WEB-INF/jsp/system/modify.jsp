@@ -14,90 +14,13 @@
     <title>添加系统</title>
     <c:import url="../../static1.html"></c:import>
 </head>
-<script language="JavaScript">
-    layui.use(['form','jquery','element','layer','layedit','upload'],function () {
-        var form = layui.form,$ = layui.jquery,element = layui.element,
-            layer = layui.layer;
-
-        form.verify({
-            dsca:function (value) {
-                if(value.length === 0){
-                    return "请输入系统名称";
-                }
-            }
-        });
-
-        form.on("submit(set)",function (data) {
-
-            var trans = data.field;
-            layer.alert(trans.dsca);
-            $.ajax({
-
-                type:'POST',
-                url:'${base}/system/insertSystem',
-                data:{
-                    dsca:trans.dsca,
-                    sadd:trans.sadd,
-                    tadd:trans.tadd
-                },
-                dataType:'json',
-                success:function (data) {
-                    layer.alert(data.msg);
-                    if(data.code === 1){
-                        layer.confirm(data.msg,{btn:['确认','返回','取消'],offset:'100px',anim:4},function () {
-                            window.location.reload();
-                        },function () {
-                            window.location.replace("${base}/system/manage");
-                        });
-                    }else{
-                        layer.alert(data.msg);
-                    }
-                },
-                error:function (kellyj) {
-                    layer.alert("发生错误，错误码为:"+kellyj.status);
-                }
-            });
-            return false;
-        });
-
-        form.on("submit(update)",function (data) {
-
-            var trans = data.field;
-            $.ajax({
-                type:'POST',
-                url:'${base}/system/editSystem',
-                data:{
-                    syno:trans.syno,
-                    dsca:trans.dsca,
-                    sadd:trans.sadd,
-                    tadd:trans.tadd
-                },
-                dataType:'json',
-                success:function (data) {
-                    if(data.code === 1){
-                        layer.confirm(data.msg+"返回主页？",{offset:'100px'},function () {
-                            window.location.replace("${base}/system/manage");
-                        });
-                    }else{
-                        return layer.msg(data.msg);
-                    }
-                },
-                error:function (kellyj) {
-                    layer.alert("发生错误，错误码为:"+kellyj.status);
-                }
-            });
-            return false;
-        });
-
-    });
-</script>
 <body>
 <div class="x-nav">
     <span class="layui-breadcrumb">
         <a href="javascript:" style="line-height: 40px;"><cite style="cursor: pointer;">设置</cite></a>
         <a href="${base}/system/manage"><cite style="cursor: pointer;">系统管理</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">添加系统</cite></a>
-        <a class="layui-btn layui-btn-small layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center layui-icon-refresh"></i></a>
     </span>
 </div>
 <div class="x-body layui-container">
@@ -135,7 +58,82 @@
             <button type="reset" class="layui-btn layui-btn-radius">重置输入</button>
         </div>
     </form>
-    <br><br><br><br><br><br><br><br><br>
+
 </div>
+<script language="JavaScript">
+    layui.use(['form','jquery','element','layer','layedit','upload'],function () {
+        var form = layui.form,$ = layui.jquery,element = layui.element,
+            layer = layui.layer;
+
+        form.verify({
+            dsca:function (value) {
+                if(checkForm(value)){
+                    return "请输入系统名称";
+                }
+            }
+        });
+
+        form.on("submit(set)",function (data) {
+
+            var trans = data.field;
+            $.ajax({
+
+                type:'POST',
+                url:'${base}/system/insertSystem',
+                data:{
+                    dsca:trans.dsca,
+                    sadd:trans.sadd,
+                    tadd:trans.tadd
+                },
+                dataType:'json',
+                success:function (data) {
+                    if(data.code === 1){
+                        layer.confirm(data.msg,{btn:['确认','返回','取消'],offset:'100px',anim:4},function () {
+                            window.location.reload();
+                        },function () {
+                            window.location.replace("${base}/system/manage");
+                        });
+                    }else{
+                        layer.alert(data.msg,{offset:'10px'});
+                    }
+                },
+                error:function (kellyj) {
+                    layer.alert("发生错误，错误码为:"+kellyj.status,{offset:'10px'});
+                }
+            });
+            return false;
+        });
+
+        form.on("submit(update)",function (data) {
+
+            var trans = data.field;
+            $.ajax({
+                type:'POST',
+                url:'${base}/system/editSystem',
+                data:{
+                    syno:trans.syno,
+                    dsca:trans.dsca,
+                    sadd:trans.sadd,
+                    tadd:trans.tadd
+                },
+                dataType:'json',
+                success:function (data) {
+                    if(data.code === 1){
+                        layer.confirm(data.msg+"返回主页？",{offset:'100px'},function () {
+                            window.location.replace("${base}/system/manage");
+                        });
+                    }else{
+                        return layer.msg(data.msg,{offset:'10px'});
+                    }
+                },
+                error:function (kellyj) {
+                    layer.alert("发生错误，错误码为:"+kellyj.status,{offset:'10px'});
+                }
+            });
+            return false;
+        });
+
+    });
+</script>
 </body>
 </html>

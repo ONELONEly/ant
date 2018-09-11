@@ -20,7 +20,7 @@
         <a href="javascript:"><cite>设置</cite></a>
         <a href="javascript:location.replace('./index')"><cite>OKR管理</cite></a>
         <a href="javascript:location.replace(location.href)"><cite>OKR添加</cite></a>
-        <a href="javascript:location.replace(location.href)" class="layui-btn layui-btn-radius layui-btn-sm l-refresh" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a href="javascript:location.replace(location.href)" class="layui-btn layui-btn-radius layui-btn-sm l-refresh" title="刷新"><i class="layui-icon l-center layui-icon-refresh"></i></a>
     </span>
 </div>
 <div class="x-body layui-container">
@@ -183,62 +183,62 @@
         form.verify({
             asid:function (value) {
                 console.log(value);
-                if(value === null || value.length === 0){
+                if(checkForm(value)){
                     return "请选择管理对象";
                 }
             },
             boss:function (value) {
-                if(value === null || value.length === 0){
+                if(checkForm(value)){
                     return "请选择直接上级";
                 }
             },
             mdat:function (value) {
-                if(value === null || value.length === 0){
+                if(checkForm(value)){
                     return "请选择管理周期";
                 }
             },
             goal:function (value) {
-                if(value.length === 0){
+                if(checkForm(value)){
                     return "请输入目标";
                 }
             },
             ndat:function (value) {
-                if(value === null || value.length === 0){
+                if(checkForm(value)){
                     return "请选择周期";
                 }
             },
             type:function (value) {
-                if(value === null || value.length === 0){
+                if(checkForm(value)){
                     return "请选择类型";
                 }
             },
             prop:function (value) {
-                if(value.length === 0){
+                if(checkForm(value)){
                     return "请输入比重";
                 }
             },
             perf:function (value) {
-                if(value.length === 0){
+                if(checkForm(value)){
                     return "请输入完成情况";
                 }
             },
             achi:function (value) {
-                if(value.length === 0){
+                if(checkForm(value)){
                     return "请输入关键成果";
                 }
             },
             krprop:function (value) {
-                if(value.length === 0){
+                if(checkForm(value)){
                     return "请输入KR比重";
                 }
             },
             krperf:function (value) {
-                if(value.length === 0){
+                if(checkForm(value)){
                     return "请输入KR完成情况";
                 }
             },
             zgrad:function (value) {
-                if(value.length === 0){
+                if(checkForm(value)){
                     return "请输入自评分";
                 }
             },

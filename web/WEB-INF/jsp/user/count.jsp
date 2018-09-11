@@ -52,6 +52,12 @@
                     {
                         name: '月成绩',
                         type: 'bar',
+                        label : {
+                            normal : {
+                                show : true,
+                                color: 'black'
+                            }
+                        },
                         itemStyle:{
                             normal:{
                                 color: function (params) {
@@ -94,11 +100,10 @@
         <a href="javascript:"><cite>个人</cite></a>
         <a href="./eva"><cite>个人评分管理</cite></a>
         <a href="javascript:location.replace(location.href);"><cite>统计</cite></a>
-        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center layui-icon-refresh"></i></a>
     </span>
 </div>
 <div class="x-body">
-    <span>月份:2017-8</span>
     <hr class="layui-bg-orange"/>
     <form class="layui-form">
         <input type="hidden" value="${obj.ptno}" id="ptno"/>

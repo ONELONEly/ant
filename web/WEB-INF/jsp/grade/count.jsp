@@ -16,81 +16,6 @@
     <title>统计</title>
     <script src="../static/js/echarts.js" charset="utf-8"></script>
     <c:import url="../../static1.html"/>
-    <script language="JavaScript">
-        layui.use(['form','jquery'],function () {
-            var $ = layui.jquery,form = layui.form;
-            var grop =$("#grop").val();
-            var ptno = $('#ptno').val();
-
-            var myCharts = echarts.init(document.getElementById("main"));
-            var option = {
-                title: {
-                    text: '成绩汇总'
-                },
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'shadow'
-                    }
-                },
-                legend: {
-                    data: ['月成绩']
-                },
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                xAxis: {
-                    type: 'value',
-                    boundaryGap: [0, 0.01]
-                },
-                yAxis: {
-                    type: 'category',
-                    data:[]
-                },
-                series: [
-                    {
-                        name: '月成绩',
-                        type: 'bar',
-                        itemStyle:{
-                            normal:{
-                                color: function (params) {
-                                    var colorList = ['#FFFFCC','#CCFFFF','#FFCCCC','#CCCCCC','#99CCFF'];
-                                    return colorList[params.dataIndex];
-                                }
-                            }
-                        },
-                        data: []
-                    }
-                ]
-            };
-
-            $.ajax({
-                type:'POST',
-                url:'${base}/grade/getTotalScore',
-                data:{
-                    grop:grop,
-                    ptno:ptno
-                },
-                dataType:'json',
-                success:function (res) {
-                    var user = res.data.user;
-                    var name = option.yAxis.data;
-                    var score = option.series[0].data;
-                    for(var i = 0;i<user.length;i++){
-                        name[i] =user[i].DSCA;
-                        score[i] = res.data[user[i].USID];
-                    }
-                    myCharts.setOption(option);
-                },
-                error:function (kj) {
-                    layer.alert("发生错误:"+kj.status);
-                }
-            });
-        });
-    </script>
 </head>
 <body>
 <div class="x-nav">
@@ -99,7 +24,7 @@
         <a href="javascript:"><cite style="cursor: pointer;">项目</cite></a>
         <a href="./index"><cite style="cursor: pointer;">绩效</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">统计</cite></a>
-        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center layui-icon-refresh"></i></a>
     </span>
 </div>
 <div class="x-body">
@@ -109,7 +34,88 @@
         <input type="hidden" value="${obj.ptno}" id="ptno"/>
     </form>
 <div id="main" style="width: 100%;height:400px;"></div>
-    <br><br><br><br><br><br><br><br><br>
+
 </div>
+<script language="JavaScript">
+    layui.use(['form','jquery'],function () {
+        var $ = layui.jquery,form = layui.form;
+        var grop =$("#grop").val();
+        var ptno = $('#ptno').val();
+
+        var myCharts = echarts.init(document.getElementById("main"));
+        var option = {
+            title: {
+                text: '成绩汇总'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            legend: {
+                data: ['月成绩']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value',
+                boundaryGap: [0, 0.01]
+            },
+            yAxis: {
+                type: 'category',
+                data:[]
+            },
+            series: [
+                {
+                    name : '月成绩',
+                    type : 'bar',
+                    label : {
+                      normal : {
+                          show : true,
+                          color: 'black'
+                      }
+                    },
+                    itemStyle:{
+                        normal:{
+                            color: function (params) {
+                                var colorList = ['#FFFFCC','#CCFFFF','#FFCCCC','#CCCCCC','#99CCFF'];
+                                return colorList[params.dataIndex];
+                            }
+                        }
+                    },
+                    data: []
+                }
+            ]
+        };
+
+        $.ajax({
+            type:'POST',
+            url:'${base}/grade/getTotalScore',
+            data:{
+                grop:grop,
+                ptno:ptno
+            },
+            dataType:'json',
+            success:function (res) {
+                var user = res.data.user;
+                var name = option.yAxis.data;
+                var score = option.series[0].data;
+                for(var i = 0;i<user.length;i++){
+                    name[i] =user[i].DSCA;
+                    score[i] = res.data[user[i].USID];
+                }
+                myCharts.setOption(option);
+            },
+            error:function (kj) {
+                layer.alert("发生错误:"+kj.status,{offset:'10px'});
+            }
+        });
+    });
+</script>
 </body>
 </html>

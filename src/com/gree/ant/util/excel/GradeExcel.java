@@ -1,12 +1,15 @@
 package com.gree.ant.util.excel;
 
 import com.gree.ant.util.DateUtil;
+import com.gree.ant.util.DoubleUtil;
 import com.gree.ant.util.FileUtil;
 import com.gree.ant.util.HTMLUtil;
 import com.gree.ant.vo.Cbase000VO;
 import com.gree.ant.vo.Cbase011VO;
 import com.gree.ant.vo.Tbuss001VO;
 import com.gree.ant.vo.Tbuss003VO;
+import com.gree.ant.vo.util.Cbase011_Grade_Trans;
+import com.gree.ant.vo.util.Tbuss003_Grade_Trans;
 import jxl.CellView;
 import jxl.Workbook;
 import jxl.format.Alignment;
@@ -71,7 +74,7 @@ public class GradeExcel {
      * @version V1.0
      * @createTime 2017 :10:16 02:10:40.
      */
-    public static void export(Tbuss001VO tbuss001VO, HttpServletRequest request, HttpServletResponse response)throws SQLException,IOException,WriteException {
+    public static void export(Tbuss001VO tbuss001VO, HttpServletRequest request, HttpServletResponse response)throws IOException,WriteException {
         response.setContentType("APPLICATION/OCTET-STREAM");
         String title = tbuss001VO.getDsca();
         ExcelUtil.setHeader(request,response,title);
@@ -95,6 +98,7 @@ public class GradeExcel {
      * @createTime 2017 :10:20 09:10:59.
      */
     private static void printExcel(String title,Map<String,Tbuss001VO> tbuss001VOMap,List<Cbase000VO> users,OutputStream os) throws IOException,WriteException{
+
         WritableWorkbook workBook = Workbook.createWorkbook(os);
         WritableSheet sheet = workBook.createSheet(title,0);
         WritableCellFormat format = ExcelUtil.getForamat("BOLD",20, Colour.BLACK);
@@ -102,9 +106,9 @@ public class GradeExcel {
 
         WritableCell cell = new Label(0,1,title,format);
         sheet.addCell(cell);
-        sheet.mergeCells(0,1,9,1);
+        sheet.mergeCells(0,1,10,1);
 
-        setRowView(sheet);
+        setRowView_grade(sheet);
 
 
         Integer col = 2;
@@ -124,10 +128,10 @@ public class GradeExcel {
             sheet.mergeCells(5, col, 6, col);
             cell = new Label(7, col, "提交日期：" + DateUtil.formatYMDDate(new Date()), format);
             sheet.addCell(cell);
-            sheet.mergeCells(7, col, 8, col);
-            cell = new Label(9, col, "评定日期：", format);
+            sheet.mergeCells(7, col, 9, col);
+            cell = new Label(10, col, "评定日期：", format);
             sheet.addCell(cell);
-            col = printTask(col,tbuss001VO.getTbuss003VOS(),tbuss001VO.getCbase011VOS(),sheet);
+            col = printTask_grade(col,tbuss001VO.getGrade_trans(),tbuss001VO.getC11_grade_trans(),sheet);
             col = col+3;
         }
         workBook.write();
@@ -159,7 +163,7 @@ public class GradeExcel {
 
         setRowView(sheet);
 
-        Integer col = 2;
+        int col = 2;
         format = ExcelUtil.getForamat("BOLD", 11, Colour.BLACK);
         format.setAlignment(Alignment.CENTRE);
         format.setBorder(Border.ALL,BorderLineStyle.THIN);
@@ -223,7 +227,7 @@ public class GradeExcel {
         cell = new Label(9, col, "上级评分", format);
         sheet.addCell(cell);
 
-        Integer count = 1;
+        int count = 1;
         col ++;
         format = ExcelUtil.getForamat("NOBOLD", 10, Colour.BLACK);
         format.setBorder(Border.ALL,BorderLineStyle.THIN);
@@ -231,9 +235,9 @@ public class GradeExcel {
         if(tbuss003VOS!=null) {
             for (Tbuss003VO tbuss003VO : tbuss003VOS) {
                 Cbase011VO cbase011VO = tbuss003VO.getCbase011VO();
-                cell = new Label(0, col, tbuss003VO.getPtyp() == null ? "" : tbuss003VO.getPtypnam(), format);
+                cell = new Label(0, col, count + "", format);
                 sheet.addCell(cell);
-                cell = new Label(1, col, count + "", format);
+                cell = new Label(1, col, tbuss003VO.getPtyp() == null ? "" : tbuss003VO.getPtypnam(), format);
                 sheet.addCell(cell);
                 cell = new Label(2, col, tbuss003VO.getSynonam() == null ? "" : tbuss003VO.getSynonam(), format);
                 sheet.addCell(cell);
@@ -286,9 +290,9 @@ public class GradeExcel {
             cbase011VOList.addAll(cbase011VOS);
         }
         for (Cbase011VO cbase011VO:cbase011VOList){
-            cell = new Label(0,col,cbase011VO.getDsca() == null?"":cbase011VO.getDsca(),format);
+            cell = new Label(0,col,""+count,format);
             sheet.addCell(cell);
-            cell = new Label(1,col,""+count,format);
+            cell = new Label(1,col,cbase011VO.getDsca() == null?"":cbase011VO.getDsca(),format);
             sheet.addCell(cell);
             cell = new Label(2,col,cbase011VO.getDeti() == null?"":cbase011VO.getDeti(),format);
             sheet.addCell(cell);
@@ -308,6 +312,171 @@ public class GradeExcel {
         return col;
     }
 
+    private static Integer printTask_grade(Integer col, List<Tbuss003_Grade_Trans> grade_trans, List<Cbase011_Grade_Trans> c11_grade_trans, WritableSheet sheet) throws WriteException{
+        double grade_result = 0.00;
+        col++;
+        WritableCellFormat format = ExcelUtil.getForamat("BOLD", 12, Colour.BLACK);
+        format.setAlignment(Alignment.CENTRE);
+        format.setBackground(Colour.GREY_25_PERCENT);
+        format.setBorder(Border.ALL,BorderLineStyle.THIN);
+        WritableCell cell = new Label(0, col, "主要绩效", format);
+        sheet.addCell(cell);
+        sheet.mergeCells(0, col, 1, col);
+        cell = new Label(2, col, "考评项目", format);
+        sheet.addCell(cell);
+        cell = new Label(3, col, "权重", format);
+        sheet.addCell(cell);
+        cell = new Label(4, col, "目标要求", format);
+        sheet.addCell(cell);
+        cell = new Label(5, col, "评分规则", format);
+        sheet.addCell(cell);
+        cell = new Label(6, col, "数据提供", format);
+        sheet.addCell(cell);
+        cell = new Label(7, col, "完成情况", format);
+        sheet.addCell(cell);
+        cell = new Label(8, col, "评价说明", format);
+        sheet.addCell(cell);
+        cell = new Label(9, col, "分数", format);
+        sheet.addCell(cell);
+        cell = new Label(10, col, "上级评分", format);
+        sheet.addCell(cell);
+
+        int count = 1;
+        col ++;
+        format = ExcelUtil.getForamat("NOBOLD", 10, Colour.BLACK);
+        format.setBorder(Border.ALL,BorderLineStyle.THIN);
+
+        if(grade_trans!=null) {
+            for (Tbuss003_Grade_Trans gradeTrans : grade_trans) {
+                Tbuss003VO tbuss003VO = gradeTrans.getTbuss003VO();
+                Cbase011VO cbase011VO = tbuss003VO.getCbase011VO();
+                int stag = tbuss003VO.getStag();
+                int sta1 = tbuss003VO.getSta1();
+                double grade = 0.00;
+                double average = DoubleUtil.format_nice((double)Integer.parseInt(cbase011VO.getCons())/gradeTrans.getCount());
+                if(sta1 == 11) {
+                    if (stag == 0) {
+                        grade = average * 0.6;
+                    } else if (stag == 1) {
+                        grade = average * 0.7;
+                    } else if (stag == 2) {
+                        grade = average * 0.8;
+                    } else if (stag == 3) {
+                        grade = average * 0.9;
+                    } else if (stag == 4) {
+                        grade = average;
+                    }
+                }
+                grade_result += grade;
+
+                cell = new Label(0, col, count + "", format);
+                sheet.addCell(cell);
+                cell = new Label(1, col, tbuss003VO.getPtyp() == null ? "" : tbuss003VO.getPtypnam(), format);
+                sheet.addCell(cell);
+                cell = new Label(2, col, tbuss003VO.getSynonam() == null ? "" : tbuss003VO.getSynonam(), format);
+                sheet.addCell(cell);
+                cell = new Label(3, col, cbase011VO.getPjjp() == null?"":cbase011VO.getPjjp(), format);
+                sheet.addCell(cell);
+                cell = new Label(4, col, tbuss003VO.getTitl() == null ? "" : tbuss003VO.getTitl(), format);
+                sheet.addCell(cell);
+                cell = new Label(5, col, tbuss003VO.getNote() == null ? "" : HTMLUtil.delHTMLTag(FileUtil.convertClob(tbuss003VO.getNote())), format);
+                sheet.addCell(cell);
+                cell = new Label(6, col, tbuss003VO.getKsid() == null ? "" : tbuss003VO.getKdnam(), format);
+                sheet.addCell(cell);
+                cell = new Label(7, col, tbuss003VO.getSta1() == null ? "" : (tbuss003VO.getSta1() == 11 ? "完成" : "未完成"), format);
+                sheet.addCell(cell);
+                cell = new Label(8, col, "", format);
+                sheet.addCell(cell);
+                cell = new Label(9, col, DoubleUtil.format_nice(grade)+"", format);
+                sheet.addCell(cell);
+                cell = new Label(10, col, "", format);
+                sheet.addCell(cell);
+                count++;
+                col++;
+            }
+        }
+
+
+        format = ExcelUtil.getForamat("BOLD", 12, Colour.BLACK);
+        format.setAlignment(Alignment.CENTRE);
+        format.setBackground(Colour.GREY_25_PERCENT);
+        format.setBorder(Border.ALL,BorderLineStyle.THIN);
+        cell = new Label(0, col, "基础绩效", format);
+        sheet.addCell(cell);
+        sheet.mergeCells(0, col, 1, col);
+        cell = new Label(2, col, "考评项目", format);
+        sheet.addCell(cell);
+        cell = new Label(3, col, "比重", format);
+        sheet.addCell(cell);
+        cell = new Label(4, col, "工作要求/优差标准", format);
+        sheet.addCell(cell);
+        sheet.mergeCells(4,col,5,col);
+        cell = new Label(6, col, "数据提供", format);
+        sheet.addCell(cell);
+        cell = new Label(7, col, "加、扣分标准", format);
+        sheet.addCell(cell);
+        sheet.mergeCells(7,col,8,col);
+        cell = new Label(9, col, "分数", format);
+        sheet.addCell(cell);
+        cell = new Label(10, col, "上级评分", format);
+        sheet.addCell(cell);
+
+        format = ExcelUtil.getForamat("NOBOLD", 10, Colour.BLACK);
+        format.setBorder(Border.ALL,BorderLineStyle.THIN);
+        List<Cbase011_Grade_Trans> cbase011_grade_trans = new ArrayList<>();
+        if(c11_grade_trans!=null) {
+            count = 1;
+            col++;
+            cbase011_grade_trans.addAll(c11_grade_trans);
+        }
+        for (Cbase011_Grade_Trans c11_grade:cbase011_grade_trans){
+            grade_result += c11_grade.getCons();
+            Cbase011VO cbase011VO = c11_grade.getCbase011VO();
+            cell = new Label(0,col,""+count,format);
+            sheet.addCell(cell);
+            cell = new Label(1,col,cbase011VO.getDsca() == null?"":cbase011VO.getDsca(),format);
+            sheet.addCell(cell);
+            cell = new Label(2,col,cbase011VO.getDeti() == null?"":cbase011VO.getDeti(),format);
+            sheet.addCell(cell);
+            cell = new Label(3,col,cbase011VO.getCons() == null?"":cbase011VO.getCons(),format);
+            sheet.addCell(cell);
+            cell = new Label(4,col,"",format);
+            sheet.addCell(cell);
+            sheet.mergeCells(4,col,5,col);
+            cell = new Label(6,col,"",format);
+            sheet.addCell(cell);
+            cell = new Label(7,col,"",format);
+            sheet.addCell(cell);
+            sheet.mergeCells(7,col,8,col);
+            cell = new Label(9,col,""+DoubleUtil.format_nice(c11_grade.getCons()),format);
+            sheet.addCell(cell);
+            cell = new Label(10,col,"",format);
+            sheet.addCell(cell);
+            count++;
+            col++;
+        }
+        cell = new Label(0,col,"合计：",format);
+        sheet.addCell(cell);
+        cell = new Label(1,col,"",format);
+        sheet.addCell(cell);
+        cell = new Label(2,col,"",format);
+        sheet.addCell(cell);
+        cell = new Label(3,col,"",format);
+        sheet.addCell(cell);
+        sheet.mergeCells(3,col,5,col);
+        cell = new Label(6,col,"",format);
+        sheet.addCell(cell);
+        cell = new Label(7,col,"",format);
+        sheet.addCell(cell);
+        sheet.mergeCells(7,col,8,col);
+        cell = new Label(9,col,""+DoubleUtil.format_nice(grade_result),format);
+        sheet.addCell(cell);
+        cell = new Label(10,col,"",format);
+        sheet.addCell(cell);
+        col++;
+        return col;
+    }
+
     /**
      * Set row view.
      *
@@ -323,6 +492,20 @@ public class GradeExcel {
             if(j == 1 || j == 3){
                 cellView.setSize(2000);
             }else if(j == 0 || j == 6 || j == 7){
+                cellView.setSize(5000);
+            }else{
+                cellView.setSize(10000);
+            }
+            sheet.setColumnView(j, cellView);
+        }
+    }
+
+    private static void setRowView_grade(WritableSheet sheet){
+        CellView cellView = new CellView();
+        for(int j = 0;j < 11;j++){
+            if(j == 0 || j == 3 || j == 9){
+                cellView.setSize(2000);
+            }else if(j == 1 || j == 6 || j == 7){
                 cellView.setSize(5000);
             }else{
                 cellView.setSize(10000);

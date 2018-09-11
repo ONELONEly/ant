@@ -30,7 +30,7 @@ public class Tbuss003DAOImp implements Tbuss003DAO{
     @Override
     public List<Tbuss003VO> queryAllByCndPager(Condition cnd, Pager pager) {
         String sqlStr = "SELECT a.taid,a.titl,a.cdat,a.unam,a.cnam,a.sta1nam,a.ptypnam,a.sta2nam,a.pdat,a.knam,a.sta3nam," +
-                "a.synonam,a.punonam,a.fdat,a.tdat,a.adat,a.perc,a.csid,a.acconam,a.ptnonam,a.stag from V_TBUSS003 a $condition";
+                "a.synonam,a.punonam,a.fdat,a.tdat,a.adat,a.perc,a.csid,a.acconam,a.ptnonam,a.fahh,a.stag from V_TBUSS003 a $condition";
         Sql sql = Sqls.create(sqlStr);
         sql.setCondition(cnd);
         sql.setPager(pager);
@@ -40,7 +40,7 @@ public class Tbuss003DAOImp implements Tbuss003DAO{
     @Override
     public List<Tbuss003VO> queryAllGradeTask(String usid, Pager pager,Condition condition) {
         String sqlStr = "select t.taid,t.titl,t.cdat,t.cnam,t.sta1nam,t.pdat,t.knam,t.synonam,t.punonam,t.fdat,t.tdat,t.adat," +
-                "t.perc,(select count(*) from TBUSS010 s where s.USID = @usid AND s.TAID = t.TAID)coun from V_TBUSS003 t $condition";
+                "t.perc,(select count(*) from TBUSS010 s where s.USID = @usid AND s.TAID = t.TAID)coun,t.fahh,(select t1.dsca from tbuss001 t1 where t1.ptno = t.ptno)t1dsca from V_TBUSS003 t $condition";
         Sql sql = Sqls.create(sqlStr);
         sql.setParam("usid",usid);
         sql.setPager(pager);
@@ -54,9 +54,10 @@ public class Tbuss003DAOImp implements Tbuss003DAO{
                             rs.getDate("cdat"),rs.getString("cnam"),rs.getString("sta1nam"),
                             rs.getDate("pdat"),rs.getString("knam"),rs.getString("synonam"),
                             rs.getString("punonam"),rs.getDate("fdat"),rs.getDate("tdat"),
-                            rs.getDate("adat"));
+                            rs.getDate("adat"),rs.getFloat("fahh"));
                     tbuss003VO.setPerc(rs.getDouble("perc"));
                     tbuss003VO.setEye(rs.getInt("coun"));
+                    tbuss003VO.setT1dsca(rs.getString("t1dsca"));
                     tbuss003VOS.add(tbuss003VO);
                 }
                 return tbuss003VOS;
@@ -69,7 +70,7 @@ public class Tbuss003DAOImp implements Tbuss003DAO{
     @Override
     public List<Tbuss003VO> queryGropAllTask(String usid, Pager pager, Condition condition) {
         String sqlStr = "SELECT a.taid,a.titl,a.cdat,a.unam,a.cnam,a.sta1nam,a.ptypnam,a.sta2nam,a.pdat,a.knam,a.sta3nam," +
-                "a.synonam,a.punonam,a.fdat,a.tdat,a.adat,a.perc,a.csid,a.acconam,a.ptnonam,a.stag from V_TBUSS003 a" +
+                "a.synonam,a.punonam,a.fdat,a.tdat,a.adat,a.perc,a.csid,a.acconam,a.ptnonam,a.stag,a.fahh from V_TBUSS003 a" +
                 " $condition and a.PTNO in (select b.PTNO from TBUSS001 b where b.grop = (select c.grop from CBASE000 c WHERE  c.usid = @usid)) " +
                 "ORDER BY a.cdat DESC";
         Sql sql = Sqls.create(sqlStr);
@@ -82,7 +83,7 @@ public class Tbuss003DAOImp implements Tbuss003DAO{
     @Override
     public List<Tbuss003VO> queryAllTask(Condition cnd0, Condition cnd1, Pager pager) {
         String sqlStr = "SELECT a.taid,a.titl,a.cdat,a.unam,a.cnam,a.sta1nam,a.ptypnam,a.sta2nam,a.pdat,a.knam,a.sta3nam," +
-                "a.synonam,a.punonam,a.fdat,a.tdat,a.adat,a.perc,a.csid,a.acconam,a.ptnonam,a.stag from V_TBUSS003 a " +
+                "a.synonam,a.punonam,a.fdat,a.tdat,a.adat,a.perc,a.csid,a.acconam,a.ptnonam,a.stag,a.fahh from V_TBUSS003 a " +
                 "$condition0 and a.PTNO in (select b.PTNO from TBUSS001 b $condition1) ORDER BY cdat DESC";
         Sql sql = Sqls.create(sqlStr);
         sql.setPager(pager);
@@ -93,7 +94,7 @@ public class Tbuss003DAOImp implements Tbuss003DAO{
     @Override
     public List<Tbuss003VO> queryGropAllTaskPrint(String usid, Pager pager, Condition condition) {
         String sqlStr = "SELECT a.taid,a.note,a.titl,a.cdat,a.unam,a.cnam,a.sta1nam,a.ptypnam,a.sta2nam,a.pdat,a.knam,a.sta3nam," +
-                "a.synonam,a.punonam,a.fdat,a.tdat,a.adat,a.perc,a.csid,a.acconam,a.ptnonam from V_TBUSS003 a " +
+                "a.synonam,a.punonam,a.fdat,a.tdat,a.adat,a.perc,a.csid,a.acconam,a.ptnonam,a.fahh from V_TBUSS003 a " +
                 "$condition and a.PTNO in (select b.PTNO from TBUSS001 b where b.grop = (select c.grop from CBASE000 c WHERE  c.usid = @usid)) " +
                 "ORDER BY a.cdat DESC";
         Sql sql = Sqls.create(sqlStr);
@@ -106,7 +107,7 @@ public class Tbuss003DAOImp implements Tbuss003DAO{
     @Override
     public List<Tbuss003VO> queryAllTaskPrint(Condition cnd0, Condition cnd1, Pager pager) {
         String sqlStr = "SELECT a.taid,a.note,a.titl,a.cdat,a.unam,a.cnam,a.sta1nam,a.ptypnam,a.sta2nam,a.pdat,a.knam,a.sta3nam," +
-                "a.synonam,a.punonam,a.fdat,a.tdat,a.adat,a.perc,a.csid,a.acconam,a.ptnonam from V_TBUSS003 a " +
+                "a.synonam,a.punonam,a.fdat,a.tdat,a.adat,a.perc,a.csid,a.acconam,a.ptnonam,a.fahh from V_TBUSS003 a " +
                 "$condition0 and a.PTNO in (select b.PTNO from TBUSS001 b $condition1) ORDER BY cdat DESC";
         Sql sql = Sqls.create(sqlStr);
         sql.setPager(pager);
@@ -171,6 +172,7 @@ public class Tbuss003DAOImp implements Tbuss003DAO{
                 while(rs.next()){
                     Tbuss003VO tbuss003VO = formatResultVO(rs);
                     tbuss003VO.setNote(FileUtil.formatClobByString(rs.getString("note")));
+                    tbuss003VO.setFahh(rs.getFloat("fahh"));
                     tbuss003VOS.add(tbuss003VO);
                 }
                 return tbuss003VOS;
@@ -199,6 +201,7 @@ public class Tbuss003DAOImp implements Tbuss003DAO{
                 while(rs.next()){
                     Tbuss003VO tbuss003VO = formatResultVO(rs);
                     tbuss003VO.setStag(rs.getInt("stag"));
+                    tbuss003VO.setFahh(rs.getFloat("fahh"));
                     tbuss003VOS.add(tbuss003VO);
                 }
                 return tbuss003VOS;

@@ -3,6 +3,8 @@ package com.gree.ant.mo.basic;
 import com.gree.ant.vo.Cbase010VO;
 import org.nutz.dao.Condition;
 
+import java.util.List;
+
 /**
  * The interface Cbase 010 basic mo.
  *
@@ -48,5 +50,5 @@ public interface Cbase010BasicMO {
      * @version V1.0
      * @createTime 2017 :10:17 04:10:37.
      */
-    Boolean queryByCnd(Condition cnd);
+    List<Cbase010VO> queryByCnd(Condition cnd);
 }

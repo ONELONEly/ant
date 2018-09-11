@@ -15,30 +15,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <c:import url="../static.html"/>
-    <script language="JavaScript">
-        layui.use(['element','carousel','jquery','table'],function () {
-            var $ = layui.jquery,element = layui.element,carousel = layui.carousel,table = layui.table;
-            carousel.render({
-                elem: '#carousel',
-                width: '100%',
-                height:'400px',
-                arrow: 'always',
-                autoplay:true,
-                interval:2000
-            });
-
-            table.on('tool(manage)',function (obj) {
-                var data = obj.data;
-                layer.open({
-                    type:2,
-                    content:['./doc/showDoc?doid='+data.doid],
-                    area: ['90%', '90%'],
-                    title:'文档',
-                    offset:'10px'
-                });
-            });
-        });
-    </script>
 </head>
 <body>
 <div class="layui-layout layui-layout-admin">
@@ -65,7 +41,7 @@
         <div class="x-titleDiv">
             <span>&nbsp;公开文档</span>
         </div>
-        <table class="layui-table" lay-skin="nob" lay-data="{height:'200',url:'${base}/doc/queryAllMessage?ctyp=3',id:'manage'}"  lay-filter="manage">
+        <table class="layui-table" lay-skin="nob" lay-data="{url:'${base}/doc/queryAllMessage?ctyp=3',id:'manage'}"  lay-filter="manage">
             <thead>
             <tr>
                 <th lay-data="{field:'tilt',toolbar:'#noteTpl'}">标题</th>
@@ -75,9 +51,32 @@
         <script type="text/html" id="noteTpl">
             <a href="javascript:" class="layui-table-link" lay-event="show">{{d.tilt}}</a>
         </script>
-        <%--<br><br><br><br><br><br><br><br><br>--%>
     </div>
 </div>
+<script language="JavaScript">
+    layui.use(['element','carousel','jquery','table'],function () {
+        var $ = layui.jquery,element = layui.element,carousel = layui.carousel,table = layui.table;
+        carousel.render({
+            elem: '#carousel',
+            width: '100%',
+            height:'400px',
+            arrow: 'always',
+            autoplay:true,
+            interval:2000
+        });
+
+        table.on('tool(manage)',function (obj) {
+            var data = obj.data;
+            layer.open({
+                type:2,
+                content:['./doc/showDoc?doid='+data.doid],
+                area: ['90%', '90%'],
+                title:'文档',
+                offset:'10px'
+            });
+        });
+    });
+</script>
 </body>
 </html>
 

@@ -15,86 +15,13 @@
     <title>添加规则</title>
     <c:import url="../../static1.html"/>
 </head>
-<script language="JavaScript">
-    layui.use(['form','jquery','element','layer','layedit','upload'],function () {
-        var form = layui.form,$ = layui.jquery,element = layui.element,
-            layer = layui.layer;
-
-
-        form.verify({
-            dsca:function (value) {
-                if(value.length === 0){
-                    return "请输入规则描述";
-                }
-            },
-            plsu:function (value) {
-                if(value.length === 0){
-                    return "请输入评估占比";
-                }
-            },
-            pjjp:function (value) {
-                if(value.length === 0){
-                    return "请输入分项占比";
-                }
-            },
-            deti:function (value) {
-                if(value.length === 0){
-                    return "请输入评估细则";
-                }
-            },
-            cons:function (value) {
-                if(value.length === 0){
-                    return "请输入基础分数";
-                }
-            },
-            remk:function (value) {
-                if(value.length === 0){
-                    return "请输入规则备注";
-                }
-            }
-        });
-
-        form.on("submit(set)",function (data) {
-            var trans = data.field;
-            $.ajax({
-                type:'POST',
-                url:'${base}/task/insertRule',
-                data:{
-                    dsca:trans.dsca,
-                    plsu:trans.plsu,
-                    pjjp:trans.pjjp,
-                    deti:trans.deti,
-                    cons:trans.cons,
-                    remk:trans.remk,
-                    stat:trans.stat
-                },
-                dataType:'json',
-                success:function (data) {
-                    if(data.code === 1){
-                        layer.confirm(data.msg,{btn:['确认','返回','取消'],offset:'100px',anim:4},function () {
-                            window.location.reload();
-                        },function () {
-                            window.location.replace("${base}/task/rule");
-                        });
-                    }else{
-                        layer.alert(data.msg);
-                    }
-                },
-                error:function (kellyj) {
-                    layer.alert("发生错误，错误码为:"+kellyj.status);
-                }
-            });
-            return false;
-        });
-    });
-</script>
 <body>
 <div class="x-nav">
     <span class="layui-breadcrumb">
         <a href="javascript:" style="line-height: 40px;"><cite style="cursor: pointer;">设置</cite></a>
         <a href="${base}/task/rule"><cite style="cursor: pointer;">任务规则</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">添加规则</cite></a>
-        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center layui-icon-refresh"></i></a>
     </span>
 </div>
 <div class="x-body layui-container">
@@ -159,7 +86,80 @@
             <button type="reset" class="layui-btn layui-btn-radius">重置输入</button>
         </div>
     </form>
-    <br><br><br><br><br><br><br><br><br>
+
 </div>
+<script language="JavaScript">
+    layui.use(['form','jquery','element','layer','layedit','upload'],function () {
+        var form = layui.form,$ = layui.jquery,element = layui.element,
+            layer = layui.layer;
+
+
+        form.verify({
+            dsca:function (value) {
+                if(checkForm(value)){
+                    return "请输入规则描述";
+                }
+            },
+            plsu:function (value) {
+                if(checkForm(value)){
+                    return "请输入评估占比";
+                }
+            },
+            pjjp:function (value) {
+                if(checkForm(value)){
+                    return "请输入分项占比";
+                }
+            },
+            deti:function (value) {
+                if(checkForm(value)){
+                    return "请输入评估细则";
+                }
+            },
+            cons:function (value) {
+                if(checkForm(value)){
+                    return "请输入基础分数";
+                }
+            },
+            remk:function (value) {
+                if(checkForm(value)){
+                    return "请输入规则备注";
+                }
+            }
+        });
+
+        form.on("submit(set)",function (data) {
+            var trans = data.field;
+            $.ajax({
+                type:'POST',
+                url:'${base}/task/insertRule',
+                data:{
+                    dsca:trans.dsca,
+                    plsu:trans.plsu,
+                    pjjp:trans.pjjp,
+                    deti:trans.deti,
+                    cons:trans.cons,
+                    remk:trans.remk,
+                    stat:trans.stat
+                },
+                dataType:'json',
+                success:function (data) {
+                    if(data.code === 1){
+                        layer.confirm(data.msg,{btn:['确认','返回','取消'],offset:'100px',anim:4},function () {
+                            window.location.reload();
+                        },function () {
+                            window.location.replace("${base}/task/rule");
+                        });
+                    }else{
+                        layer.alert(data.msg,{offset:'10px'});
+                    }
+                },
+                error:function (kellyj) {
+                    layer.alert("发生错误，错误码为:"+kellyj.status,{offset:'10px'});
+                }
+            });
+            return false;
+        });
+    });
+</script>
 </body>
 </html>

@@ -51,7 +51,7 @@ public class SumController {
     @At
     @Ok("jsp:jsp.sum.scoreRank")
     public Integer scoreRank(){
-        return cbase000MO.countByCnd(null);
+        return 0;
     }
 
 }

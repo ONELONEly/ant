@@ -1,7 +1,7 @@
 /** layuiAdmin.std-v1.0.0-beta7 LPPL License By http://www.layui.com/admin/ */
  ;layui.extend(
  	{
- 		setter:"config",
+ 		setter:"lib/config",
  		admin:"lib/admin",
  		view:"lib/view"}
  	).define(["setter","admin"],function(a){

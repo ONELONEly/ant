@@ -96,7 +96,7 @@
             </div>
             <div class="layui-progress" lay-showPercent="yes">
               <h3>内存占用率</h3>
-              <div class="layui-progress-bar layui-bg-red" lay-percent="90%"></div>
+              <div class="layui-progress-bar layui-bg-red" lay-percent="20%"></div>
             </div>
           </div>
         </div>

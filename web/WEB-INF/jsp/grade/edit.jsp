@@ -15,67 +15,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>绩效修改</title>
     <c:import url="../../static1.html"/>
-    <script language="JavaScript">
-        layui.use(['element','layer','form','jquery','laydate'],function () {
-            var $ = layui.jquery,element = layui.element,form = layui.form,
-                layer = layui.layer,laydate = layui.laydate;
-
-            laydate.render({
-                elem:'#date',
-                type:'month',
-                choose: function (value) {
-                    console.log(value);
-                }
-            });
-
-            $.ajax({
-                url:'${base}/util/findC9',
-                type:'GET',
-                dataType:'json',
-                success:function (data) {
-                    var c9s = data.c9;
-                    var option = "";
-                    for(var i = 0;i<c9s.length;i++) {
-                        option += "<option value='"+c9s[i].id+"'>"+c9s[i].dsca+"</option>";
-                    }
-                    $("#team").append(option);
-                    form.render();
-                },
-                error:function (kj) {
-                    alert("发生错误,错误码为:"+kj.status);
-                }
-            });
-
-            form.on("submit(modify)",function (res) {
-                var data = res.field;
-                $.ajax({
-                    url:'${base}/grade/updateProject',
-                    type:'POST',
-                    data:{
-                        ptno:data.ptno,
-                        pdat:data.date,
-                        grop:data.team,
-                        dsca:data.theme
-                    },
-                    dataType:'json',
-                    success:function (data) {
-                        if(data.code === 1){
-                            layer.confirm(data.msg,{btn:['确定'],offset:'100px',anim:4},function (index) {
-                                layer.close(index);
-                                window.location.replace('./index');
-                            });
-                        }else{
-                            layer.alert(data.msg);
-                        }
-                    },
-                    error:function (kj) {
-                        alert("发生错误,错误码为:"+kj.status);
-                    }
-                });
-                return false;
-            });
-        });
-    </script>
 </head>
 <body>
 <div class="x-nav">
@@ -84,7 +23,7 @@
         <a href="javascript:"><cite style="cursor: pointer;">项目</cite></a>
         <a href="./index"><cite style="cursor: pointer;">绩效</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">绩效修改</cite></a>
-        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center">ဂ</i></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center layui-icon-refresh"></i></a>
     </span>
 </div>
 <div class="x-body layui-container">
@@ -109,5 +48,66 @@
             </div>
         </form>
 </div>
+<script language="JavaScript">
+    layui.use(['element','layer','form','jquery','laydate'],function () {
+        var $ = layui.jquery,element = layui.element,form = layui.form,
+            layer = layui.layer,laydate = layui.laydate;
+
+        laydate.render({
+            elem:'#date',
+            type:'month',
+            choose: function (value) {
+                console.log(value);
+            }
+        });
+
+        $.ajax({
+            url:'${base}/util/findC9',
+            type:'GET',
+            dataType:'json',
+            success:function (data) {
+                var c9s = data.c9;
+                var option = "";
+                for(var i = 0;i<c9s.length;i++) {
+                    option += "<option value='"+c9s[i].id+"'>"+c9s[i].dsca+"</option>";
+                }
+                $("#team").append(option);
+                form.render();
+            },
+            error:function (kj) {
+                alert("发生错误,错误码为:"+kj.status);
+            }
+        });
+
+        form.on("submit(modify)",function (res) {
+            var data = res.field;
+            $.ajax({
+                url:'${base}/grade/updateProject',
+                type:'POST',
+                data:{
+                    ptno:data.ptno,
+                    pdat:data.date,
+                    grop:data.team,
+                    dsca:data.theme
+                },
+                dataType:'json',
+                success:function (data) {
+                    if(data.code === 1){
+                        layer.confirm(data.msg,{btn:['确定'],offset:'100px',anim:4},function (index) {
+                            layer.close(index);
+                            window.location.replace('./index');
+                        });
+                    }else{
+                        layer.alert(data.msg,{offset:'10px'});
+                    }
+                },
+                error:function (kj) {
+                    alert("发生错误,错误码为:"+kj.status);
+                }
+            });
+            return false;
+        });
+    });
+</script>
 </body>
 </html>
