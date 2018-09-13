@@ -78,8 +78,8 @@ public class Cbase000DAOImp implements Cbase000DAO {
                 List<Cbase000VO> cbase000VOList = new ArrayList<>();
                 while(rs.next()){
                     cbase000VOList.add(new Cbase000VO(rs.getString("USID"),rs.getString("DSCA"),
-                            rs.getString("PAWD"),rs.getString("DEPTNAM"),rs.getString("ACCONAM"),
-                            rs.getString("JWWJ"),rs.getString("GROPNAM"),rs.getString("COMPNAM")));
+                            rs.getString("PAWD"),rs.getString("GROPNAM"),rs.getString("DEPTNAM"),
+                            rs.getString("COMPNAM"),rs.getString("ACCONAM"),rs.getString("JWWJ")));
                 }
                 return cbase000VOList;
             }

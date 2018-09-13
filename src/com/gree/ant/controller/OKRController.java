@@ -5,6 +5,7 @@ import com.gree.ant.util.ResultUtil;
 import com.gree.ant.util.StringUtil;
 import com.gree.ant.util.TableUtil;
 import com.gree.ant.vo.Tbuss011VO;
+import com.gree.ant.vo.request.OkrVO;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -52,7 +53,7 @@ public class OKRController {
     }
 
     /**
-     * @param tbuss011VO 单条OKR记录
+     * @param okrVO
      * @return 返回标准的响应结果集
      * @description 插入单条OKR记录
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
@@ -61,17 +62,8 @@ public class OKRController {
     @POST
     @At("/insert")
     @Ok("json")
-    public Map<String,Object> insert(@Param("..")Tbuss011VO tbuss011VO){
-        int code = 0;
-        String msg = "请录入所有的必填项";
-        if(StringUtil.checkString(tbuss011VO.getASID(),tbuss011VO.getBOSS(),tbuss011VO.getMDAT())) {
-            tbuss011VO = tbuss011MO.insert(tbuss011VO);
-            if (tbuss011VO.getOKID() != null) {
-                code = 1;
-            }
-        }
-        msg = code == 1?"成功插入OKR记录":msg;
-        return ResultUtil.getResult(code,msg,null);
+    public OkrVO insert(@Param("::") OkrVO okrVO){
+        return okrVO;
     }
 
     /**

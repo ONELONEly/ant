@@ -96,7 +96,7 @@ public class OKRExcel {
         for(Tbuss011VO tbuss011VO:tbuss011VOS){
             cell = new Label(0, col, count+"", format);
             sheet.addCell(cell);
-            cell = new Label(1, col, tbuss011VO.getGOAL() != null ? tbuss011VO.getGOAL():"", format);
+/*            cell = new Label(1, col, tbuss011VO.getGOAL() != null ? tbuss011VO.getGOAL():"", format);
             sheet.addCell(cell);
             cell = new Label(2, col,tbuss011VO.getNNDAT() != null ? tbuss011VO.getNNDAT():"", format);
             sheet.addCell(cell);
@@ -112,7 +112,7 @@ public class OKRExcel {
             sheet.addCell(cell);
             cell = new Label(8, col, tbuss011VO.getKRPERF() != null ? tbuss011VO.getKRPERF():"", format);
             sheet.addCell(cell);
-            cell = new Label(9, col, tbuss011VO.getZGRAD() != null ? (tbuss011VO.getZGRAD()+""):"", format);
+            cell = new Label(9, col, tbuss011VO.getZGRAD() != null ? (tbuss011VO.getZGRAD()+""):"", format);*/
             sheet.addCell(cell);
             cell = new Label(10, col, "", format);
             sheet.addCell(cell);

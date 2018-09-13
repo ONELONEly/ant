@@ -265,9 +265,9 @@
         <table class="layui-table" lay-data="{url:'./queryAllFile?taid=${obj.task.taid}',page:false,id:'file'}" lay-filter="file">
             <thead>
             <tr>
-                <th lay-data="{field:'ffil',align:'center',width:'200}">文件名</th>
-                <th lay-data="{field:'fsiz',align:'center',width:1}">大小</th>
-                <th lay-data="{fixed:'right',align:'center',width:200,templet:'#operate'}">操作</th>
+                <th lay-data="{field:'ffil',align:'center',width:'50%'}">文件名</th>
+                <th lay-data="{field:'fsiz',align:'center',width:'20%'}">大小</th>
+                <th lay-data="{fixed:'right',align:'center',width:'30%',templet:'#operate'}">操作</th>
             </tr>
             </thead>
         </table>

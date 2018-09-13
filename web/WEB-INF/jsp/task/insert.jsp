@@ -181,18 +181,18 @@
             </div>
             <button type="button" class="layui-btn layui-btn-radius layui-btn-danger" id="upload"  lay-submit>上传文件</button>
         </div>
-        <%--<table class="layui-table" lay-data="{height:'400',url:'./queryAllFile?taid=${obj}',page:false,id:'file'}" lay-filter="file">--%>
-        <%--<thead>--%>
-        <%--<tr>--%>
-        <%--<th lay-data="{field:'ffil',align:'center',width:1200}">文件名</th>--%>
-        <%--<th lay-data="{field:'fsiz',width:300}">大小</th>--%>
-        <%--<th lay-data="{fixed:'right',align:'center',width:200,templet:'#operate'}">操作</th>--%>
-        <%--</tr>--%>
-        <%--</thead>--%>
-        <%--</table>--%>
-        <%--<script type="text/html" id="operate">--%>
-        <%--<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>--%>
-        <%--</script>--%>
+<%--        <table class="layui-table" lay-data="{height:'400',url:'./queryAllFile?taid=${obj}',page:false,id:'file'}" lay-filter="file">
+        <thead>
+        <tr>
+        <th lay-data="{field:'ffil',align:'center',width:'50%'}">文件名</th>
+        <th lay-data="{field:'fsiz',width:'20%'}">大小</th>
+        <th lay-data="{fixed:'right',align:'center',width:'30%',templet:'#operate'}">操作</th>
+        </tr>
+        </thead>
+        </table>
+        <script type="text/html" id="operate">
+        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+        </script>--%>
         <hr class="layui-bg-green"/>
 
         <div class="layui-form-item">
