@@ -2,7 +2,8 @@ package com.gree.ant.vo.enumVO;
 
 public enum ResultEnum {
     PRINCIPAL_NULL(999,"PrincipalCollection method argument cannot be null"),
-    CONNECT_REFUSE(998,"connection failed: socket,host=localhost,port=8100,tcpNoDelay=1: java.net.ConnectException: Connection refused: connect")
+    CONNECT_REFUSE(998,"connection failed: socket,host=localhost,port=8100,tcpNoDelay=1: java.net.ConnectException: Connection refused: connect"),
+    RUNTIME_ERROR(500,"运行时错误")
     ;
 
     private Integer code;

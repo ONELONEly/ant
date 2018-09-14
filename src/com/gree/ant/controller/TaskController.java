@@ -64,9 +64,6 @@ public class TaskController {
     @Inject("refer:jieKou_Tbuss003DAOImp_Ds")
     private JieKou_Tbuss003DAOImp_Ds jieKou_Tbuss003DAOImp_Ds;
 
-    @Inject("refer:baseDAOImp")
-    private BaseDAOImp baseDAOImp;
-
     @Inject("refer:tbuss003MO")
     private Tbuss003MO tbuss003MO;
 
@@ -85,8 +82,15 @@ public class TaskController {
      */
     @At
     @Ok("jsp:jsp.task.insert")
-    public String insert(){
-        return "JK"+FileUtil.getRandomName();
+    public Map<String,Object> insert(@Param("type")String type){
+        HashMap<String,Object> resultMap = new HashMap<>();
+        boolean isManager = true;
+        if(StringUtil.checkString(type)){
+            isManager = false;
+        }
+        resultMap.put("isManager",isManager);
+        resultMap.put("taid","JK"+FileUtil.getRandomName());
+        return resultMap;
     }
 
     /**
@@ -116,14 +120,18 @@ public class TaskController {
      */
     @At
     @Ok("jsp:jsp.task.edit")
-    public Map<String,Object> edit(@Param("taid")String taid,@Param("state")String state){
+    public Map<String,Object> edit(@Param("taid")String taid,@Param("state")String state,@Param("type")String type){
         Tbuss003VO tbuss003VO = tbuss003MO.fetchByTaid(taid);
        //阶段的描述
-
+        boolean isManager = true;
         Boolean key = StringUtil.checkString(state);
+        if(StringUtil.checkString(type)){
+            isManager = false;
+        }
         Map<String,Object> resultMap = new HashMap<>();
         resultMap.put("task",tbuss003VO);
         resultMap.put("key",key);
+        resultMap.put("isManager",isManager);
         resultMap.put("note",FileUtil.convertClob(tbuss003VO.getNote()));
         if(tbuss003VO.getJied()!=null){
         String jieddsca=tbuss003MO_Ds.findT3DS_jiedDacaBySyno(tbuss003VO.getJied());

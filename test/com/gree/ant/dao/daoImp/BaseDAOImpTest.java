@@ -27,30 +27,19 @@ public class BaseDAOImpTest {
     private Ioc ioc;
 
     @Inject
-    private BaseDAOImp baseDAOImp;
-
-    @Inject
     private Cbase015MO cbase015MO;
 
     @Test
     public void fetchByName() throws Exception {
-        System.out.println(((Cbase009VO)baseDAOImp.fetchByName(new Cbase009VO(),"S00001")));
     }
 
     @Test
     public void queryByCndPager() throws Exception {
-        Iterator<ValueObject> iterator= baseDAOImp.queryByCndPager(new Cbase000VO(),null,null).iterator();
-        while(iterator.hasNext()){
-            Cbase000VO cbase000VO = (Cbase000VO)iterator.next();
-            System.out.println(cbase000VO.getPAWD());
-        }
-        System.out.println();
     }
 
     @Test
     public void insert() throws Exception {
         Cbase008VO cbase008VO = new Cbase008VO("S00002","测试");
-        System.out.println(baseDAOImp.insert(cbase008VO));
     }
 
     @Test
@@ -60,13 +49,11 @@ public class BaseDAOImpTest {
         Cbase008VO cbase008VO1 = new Cbase008VO("S00003","测试1");
         cbase008VOS.add(cbase008VO);
         cbase008VOS.add(cbase008VO1);
-        System.out.println(baseDAOImp.insert(cbase008VOS));
     }
 
     @Test
     public void fastInsert() throws Exception {
         Cbase008VO cbase008VO = new Cbase008VO("S00005","测试");
-        System.out.println(baseDAOImp.fastInsert(cbase008VO));
     }
 
     @Test
@@ -74,9 +61,6 @@ public class BaseDAOImpTest {
         List<ValueObject> cbase008VOS = new ArrayList<>();
         Cbase008VO cbase008VO = new Cbase008VO("S00006","测试");
         Cbase008VO cbase008VO1 = new Cbase008VO("S00007","测试1");
-        cbase008VOS.add(cbase008VO);
-        cbase008VOS.add(cbase008VO1);
-        System.out.println(baseDAOImp.fastInsert(cbase008VOS));
     }
 
     @Test
@@ -86,7 +70,6 @@ public class BaseDAOImpTest {
         cbase002VOS.add(new Cbase002VO("700","测试",1,""));
         cbase002VOS.add(new Cbase002VO("701","测试",1,""));
         cbase007VO.setCbase002VOS(cbase002VOS);
-        System.out.println(baseDAOImp.deleteWith(cbase007VO,"cbase002VOS"));
     }
 
     @Test
@@ -95,15 +78,12 @@ public class BaseDAOImpTest {
 
     @Test
     public void delete() throws Exception {
-        String like = "测试";
-        System.out.println(baseDAOImp.clearByCnd(new Cbase008VO(), Cnd.where("dsca","like","%"+like+"%")));
 
     }
 
     @Test
     public void update() throws Exception {
-        System.out.print(HTMLUtil.delHTMLTag(FileUtil.convertClob(((Tbuss009VO) baseDAOImp.fetchByID(new Tbuss009VO(), Long.parseLong("1506173364859"))).getNote())));
-    }
+            }
 
     @Test
     public void update1() throws Exception {

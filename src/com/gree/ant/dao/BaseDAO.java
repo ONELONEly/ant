@@ -1,6 +1,5 @@
 package com.gree.ant.dao;
 
-import com.gree.ant.vo.ValueObject;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 
@@ -9,13 +8,14 @@ import java.util.List;
 /**
  * The type Base dao.
  *
+ * @param <T>
  * @author create by jinyuk@foxmail.com.
  * @version V1.0
  * @description 所有实体的基本操作全在本个DAO接口中调用.
  * @title BaseDAO
  * @createTime 2017 :09:01 02:09:08.
  */
-public abstract class BaseDAO {
+public interface  BaseDAO<T> {
     /**
      * Insert value object.
      *
@@ -26,7 +26,7 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 02:09:08.
      */
-    public abstract ValueObject insert(ValueObject  vo);
+    T insert(T  vo);
 
     /**
      * Insert list.
@@ -38,7 +38,7 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 02:09:37.
      */
-    public abstract List<ValueObject> insert(List<ValueObject> vo);
+    List<T> insert(List<T> vo);
 
     /**
      * Insert relation value object.
@@ -51,7 +51,7 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:02 09:09:52.
      */
-    public abstract ValueObject insertRelation(ValueObject vo,String primary);
+    T insertRelation(T vo,String primary);
 
     /**
      * Fast insert value object.
@@ -63,7 +63,7 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 02:09:08.
      */
-    public abstract ValueObject fastInsert(ValueObject vo);
+    Class<T> fastInsert(Class<T> vo);
 
     /**
      * Fast insert list.
@@ -75,7 +75,7 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 02:09:28.
      */
-    public abstract List<ValueObject> fastInsert(List<ValueObject>  vo);
+    List<T> fastInsert(List<T>  vo);
 
     /**
      * Insert with value object.
@@ -88,7 +88,7 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 02:09:08.
      */
-    public abstract ValueObject insertWith(ValueObject vo,String name);
+    T insertWith(T vo,String name);
 
     /**
      * Insert links value object.
@@ -101,7 +101,7 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 02:09:08.
      */
-    public abstract ValueObject insertLinks(ValueObject vo,String name);
+    Class<T> insertLinks(Class<T> vo,String name);
 
     /**
      * Delete value object.
@@ -113,13 +113,12 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 02:09:08.
      */
-    public abstract Integer delete(ValueObject vo);
+    Integer delete(T vo);
 
 
     /**
      * Delete by name integer.
      *
-     * @param vo   VO实体
      * @param name @Name主键
      * @return 返回删除的结果.1 :成功;0:失败
      * @description 通过VO(如new Cbase000VO, 无参构造即可) ，@Name型主键进行删除
@@ -127,12 +126,11 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 05:09:28.
      */
-    public abstract Integer deleteByName(ValueObject vo,String name);
+    Integer deleteByName(String name);
 
     /**
      * Delete by id integer.
      *
-     * @param vo VO实体
      * @param id @Id主键
      * @return 返回删除的结果.1 :成功;0:失败
      * @description 删除, VO(如new Cbase000VO, 无参构造即可) ，通过@ID型参数进行删除
@@ -140,12 +138,12 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 05:09:28.
      */
-    public abstract Integer deleteByID(ValueObject vo,long id);
+    Integer deleteByID(long id);
 
     /**
      * Delete with integer.
      *
-     * @param vo   VO实体
+     * @param vo      VO实体
      * @param primary 关联的实体参数名
      * @return 返回删除的结果.1 :成功;0:失败
      * @description 删除 ，同时删除关联的实体内容
@@ -153,7 +151,7 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 05:09:28.
      */
-    public abstract Integer deleteWith(ValueObject vo,String primary);
+    Integer deleteWith(T vo,String primary);
 
     /**
      * Delete links integer.
@@ -166,7 +164,7 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 05:09:28.
      */
-    public abstract Integer deleteLinks(ValueObject vo,String name);
+    Integer deleteLinks(T vo,String name);
 
     /**
      * Update value object.
@@ -178,7 +176,7 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 02:09:08.
      */
-    public abstract Integer update(ValueObject  vo);
+    Integer update(T  vo);
 
     /**
      * Update value object.
@@ -190,12 +188,11 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 02:09:31.
      */
-    public abstract Integer update(List<ValueObject>  vo);
+    Integer update(List<T>  vo);
 
     /**
      * Fetch by name value object.
      *
-     * @param vo   VO实体
      * @param name @Name主键
      * @return 返回被封装的VO value object
      * @description 获取, 根据 ( 如new Cbase000VO,无参构造即可),@Name获取一条记录.
@@ -203,12 +200,11 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 02:09:09.
      */
-    public abstract ValueObject fetchByName(ValueObject vo, String name);
+    T fetchByName( String name);
 
     /**
      * Fetch by id value object.
      *
-     * @param vo VO实体
      * @param id @ID主键
      * @return 返回被封装的VO value object
      * @description 获取, 根据 ( 如new Cbase000VO,无参构造即可),@ID获取一条记录.
@@ -216,25 +212,25 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 02:09:09.
      */
-    public abstract ValueObject fetchByID(ValueObject vo,long id);
+    T fetchByID(long id);
 
     /**
      * Fetch links value object.
      *
      * @param vo      VO实体
      * @param primary the primary
+     * @param cnd
      * @return 返回被封装的VO value object
      * @description 查询被关联表的实体 （集合）,以当前实体的格式返回.
      * @author create by jinyuk@foxmail.com.
      * @version V1.0
      * @createTime 2017 :09:02 10:09:17.
      */
-    public abstract ValueObject fetchLinks(ValueObject vo,String primary,Condition cnd);
+    T fetchLinks(T vo,String primary,Condition cnd);
 
     /**
      * Fetch trans by name value object.
      *
-     * @param vo      VO实体
      * @param name    @Name关键词
      * @param primary 关联表的字段
      * @param cnd     过滤条件-过滤关联是调用
@@ -244,12 +240,11 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:02 02:09:33.
      */
-    public abstract ValueObject fetchTransByNameCnd(ValueObject vo,String name,String primary,Condition cnd);
+    T fetchTransByNameCnd(String name,String primary,Condition cnd);
 
     /**
      * Fetch trans by id value object.
      *
-     * @param vo      VO实体
      * @param id      @ID关键词
      * @param primary 关联表的字段
      * @param cnd     过滤条件-过滤关联是调用
@@ -259,12 +254,11 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:02 02:09:35.
      */
-    public abstract ValueObject fetchTransByIdCnd(ValueObject vo,long id,String primary,Condition cnd);
+    T fetchTransByIdCnd(long id,String primary,Condition cnd);
 
     /**
      * Query by cnd pager list.
      *
-     * @param vo    VO实体
      * @param cnd   过滤条件
      * @param pager 分页条件
      * @return 返回被Map封装的VO集合 list
@@ -273,14 +267,20 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 02:09:09.
      */
-    public abstract List<ValueObject> queryByCndPager(ValueObject  vo, Condition cnd, Pager pager);
+    List<T> queryByCndPager(Condition cnd, Pager pager);
 
-    public abstract List<ValueObject> queryByCnd(ValueObject  vo, Condition cnd);
+    /**
+     * @param cnd
+     * @return TODO
+     * @description TODO
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     */
+    List<T> queryByCnd(Condition cnd);
 
     /**
      * Query by cnd pager list.
      *
-     * @param vo      VO实体
      * @param cnd     过滤条件
      * @param pager   分页条件
      * @param primary 关联字段
@@ -290,19 +290,18 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 02:09:09.
      */
-    public abstract List<ValueObject>  queryByCndPager(ValueObject  vo, Condition cnd, Pager pager,String primary);
+    List<T>  queryByCndPager(Condition cnd, Pager pager,String primary);
 
     /**
      * Clear boolean.
      *
-     * @param vo VO实体
      * @return 返回数据是否删除成功 boolean
      * @description 清除, (如new Cbase000VO, 无参构造即可), 删除表内的所有数据
      * @author create by jinyuk@foxmail.com.
      * @version V1.0
      * @createTime 2017 :09:01 02:09:09.
      */
-    public abstract Integer clear(ValueObject vo);
+    Integer clear();
 
 
     /**
@@ -316,7 +315,7 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:02 09:09:26.
      */
-    public abstract ValueObject clearLinks(ValueObject vo,String primary);
+    T clearLinks(T vo,String primary);
 
 
     /**
@@ -330,12 +329,19 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 05:09:40.
      */
-    public abstract Integer clearByCnd(ValueObject vo,Condition cnd);
+
+    /**
+     * @param cnd
+     * @return TODO
+     * @description TODO
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     */
+    Integer clearByCnd(Condition cnd);
 
     /**
      * Count by cnd integer.
      *
-     * @param vo  VO实体
      * @param cnd 过滤字段
      * @return 表有多少数据 integer
      * @description 根据VO实体(如new Cbase000VO, 无参构造即可)和cnd查询表数据的数量
@@ -343,7 +349,7 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:02 11:09:07.
      */
-    public abstract Integer countByCnd(ValueObject vo,Condition cnd);
+    Integer countByCnd(Condition cnd);
 
 
     /**
@@ -356,7 +362,7 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 02:09:09.
      */
-    public abstract Boolean create(ValueObject vo);
+    Boolean create(Class<T> vo);
 
     /**
      * Drop boolean.
@@ -368,7 +374,7 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 02:09:09.
      */
-    public abstract Boolean drop(ValueObject vo);
+    Boolean drop(Class<T> vo);
 
     /**
      * Func integer.
@@ -379,5 +385,5 @@ public abstract class BaseDAO {
      * @version V1.0
      * @createTime 2017 :09:01 02:09:09.
      */
-    public abstract Integer func();
+    Integer func();
 }

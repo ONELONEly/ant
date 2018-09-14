@@ -20,10 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @IocBean
-public class Tbuss001DAOImp implements Tbuss001DAO{
-
-    @Inject("refer:daoFX")
-    private Dao dao;
+public class Tbuss001DAOImp extends BaseDAOImp<Tbuss001VO> implements Tbuss001DAO{
 
     @Override
     public String fetchNameByUsidPdat(String usid, String pdat) {
@@ -39,7 +36,7 @@ public class Tbuss001DAOImp implements Tbuss001DAO{
                 return "";
             }
         });
-        dao.execute(sql);
+        this.getDao().execute(sql);
         return sql.getString();
     }
 
@@ -49,7 +46,7 @@ public class Tbuss001DAOImp implements Tbuss001DAO{
         Sql sql = Sqls.create(sqlStr);
         sql.setPager(pager);
         sql.setParam("acco",acco).setParam("pdat","%"+pdat+"%");
-        return DAOUtil.getT1(sql,dao);
+        return DAOUtil.getT1(sql,this.getDao());
     }
 
     @Override
@@ -58,7 +55,7 @@ public class Tbuss001DAOImp implements Tbuss001DAO{
         Sql sql = Sqls.create(sqlStr);
         sql.setPager(pager);
         sql.setParam("dept",dept).setParam("pdat","%"+pdat+"%");
-        return DAOUtil.getT1(sql,dao); 
+        return DAOUtil.getT1(sql,this.getDao());
     }
 
     @Override
@@ -67,7 +64,7 @@ public class Tbuss001DAOImp implements Tbuss001DAO{
         Sql sql = Sqls.create(sqlStr);
         sql.setPager(pager);
         sql.setParam("comp",comp).setParam("pdat","%"+pdat+"%");
-        return DAOUtil.getT1(sql,dao);
+        return DAOUtil.getT1(sql,this.getDao());
     }
 
     @Override
@@ -75,7 +72,7 @@ public class Tbuss001DAOImp implements Tbuss001DAO{
         String sqlStr = "select count(*) from v_tbuss001 t where t.usid in (select c.usid from cbase000 c where c.acco = @acco)";
         Sql sql = Sqls.create(sqlStr);
         sql.setParam("acco",acco).setParam("pdat","%"+pdat+"%");
-        return DAOUtil.getTiCount(sql,dao);
+        return DAOUtil.getTiCount(sql,this.getDao());
     }
 
     @Override
@@ -83,7 +80,7 @@ public class Tbuss001DAOImp implements Tbuss001DAO{
         String sqlStr = "select count(*) from v_tbuss001 t where t.usid in (select c.usid from cbase000 c where c.dept = @dept)";
         Sql sql = Sqls.create(sqlStr);
         sql.setParam("dept",dept).setParam("pdat","%"+pdat+"%");
-        return DAOUtil.getTiCount(sql,dao);
+        return DAOUtil.getTiCount(sql,this.getDao());
     }
 
     @Override
@@ -91,7 +88,7 @@ public class Tbuss001DAOImp implements Tbuss001DAO{
         String sqlStr = "select count(*) from v_tbuss001 t where t.usid in (select c.usid from cbase000 c where c.comp = @comp)";
         Sql sql = Sqls.create(sqlStr);
         sql.setParam("comp",comp).setParam("pdat","%"+pdat+"%");
-        return DAOUtil.getTiCount(sql,dao);
+        return DAOUtil.getTiCount(sql,this.getDao());
     }
 
     @Override
@@ -108,7 +105,7 @@ public class Tbuss001DAOImp implements Tbuss001DAO{
                 return res;
             }
         });
-        dao.execute(sql);
+        this.getDao().execute(sql);
         return sql.getList(String.class);
     }
 
@@ -117,6 +114,6 @@ public class Tbuss001DAOImp implements Tbuss001DAO{
         String sqlStr = "select ptno,dsca from tbuss001 $condition order by dsca asc";
         Sql sql = Sqls.create(sqlStr);
         sql.setCondition(cnd);
-        return DAOUtil.getResultVO(sql,dao);
+        return DAOUtil.getResultVO(sql,this.getDao());
     }
 }

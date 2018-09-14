@@ -28,29 +28,17 @@ import java.util.*;
 @IocBean
 public class Ds000MOTest {
 
-
-    @Inject("refer:dao1")
-    private Dao dao1;
-
-    @Inject("refer:daoFX")
-    private Dao dao;
-
     @Inject("refer:tbuss003MO")
     private Tbuss003MO tbuss003MO;
-
-
 
     @Inject("refer:tbuss003DAOImp_Ds")
     private Tbuss003DAOImp_Ds tbuss003DAOImp_Ds;
 
-    @Inject("refer:baseDAOImp")
-    private BaseDAOImp baseDAOImp;
-
     @Inject("refer:jieKou_Tbuss003DAOImp_Ds")
     private JieKou_Tbuss003DAOImp_Ds jieKou_Tbuss003DAOImp_Ds;
 
-    @Inject("refer:tbuss003MO_Ds")
-    private Tbuss003MO_Ds tbuss003MO_Ds;
+    @Inject
+    private Cbase013MO cbase013MO;
 
     @Test
 public void dateTest()throws Exception{
@@ -164,7 +152,7 @@ public void dateTest()throws Exception{
         cbase000VO.setUSID("180304");
         cbase000VO.setACCO("3");
 
-        Cbase013VO cbase013VO= (Cbase013VO) baseDAOImp.fetchByName(new Cbase013VO(),tbuss003VO.getSyno());
+        Cbase013VO cbase013VO= cbase013MO.fetchBySyno(tbuss003VO.getSyno());
         String dsca=cbase000VO.getDSCA();
         //去LanguageCfgLookupValues表通过名称找出id
         String CrntVersionID=tbuss003DAOImp_Ds.findIdByDscaLang(dsca);

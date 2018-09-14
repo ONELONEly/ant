@@ -1,5 +1,6 @@
 package com.gree.ant.dao;
 
+import com.gree.ant.vo.Cbase009VO;
 import com.gree.ant.vo.util.ResultVO;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * @title Cbase009DAO
  * @createTime 2017 :08:30 05:08:53.
  */
-public interface Cbase009DAO {
+public interface Cbase009DAO extends BaseDAO<Cbase009VO>{
 
     /**
      * Insert check boolean.

@@ -1,5 +1,4 @@
 package com.gree.ant.dao;
-
 import com.gree.ant.vo.Cbase000VO;
 import com.gree.ant.vo.util.GradeVO;
 import com.gree.ant.vo.util.ResultVO;
@@ -17,7 +16,9 @@ import java.util.List;
  * @title Cbase000DAO
  * @createTime 2017 :08:30 05:08:42.
  */
-public interface Cbase000DAO {
+public interface Cbase000DAO extends BaseDAO<Cbase000VO> {
+
+
 
     /**
      * Login check boolean.

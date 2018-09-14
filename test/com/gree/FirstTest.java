@@ -1,5 +1,8 @@
 package com.gree;
 
+import com.gree.ant.dao.BaseDAO;
+import com.gree.ant.dao.daoImp.BaseDAOImp;
+import com.gree.ant.vo.Cbase000VO;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,13 +15,9 @@ import org.nutz.mvc.Mvcs;
 @IocBean
 public class FirstTest extends Assert{
 
-    @Inject("refer:$ioc")
-    private Ioc ioc;
-
     @Test
     public void firstTest() throws Exception {
-//        Mvcs.setLocalizationKey("");
-        System.out.println(Mvcs.getLocalizationKey());
-        System.out.println(Mvcs.getLocalizationKeySet());
+        BaseDAOImp<Cbase000VO> cbase000VOBaseDAO = new BaseDAOImp<>();
+        System.out.println(cbase000VOBaseDAO.getEntryClz().getName());
     }
 }

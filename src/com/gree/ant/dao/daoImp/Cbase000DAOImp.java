@@ -6,12 +6,10 @@ import com.gree.ant.vo.Cbase000VO;
 import com.gree.ant.vo.util.GradeVO;
 import com.gree.ant.vo.util.ResultVO;
 import org.nutz.dao.Condition;
-import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.pager.Pager;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.sql.SqlCallback;
-import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -20,10 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @IocBean
-public class Cbase000DAOImp implements Cbase000DAO {
-
-    @Inject("refer:daoFX")
-    private Dao dao;
+public class Cbase000DAOImp extends BaseDAOImp<Cbase000VO> implements Cbase000DAO{
 
     @Override
     public Boolean loginCheck(String usid, String pawd) {
@@ -36,14 +31,14 @@ public class Cbase000DAOImp implements Cbase000DAO {
                 return rs.next();
             }
         });
-        dao.execute(sql);
+        this.getDao().execute(sql);
         return sql.getBoolean();
     }
 
     @Override
     public List<ResultVO> queryAllUD() {
         String sqlStr = "select c.usid,c.dsca from cbase000 c order by c.dsca asc";
-        return DAOUtil.getResultVO(sqlStr,dao);
+        return DAOUtil.getResultVO(sqlStr,this.getDao());
     }
 
     @Override
@@ -62,7 +57,7 @@ public class Cbase000DAOImp implements Cbase000DAO {
                 return gradeVOList;
             }
         });
-        dao.execute(sql);
+        this.getDao().execute(sql);
         return sql.getList(GradeVO.class);
     }
 
@@ -84,7 +79,7 @@ public class Cbase000DAOImp implements Cbase000DAO {
                 return cbase000VOList;
             }
         });
-        dao.execute(sql);
+        this.getDao().execute(sql);
         return sql.getList(Cbase000VO.class);
     }
 }

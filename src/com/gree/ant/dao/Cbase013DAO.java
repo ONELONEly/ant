@@ -1,6 +1,7 @@
 package com.gree.ant.dao;
 
 
+import com.gree.ant.vo.Cbase013VO;
 import org.nutz.dao.Condition;
 
 /**
@@ -12,7 +13,7 @@ import org.nutz.dao.Condition;
  * @title Cbase015DAO
  * @createTime 2017 :09:09 09:09:13.
  */
-public interface Cbase013DAO {
+public interface Cbase013DAO extends BaseDAO<Cbase013VO>{
 
     Boolean insertCheck(Condition cnd);
 }

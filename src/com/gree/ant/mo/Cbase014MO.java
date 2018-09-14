@@ -1,23 +1,20 @@
 package com.gree.ant.mo;
 
-import com.gree.ant.dao.daoImp.BaseDAOImp;
+import com.gree.ant.dao.daoImp.Cbase014DAOImp;
 import com.gree.ant.mo.basic.Cbase014BasicMO;
 import com.gree.ant.vo.Cbase014VO;
-import com.gree.ant.vo.ValueObject;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @IocBean
 public class Cbase014MO implements Cbase014BasicMO{
 
-    @Inject("refer:baseDAOImp")
-    private BaseDAOImp baseDAOImp;
+
+    @Inject("refer:cbase014DAOImp")
+    private Cbase014DAOImp cbase014DAOImp;
 
     /**
      * Query all by cns list.
@@ -32,15 +29,6 @@ public class Cbase014MO implements Cbase014BasicMO{
      */
     @Override
     public List<Cbase014VO> queryAllByCnd(Condition cnd, Pager pager) {
-        return formatC14(baseDAOImp.queryByCndPager(new Cbase014VO(),cnd,pager));
-    }
-
-    private List<Cbase014VO> formatC14(List<ValueObject> voS){
-        Iterator<ValueObject> iterator = voS.iterator();
-        List<Cbase014VO> cbase014VOS = new ArrayList<>();
-        while(iterator.hasNext()){
-            cbase014VOS.add((Cbase014VO) iterator.next());
-        }
-        return  cbase014VOS;
+        return cbase014DAOImp.queryByCndPager(cnd,pager);
     }
 }

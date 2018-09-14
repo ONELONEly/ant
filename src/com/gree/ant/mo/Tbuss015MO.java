@@ -1,26 +1,24 @@
 package com.gree.ant.mo;
 
-import com.gree.ant.dao.daoImp.BaseDAOImp;
+import com.gree.ant.dao.daoImp.Tbuss015DAOImp;
 import com.gree.ant.mo.basic.Tbuss015BasicMO;
 import com.gree.ant.util.FileUtil;
 import com.gree.ant.vo.Tbuss015VO;
-import com.gree.ant.vo.ValueObject;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @IocBean
 public class Tbuss015MO implements Tbuss015BasicMO{
 
 
-    @Inject("refer:baseDAOImp")
-    private BaseDAOImp baseDAOImp;
+
+
+    @Inject("refer:tbuss015DAOImp")
+    private Tbuss015DAOImp tbuss015DAOImp;
 
     /**
      * Query all by cnd pager list.
@@ -35,7 +33,7 @@ public class Tbuss015MO implements Tbuss015BasicMO{
      */
     @Override
     public List<Tbuss015VO> queryAllByCndPager(Condition cnd, Pager pager) {
-        return formatT15(baseDAOImp.queryByCndPager(new Tbuss015VO(),cnd,pager));
+        return tbuss015DAOImp.queryByCndPager(cnd,pager);
     }
 
     /**
@@ -50,13 +48,13 @@ public class Tbuss015MO implements Tbuss015BasicMO{
      */
     @Override
     public Tbuss015VO insert(Tbuss015VO tbuss015VO) {
-        return (Tbuss015VO)baseDAOImp.insert(tbuss015VO);
+        return tbuss015DAOImp.insert(tbuss015VO);
     }
 
     @Override
     public Integer deleteByDuta(String duta,String fileName) {
         FileUtil.deleteFileByDuta(duta,fileName);
-        return baseDAOImp.deleteByName(new Tbuss015VO(),duta);
+        return tbuss015DAOImp.deleteByName(duta);
     }
 
     /**
@@ -77,14 +75,5 @@ public class Tbuss015MO implements Tbuss015BasicMO{
             code = deleteByDuta(tbuss015VO.getDuta(),tbuss015VO.getFfil());
         }
         return code;
-    }
-
-    private List<Tbuss015VO> formatT15(List<ValueObject> voS){
-        Iterator<ValueObject> iterator = voS.iterator();
-        List<Tbuss015VO> tbuss015VOS = new ArrayList<>();
-        while(iterator.hasNext()){
-            tbuss015VOS.add((Tbuss015VO) iterator.next());
-        }
-        return tbuss015VOS;
     }
 }

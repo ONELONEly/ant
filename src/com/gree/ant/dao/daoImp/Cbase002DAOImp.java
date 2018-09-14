@@ -17,10 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @IocBean
-public class Cbase002DAOImp implements Cbase002DAO{
-
-    @Inject("refer:daoFX")
-    private Dao dao;
+public class Cbase002DAOImp extends BaseDAOImp<Cbase002VO> implements Cbase002DAO{
 
     @Override
     public List<Cbase002VO> queryAllMenuByUSID(String usid) {
@@ -51,7 +48,7 @@ public class Cbase002DAOImp implements Cbase002DAO{
                 return cbase002VOList;
             }
         });
-        dao.execute(sql);
+        this.getDao().execute(sql);
         return sql.getList(Cbase002VO.class);
     }
 }

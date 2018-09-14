@@ -1,24 +1,20 @@
 package com.gree.ant.mo;
 
-import com.gree.ant.dao.daoImp.BaseDAOImp;
+import com.gree.ant.dao.daoImp.Tbuss002DAOImp;
 import com.gree.ant.mo.basic.Tbuss002BasicMO;
 import com.gree.ant.vo.Tbuss002VO;
-import com.gree.ant.vo.Tbuss003VO;
-import com.gree.ant.vo.ValueObject;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-
 import org.nutz.dao.Condition;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @IocBean
 public class Tbuss002MO implements Tbuss002BasicMO{
 
-    @Inject
-    private BaseDAOImp baseDAOImp;
+
+
+    @Inject("refer:tbuss002DAOImp")
+    private Tbuss002DAOImp tbuss002DAOImp;
 
     /**
      * Insert tbuss 002 vo.
@@ -32,7 +28,7 @@ public class Tbuss002MO implements Tbuss002BasicMO{
      */
     @Override
     public Tbuss002VO insert(Tbuss002VO tbuss002VO) {
-        return (Tbuss002VO)baseDAOImp.insert(tbuss002VO);
+        return tbuss002DAOImp.insert(tbuss002VO);
     }
 
     /**
@@ -47,7 +43,7 @@ public class Tbuss002MO implements Tbuss002BasicMO{
      */
     @Override
     public Integer delete(Tbuss002VO tbuss002VO) {
-        return baseDAOImp.delete(tbuss002VO);
+        return tbuss002DAOImp.delete(tbuss002VO);
     }
 
     /**
@@ -62,15 +58,6 @@ public class Tbuss002MO implements Tbuss002BasicMO{
      */
     @Override
     public List<Tbuss002VO> queryByCnd(Condition cnd) {
-        return formatt02(baseDAOImp.queryByCndPager(new Tbuss002VO(),cnd,null));
-    }
-
-    private List<Tbuss002VO> formatt02(List<ValueObject> voS){
-        Iterator<ValueObject> iterator = voS.iterator();
-        List<Tbuss002VO> tbuss002VOS = new ArrayList<>();
-        while(iterator.hasNext()){
-            tbuss002VOS.add((Tbuss002VO) iterator.next());
-        }
-        return tbuss002VOS;
+        return tbuss002DAOImp.queryByCndPager(cnd,null);
     }
 }

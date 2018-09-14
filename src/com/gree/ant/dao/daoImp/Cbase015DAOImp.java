@@ -1,6 +1,7 @@
 package com.gree.ant.dao.daoImp;
 
 import com.gree.ant.dao.Cbase015DAO;
+import com.gree.ant.vo.Cbase015VO;
 import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
@@ -15,10 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @IocBean
-public class Cbase015DAOImp implements Cbase015DAO{
-
-    @Inject("refer:daoFX")
-    private Dao dao;
+public class Cbase015DAOImp extends BaseDAOImp<Cbase015VO> implements Cbase015DAO{
 
     public Object queryAll(){
         String sqlStr = "select * from cbase005";
@@ -33,7 +31,7 @@ public class Cbase015DAOImp implements Cbase015DAO{
                 return map;
             }
         });
-        dao.execute(sql);
+        this.getDao().execute(sql);
         return sql.getObject(HashMap.class);
     }
 }

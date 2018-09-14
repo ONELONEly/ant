@@ -100,6 +100,10 @@
             text-align: center;
         }
 
+        textarea{
+            resize:none;
+        }
+
         /*input:focus{*/
             /*width:200px;*/
             /*height:200px;*/
@@ -264,14 +268,7 @@
         present.css("zIndex",1).css("width","400px").css("background-color","#d3d3d3").css("height","400px").css("position","absolute").css("transition","0.4s");
     }
     layui.use(['form', 'table','jquery','layer'], function () {
-        var form = layui.form,$ = layui.jquery;
-
-        var postDataItem = {
-            asid:'',
-            boss:'',
-            mdat:'',
-            goals:[]
-        };
+        var form = layui.form,$ = layui.jquery,postDataItem;
 
         $(".task_choose").click(function () {
             layer.open({
@@ -288,14 +285,20 @@
         });
 
         $("#insert").click(function () {
+            postDataItem = {
+                asid:'',
+                boss:'',
+                mdat:'',
+                goals:[]
+            };
             var formAll = $(".layui-form").children();
             var inputs = formAll.find("input");
             var texts = formAll.find("textarea");
             var selects = formAll.find("select");
             var param = addToParam(addToParam(null,inputs),selects);
             var goalParam = addToParam(null,texts);
-            if(checkFormData(param) && checkFormData(goalParam)){
 
+            if(checkFormData(param) && checkFormData(goalParam)){
                 for(var j = 0;j < param.length;j++){
                     if(param[j].name === "asid"){
                         postDataItem.asid = param[j].value;
@@ -305,7 +308,6 @@
                         postDataItem.mdat = param[j].value;
                     }
                 }
-
                 for(var i = 0;i < goalParam.length;i++){
                     var goal = goalParam[i];
                     var goalItem = {
@@ -369,29 +371,30 @@
                     }
                     postDataItem.goals.push(goalItem);
                 }
+                $.ajax({
+                    type:'POST',
+                    url:'./insert',
+                    data:postDataItem,
+                    dataType:'json',
+                    success:function (data) {
+                        console.log(data);
+                    },
+                    error:function (kj) {
+                        layer.alert("发生错误:"+kj.status);
+                    }
+                });
             }
-            console.log(postDataItem);
-            $.ajax({
-                type:'POST',
-                url:'./insert',
-                data:postDataItem,
-                dataType:'json',
-                success:function (data) {
-                    console.log(data);
-                },
-                error:function (kj) {
-                    layer.alert("发生错误:"+kj.status);
-                }
-            });
         });
     });
 
     function task_del(present) {
         var parent = present.parent().parent();
         var item_id = parent.attr("id");
-        var item_pre = item_id.substring(0,11);
-        var item_row = item_id.substring(9,10);
-        var count =item_id.substring(11);
+        var secondDot = item_id.indexOf("_",5);
+        var lastDot = item_id.lastIndexOf("_");
+        var item_pre = item_id.substring(0,lastDot+1); //获得当前行的前缀
+        var item_row = item_id.substring(secondDot+1,lastDot); //获得当前行的行号
+        var count =item_id.substring(lastDot+1); //获得当前行的任务号
         count--;
         var krgrop = 'krprop_'+item_row+'_'+count;
         $("#"+item_pre+"0").find('td').each(function () {
@@ -414,9 +417,11 @@
     function task_add(present) {
         var parent = present.parent().parent(); //获得当前行
         var item_id = parent.attr("id"); //获得当前行的ID
-        var item_pre = item_id.substring(0,11); //获得当前行的前缀
-        var item_row = item_id.substring(9,10); //获得当前行的行号
-        var count =item_id.substring(11); //获得当前行的任务号
+        var secondDot = item_id.indexOf("_",5);
+        var lastDot = item_id.lastIndexOf("_");
+        var item_pre = item_id.substring(0,lastDot+1); //获得当前行的前缀
+        var item_row = item_id.substring(secondDot+1,lastDot); //获得当前行的行号
+        var count =item_id.substring(lastDot+1); //获得当前行的任务号
         count++;
         $("#"+item_pre+"0").find('td').each(function () {
             var zIndex = $(this).attr("zIndex");
@@ -441,7 +446,10 @@
     function goal_add(present) {
         var parent = present.parent().parent().parent().parent();
         var item_id = parent.attr("id"); //获得当前行的ID
-        var item_row = item_id.substring(9, 10); //获得当前行的行号
+        var firstDot,secondDot,lastDot;
+        secondDot = item_id.indexOf("_",5);
+        lastDot = item_id.lastIndexOf("_");
+        var item_row = item_id.substring(secondDot+1, lastDot); //获得当前行的行号
         var id_name = "okr_item_"+item_row+"_";
         var same = $("tr[id^='"+id_name+"']");
         item_row++;
@@ -454,9 +462,11 @@
                     inputs, next_id, next_row, count, now_row, input;
                 if (children_count === 2) {
                     next_id = next.attr("id");
-                    next_row = next_id.substring(9, 10);
+                    secondDot = next_id.indexOf("_",5);
+                    lastDot = next_id.lastIndexOf("_");
+                    next_row = next_id.substring(secondDot+1, lastDot);
                     if(item_row-next_row !== 1) {
-                        count = next_id.substring(11);
+                        count = next_id.substring(lastDot+1);
                         now_row = ++next_row;
                         next_row--;
                         next.attr("id", "okr_item_" + now_row + "_" + count);
@@ -466,16 +476,20 @@
                             name = input.attr("name");
                             if (!checkForm(name)) {
                                 if (name.length === 8) {
-                                    name_pre = name.substring(0, 5);
-                                    name_row = name.substring(5, 6);
-                                    name_last = name.substring(7);
+                                    firstDot = name.indexOf("_");
+                                    lastDot = name.lastIndexOf("_");
+                                    name_pre = name.substring(0, firstDot+1);
+                                    name_row = name.substring(firstDot+1, lastDot);
+                                    name_last = name.substring(lastDot+1);
                                     name_row++;
                                     input.attr("name", name_pre + name_row + "_" + name_last);
                                     input.attr("id", name_pre + name_row + "_" + name_last);
                                 } else if (name.length === 10) {
-                                    name_pre = name.substring(0, 7);
-                                    name_row = name.substring(7, 8);
-                                    name_last = name.substring(9);
+                                    firstDot = name.indexOf("_");
+                                    lastDot = name.lastIndexOf("_");
+                                    name_pre = name.substring(0, firstDot+1);
+                                    name_row = name.substring(firstDot+1, lastDot);
+                                    name_last = name.substring(lastDot+1);
                                     name_row++;
                                     input.attr("name", name_pre + name_row + "_" + name_last);
                                     input.attr("id", name_pre + name_row + "_" + name_last);
@@ -485,8 +499,10 @@
                     }
                 } else {
                     next_id = next.attr("id");
-                    next_row = next_id.substring(9, 10);
-                    count = next_id.substring(11);
+                    secondDot = next_id.indexOf("_",5);
+                    lastDot = next_id.lastIndexOf("_");
+                    next_row = next_id.substring(secondDot+1, lastDot);
+                    count = next_id.substring(lastDot+1);
                     now_row = ++next_row;
                     next_row--;
                     next.attr("id", "okr_item_" + now_row + "_" + count);
@@ -497,36 +513,43 @@
                         name = input.attr("name");
                         if (!checkForm(name)) {
                             if (name.length === 6) {
-                                name_pre = name.substring(0, 5);
-                                name_row = name.substring(5);
+                                lastDot = name.lastIndexOf("_");
+                                name_pre = name.substring(0,lastDot+1);
+                                name_row = name.substring(lastDot+1);
                                 name_row++;
                                 input.attr("name", name_pre + name_row);
                                 input.attr("id", name_pre + name_row);
                             } else if (name.length === 7) {
-                                name_pre = name.substring(0, 6);
-                                name_row = name.substring(6);
+                                lastDot = name.lastIndexOf("_");
+                                name_pre = name.substring(0,lastDot+1);
+                                name_row = name.substring(lastDot+1);
                                 name_row++;
                                 input.attr("name", name_pre + name_row);
                                 input.attr("id", name_pre + name_row);
                             }else if (name.length === 8) {
-                                name_pre = name.substring(0, 6);
-                                name_row = name.substring(7);
+                                lastDot = name.lastIndexOf("_");
+                                name_pre = name.substring(0, lastDot);
+                                name_row = name.substring(lastDot+1);
                                 if (name_pre === 'krperf') {
                                     name_row++;
                                     input.attr("name", 'krperf_' + name_row);
                                     input.attr("id", 'krperf_' + name_row);
                                 } else {
-                                    name_pre = name.substring(0, 5);
-                                    name_row = name.substring(5, 6);
-                                    name_last = name.substring(7);
+                                    secondDot = name.indexOf("_",4);
+                                    lastDot = name.lastIndexOf("_");
+                                    name_pre = name.substring(0, secondDot+1);
+                                    name_row = name.substring(secondDot+1, lastDot);
+                                    name_last = name.substring(lastDot+1);
                                     name_row++;
                                     input.attr("name", name_pre + name_row + "_" + name_last);
                                     input.attr("id", name_pre + name_row + "_" + name_last);
                                 }
                             } else if (name.length === 10) {
-                                name_pre = name.substring(0, 7);
-                                name_row = name.substring(7, 8);
-                                name_last = name.substring(9);
+                                secondDot = name.indexOf("_",5);
+                                lastDot = name.lastIndexOf("_");
+                                name_pre = name.substring(0, secondDot+1);
+                                name_row = name.substring(secondDot+1, lastDot);
+                                name_last = name.substring(lastDot+1);
                                 name_row++;
                                 input.attr("name", name_pre + name_row + "_" + name_last);
                                 input.attr("id", name_pre + name_row + "_" + name_last);
@@ -539,9 +562,11 @@
                         var select = $(selects[m]);
                         name = select.attr("name");
                         if (!checkForm(name)) {
-                            name_pre = name.substring(0, 5);
-                            name_row = name.substring(5);
+                            lastDot = name.lastIndexOf("_");
+                            name_pre = name.substring(0, lastDot+1);
+                            name_row = name.substring(lastDot+1);
                             name_row++;
+                            $(select).prev().attr("id", name_pre+name_row+"_0");
                             select.attr("name", name_pre + name_row);
                             select.attr("id", name_pre + name_row);
                         }
@@ -552,8 +577,9 @@
                         var text = $(texts[0]);
                         name = text.attr("name");
                         if (!checkForm(name)) {
-                            name_pre = name.substring(0, 5);
-                            name_row = name.substring(5);
+                            lastDot = name.lastIndexOf("_");
+                            name_pre = name.substring(0, lastDot+1);
+                            name_row = name.substring(lastDot+1);
                             name_row++;
                             text.attr("name", name_pre + name_row);
                             text.attr("id", name_pre + name_row);
@@ -628,7 +654,10 @@
     function goal_del(present) {
         var parent = present.parent().parent().parent().parent();
         var item_id = parent.attr("id"); //获得当前行的ID
-        var item_row = item_id.substring(9, 10); //获得当前行的行号
+        var firstDot,secondDot,lastDot;
+        secondDot = item_id.indexOf("_",5);
+        lastDot = item_id.lastIndexOf("_");
+        var item_row = item_id.substring(secondDot+1,lastDot); //获得当前行的行号
         var id_name = "okr_item_"+item_row+"_";
         var same = $("tr[id^='"+id_name+"']");
         var nexts = parent.nextAll();
@@ -644,9 +673,11 @@
                     inputs, next_id, next_row, count, now_row, input;
                 if (children_count === 2) {
                     next_id = next.attr("id");
-                    next_row = next_id.substring(9, 10);
+                    secondDot = next_id.indexOf("_",5);
+                    lastDot = next_id.lastIndexOf("_");
+                    next_row = next_id.substring(secondDot+1, lastDot);
                     if(item_row-next_row !== 1) {
-                        count = next_id.substring(11);
+                        count = next_id.substring(lastDot+1);
                         now_row = --next_row;
                         next_row++;
                         next.attr("id", "okr_item_" + now_row + "_" + count);
@@ -656,16 +687,20 @@
                             name = input.attr("name");
                             if (!checkForm(name)) {
                                 if (name.length === 8) {
-                                    name_pre = name.substring(0, 5);
-                                    name_row = name.substring(5, 6);
-                                    name_last = name.substring(7);
+                                    secondDot = name.indexOf("_",4);
+                                    lastDot = name.lastIndexOf("_");
+                                    name_pre = name.substring(0, secondDot+1);
+                                    name_row = name.substring(secondDot+1, lastDot);
+                                    name_last = name.substring(lastDot+1);
                                     name_row--;
                                     input.attr("name", name_pre + name_row + "_" + name_last);
                                     input.attr("id", name_pre + name_row + "_" + name_last);
                                 } else if (name.length === 10) {
-                                    name_pre = name.substring(0, 7);
-                                    name_row = name.substring(7, 8);
-                                    name_last = name.substring(9);
+                                    secondDot = name.indexOf("_",6);
+                                    lastDot = name.lastIndexOf("_");
+                                    name_pre = name.substring(0, secondDot+1);
+                                    name_row = name.substring(secondDot+1, lastDot);
+                                    name_last = name.substring(lastDot+1);
                                     name_row--;
                                     input.attr("name", name_pre + name_row + "_" + name_last);
                                     input.attr("id", name_pre + name_row + "_" + name_last);
@@ -675,8 +710,10 @@
                     }
                 } else {
                     next_id = next.attr("id");
-                    next_row = next_id.substring(9, 10);
-                    count = next_id.substring(11);
+                    secondDot = next_id.indexOf("_",5);
+                    lastDot = next_id.lastIndexOf("_");
+                    next_row = next_id.substring(secondDot+1, lastDot);
+                    count = next_id.substring(lastDot+1);
                     now_row = --next_row;
                     next_row++;
                     next.attr("id", "okr_item_" + now_row + "_" + count);
@@ -687,36 +724,43 @@
                         name = input.attr("name");
                         if (!checkForm(name)) {
                             if (name.length === 6) {
-                                name_pre = name.substring(0, 5);
-                                name_row = name.substring(5);
+                                lastDot = name.lastIndexOf("_");
+                                name_pre = name.substring(0, lastDot+1);
+                                name_row = name.substring(lastDot+1);
                                 name_row--;
                                 input.attr("name", name_pre + name_row);
                                 input.attr("id", name_pre + name_row);
                             }else if (name.length === 7) {
-                                name_pre = name.substring(0, 6);
-                                name_row = name.substring(6);
+                                lastDot = name.lastIndexOf("_");
+                                name_pre = name.substring(0, lastDot+1);
+                                name_row = name.substring(lastDot+1);
                                 name_row--;
                                 input.attr("name", name_pre + name_row);
                                 input.attr("id", name_pre + name_row);
                             } else if (name.length === 8) {
-                                name_pre = name.substring(0, 6);
-                                name_row = name.substring(7);
+                                lastDot = name.lastIndexOf("_");
+                                name_pre = name.substring(0, lastDot);
+                                name_row = name.substring(lastDot+1);
                                 if (name_pre === 'krperf') {
                                     name_row--;
                                     input.attr("name", 'krperf_' + name_row);
                                     input.attr("id", 'krperf_' + name_row);
                                 } else {
-                                    name_pre = name.substring(0, 5);
-                                    name_row = name.substring(5, 6);
-                                    name_last = name.substring(7);
+                                    secondDot = name.indexOf("_",4);
+                                    lastDot = name.lastIndexOf("_");
+                                    name_pre = name.substring(0, secondDot+1);
+                                    name_row = name.substring(secondDot+1, lastDot);
+                                    name_last = name.substring(lastDot+1);
                                     name_row--;
                                     input.attr("name", name_pre + name_row + "_" + name_last);
                                     input.attr("id", name_pre + name_row + "_" + name_last);
                                 }
                             } else if (name.length === 10) {
-                                name_pre = name.substring(0, 7);
-                                name_row = name.substring(7, 8);
-                                name_last = name.substring(9);
+                                secondDot = name.indexOf("_",4);
+                                lastDot = name.lastIndexOf("_");
+                                name_pre = name.substring(0, secondDot+1);
+                                name_row = name.substring(secondDot+1, lastDot);
+                                name_last = name.substring(lastDot+1);
                                 name_row--;
                                 input.attr("name", name_pre + name_row + "_" + name_last);
                                 input.attr("id", name_pre + name_row + "_" + name_last);
@@ -729,9 +773,11 @@
                         var select = $(selects[m]);
                         name = select.attr("name");
                         if (!checkForm(name)) {
-                            name_pre = name.substring(0, 5);
-                            name_row = name.substring(5);
+                            lastDot = name.lastIndexOf("_");
+                            name_pre = name.substring(0, lastDot+1);
+                            name_row = name.substring(lastDot+1);
                             name_row--;
+                            $(select).prev().attr("id", name_pre+name_row+"_0");
                             select.attr("name", name_pre + name_row);
                             select.attr("id", name_pre + name_row);
                         }
@@ -742,8 +788,9 @@
                         var text = $(texts[o]);
                         name = text.attr("name");
                         if (!checkForm(name)) {
-                            name_pre = name.substring(0, 5);
-                            name_row = name.substring(5);
+                            lastDot = name.lastIndexOf("_");
+                            name_pre = name.substring(0, lastDot+1);
+                            name_row = name.substring(lastDot+1);
                             name_row--;
                             text.attr("name", name_pre + name_row);
                             text.attr("id", name_pre + name_row);

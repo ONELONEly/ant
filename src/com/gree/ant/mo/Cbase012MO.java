@@ -1,25 +1,20 @@
 package com.gree.ant.mo;
 
-import com.gree.ant.dao.daoImp.BaseDAOImp;
+import com.gree.ant.dao.daoImp.Cbase012DAOImp;
 import com.gree.ant.mo.basic.Cbase012BasicMO;
 import com.gree.ant.vo.Cbase012VO;
-import com.gree.ant.vo.ValueObject;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @IocBean
 public class Cbase012MO implements Cbase012BasicMO{
 
-
-    @Inject("refer:baseDAOImp")
-    private BaseDAOImp baseDAOImp;
+    @Inject("refer:cbase012DAOImp")
+    private Cbase012DAOImp cbase012DAOImp;
 
     /**
      * Query all by cnd pager list.
@@ -34,7 +29,7 @@ public class Cbase012MO implements Cbase012BasicMO{
      */
     @Override
     public List<Cbase012VO> queryAllByCndPager(Condition cnd, Pager pager) {
-        return formatC12(baseDAOImp.queryByCndPager(new Cbase012VO(),cnd,pager));
+        return cbase012DAOImp.queryByCndPager(cnd,pager);
     }
 
     /**
@@ -49,7 +44,7 @@ public class Cbase012MO implements Cbase012BasicMO{
      */
     @Override
     public Cbase012VO insert(Cbase012VO cbase012VO) {
-        return (Cbase012VO)baseDAOImp.insert(cbase012VO);
+        return cbase012DAOImp.insert(cbase012VO);
     }
 
     /**
@@ -65,7 +60,7 @@ public class Cbase012MO implements Cbase012BasicMO{
     @Override
     public Integer deleteByVO(Cbase012VO cbase012VO) {
         Condition cnd = Cnd.where("pjno","=",cbase012VO.getPjno()).and("opco","=",cbase012VO.getOpco());
-        return baseDAOImp.clearByCnd(new Cbase012VO(),cnd);
+        return cbase012DAOImp.clearByCnd(cnd);
     }
 
     /**
@@ -81,15 +76,6 @@ public class Cbase012MO implements Cbase012BasicMO{
      */
     @Override
     public Boolean insertCheck(String pjno, String opco) {
-        return baseDAOImp.queryByCndPager(new Cbase012VO(),Cnd.where("pjno","=",pjno).and("opco","=",opco),null).size() == 0;
-    }
-
-    private List<Cbase012VO> formatC12(List<ValueObject> voS){
-        Iterator<ValueObject> iterator = voS.iterator();
-        List<Cbase012VO> cbase012VOS = new ArrayList<>();
-        while(iterator.hasNext()){
-            cbase012VOS.add((Cbase012VO) iterator.next());
-        }
-        return  cbase012VOS;
+        return cbase012DAOImp.queryByCndPager(Cnd.where("pjno","=",pjno).and("opco","=",opco),null).size() == 0;
     }
 }

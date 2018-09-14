@@ -1,26 +1,17 @@
 package com.gree.ant.mo;
 
-import com.gree.ant.dao.daoImp.BaseDAOImp;
 import com.gree.ant.dao.daoImp.Tbuss005DAOImp;
 import com.gree.ant.mo.basic.Tbuss005BasicMO;
 import com.gree.ant.vo.Tbuss005VO;
-import com.gree.ant.vo.ValueObject;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @IocBean
 public class Tbuss005MO implements Tbuss005BasicMO{
-
-
-    @Inject("refer:baseDAOImp")
-    private BaseDAOImp baseDAOImp;
 
     @Inject("refer:tbuss005DAOImp")
     private Tbuss005DAOImp tbuss005DAOImp;
@@ -39,7 +30,7 @@ public class Tbuss005MO implements Tbuss005BasicMO{
      */
     @Override
     public List<Tbuss005VO> queryAllByCndPager(Condition cnd, Pager pager) {
-        return formatt05(baseDAOImp.queryByCndPager(new Tbuss005VO(),cnd,pager));
+        return tbuss005DAOImp.queryByCndPager(cnd,pager);
     }
 
     /**
@@ -54,7 +45,7 @@ public class Tbuss005MO implements Tbuss005BasicMO{
      */
     @Override
     public Tbuss005VO insert(Tbuss005VO tbuss005VO) {
-        return (Tbuss005VO)baseDAOImp.insert(tbuss005VO);
+        return tbuss005DAOImp.insert(tbuss005VO);
     }
 
     /**
@@ -69,7 +60,7 @@ public class Tbuss005MO implements Tbuss005BasicMO{
      */
     @Override
     public Tbuss005VO fectchLinkByVO(Tbuss005VO tbuss005VO,String primary) {
-        return (Tbuss005VO)baseDAOImp.fetchLinks(tbuss005VO,primary,null);
+        return tbuss005DAOImp.fetchLinks(tbuss005VO,primary,null);
     }
 
     /**
@@ -84,7 +75,7 @@ public class Tbuss005MO implements Tbuss005BasicMO{
      */
     @Override
     public Boolean insertCheck(Tbuss005VO tbuss005VO) {
-        return baseDAOImp.queryByCndPager(new Tbuss005VO(),Cnd.where("ptno","=",tbuss005VO.getPtno()).and("pjno","=",tbuss005VO.getPjno()).and("csid","=",tbuss005VO.getCsid()),null).size() == 0;
+        return tbuss005DAOImp.queryByCndPager(Cnd.where("ptno","=",tbuss005VO.getPtno()).and("pjno","=",tbuss005VO.getPjno()).and("csid","=",tbuss005VO.getCsid()),null).size() == 0;
     }
 
     /**
@@ -115,14 +106,5 @@ public class Tbuss005MO implements Tbuss005BasicMO{
     @Override
     public Integer deleteByPtno(String ptno) {
         return tbuss005DAOImp.deleteByPtno(ptno);
-    }
-
-    private List<Tbuss005VO> formatt05(List<ValueObject> voS){
-        Iterator<ValueObject> iterator = voS.iterator();
-        List<Tbuss005VO> tbuss005VOS = new ArrayList<>();
-        while(iterator.hasNext()){
-            tbuss005VOS.add((Tbuss005VO) iterator.next());
-        }
-        return tbuss005VOS;
     }
 }

@@ -63,6 +63,12 @@ public class OKRController {
     @At("/insert")
     @Ok("json")
     public OkrVO insert(@Param("::") OkrVO okrVO){
+        if(okrVO != null) {
+//            tbuss011MO.insert()
+            if (okrVO.getGoals() != null) {
+
+            }
+        }
         return okrVO;
     }
 

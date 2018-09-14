@@ -1,20 +1,14 @@
 package com.gree.ant.mo;
 
-import com.gree.ant.dao.daoImp.BaseDAOImp;
 import com.gree.ant.dao.daoImp.Cbase011DAOImp;
 import com.gree.ant.mo.basic.Cbase011BasicMO;
-import com.gree.ant.vo.Cbase010VO;
 import com.gree.ant.vo.Cbase011VO;
-import com.gree.ant.vo.Cbase012VO;
-import com.gree.ant.vo.ValueObject;
-import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @IocBean
@@ -23,27 +17,24 @@ public class Cbase011MO implements Cbase011BasicMO{
     @Inject("refer:cbase011DAOImp")
     private Cbase011DAOImp cbase011DAOImp;
 
-    @Inject("refer:baseDAOImp")
-    private BaseDAOImp baseDAOImp;
-
     @Override
     public List<Cbase011VO> queryAllByCnd(Condition cnd, Pager pager){
-        return formatC11(baseDAOImp.queryByCndPager(new Cbase011VO(),cnd,pager));
+        return cbase011DAOImp.queryByCndPager(cnd,pager);
     }
 
     @Override
     public Cbase011VO fetchByPjno(String pjno){
-        return (Cbase011VO)baseDAOImp.fetchByName(new Cbase011VO(),pjno);
+        return cbase011DAOImp.fetchByName(pjno);
     }
 
     @Override
     public Cbase011VO fetchTransByPjno(String pjno) {
-        return (Cbase011VO) baseDAOImp.fetchTransByNameCnd(new Cbase011VO(),pjno,"cbase012VOS",null);
+        return cbase011DAOImp.fetchTransByNameCnd(pjno,"cbase012VOS",null);
     }
 
     @Override
     public Cbase011VO fetchTransByVO(Cbase011VO vo,String primary,Condition cnd) {
-        return (Cbase011VO) baseDAOImp.fetchLinks(vo,primary,cnd);
+        return cbase011DAOImp.fetchLinks(vo,primary,cnd);
     }
 
     @Override
@@ -69,7 +60,7 @@ public class Cbase011MO implements Cbase011BasicMO{
      */
     @Override
     public Integer countByCnd(Condition cnd) {
-        return baseDAOImp.countByCnd(new Cbase011VO(),cnd);
+        return cbase011DAOImp.countByCnd(cnd);
     }
 
     /**
@@ -84,12 +75,12 @@ public class Cbase011MO implements Cbase011BasicMO{
      */
     @Override
     public Cbase011VO insert(Cbase011VO cbase011VO) {
-        return (Cbase011VO)baseDAOImp.insert(cbase011VO);
+        return cbase011DAOImp.insert(cbase011VO);
     }
 
     @Override
     public Integer updateByVO(Cbase011VO cbase011VO) {
-        return baseDAOImp.update(cbase011VO);
+        return cbase011DAOImp.update(cbase011VO);
     }
 
     /**
@@ -104,7 +95,7 @@ public class Cbase011MO implements Cbase011BasicMO{
      */
     @Override
     public Integer deleteByPjno(String pjno) {
-        return baseDAOImp.deleteWith(fetchByPjno(pjno),"cbase012VOS");
+        return cbase011DAOImp.deleteWith(fetchByPjno(pjno),"cbase012VOS");
     }
 
     /**
@@ -119,15 +110,6 @@ public class Cbase011MO implements Cbase011BasicMO{
      */
     @Override
     public Integer deleteByVO(Cbase011VO cbase011VO) {
-        return baseDAOImp.delete(cbase011VO);
-    }
-
-    private List<Cbase011VO> formatC11(List<ValueObject> voS){
-        Iterator<ValueObject> iterator = voS.iterator();
-        List<Cbase011VO> cbase011VOS = new ArrayList<>();
-        while(iterator.hasNext()){
-            cbase011VOS.add((Cbase011VO) iterator.next());
-        }
-        return  cbase011VOS;
+        return cbase011DAOImp.delete(cbase011VO);
     }
 }

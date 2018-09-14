@@ -17,7 +17,7 @@ import java.util.List;
  * @title Tbuss003DAO
  * @createTime 2017 :10:21 05:10:14.
  */
-public interface Tbuss003DAO {
+public interface Tbuss003DAO extends BaseDAO<Tbuss003VO>{
 
     List<Tbuss003VO> queryAllByCndPager(Condition cnd,Pager pager);
 

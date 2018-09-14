@@ -1,5 +1,6 @@
 package com.gree.ant.dao;
 
+import com.gree.ant.vo.Cbase006VO;
 import com.gree.ant.vo.util.ResultVO;
 import org.nutz.dao.Condition;
 
@@ -14,7 +15,7 @@ import java.util.List;
  * @title Cbase006DAO
  * @createTime 2017 :10:10 09:10:39.
  */
-public interface Cbase006DAO {
+public interface Cbase006DAO extends BaseDAO<Cbase006VO>{
 
     /**
      * Insert check boolean.

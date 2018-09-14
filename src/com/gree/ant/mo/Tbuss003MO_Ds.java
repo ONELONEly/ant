@@ -34,12 +34,11 @@ public class Tbuss003MO_Ds implements Tbuss003BasicMO_Ds {
     @Inject("refer:tbuss003DAOImp_Ds")
     private Tbuss003DAOImp_Ds tbuss003DAOImp_Ds;
 
-
-    @Inject("refer:baseDAOImp")
-    private BaseDAOImp baseDAOImp;
-
     @Inject("refer:tbuss003MO")
     private Tbuss003MO tbuss003MO;
+
+    @Inject
+    private Cbase013MO cbase013MO;
 
 
 
@@ -72,7 +71,7 @@ public class Tbuss003MO_Ds implements Tbuss003BasicMO_Ds {
         int code=0;
         System.out.println("进入insertBug");
         //根据项目名称查找出项目才能通过名称到LanguageCfgLookupValues找出项目id
-        Cbase013VO cbase013VO= (Cbase013VO) baseDAOImp.fetchByName(new Cbase013VO(),tbuss003VO.getSyno());
+        Cbase013VO cbase013VO= cbase013MO.fetchBySyno(tbuss003VO.getSyno());
         String dsca=cbase000VO.getDSCA();
         String projectName="";
         if(dsca.indexOf("[项目]")!=-1){
@@ -108,7 +107,7 @@ public class Tbuss003MO_Ds implements Tbuss003BasicMO_Ds {
         tbuss003DAOImp_Ds.delerefromCbase013();
         for (int i = 0; i <systemList.size() ; i++) {
             Cbase013VO cbase013VO=systemList.get(i);
-            baseDAOImp.insert(cbase013VO);
+            cbase013MO.insert(cbase013VO);
         }
         return systemList;
     }
@@ -117,7 +116,7 @@ public class Tbuss003MO_Ds implements Tbuss003BasicMO_Ds {
     @Override
     public String insertBugJieKou (Tbuss003VO tbuss003VO,Cbase000VO cbase000VO)throws Exception{
 
-        Cbase013VO cbase013VO= (Cbase013VO) baseDAOImp.fetchByName(new Cbase013VO(),tbuss003VO.getSyno());
+        Cbase013VO cbase013VO= cbase013MO.fetchBySyno(tbuss003VO.getSyno());
         String dsca=cbase013VO.getDsca();
 
         String projectName="";

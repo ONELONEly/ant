@@ -9,10 +9,7 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 @IocBean
-public class Tbuss005DAOImp implements Tbuss005DAO{
-
-    @Inject("refer:daoFX")
-    private Dao dao;
+public class Tbuss005DAOImp extends BaseDAOImp<Tbuss005VO> implements Tbuss005DAO{
 
     @Override
     public Integer updateByVO(Tbuss005VO tbuss005VO) {
@@ -21,7 +18,7 @@ public class Tbuss005DAOImp implements Tbuss005DAO{
         sql.setParam("cons",tbuss005VO.getCons()).setParam("ptno",tbuss005VO.getPtno())
                 .setParam("pjno",tbuss005VO.getPjno()).setParam("csid",tbuss005VO.getCsid())
                 .setParam("remk",tbuss005VO.getRemk());
-        dao.execute(sql);
+        this.getDao().execute(sql);
         return 1;
     }
 
@@ -30,7 +27,7 @@ public class Tbuss005DAOImp implements Tbuss005DAO{
         String sqlStr = "delete Tbuss005 where ptno = @ptno";
         Sql sql = Sqls.create(sqlStr);
         sql.setParam("ptno",ptno);
-        dao.execute(sql);
+        this.getDao().execute(sql);
         return 1;
     }
 }

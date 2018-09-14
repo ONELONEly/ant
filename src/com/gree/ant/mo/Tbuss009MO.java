@@ -1,24 +1,16 @@
 package com.gree.ant.mo;
 
-import com.gree.ant.dao.daoImp.BaseDAOImp;
 import com.gree.ant.dao.daoImp.Tbuss009DAOImp;
 import com.gree.ant.mo.basic.Tbuss009BasicMO;
 import com.gree.ant.vo.Tbuss009VO;
-import com.gree.ant.vo.ValueObject;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @IocBean
 public class Tbuss009MO implements Tbuss009BasicMO{
-
-    @Inject("refer:baseDAOImp")
-    private BaseDAOImp baseDAOImp;
 
     @Inject("refer:tbuss009DAOImp")
     private Tbuss009DAOImp tbuss009DAOImp;
@@ -37,7 +29,7 @@ public class Tbuss009MO implements Tbuss009BasicMO{
      */
     @Override
     public List<Tbuss009VO> queryAllByCndPager(Condition cnd, Pager pager) {
-        return formatt09(baseDAOImp.queryByCndPager(new Tbuss009VO(),cnd,pager));
+        return tbuss009DAOImp.queryByCndPager(cnd,pager);
     }
 
     /**
@@ -52,7 +44,7 @@ public class Tbuss009MO implements Tbuss009BasicMO{
      */
     @Override
     public Tbuss009VO fetchByID(Long doid) {
-        return (Tbuss009VO) baseDAOImp.fetchByID(new Tbuss009VO(),doid);
+        return tbuss009DAOImp.fetchByID(doid);
     }
 
     /**
@@ -69,7 +61,7 @@ public class Tbuss009MO implements Tbuss009BasicMO{
      */
     @Override
     public Tbuss009VO fetchTransByIDPrimary(Long doid, String primary,Condition cnd) {
-        return (Tbuss009VO)baseDAOImp.fetchTransByIdCnd(new Tbuss009VO(),doid,primary,cnd);
+        return tbuss009DAOImp.fetchTransByIdCnd(doid,primary,cnd);
     }
 
     /**
@@ -84,7 +76,7 @@ public class Tbuss009MO implements Tbuss009BasicMO{
      */
     @Override
     public Tbuss009VO insert(Tbuss009VO tbuss009VO) {
-        return (Tbuss009VO)baseDAOImp.insert(tbuss009VO);
+        return tbuss009DAOImp.insert(tbuss009VO);
     }
 
     /**
@@ -98,7 +90,7 @@ public class Tbuss009MO implements Tbuss009BasicMO{
      */
     @Override
     public Integer countByCnd(Condition cnd) {
-        return baseDAOImp.countByCnd(new Tbuss009VO(),cnd);
+        return tbuss009DAOImp.countByCnd(cnd);
     }
 
     /**
@@ -113,7 +105,7 @@ public class Tbuss009MO implements Tbuss009BasicMO{
      */
     @Override
     public Integer deleteByDoid(Long doid) {
-        return baseDAOImp.deleteByID(new Tbuss009VO(),doid);
+        return tbuss009DAOImp.deleteByID(doid);
     }
 
     /**
@@ -128,7 +120,7 @@ public class Tbuss009MO implements Tbuss009BasicMO{
      */
     @Override
     public Integer updateByVO(Tbuss009VO tbuss009VO) {
-        return baseDAOImp.update(tbuss009VO);
+        return tbuss009DAOImp.update(tbuss009VO);
     }
 
     @Override
@@ -144,14 +136,5 @@ public class Tbuss009MO implements Tbuss009BasicMO{
     @Override
     public List<Tbuss009VO> queryAllDocNormal(Condition cnd, Pager pager) {
         return tbuss009DAOImp.queryAllDocNormal(cnd,pager);
-    }
-
-    private List<Tbuss009VO> formatt09(List<ValueObject> voS){
-        Iterator<ValueObject> iterator = voS.iterator();
-        List<Tbuss009VO> tbuss009VOS = new ArrayList<>();
-        while(iterator.hasNext()){
-            tbuss009VOS.add((Tbuss009VO) iterator.next());
-        }
-        return tbuss009VOS;
     }
 }

@@ -1,25 +1,22 @@
 package com.gree.ant.mo;
 
-import com.gree.ant.dao.daoImp.BaseDAOImp;
+import com.gree.ant.dao.daoImp.Cbase015DAOImp;
 import com.gree.ant.mo.basic.Cbase015BasicMO;
 import com.gree.ant.util.FileUtil;
 import com.gree.ant.vo.Cbase015VO;
-import com.gree.ant.vo.ValueObject;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @IocBean
 public class Cbase015MO implements Cbase015BasicMO{
 
-    @Inject("refer:baseDAOImp")
-    private BaseDAOImp baseDAOImp;
+
+    @Inject("refer:cbase015DAOImp")
+    private Cbase015DAOImp cbase015DAOImp;
 
 
     /**
@@ -35,7 +32,7 @@ public class Cbase015MO implements Cbase015BasicMO{
      */
     @Override
     public List<Cbase015VO> queryAllByCndPager(Condition cnd, Pager pager) {
-        return formatC15(baseDAOImp.queryByCndPager(new Cbase015VO(),cnd,pager));
+        return cbase015DAOImp.queryByCndPager(cnd,pager);
     }
 
     /**
@@ -50,7 +47,7 @@ public class Cbase015MO implements Cbase015BasicMO{
      */
     @Override
     public Cbase015VO insert(Cbase015VO cbase015VO) {
-        return (Cbase015VO) baseDAOImp.insert(cbase015VO);
+        return cbase015DAOImp.insert(cbase015VO);
     }
 
     /**
@@ -68,7 +65,7 @@ public class Cbase015MO implements Cbase015BasicMO{
         Integer code = 1;
         Condition cnd = Cnd.where("djid","=",taid);
         for (Cbase015VO cbase015VO : queryAllByCndPager(cnd, null)) {
-            code = baseDAOImp.deleteByName(new Cbase015VO(),cbase015VO.getDuta());
+            code = cbase015DAOImp.deleteByName(cbase015VO.getDuta());
             FileUtil.deleteFileByDuta(cbase015VO.getDuta(),cbase015VO.getFfil());
         }
         return code;
@@ -77,15 +74,6 @@ public class Cbase015MO implements Cbase015BasicMO{
     @Override
     public Integer deleteByName(String duta,String fileName) {
         FileUtil.deleteFileByDuta(duta,fileName);
-        return baseDAOImp.deleteByName(new Cbase015VO(),duta);
-    }
-
-    private List<Cbase015VO> formatC15(List<ValueObject> voS){
-        Iterator<ValueObject> iterator = voS.iterator();
-        List<Cbase015VO> cbase015VOS = new ArrayList<>();
-        while(iterator.hasNext()){
-            cbase015VOS.add((Cbase015VO) iterator.next());
-        }
-        return  cbase015VOS;
+        return cbase015DAOImp.deleteByName(duta);
     }
 }

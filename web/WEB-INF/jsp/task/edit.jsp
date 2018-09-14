@@ -24,7 +24,14 @@
                 <a href="../require/manage"><cite style="cursor: pointer;">需求管理</cite></a>
             </c:when>
             <c:otherwise>
-                <a href="./manage"><cite style="cursor: pointer;">任务管理</cite></a>
+                <c:choose>
+                    <c:when test="${obj.isManager}">
+                        <a href="./manage"><cite style="cursor: pointer;">任务管理</cite></a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="../user/task"><cite style="cursor: pointer;">任务管理</cite></a>
+                    </c:otherwise>
+                </c:choose>
             </c:otherwise>
         </c:choose>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">编辑任务</cite></a>

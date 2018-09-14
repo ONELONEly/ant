@@ -13,7 +13,7 @@ import java.util.List;
  * @title Cbase002DAO
  * @createTime 2017 :10:13 09:10:38.
  */
-public interface Cbase002DAO {
+public interface Cbase002DAO extends BaseDAO<Cbase002VO> {
 
     /**
      * Query all menu by usid list.

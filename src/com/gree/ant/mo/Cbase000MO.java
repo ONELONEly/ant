@@ -1,11 +1,9 @@
 package com.gree.ant.mo;
 
-import com.gree.ant.dao.daoImp.BaseDAOImp;
 import com.gree.ant.dao.daoImp.Cbase000DAOImp;
 import com.gree.ant.mo.basic.Cbase000BasicMO;
 import com.gree.ant.util.StringUtil;
 import com.gree.ant.vo.Cbase000VO;
-import com.gree.ant.vo.ValueObject;
 import com.gree.ant.vo.util.GradeVO;
 import com.gree.ant.vo.util.ResultVO;
 import org.nutz.dao.Cnd;
@@ -13,9 +11,6 @@ import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @IocBean
@@ -24,13 +19,10 @@ public class Cbase000MO implements Cbase000BasicMO{
     @Inject("cbase000DAOImp")
     private Cbase000DAOImp cbase000DAOImp;
 
-    @Inject("refer:baseDAOImp")
-    private BaseDAOImp baseDAOImp;
-
 
     @Override
     public List<Cbase000VO> queryAllByCnd(Condition cnd, Pager pager){
-        return formatC0(baseDAOImp.queryByCndPager(new Cbase000VO(),cnd,pager));
+        return cbase000DAOImp.queryByCndPager(cnd,pager);
     }
 
     @Override
@@ -40,32 +32,32 @@ public class Cbase000MO implements Cbase000BasicMO{
 
     @Override
     public Cbase000VO insert(Cbase000VO cbase000VO) {
-        return (Cbase000VO) baseDAOImp.insert(cbase000VO);
+        return cbase000DAOImp.insert(cbase000VO);
     }
 
     @Override
     public Cbase000VO fetchByUsid(String usid) {
-        return (Cbase000VO)baseDAOImp.fetchByName(new Cbase000VO(),usid);
+        return cbase000DAOImp.fetchByName(usid);
     }
 
     @Override
     public Cbase000VO fetchTranByUsidPRI(String usid, String primary, Condition cnd) {
-        return (Cbase000VO)baseDAOImp.fetchTransByNameCnd(new Cbase000VO(),usid,primary,cnd);
+        return cbase000DAOImp.fetchTransByNameCnd(usid,primary,cnd);
     }
 
     @Override
     public Integer updateByVO(Cbase000VO cbase000VO) {
-        return baseDAOImp.update(cbase000VO);
+        return cbase000DAOImp.update(cbase000VO);
     }
 
     @Override
     public Integer countByCnd(Condition cnd) {
-        return baseDAOImp.countByCnd(new Cbase000VO(),cnd);
+        return cbase000DAOImp.countByCnd(cnd);
     }
 
     @Override
     public Integer deleteByUsid(String usid) {
-        return baseDAOImp.deleteByName(new Cbase000VO(),usid);
+        return cbase000DAOImp.deleteByName(usid);
     }
 
     /**
@@ -80,7 +72,7 @@ public class Cbase000MO implements Cbase000BasicMO{
      */
     @Override
     public Integer deleteByVO(Cbase000VO cbase000VO) {
-        return baseDAOImp.delete(cbase000VO);
+        return cbase000DAOImp.delete(cbase000VO);
     }
 
     @Override
@@ -105,15 +97,6 @@ public class Cbase000MO implements Cbase000BasicMO{
     @Override
     public List<Cbase000VO> queryAllUser(Condition cnd, Pager pager) {
         return cbase000DAOImp.queryAllUser(cnd,pager);
-    }
-
-    private List<Cbase000VO> formatC0(List<ValueObject> voS){
-        Iterator<ValueObject> iterator = voS.iterator();
-        List<Cbase000VO> cbase000VOS = new ArrayList<>();
-        while(iterator.hasNext()){
-            cbase000VOS.add((Cbase000VO) iterator.next());
-        }
-        return  cbase000VOS;
     }
 
 }

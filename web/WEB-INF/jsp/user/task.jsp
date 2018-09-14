@@ -35,7 +35,7 @@
                     <button class="layui-btn layui-btn-radius" lay-filter="search" lay-submit>查询</button>
                 </div>
                 <div class="layui-input-inline">
-                    <a href="${base}/task/insert" class="layui-btn layui-btn-radius" lay-filter="set">创建</a>
+                    <a href="${base}/task/insert?type=in" class="layui-btn layui-btn-radius" lay-filter="set">创建</a>
                 </div>
                 <div class="layui-input-inline">
                     <select name="ptno" id="ptno" lay-filter="ptno" lay-search="">
@@ -83,7 +83,7 @@
         <a href="javascript:" class="layui-table-link" lay-event="showTask">{{d.taid}}</a>
     </script>
     <div class="layui-hide" id="operate">
-        <a href='../task/edit?taid={{d.taid}}' class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a href='../task/edit?taid={{d.taid}}&type=in' class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
         <a class="layui-btn layui-btn-xs layui-bg-black" lay-event="del">删除</a>
     </div>
 

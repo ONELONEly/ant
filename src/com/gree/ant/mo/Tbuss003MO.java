@@ -1,27 +1,24 @@
 package com.gree.ant.mo;
 
-import com.gree.ant.dao.daoImp.BaseDAOImp;
 import com.gree.ant.dao.daoImp.Tbuss003DAOImp;
 import com.gree.ant.mo.basic.Tbuss003BasicMO;
 import com.gree.ant.util.StringUtil;
 import com.gree.ant.vo.Tbuss003VO;
-import com.gree.ant.vo.ValueObject;
 import com.gree.ant.vo.util.TaskUtilVO;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-import java.util.ArrayList;
-import java.util.Iterator;
+import org.nutz.trans.Atom;
+import org.nutz.trans.Trans;
+
+import java.sql.Connection;
 import java.util.List;
 import java.util.Objects;
 
 @IocBean
 public class Tbuss003MO implements Tbuss003BasicMO{
-
-    @Inject("refer:baseDAOImp")
-    private BaseDAOImp baseDAOImp;
 
     @Inject("refer:cbase015MO")
     private Cbase015MO cbase015MO;
@@ -36,7 +33,7 @@ public class Tbuss003MO implements Tbuss003BasicMO{
 
     @Override
     public Integer countByCnd(Condition cnd) {
-        return baseDAOImp.countByCnd(new Tbuss003VO(),cnd);
+        return tbuss003DAOImp.countByCnd(cnd);
     }
 
     /**
@@ -51,7 +48,7 @@ public class Tbuss003MO implements Tbuss003BasicMO{
      */
     @Override
     public Tbuss003VO insertByVO(Tbuss003VO tbuss003VO) {
-        return (Tbuss003VO) baseDAOImp.insert(tbuss003VO);
+        return tbuss003DAOImp.insert(tbuss003VO);
     }
 
     /**
@@ -66,7 +63,7 @@ public class Tbuss003MO implements Tbuss003BasicMO{
      */
     @Override
     public Integer updateByVO(Tbuss003VO tbuss003VO) {
-        return baseDAOImp.update(tbuss003VO);
+        return tbuss003DAOImp.update(tbuss003VO);
     }
 
     /**
@@ -81,7 +78,7 @@ public class Tbuss003MO implements Tbuss003BasicMO{
      */
     @Override
     public Tbuss003VO fetchByTaid(String taid) {
-        return (Tbuss003VO)baseDAOImp.fetchByName(new Tbuss003VO(),taid);
+        return tbuss003DAOImp.fetchByName(taid);
     }
 
     /**
@@ -98,7 +95,7 @@ public class Tbuss003MO implements Tbuss003BasicMO{
      */
     @Override
     public Tbuss003VO fetchTrans(String taid, String primary, Condition cnd) {
-        return (Tbuss003VO)baseDAOImp.fetchTransByNameCnd(new Tbuss003VO(),taid,primary,cnd);
+        return tbuss003DAOImp.fetchTransByNameCnd(taid,primary,cnd);
     }
 
     @Override
@@ -195,20 +192,19 @@ public class Tbuss003MO implements Tbuss003BasicMO{
      */
     @Override
     public Integer deleteByTaid(String taid) {
-        Integer r15 = cbase015MO.deleteByTaid(taid);
-        Integer r03 = baseDAOImp.deleteByName(new Tbuss003VO(),taid);
-        if(Objects.equals(r15, r03)){
-            return r15;
+        final String taid_ = taid;
+        final Integer[] r15 = {0};
+        final Integer[] r03 = {1};
+        Trans.exec(Connection.TRANSACTION_READ_COMMITTED, new Atom() {
+            @Override
+            public void run() {
+                r15[0] = cbase015MO.deleteByTaid(taid_);
+                r03[0] = tbuss003DAOImp.deleteByName(taid_);
+            }
+        });
+        if(Objects.equals(r15[0], r03[0])){
+            return r15[0];
         }
         return 0;
-    }
-
-    private List<Tbuss003VO> formatt03(List<ValueObject> voS){
-        Iterator<ValueObject> iterator = voS.iterator();
-        List<Tbuss003VO> tbuss003VOS = new ArrayList<>();
-        while(iterator.hasNext()){
-            tbuss003VOS.add((Tbuss003VO) iterator.next());
-        }
-        return tbuss003VOS;
     }
 }

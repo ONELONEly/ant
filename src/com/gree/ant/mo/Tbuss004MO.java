@@ -1,32 +1,29 @@
 package com.gree.ant.mo;
 
-import com.gree.ant.dao.daoImp.BaseDAOImp;
+import com.gree.ant.dao.daoImp.Tbuss004DAOImp;
 import com.gree.ant.mo.basic.Tbuss004BasicMO;
 import com.gree.ant.vo.Tbuss004VO;
-import com.gree.ant.vo.ValueObject;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @IocBean
 public class Tbuss004MO implements Tbuss004BasicMO{
 
-    @Inject("refer:baseDAOImp")
-    private BaseDAOImp baseDAOImp;
+
+    @Inject("refer:tbuss004DAOImp")
+    private Tbuss004DAOImp tbuss004DAOImp;
 
     @Override
     public List<Tbuss004VO> queryAllByCnd(Condition cnd, Pager pager) {
-        return formatt04(baseDAOImp.queryByCndPager(new Tbuss004VO(),cnd,pager));
+        return tbuss004DAOImp.queryByCndPager(cnd,pager);
     }
 
     @Override
     public Integer countByCnd(Condition cnd) {
-        return baseDAOImp.countByCnd(new Tbuss004VO(),cnd);
+        return tbuss004DAOImp.countByCnd(cnd);
     }
 
     /**
@@ -41,15 +38,6 @@ public class Tbuss004MO implements Tbuss004BasicMO{
      */
     @Override
     public Tbuss004VO insert(Tbuss004VO tbuss004VO) {
-        return (Tbuss004VO)baseDAOImp.insert(tbuss004VO);
-    }
-
-    private List<Tbuss004VO> formatt04(List<ValueObject> voS){
-        Iterator<ValueObject> iterator = voS.iterator();
-        List<Tbuss004VO> tbuss004VOS = new ArrayList<>();
-        while(iterator.hasNext()){
-            tbuss004VOS.add((Tbuss004VO) iterator.next());
-        }
-        return tbuss004VOS;
+        return tbuss004DAOImp.insert(tbuss004VO);
     }
 }

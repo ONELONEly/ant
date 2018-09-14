@@ -1,5 +1,9 @@
 package com.gree.ant.vo.request;
 
+import com.gree.ant.vo.Tbuss011VO;
+import com.gree.ant.vo.Tbuss012VO;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,5 +64,9 @@ public class OkrVO {
 
     public void setGoals(List<GoalVO> goals) {
         this.goals = goals;
+    }
+
+    public Tbuss011VO getOkrManager(){
+        return new Tbuss011VO(this.asid,this.boss,this.mdat);
     }
 }

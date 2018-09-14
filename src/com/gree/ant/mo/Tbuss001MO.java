@@ -1,19 +1,14 @@
 package com.gree.ant.mo;
 
-import com.gree.ant.dao.daoImp.BaseDAOImp;
 import com.gree.ant.dao.daoImp.Tbuss001DAOImp;
 import com.gree.ant.mo.basic.Tbuss001BasicMO;
 import com.gree.ant.vo.Tbuss001VO;
-import com.gree.ant.vo.ValueObject;
 import com.gree.ant.vo.util.ResultVO;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @IocBean
@@ -22,18 +17,15 @@ public class Tbuss001MO implements Tbuss001BasicMO{
     @Inject("refer:tbuss001DAOImp")
     private Tbuss001DAOImp tbuss001DAOImp;
 
-    @Inject("refer:baseDAOImp")
-    private BaseDAOImp baseDAOImp;
-
 
     @Override
     public List<Tbuss001VO> queryAllByCnd(Condition cnd, Pager pager) {
-        return formatt01(baseDAOImp.queryByCndPager(new Tbuss001VO(),cnd,pager));
+        return tbuss001DAOImp.queryByCndPager(cnd,pager);
     }
 
     @Override
     public Integer countByCnd(Condition cnd) {
-        return baseDAOImp.countByCnd(new Tbuss001VO(),cnd);
+        return tbuss001DAOImp.countByCnd(cnd);
     }
 
     /**
@@ -48,7 +40,7 @@ public class Tbuss001MO implements Tbuss001BasicMO{
      */
     @Override
     public Integer deleteByVO(Tbuss001VO tbuss001VO) {
-        return baseDAOImp.delete(tbuss001VO);
+        return tbuss001DAOImp.delete(tbuss001VO);
     }
 
     /**
@@ -63,8 +55,8 @@ public class Tbuss001MO implements Tbuss001BasicMO{
      */
     @Override
     public Integer deleteByName(String ptno) {
-        baseDAOImp.clearLinks(fectchByName(ptno),"cbase011VOS");
-        return baseDAOImp.deleteByName(fectchByName(ptno),ptno);
+        tbuss001DAOImp.clearLinks(fectchByName(ptno),"cbase011VOS");
+        return tbuss001DAOImp.deleteByName(ptno);
     }
 
     /**
@@ -79,7 +71,7 @@ public class Tbuss001MO implements Tbuss001BasicMO{
      */
     @Override
     public Tbuss001VO deteleRelation(Tbuss001VO tbuss001VO) {
-        return (Tbuss001VO)baseDAOImp.clearLinks(tbuss001VO,"cbase011VOS");
+        return tbuss001DAOImp.clearLinks(tbuss001VO,"cbase011VOS");
     }
 
     /**
@@ -94,7 +86,7 @@ public class Tbuss001MO implements Tbuss001BasicMO{
      */
     @Override
     public Tbuss001VO fetchLinksByVO(Tbuss001VO tbuss001VO,String primary,Condition cnd) {
-        return (Tbuss001VO)baseDAOImp.fetchLinks(tbuss001VO,primary,cnd);
+        return tbuss001DAOImp.fetchLinks(tbuss001VO,primary,cnd);
     }
 
     /**
@@ -111,7 +103,7 @@ public class Tbuss001MO implements Tbuss001BasicMO{
      */
     @Override
     public Tbuss001VO fetchTransByNameCnd(String ptno,String primary,Condition cnd) {
-        return (Tbuss001VO) baseDAOImp.fetchTransByNameCnd(new Tbuss001VO(),ptno,primary,cnd);
+        return tbuss001DAOImp.fetchTransByNameCnd(ptno,primary,cnd);
     }
 
     /**
@@ -126,7 +118,7 @@ public class Tbuss001MO implements Tbuss001BasicMO{
      */
     @Override
     public Tbuss001VO fectchByName(String ptno) {
-        return (Tbuss001VO)baseDAOImp.fetchByName(new Tbuss001VO(),ptno);
+        return tbuss001DAOImp.fetchByName(ptno);
     }
 
     /**
@@ -141,7 +133,7 @@ public class Tbuss001MO implements Tbuss001BasicMO{
      */
     @Override
     public Tbuss001VO insertRelation(Tbuss001VO tbuss001VO) {
-        return (Tbuss001VO)baseDAOImp.insertRelation(tbuss001VO,"cbase011VOS");
+        return tbuss001DAOImp.insertRelation(tbuss001VO,"cbase011VOS");
     }
 
     /**
@@ -156,7 +148,7 @@ public class Tbuss001MO implements Tbuss001BasicMO{
      */
     @Override
     public Tbuss001VO insert(Tbuss001VO tbuss001VO) {
-        return (Tbuss001VO)baseDAOImp.insert(tbuss001VO);
+        return tbuss001DAOImp.insert(tbuss001VO);
     }
 
     /**
@@ -171,7 +163,7 @@ public class Tbuss001MO implements Tbuss001BasicMO{
      */
     @Override
     public Tbuss001VO insertWith(Tbuss001VO tbuss001VO) {
-        return (Tbuss001VO) baseDAOImp.insertWith(tbuss001VO,"cbase011VOS");
+        return tbuss001DAOImp.insertWith(tbuss001VO,"cbase011VOS");
     }
 
     /**
@@ -188,7 +180,7 @@ public class Tbuss001MO implements Tbuss001BasicMO{
     @Override
     public Boolean insertCheck(String pdat,String grop) {
         Condition cnd = Cnd.where("pdat","=",pdat).and("grop","=",grop);
-        return baseDAOImp.queryByCndPager(new Tbuss001VO(),cnd,null).size() == 0;
+        return tbuss001DAOImp.queryByCndPager(cnd,null).size() == 0;
     }
 
     /**
@@ -203,7 +195,7 @@ public class Tbuss001MO implements Tbuss001BasicMO{
      */
     @Override
     public Integer updateByVO(Tbuss001VO tbuss001VO) {
-        return baseDAOImp.update(tbuss001VO);
+        return tbuss001DAOImp.update(tbuss001VO);
     }
 
     @Override
@@ -249,14 +241,5 @@ public class Tbuss001MO implements Tbuss001BasicMO{
     @Override
     public List<ResultVO> queryAllPD(Condition cnd) {
         return tbuss001DAOImp.queryAllPD(cnd);
-    }
-
-    private List<Tbuss001VO> formatt01(List<ValueObject> voS){
-        Iterator<ValueObject> iterator = voS.iterator();
-        List<Tbuss001VO> tbuss001VOS = new ArrayList<>();
-        while(iterator.hasNext()){
-            tbuss001VOS.add((Tbuss001VO) iterator.next());
-        }
-        return  tbuss001VOS;
     }
 }

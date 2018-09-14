@@ -20,10 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @IocBean
-public class Tbuss009DAOImp implements Tbuss009DAO{
-
-    @Inject("refer:daoFX")
-    private Dao dao;
+public class Tbuss009DAOImp extends BaseDAOImp<Tbuss009VO> implements Tbuss009DAO{
 
     @Override
     public List<Tbuss009VO> queryAllDoc(String usid,Condition cnd,String stage,Pager pager) {
@@ -34,7 +31,7 @@ public class Tbuss009DAOImp implements Tbuss009DAO{
         sql.setParam("usid",usid).setParam("csid",usid);
         sql.setCondition(cnd);
         sql.setPager(pager);
-        return DAOUtil.getT9(sql,dao);
+        return DAOUtil.getT9(sql,this.getDao());
     }
 
     @Override
@@ -44,7 +41,7 @@ public class Tbuss009DAOImp implements Tbuss009DAO{
         Sql sql = Sqls.create(sqlStr);
         sql.setCondition(cnd);
         sql.setPager(pager);
-        return DAOUtil.getT9(sql,dao);
+        return DAOUtil.getT9(sql,this.getDao());
     }
 
     @Override
@@ -54,6 +51,6 @@ public class Tbuss009DAOImp implements Tbuss009DAO{
         Sql sql = Sqls.create(sqlStr);
         sql.setParam("usid",usid).setParam("csid",usid);
         sql.setCondition(cnd);
-        return DAOUtil.getTiCount(sql,dao);
+        return DAOUtil.getTiCount(sql,this.getDao());
     }
 }

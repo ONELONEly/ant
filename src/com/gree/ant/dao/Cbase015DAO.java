@@ -1,5 +1,7 @@
 package com.gree.ant.dao;
 
+import com.gree.ant.vo.Cbase015VO;
+
 /**
  * The interface Cbase 015 dao.
  *
@@ -9,5 +11,5 @@ package com.gree.ant.dao;
  * @title Cbase015DAO
  * @createTime 2017 :09:09 09:09:13.
  */
-public interface Cbase015DAO {
+public interface Cbase015DAO extends BaseDAO<Cbase015VO>{
 }

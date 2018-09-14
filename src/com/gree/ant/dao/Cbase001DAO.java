@@ -1,5 +1,6 @@
 package com.gree.ant.dao;
 
+import com.gree.ant.vo.Cbase001VO;
 import com.gree.ant.vo.util.ResultVO;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * @title Cbase001DAO
  * @createTime 2017 :09:30 05:09:03.
  */
-public interface Cbase001DAO {
+public interface Cbase001DAO extends BaseDAO<Cbase001VO> {
 
     /**
      * Query cd list.

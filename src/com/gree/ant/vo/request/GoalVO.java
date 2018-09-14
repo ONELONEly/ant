@@ -50,8 +50,24 @@ public class GoalVO {
      */
     private List<TaskVO> tasks;
 
+    /**
+     * @description OKR绩效表ID
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     */
+    private Integer okid;
+
     public String getGoal() {
         return goal;
+    }
+
+    public GoalVO(String goal, String ndat, Integer type, Float prop, String perf, String krperf, Float zgrad) {
+        this.goal = goal;
+        this.ndat = ndat;
+        this.type = type;
+        this.prop = prop;
+        this.perf = perf;
+        this.krperf = krperf;
+        this.zgrad = zgrad;
     }
 
     public void setGoal(String goal) {
@@ -112,5 +128,13 @@ public class GoalVO {
 
     public void setTasks(List<TaskVO> tasks) {
         this.tasks = tasks;
+    }
+
+    public Integer getOkid() {
+        return okid;
+    }
+
+    public void setOkid(Integer okid) {
+        this.okid = okid;
     }
 }

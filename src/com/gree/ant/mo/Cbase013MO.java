@@ -1,28 +1,19 @@
 package com.gree.ant.mo;
 
-import com.gree.ant.dao.daoImp.BaseDAOImp;
 import com.gree.ant.dao.daoImp.Cbase013DAOImp;
 import com.gree.ant.dao.daoImp.Tbuss003DAOImp_Ds;
 import com.gree.ant.mo.basic.Cbase013BasicMO;
 import com.gree.ant.vo.Cbase013VO;
-import com.gree.ant.vo.ValueObject;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @IocBean
 public class Cbase013MO implements Cbase013BasicMO{
-
-    @Inject("refer:baseDAOImp")
-    private BaseDAOImp baseDAOImp;
-
-
+    
     @Inject("refer:cbase013DAOImp")
     private Cbase013DAOImp cbase013DAOImp;
 
@@ -36,7 +27,7 @@ public class Cbase013MO implements Cbase013BasicMO{
         int code=0;
         for (int i = 0; i <systemList.size() ; i++) {
             Cbase013VO cbase013VO=systemList.get(i);
-            baseDAOImp.insert(cbase013VO);
+            cbase013DAOImp.insert(cbase013VO);
             code=1;
         }
         return code;
@@ -55,31 +46,22 @@ public class Cbase013MO implements Cbase013BasicMO{
      */
     @Override
     public List<Cbase013VO> queryAllByCnd(Condition cnd, Pager pager) {
-        return formatC13(baseDAOImp.queryByCndPager(new Cbase013VO(),cnd,pager));
+        return cbase013DAOImp.queryByCndPager(cnd,pager);
     }
 
     @Override
     public Integer countByCnd(Condition cnd) {
-        return baseDAOImp.countByCnd(new Cbase013VO(),cnd);
+        return cbase013DAOImp.countByCnd(cnd);
     }
 
     @Override
     public Cbase013VO fetchBySyno(String syno) {
-        return (Cbase013VO) baseDAOImp.fetchByName(new Cbase013VO(),syno);
+        return cbase013DAOImp.fetchByName(syno);
     }
 
     @Override
     public Integer updateByVO(Cbase013VO cbase013VO) {
-        return baseDAOImp.update(cbase013VO);
-    }
-
-    private List<Cbase013VO> formatC13(List<ValueObject> voS){
-        Iterator<ValueObject> iterator = voS.iterator();
-        List<Cbase013VO> cbase013VOS = new ArrayList<>();
-        while(iterator.hasNext()){
-            cbase013VOS.add((Cbase013VO) iterator.next());
-        }
-        return  cbase013VOS;
+        return cbase013DAOImp.update(cbase013VO);
     }
 
     public  Boolean insertCheck(String syno){
@@ -89,11 +71,11 @@ public class Cbase013MO implements Cbase013BasicMO{
 
 
     public Cbase013VO insert(Cbase013VO cbase013VO) {
-        return (Cbase013VO)baseDAOImp.insert(cbase013VO);
+        return cbase013DAOImp.insert(cbase013VO);
     }
 
     public Integer deleteBySyno(String syno) {
-        return baseDAOImp.deleteByName(new Cbase013VO(),syno);
+        return cbase013DAOImp.deleteByName(syno);
     }
 
 }

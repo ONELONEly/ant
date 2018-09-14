@@ -19,7 +19,14 @@
 <div class="x-nav">
     <span class="layui-breadcrumb">
         <a href="javascript:" style="line-height: 40px;"><cite style="cursor: pointer;">首页</cite></a>
-        <a href="./manage"><cite style="cursor: pointer;">任务管理</cite></a>
+        <c:choose>
+            <c:when test="${obj.isManager}">
+                <a href="./manage"><cite style="cursor: pointer;">任务管理</cite></a>
+            </c:when>
+            <c:otherwise>
+                <a href="../user/task"><cite style="cursor: pointer;">任务管理</cite></a>
+            </c:otherwise>
+        </c:choose>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">添加任务</cite></a>
         <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center layui-icon-refresh"></i></a>
     </span>
@@ -197,7 +204,7 @@
 
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <input type="hidden" value="${obj}" id="taid"/>
+                <input type="hidden" value="${obj.taid}" id="taid"/>
             </div>
         </div>
         <div class="layui-form-item">

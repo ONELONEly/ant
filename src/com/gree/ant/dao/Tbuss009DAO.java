@@ -15,7 +15,7 @@ import java.util.List;
  * @title Tbuss009DAO
  * @createTime 2017 :11:06 04:11:13.
  */
-public interface Tbuss009DAO {
+public interface Tbuss009DAO extends BaseDAO<Tbuss009VO>{
 
     /**
      * Query all doc list.

@@ -55,6 +55,7 @@
             <th lay-data="{field:'udat',align:'center',width:150,sort:true}">创建时间</th>
             <th lay-data="{field:'stat',edit:'true',align:'center',width:150,toolbar:'#type'}">类型</th>
             <th lay-data="{field:'remk',edit:'true',align:'center',width:150}">备注</th>
+            <th lay-data="{field:'usid',edit:'true',align:'center',width:150}">创建用户</th>
             <th lay-data="{fixed:'right',align:'center',width:150,templet:'#opcoTpl',align:'center'}">评分细节</th>
             <th lay-data="{fixed:'right',align:'center',width:150,toolbar:'#operate',align:'center'}">操作</th>
         </tr>

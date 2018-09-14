@@ -17,7 +17,7 @@ import java.util.List;
  * @title Tbuss001DAO
  * @createTime 2017 :08:30 05:08:37.
  */
-public interface Tbuss001DAO {
+public interface Tbuss001DAO extends BaseDAO<Tbuss001VO>{
 
     /**
      * Fetch name by grop pdat string.

@@ -14,21 +14,18 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import java.util.List;
 
 @IocBean
-public class Cbase009DAOImp implements Cbase009DAO{
-
-    @Inject("refer:daoFX")
-    private Dao dao;
+public class Cbase009DAOImp extends BaseDAOImp<Cbase009VO> implements Cbase009DAO{
 
     @Override
     public Boolean insertCheck(String dsca) {
         String sqls = "select * from cbase009 $condition";
         Condition cnd = Cnd.where("dsca","like","%"+dsca+"%");
-        return DAOUtil.insertCheck(dao,sqls,cnd);
+        return DAOUtil.insertCheck(this.getDao(),sqls,cnd);
     }
 
     @Override
     public List<ResultVO> queryAllGD() {
         String sqlStr = "select grop,dsca from cbase009 order by dsca asc";
-        return DAOUtil.getResultVO(sqlStr,dao);
+        return DAOUtil.getResultVO(sqlStr,this.getDao());
     }
 }
