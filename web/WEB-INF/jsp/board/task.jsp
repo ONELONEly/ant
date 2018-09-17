@@ -65,7 +65,7 @@
                         $(".layui-timeline").append(end);
                     }
                 }else {
-                    layer.alert(res.msg);
+                    layer.alert(res.msg,{offset:'10px'});
                 }
             },
             error:function (kellyj) {

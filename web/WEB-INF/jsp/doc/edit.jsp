@@ -408,7 +408,7 @@
                 dataType:'json',
                 success:function (data) {
                     if(data.code === 1){
-                        layer.confirm("文档修改成功,返回上一页？",{offset:'100px'},function(){
+                        layer.confirm("文档修改成功,返回上一页？",{offset:'10px'},function(){
                             window.location.replace($("#choose").attr("href"))
                         },function () {
                             window.location.reload();

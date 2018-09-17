@@ -138,7 +138,7 @@
         table.on('tool(manage)', function(obj){
             var data = obj.data;
             if(obj.event === 'del'){
-                layer.confirm('真的删除行么',{offset:'100px',anim:1,btn:['确定','再考虑一下']},function(index){
+                layer.confirm('真的删除行么',{offset:'10px',anim:1,btn:['确定','再考虑一下']},function(index){
                     $.ajax({
                         type:'POST',
                         url:'${base}/task/deleteTask',
@@ -151,10 +151,10 @@
                                 obj.del();
                                 layer.close(index);
                             }
-                            return layer.alert(res.msg);
+                            return layer.alert(res.msg,{offset:'10px'});
                         },
                         error:function (kj) {
-                            layer.alert("发生错误:"+kj.status);
+                            layer.alert("发生错误:"+kj.status,{offset:'10px'});
                         }
                     });
                 });
@@ -193,14 +193,14 @@
                 dataType:'json',
                 success:function (res) {
                     if(res.code === 1){
-                        layer.alert(res.msg);
+                        layer.alert(res.msg,{offset:'10px'});
                         table.reload("manage")
                     }else{
-                        layer.alert(res.msg);
+                        layer.alert(res.msg,{offset:'10px'});
                     }
                 },
                 error:function (kj) {
-                    layer.alert("发生错误:"+kj.status);
+                    layer.alert("发生错误:"+kj.status,{offset:'10px'});
                 }
             });
         });
@@ -226,11 +226,11 @@
                             table.reload("manage");
                         });
                     }else{
-                        layer.alert(res.msg);
+                        layer.alert(res.msg,{offset:'10px'});
                     }
                 },
                 error:function (kj) {
-                    layer.alert("发生错误:"+kj.status);
+                    layer.alert("发生错误:"+kj.status,{offset:'10px'});
                 }
             });
         });

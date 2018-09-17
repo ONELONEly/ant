@@ -1,6 +1,7 @@
 package com.gree.ant.mo.basic;
 
 import com.gree.ant.vo.Tbuss011VO;
+import com.gree.ant.vo.Tbuss012VO;
 import com.gree.ant.vo.request.OkrVO;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.pager.Pager;
@@ -15,13 +16,14 @@ import java.util.List;
 public interface TBuss011BasicMO {
 
     /**
-     * @param okrVO
+     * @param tbuss011VO
+     * @param tbuss012VOS
      * @return 返回插入后的OKR完整数据
      * @description 插入单挑OKR数据
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      * @version 1.0
      */
-    Tbuss011VO insert(OkrVO okrVO);
+    Tbuss011VO insert(Tbuss011VO tbuss011VO,List<Tbuss012VO> tbuss012VOS);
 
     /**
      * @param pager 分页组件

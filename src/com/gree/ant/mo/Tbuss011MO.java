@@ -3,15 +3,13 @@ package com.gree.ant.mo;
 import com.gree.ant.dao.daoImp.Tbuss011DAOImp;
 import com.gree.ant.mo.basic.TBuss011BasicMO;
 import com.gree.ant.vo.Tbuss011VO;
-import com.gree.ant.vo.request.OkrVO;
+import com.gree.ant.vo.Tbuss012VO;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
-
-import java.sql.Connection;
 import java.util.List;
 
 @IocBean
@@ -22,17 +20,23 @@ public class Tbuss011MO implements TBuss011BasicMO {
     @Inject("refer:tbuss011DAOImp")
     private Tbuss011DAOImp tbuss011DAOImp;
 
-    @Override
-    public Tbuss011VO insert(final OkrVO okrVO) {
+    @Inject
+    private Tbuss012MO tbuss012MO;
 
-        Trans.exec(Connection.TRANSACTION_READ_COMMITTED, new Atom() {
+    @Override
+    public Tbuss011VO insert(final Tbuss011VO tbuss011VO, final List<Tbuss012VO> tbuss012VOS) {
+        final Tbuss011VO[] tbuss011 = new Tbuss011VO[1];
+        Trans.exec(new Atom() {
             @Override
             public void run() {
-//                Tbuss011VO tbuss011VO = tbuss011DAOImp.insert(okrVO.getOkrManager());
+                 tbuss011[0] = tbuss011DAOImp.insert(tbuss011VO);
+                for (Tbuss012VO tbuss012VO:tbuss012VOS){
+                    tbuss012VO.setOkid(tbuss011[0].getOKID());
+                    tbuss012MO.insertGoal(tbuss012VO);
+                }
             }
         });
-//        return (Tbuss011VO) tbuss011DAOImp.insert(tbuss011VO);
-        return null;
+        return tbuss011[0];
     }
 
     @Override

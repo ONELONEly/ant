@@ -187,7 +187,7 @@
         form.on('submit(tReturn)',function () {
             var choose = table.checkStatus('manage');
             var data = choose.data;
-            layer.prompt({title:'请输入反馈信息！',formType:2,offset:'100px'},function (remk,index) {
+            layer.prompt({title:'请输入反馈信息！',formType:2,offset:'10px'},function (remk,index) {
                 operate(data,8,remk,null,null,null);
                 layer.close(index);
             });
@@ -203,7 +203,7 @@
                 content:$("#score"),
                 btn:['确认'],
                 anim:4,
-                offset:'100px',
+                offset:'10px',
                 yes:function () {
                     var value = $(".stage").text();
                     if (value === null || value === "") {
@@ -219,7 +219,7 @@
         form.on('submit(rReturn)',function () {
             var choose = table.checkStatus('manage');
             var data = choose.data;
-            layer.prompt({title:'请输入反馈信息！',formType:2,offset:'100px'},function (remk,index) {
+            layer.prompt({title:'请输入反馈信息！',formType:2,offset:'10px'},function (remk,index) {
                 operate(data,10,remk,null);
                 layer.close(index);
             });

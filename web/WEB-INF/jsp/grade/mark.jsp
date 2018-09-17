@@ -76,7 +76,7 @@
         /*remk_P03_180304*/
         form.on("submit(put)",function (res) {
             var result = operate(res,0);
-            layer.confirm("提交完毕",{btn:['返回'],offset:'100px'},function(){
+            layer.confirm("提交完毕",{btn:['返回'],offset:'10px'},function(){
                 window.location.replace("${base}/grade/index");
             });
             return false;
@@ -84,7 +84,7 @@
 
         form.on("submit(save)",function (res) {
             var result = operate(res,2);
-            layer.confirm("保存完毕",{btn:['返回'],offset:'100px'},function(){
+            layer.confirm("保存完毕",{btn:['返回'],offset:'10px'},function(){
                 window.location.replace("${base}/grade/index");
             });
             return false;

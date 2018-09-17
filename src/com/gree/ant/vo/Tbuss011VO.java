@@ -9,6 +9,7 @@ import org.nutz.dao.entity.annotation.*;
  * @description OKR管理表对应实体
  */
 @Table("TBUSS011")
+@View("V_TBUSS011")
 public class Tbuss011VO extends ValueObject{
 
 

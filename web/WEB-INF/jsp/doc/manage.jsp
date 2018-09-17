@@ -170,7 +170,7 @@
                         dataType:'json',
                         success:function (res) {
                             if(res.code === 1){
-                                layer.confirm("删除成功",{btn:['确认'],offset:'100px'},function () {
+                                layer.confirm("删除成功",{btn:['确认'],offset:'10px'},function () {
                                     obj.del();
                                     layer.closeAll();
                                 });
@@ -210,7 +210,7 @@
                 dataType:'json',
                 success:function (res) {
                     if(res.code === 1){
-                        layer.confirm("删除成功",{btn:['确认'],offset:'100px'},function (index) {
+                        layer.confirm("删除成功",{btn:['确认'],offset:'10px'},function (index) {
                             table.reload("manage");
                             layer.close(index)
                         });

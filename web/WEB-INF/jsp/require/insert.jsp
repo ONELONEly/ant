@@ -202,7 +202,7 @@
                 dataType:'json',
                 success:function (data) {
                     if(data.code === 1){
-                        layer.confirm(data.msg+"返回主页？",{offset:'100px'},function () {
+                        layer.confirm(data.msg+"返回主页？",{offset:'10px'},function () {
                             location.replace("./index");
                         });
                     }else{

@@ -88,7 +88,7 @@
                         layer.alert(res.msg,{offset:'10px'});
                         table.reload("score");
                     }else{
-                        layer.alert(res.msg);
+                        layer.alert(res.msg,{offset:'10px'});
                     }
                 },
                 error:function (kj) {
@@ -139,14 +139,14 @@
                 dataType:'json',
                 success:function (res) {
                     if(res.code === 1){
-                        layer.alert(res.msg);
+                        layer.alert(res.msg,{offset:'10px'});
                         table.reload("score")
                     }else{
-                        layer.alert(res.msg);
+                        layer.alert(res.msg,{offset:'10px'});
                     }
                 },
                 error:function (kj) {
-                    layer.alert("发生错误:"+kj.status);
+                    layer.alert("发生错误:"+kj.status,{offset:'10px'});
                 }
             });
         });

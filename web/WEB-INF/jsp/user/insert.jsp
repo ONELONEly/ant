@@ -215,17 +215,17 @@
                 dataType:'json',
                 success:function (res) {
                     if(res.code === 1){
-                        layer.confirm(res.msg,{btn:['确定','返回'],offset:'100px',anim:4},function () {
+                        layer.confirm(res.msg,{btn:['确定','返回'],offset:'10px',anim:4},function () {
                             window.location.reload();
                         },function () {
                             window.location.replace("./manage");
                         });
                     }else{
-                        layer.alert(res.msg);
+                        layer.alert(res.msg,{offset:'10px'});
                     }
                 },
                 error:function (kj) {
-                    layer.alert("发生错误:"+kj.status);
+                    layer.alert("发生错误:"+kj.status,{offset:'10px'});
                 }
             });
             return false;

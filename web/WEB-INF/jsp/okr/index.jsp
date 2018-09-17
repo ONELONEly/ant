@@ -34,15 +34,17 @@
                 </div>
                 <div class="layui-input-inline">
                     <a href="./insert" class="layui-btn layui-btn-radius" lay-filter="set">创建</a>
-                    <a href="./test" class="layui-btn layui-btn-radius" lay-filter="set">创建</a>
                 </div>
             </div>
         </div>
     </form>
 
     <table class="layui-hide" id="okr" lay-filter="okr">
-
     </table>
+
+    <script type="text/html" id="read">
+        <a href="./read?id={{d.OKID}}" class="layui-table-link">{{d.ANAM}}</a>
+    </script>
 </div>
 <script language="JavaScript">
     layui.use(['table','element','form'],function () {
@@ -53,18 +55,9 @@
             cellMinWidth:100,
             page:true,
             cols:[[
-                {field:'ASID',title:'管理对象',align:'center'},
-                {field:'BOSS',title:'直接领导',align:'center'},
-                {field:'MDAT',title:'管理周期',align:'center'},
-                {field:'GOAL',title:'目标',align:'center'},
-                {field:'NDAT',title:'周期',align:'center'},
-                {field:'TYPE',title:'类型',align:'center'},
-                {field:'PROP',title:'权重',align:'center'},
-                {field:'PERF',title:'完成情况',align:'center'},
-                {field:'ACHI',title:'关键成果',align:'center'},
-                {field:'KRPROP',title:'KR权重',align:'center'},
-                {field:'KRPERF',title:'KR完成情况',align:'center'},
-                {field:'ZGRAD',title:'自评分',align:'center'}
+                {field:'ANAM',title:'管理对象',align:'center',templet:'#read'},
+                {field:'BNAM',title:'直接领导',align:'center'},
+                {field:'MDAT',title:'管理周期',align:'center'}
                 ]],
             response:{
                 statusCode:1

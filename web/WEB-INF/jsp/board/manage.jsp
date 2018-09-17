@@ -301,7 +301,7 @@
                 content:$(".carryUtil"),
                 btn:['确认'],
                 anim:4,
-                offset:'100px',
+                offset:'10px',
                 yes:function () {
                     var value = $("#dateUtil").val(),fahh = $("#fahhUtil").val(),finish = $("#finishTime").val();;
                     if (checkForm(finish)) {
@@ -311,7 +311,7 @@
                     } else if(checkForm(fahh)){
                         layer.tips("请输入工时","#fahhUtil");
                     } else {
-                        layer.prompt({title: '请输入备注信息！', formType: 2, offset: '100px'}, function (remk) {
+                        layer.prompt({title: '请输入备注信息！', formType: 2, offset: '50px'}, function (remk) {
                             operate(data,2,remk,value,null,fahh,finish);
                             layer.closeAll();
                         });
@@ -329,7 +329,7 @@
         form.on('submit(modify)',function () {
             var choose = table.checkStatus('manage');
             var data = choose.data;
-            layer.prompt({title:'请输入备注信息！',formType:2,offset:'100px'},function (remk,index) {
+            layer.prompt({title:'请输入备注信息！',formType:2,offset:'10px'},function (remk,index) {
                 operate(data,4,remk,null,null,null,null);
                 layer.close(index);
             });
@@ -338,7 +338,7 @@
         form.on('submit(test)',function () {
             var choose = table.checkStatus('manage');
             var data = choose.data;
-            layer.prompt({title:'请输入备注信息！',formType:2,offset:'100px'},function (remk,index) {
+            layer.prompt({title:'请输入备注信息！',formType:2,offset:'10px'},function (remk,index) {
                 operate(data,5,remk,null,null,null,null);
                 layer.close(index);
             });
@@ -359,7 +359,7 @@
         form.on('submit(tReturn)',function () {
             var choose = table.checkStatus('manage');
             var data = choose.data;
-            layer.prompt({title:'请输入反馈信息！',formType:2,offset:'100px'},function (remk,index) {
+            layer.prompt({title:'请输入反馈信息！',formType:2,offset:'10px'},function (remk,index) {
                 operate(data,8,remk,null,null,null,null);
                 layer.close(index);
             });
@@ -375,7 +375,7 @@
                 content:$("#score"),
                 btn:['确认'],
                 anim:4,
-                offset:'100px',
+                offset:'10px',
                 yes:function () {
                     var value = $(".stage").text();
                     if (value === null || value === "") {
@@ -391,7 +391,7 @@
         form.on('submit(rReturn)',function () {
             var choose = table.checkStatus('manage');
             var data = choose.data;
-            layer.prompt({title:'请输入反馈信息！',formType:2,offset:'100px'},function (remk,index) {
+            layer.prompt({title:'请输入反馈信息！',formType:2,offset:'10px'},function (remk,index) {
                 operate(data,10,remk,null,null,null,null);
                 layer.close(index);
             });

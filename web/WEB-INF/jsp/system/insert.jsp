@@ -85,13 +85,13 @@
                 success:function (data) {
 
                     if(data.code === 1){
-                        layer.confirm(data.msg,{btn:['确认','返回','取消'],offset:'100px',anim:4},function () {
+                        layer.confirm(data.msg,{btn:['确认','返回','取消'],offset:'10px',anim:4},function () {
                             window.location.reload();
                         },function () {
                             window.location.replace("${base}/system/manage");
                         });
                     }else{
-                        layer.alert(data.msg);
+                        layer.alert(data.msg,{offset:'10px'});
                     }
                 },
                 error:function (kellyj) {

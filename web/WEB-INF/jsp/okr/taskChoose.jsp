@@ -60,7 +60,7 @@
                     });
                 }
                 ,btn2: function(){
-                    $(window.parent.document.getElementById("achi")).val(obj.data.note);
+                    $(window.parent.document.getElementById("${obj}")).val(obj.data.note);
                 }
             });
             obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');

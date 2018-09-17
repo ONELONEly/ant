@@ -83,7 +83,7 @@
         table.on('tool(manage)', function(obj){
             var data = obj.data;
             if(obj.event === 'del'){
-                layer.confirm('真的删除行么',{offset:'100px'},function(index){
+                layer.confirm('真的删除行么',{offset:'10px'},function(index){
                     $.ajax({
                         type:'POST',
                         url:'${base}/doc/deleteDoc',
@@ -93,16 +93,16 @@
                         dataType:'json',
                         success:function (res) {
                             if(res.code === 1){
-                                layer.confirm("删除成功",{btn:['确认'],offset:'100px'},function () {
+                                layer.confirm("删除成功",{btn:['确认'],offset:'10px'},function () {
                                     obj.del();
                                     layer.closeAll();
                                 });
                             }else{
-                                layer.alert(res.msg);
+                                layer.alert(res.msg,{offset:'10px'});
                             }
                         },
                         error:function (kj) {
-                            layer.alert("发生错误:"+kj.status);
+                            layer.alert("发生错误:"+kj.status,{offset:'10px'});
                         }
                     });
                 });
@@ -133,16 +133,16 @@
                 dataType:'json',
                 success:function (res) {
                     if(res.code === 1){
-                        layer.confirm("删除成功",{btn:['确认'],offset:'100px'},function (index) {
+                        layer.confirm("删除成功",{btn:['确认'],offset:'10px'},function (index) {
                             table.reload("manage");
                             layer.close(index)
                         });
                     }else{
-                        layer.alert(res.msg);
+                        layer.alert(res.msg,{offset:'10px'});
                     }
                 },
                 error:function (kj) {
-                    layer.alert("发生错误:"+kj.status);
+                    layer.alert("发生错误:"+kj.status,{offset:'10px'});
                 }
             });
         });

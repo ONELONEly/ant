@@ -558,7 +558,7 @@ public class DocController {
                 for(String CSID:csids){
                     sendShareDocMail(CSID,doid,usid,tilt);
                 }
-            }else {
+            }else{
                 sendShareDocMail(csid, doid, usid, tilt);
             }
             code = 1;

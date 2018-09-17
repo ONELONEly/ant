@@ -1,5 +1,7 @@
 package com.gree.ant.vo.request;
 
+import com.gree.ant.vo.Tbuss013VO;
+
 /**
  * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
  * @version 1.0
@@ -18,6 +20,15 @@ public class TaskVO {
      */
     private Float krprop;
 
+    public TaskVO() {
+
+    }
+
+    public TaskVO(String achi, Float krprop) {
+        this.achi = achi;
+        this.krprop = krprop;
+    }
+
     public String getAchi() {
         return achi;
     }
@@ -32,5 +43,9 @@ public class TaskVO {
 
     public void setKrprop(Float krprop) {
         this.krprop = krprop;
+    }
+
+    public Tbuss013VO formatTask(){
+        return new Tbuss013VO(this.achi,this.krprop);
     }
 }

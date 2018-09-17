@@ -111,7 +111,7 @@
         table.on('tool(manage)', function(obj){
             var data = obj.data;
             if(obj.event === 'del'){
-                layer.confirm('真的删除行么',{offset:'100px'},function(index){
+                layer.confirm('真的删除行么',{offset:'10px'},function(index){
                     $.ajax({
                         type:'POST',
                         url:'${base}/user/deleteUser',
@@ -121,15 +121,15 @@
                         dataType:'json',
                         success:function (res) {
                             if(res.code === 1){
-                                layer.alert(res.msg);
+                                layer.alert(res.msg,{offset:'10px'});
                                 obj.del();
                                 layer.close(index);
                             }else{
-                                layer.alert(res.msg);
+                                layer.alert(res.msg,{offset:'10px'});
                             }
                         },
                         error:function (kj) {
-                            layer.alert("发生错误:"+kj.status);
+                            layer.alert("发生错误:"+kj.status,{offset:'10px'});
                         }
                     });
                 });
@@ -157,7 +157,7 @@
                     return layer.msg(res.msg,{offset:'10px'});
                 },
                 error:function (kj) {
-                    layer.alert("发生错误:"+kj.status);
+                    layer.alert("发生错误:"+kj.status,{offset:'10px'});
                 }
             });
         });

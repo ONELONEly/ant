@@ -75,7 +75,7 @@
                 element.init();
             },
             error:function (kellyJ) {
-                alert("发生错误:"+kellyJ.status)
+                alert("发生错误:"+kellyJ.status,{offset:'10px'})
             }
         });
     });

@@ -64,6 +64,7 @@
 
 .x-body{
     padding:5px 20px;
+    overflow: visible;
 }
 .x-nav{
     padding: 0 20px;

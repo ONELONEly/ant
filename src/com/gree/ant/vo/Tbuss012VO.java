@@ -1,9 +1,8 @@
 package com.gree.ant.vo;
 
-import org.nutz.dao.entity.annotation.Id;
-import org.nutz.dao.entity.annotation.Prev;
-import org.nutz.dao.entity.annotation.SQL;
-import org.nutz.dao.entity.annotation.Table;
+import org.nutz.dao.entity.annotation.*;
+
+import java.util.List;
 
 /**
  * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
@@ -18,7 +17,7 @@ public class Tbuss012VO {
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      */
     @Id
-    @Prev(@SQL("select nvl(max(OKID)+1,1) from Tbuss012"))
+    @Prev(@SQL("select nvl(max(goal_id)+1,1) from Tbuss012"))
     private Integer goal_id;
     /**
      * @description 目标
@@ -49,7 +48,7 @@ public class Tbuss012VO {
      * @description KR完成情况
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      */
-    private String keperf;
+    private String krperf;
     /**
      * @description 自评成绩
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
@@ -66,18 +65,20 @@ public class Tbuss012VO {
      */
     private Integer okid;
 
+    @Many(target = Tbuss013VO.class,field = "goal_id",key = "goal_id")
+    private List<Tbuss013VO> tbuss013VOS;
+
     public Tbuss012VO() {
     }
 
-    public Tbuss012VO(String goal, String ndat, Integer type, Float prop, String perf, String keperf, Float zgrad, Float mgrad) {
+    public Tbuss012VO(String goal, String ndat, Integer type, Float prop, String perf, String krperf, Float zgrad) {
         this.goal = goal;
         this.ndat = ndat;
         this.type = type;
         this.prop = prop;
         this.perf = perf;
-        this.keperf = keperf;
+        this.krperf = krperf;
         this.zgrad = zgrad;
-        this.mgrad = mgrad;
     }
 
     public Integer getGoal_id() {
@@ -128,12 +129,12 @@ public class Tbuss012VO {
         this.perf = perf;
     }
 
-    public String getKeperf() {
-        return keperf;
+    public String getKrperf() {
+        return krperf;
     }
 
-    public void setKeperf(String keperf) {
-        this.keperf = keperf;
+    public void setKrperf(String krperf) {
+        this.krperf = krperf;
     }
 
     public Float getZgrad() {
@@ -158,5 +159,13 @@ public class Tbuss012VO {
 
     public void setOkid(Integer okid) {
         this.okid = okid;
+    }
+
+    public List<Tbuss013VO> getTbuss013VOS() {
+        return tbuss013VOS;
+    }
+
+    public void setTbuss013VOS(List<Tbuss013VO> tbuss013VOS) {
+        this.tbuss013VOS = tbuss013VOS;
     }
 }

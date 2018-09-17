@@ -422,7 +422,7 @@
                 dataType:'json',
                 success:function (data) {
                     if(data.code === 1){
-                        layer.confirm(data.msg+"返回上一页？",{btn:['确定'],offset:'100px',anim:4},function () {
+                        layer.confirm(data.msg+"返回上一页？",{btn:['确定'],offset:'10px',anim:4},function () {
                             window.location.replace("${base}/user/task");
                         });
                     }else{
@@ -481,7 +481,7 @@
 
                 },
                 error:function (kj) {
-                    layer.alert("发生错误:"+kj.status);
+                    layer.alert("发生错误:"+kj.status,{offset:'10px'});
                 }
             });
         });
@@ -507,7 +507,7 @@
                     }
                 },
                 error:function (kj) {
-                    layer.alert("发生错误:"+kj.status);
+                    layer.alert("发生错误:"+kj.status,{offset:'10px'});
                 }
             });
         });

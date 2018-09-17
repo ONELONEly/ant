@@ -305,7 +305,7 @@
                 dataType:'json',
                 success:function (data) {
                     if(data.code === 1){
-                        layer.confirm(data.msg+",返回上一页？",{btn:['确定','刷新'],offset:'100px',anim:4},function () {
+                        layer.confirm(data.msg+",返回上一页？",{btn:['确定','刷新'],offset:'10px',anim:4},function () {
                             window.location.replace("./manage");
                         },function () {
                             window.location.reload();
@@ -315,7 +315,7 @@
                     }
                 },
                 error:function (kj) {
-                    layer.alert("发生错误:"+kj.status);
+                    layer.alert("发生错误:"+kj.status,{offset:'10px'});
                 }
             });
             return false;

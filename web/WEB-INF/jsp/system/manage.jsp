@@ -86,7 +86,7 @@
         table.on('tool(system)', function(obj){
             var data = obj.data;
             if(obj.event === 'del'){
-                layer.confirm('真的删除行么',{offset:'100px',anim:1,btn:['确定','再考虑一下']},function(index){
+                layer.confirm('真的删除行么',{offset:'10px',anim:1,btn:['确定','再考虑一下']},function(index){
                     $.ajax({
                         type:'POST',
                         url:'./deleteSystem',
@@ -172,10 +172,10 @@
                         if(res.code === 1){
                             table.reload("system")
                         }
-                        layer.alert(res.msg);
+                        layer.alert(res.msg,{offset:'10px'});
                     },
                     error:function (kj) {
-                        layer.alert("发生错误:"+kj.status);
+                        layer.alert("发生错误:"+kj.status,{offset:'10px'});
                     }
                 });*/
 

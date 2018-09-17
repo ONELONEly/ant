@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: 180484
-  Date: 2018/9/3
-  Time: 14:24
+  Date: 2018/9/4
+  Time: 17:52
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -13,268 +13,304 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
     <title>OKR添加</title>
     <kellyj:import url="../../static1.html"/>
+    <link rel="stylesheet" href="../static/css/okr.css" media="all">
 </head>
 <body>
-<div class="x-nav">
-    <span class="layui-breadcrumb">
-        <a href="javascript:"><cite>设置</cite></a>
-        <a href="javascript:location.replace('./index')"><cite>OKR管理</cite></a>
-        <a href="javascript:location.replace(location.href)"><cite>OKR添加</cite></a>
-        <a href="javascript:location.replace(location.href)" class="layui-btn layui-btn-radius layui-btn-sm l-refresh" title="刷新"><i class="layui-icon l-center layui-icon-refresh"></i></a>
-    </span>
+<div class="x-body">
+    <div class="layui-form layui-form-panel" style="padding-bottom:50px;">
+        <table class="layui-table">
+            <tr>
+                <td colspan="10" class="x-center">OKR管理表</td>
+                <td class="none_border">
+
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <div class="layui-form-item">
+                        <label for="asid" class="layui-form-label">管理对象：</label>
+                        <div class="layui-input-block">
+                            <span id="asid_0" style="float: right"></span>
+                            <select name="asid" lay-filter="asid" id="asid" lay-search>
+                                <option value="" style="display:none;" disabled selected>请选择管理对象</option>
+                            </select>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="2">
+                    <div class="layui-form-item">
+                        <label for="boss" class="layui-form-label">直接上级：</label>
+                        <div class="layui-input-block">
+                            <span id="boss_0" style="float: right"></span>
+                            <select name="boss" lay-filter="boss" id="boss" lay-search>
+                                <option value="" style="display:none;" disabled selected>请选择直接上级</option>
+                            </select>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="2">
+                    <div class="layui-form-item">
+                        <label for="mdat" class="layui-form-label">管理周期：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="mdat" id="mdat" class="layui-input" style="border:none;">
+                        </div>
+                    </div>
+                </td>
+                <td class="none_border">
+
+                </td>
+            </tr>
+            <tr id="okr_item_0_0">
+                <th class="center" width="4%">
+                    <label>序号</label>
+                </th>
+                <th class="center" width="6%">
+                    <label>目标（O）</label>
+                </th>
+                <th class="center" width="10%">
+                    <label>周期</label>
+                </th>
+                <th class="center" width="10%">
+                    <label>类型</label>
+                </th>
+                <th class="center" width="5%">
+                    <label>权重</label>
+                </th>
+                <th class="center" width="10%">
+                    <label>完成情况</label>
+                </th>
+                <th class="center" width="20%">
+                    <label>关键成果</label>
+                </th>
+                <th class="center" width="7%">
+                    <label>KR权重</label>
+                </th>
+                <th class="center" width="18%">
+                    <label>KR完成情况</label>
+                </th>
+                <th class="center" width="8%">
+                    <label>自评分</label>
+                </th>
+                <th class="none_border" width="2%">
+                </th>
+            </tr>
+            <tr id="okr_item_1_0">
+                <td class="none_pdding" zIndex="0" rowspan="">
+                    <strong>1</strong>
+                </td>
+                <td class="none_pdding" zIndex="0" rowspan="">
+                    <textarea type="text" name="goal_1" id="goal_1" placeholder="请输入目标" onfocus="jinyu($(this))" onblur="rose($(this))" autocomplete="off" class="excel_input"></textarea>
+                </td>
+                <td class="none_pdding" zIndex="0" rowspan="">
+                    <span id="ndat_1_0"></span>
+                    <select name="ndat_1" id="ndat_1" lay-search="">
+                        <option value="" class="n-display" disabled selected>请选择周期</option>
+                        <option value="1" class="n-display">月度</option>
+                        <option value="2" class="n-display">季度</option>
+                        <option value="3" class="n-display">半年度</option>
+                        <option value="4" class="n-display">年度</option>
+                    </select>
+                </td>
+                <td class="none_pdding" zIndex="0" rowspan="">
+                    <span id="type_1_0"></span>
+                    <select name="type_1" lay-filter="type" id="type_1" lay-search>
+                        <option value="" style="display:none;" disabled selected>请选择类型</option>
+                        <option value="1" class="n-display">项目类</option>
+                        <option value="2" class="n-display">质量类</option>
+                        <option value="3" class="n-display">管理类</option>
+                        <option value="4" class="n-display">创新类</option>
+                    </select>
+                </td>
+                <td class="none_pdding" zIndex="0"  rowspan="">
+                    <input type="text" name="prop_1" id="prop_1" placeholder="请输入权重" autocomplete="off" class="excel_input">
+                </td>
+                <td class="none_pdding" zIndex="0"  rowspan="">
+                    <input type="text" name="perf_1" id="perf_1" placeholder="请输入完成情况" autocomplete="off" class="excel_input">
+                </td>
+                <td class="none_pdding" zIndex="1" >
+                    <input type="text" name="achi_1_0" id="achi_1_0" placeholder="请输入关键成果" autocomplete="off"  class="excel_input">
+                    <a href="javascript:" class="task_choose" onclick="task_choose($(this))"><i class="layui-icon layui-icon-search"></i></a>
+                </td>
+                <td class="none_pdding" zIndex="1" >
+                    <input type="text" name="krprop_1_0" id="krprop_1_0" placeholder="请输入KR权重" autocomplete="off" class="excel_input">
+                    <a href="javascript:" class="task_add" onclick="task_add($(this))"><i class="layui-icon layui-icon-add-1 layui-bg-green"></i></a>
+                </td>
+                <td class="none_pdding" zIndex="0" rowspan="">
+                    <input type="text" name="krperf_1" id="krperf_1" placeholder="请输入KR完成情况" autocomplete="off" class="excel_input">
+                </td>
+                <td class="none_pdding" zIndex="0" rowspan="">
+                    <input type="text" name="zgrad_1" id="zgrad_1" placeholder="请输入自评分" autocomplete="off" class="excel_input">
+                </td>
+                <td class="none_pdding none_border" zIndex="0" rowspan="">
+                    <div class="layui-form-item" style="margin: 0 auto;">
+                        <div>
+                            <a href="javascript:" onclick="goal_del($(this))"><i class="layui-icon layui-icon-close layui-bg-red"></i></a>
+                        </div>
+                        <div>
+                            <a href="javascript:" onclick="goal_add($(this))"><i class="layui-icon layui-icon-add-1 layui-bg-green"></i></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <a class="layui-hide form_render"></a>
+    </div>
 </div>
-<div class="x-body layui-container">
-    <form class="layui-form layui-form-panel">
-        <div class="layui-form-item">
-            <label for="asid" class="layui-form-label">管理对象</label>
-            <div class="layui-input-block" style="width: 86%;">
-                <select name="ASID" lay-filter="asid" lay-verify="asid" id="asid" lay-search>
-                    <option value="" style="display:none;" disabled selected>请选择管理对象</option>
-                </select>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label for="boss" class="layui-form-label">直接上级</label>
-            <div class="layui-input-block" style="width: 86%;">
-                <select name="BOSS" lay-filter="boss" id="boss" lay-verify="boss" lay-search>
-                    <option value="" style="display:none;" disabled selected>请选择直接上级</option>
-                </select>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">管理周期</label>
-            <div class="layui-input-block" style="width: 86%;">
-                <input type="text" name="MDAT" id="mdat" placeholder="请选择管理周期" lay-verify="mdat" autocomplete="off" class="layui-input" required/>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label for="goal" class="layui-form-label">目标</label>
-            <div class="layui-input-block" style="width: 86%;">
-                <input type="text" name="GOAL" id="goal" placeholder="请输入目标" lay-verify="goal" autocomplete="off" class="layui-input" required/>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label for="ndat" class="layui-form-label">周期</label>
-            <div class="layui-input-block" style="width: 86%;">
-                <select name="NDAT" id="ndat" lay-verify="ndat" lay-search="">
-                    <option value="" class="n-display" disabled selected>请选择周期</option>
-                    <option value="1" class="n-display">月度</option>
-                    <option value="2" class="n-display">季度</option>
-                    <option value="3" class="n-display">半年度</option>
-                    <option value="4" class="n-display">年度</option>
-                </select>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label for="type" class="layui-form-label">类型</label>
-            <div class="layui-input-block" style="width: 86%;">
-                <select name="TYPE" lay-filter="type" id="type" lay-search>
-                    <option value="" style="display:none;" disabled selected>请选择类型</option>
-                    <option value="1" class="n-display">项目类</option>
-                    <option value="2" class="n-display">质量类</option>
-                    <option value="3" class="n-display">管理类</option>
-                    <option value="4" class="n-display">创新类</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label for="prop" class="layui-form-label">权重</label>
-            <div class="layui-input-block" style="width: 86%;">
-                <input type="number" min="0" max="100" name="PROP" id="prop" placeholder="请输入权重" lay-verify="prop|number|grad" autocomplete="off" class="layui-input" required/>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label for="perf" class="layui-form-label">完成情况</label>
-            <div class="layui-input-block" style="width: 86%;">
-                <input type="text" name="PERF" id="perf" placeholder="请输入完成情况" lay-verify="perf" autocomplete="off" class="layui-input" required/>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label for="achi" class="layui-form-label">关键成果</label>
-            <div class="layui-input-inline" style="width: 86%;">
-                <input type="text" name="ACHI" id="achi" placeholder="请输入关键成果" lay-verify="achi" autocomplete="off" class="layui-input" required/>
-            </div>
-            <div class="layui-input-inline" style="float: right;width: 2%;">
-                <a href="javascript:" id="search" style="text-align: center;line-height:50px;"><i class="layui-icon">&#xe615;</i></a>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label for="krprop" class="layui-form-label">KR权重</label>
-            <div class="layui-input-block" style="width: 86%;">
-                <input type="number" min="0" max="100" name="KRPROP" id="krprop" placeholder="请输入KR权重" lay-verify="krprop|number|grad" autocomplete="off" class="layui-input" required/>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label for="krperf" class="layui-form-label">KR完成情况</label>
-            <div class="layui-input-block" style="width: 86%;">
-                <input type="text" name="KRPERF" id="krperf" placeholder="请输入KR完成情况" lay-verify="krperf" autocomplete="off" class="layui-input" required/>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label for="zgrad" class="layui-form-label">自评分</label>
-            <div class="layui-input-block" style="width: 86%;">
-                <input type="number" min="0" max="100" name="ZGRAD" id="zgrad" placeholder="请输入自评分" lay-verify="zgrad|number|grad" autocomplete="off" class="layui-input" required/>
-            </div>
-        </div>
-
-        <div class="layui-form-item x-center">
-            <div class="layui-input-block" style="width: 86%;">
-                <input type="submit" class="layui-btn layui-btn-radius" id="submit" value="提交" lay-filter="insert" lay-submit/>
-                <input type="reset" class="layui-btn layui-btn-radius" value="重置" lay-submit/>
-            </div>
-        </div>
-
-    </form>
+<div class="x-center x-body" style="bottom: 0;position: fixed;width: 100%;height:50px;background-color:#fff;z-index: 1;">
+    <div class="layui-input-inline">
+        <button class="layui-btn layui-btn-radius" id="insert">添加</button>
+    </div>
+    <div class="layui-input-inline">
+        <a class="layui-btn layui-btn-radius layui-bg-gray" href="./index">返回</a>
+    </div>
 </div>
 <script language="JavaScript">
-    layui.use(['form','element','jquery','layer','laydate'],function () {
-        var $ = layui.jquery,form = layui.form,
-            element = layui.element,layer = layui.layer
-            ,laydate = layui.laydate;
+layui.use(['form', 'table','jquery','layer',"laydate"], function () {
+    var form = layui.form,$ = layui.jquery,postDataItem,laydate = layui.laydate;
 
-        var start = {
-            elem:'#mdat',
-            type:'month',
-            choose: function (value) {
-                console.log(value);
+    var start = {
+        elem:'#mdat',
+        type:'month',
+        choose: function (value) {
+        }
+    };
+
+    laydate.render(start);
+
+    $.ajax({
+        type:'POST',
+        url:'../util/findC0',
+        dataType:'json',
+        success:function (data) {
+            var user = data.c0;
+            var uOption = "";
+            for(var i = 0;i<user.length;i++){
+                uOption += "<option value='"+user[i].id+"'>"+user[i].dsca+"</option>";
             }
+            $("#boss").append(uOption);
+            $("#asid").append(uOption);
+            form.render();
+        },
+        error:function (kellyj) {
+            layer.alert("发生错误，错误码为:"+kellyj.status);
+        }
+    });
+
+    $(".form_render").click(function () {
+        form.render();
+    });
+
+    $("#insert").click(function () {
+        postDataItem = {
+            asid:'',
+            boss:'',
+            mdat:'',
+            goals:[]
         };
+        var formAll = $(".layui-form").children();
+        var inputs = formAll.find("input");
+        var texts = formAll.find("textarea");
+        var selects = formAll.find("select");
+        var param = addToParam(addToParam(null,inputs),selects);
+        var goalParam = addToParam(null,texts);
 
-        laydate.render(start);
-
-        $.ajax({
-            type:'GET',
-            url:'${base}/util/findC0',
-            dataType:'json',
-            success:function (data) {
-                var user = data.c0;
-                var option = "";
-                for(var i = 0;i<user.length;i++){
-                    option += "<option value='"+user[i].id+"' class='n-display'>"+user[i].dsca+"</option>";
-                }
-                $("#asid").append(option);
-                $("#boss").append(option);
-                form.render();
-            },
-            error:function (kj) {
-                layer.alert("发生错误:"+kj.status);
-            }
-        });
-
-        $("#search").click(
-            function () {
-                layer.open({
-                    type:2,
-                    id:'taskChoose',
-                    content:['./taskChoose'],
-                    area: ['60%', '70%'],
-                    title:'查询',
-                    offset:'10px'
-                })
-            }
-        );
-
-        form.verify({
-            asid:function (value) {
-                console.log(value);
-                if(checkForm(value)){
-                    return "请选择管理对象";
-                }
-            },
-            boss:function (value) {
-                if(checkForm(value)){
-                    return "请选择直接上级";
-                }
-            },
-            mdat:function (value) {
-                if(checkForm(value)){
-                    return "请选择管理周期";
-                }
-            },
-            goal:function (value) {
-                if(checkForm(value)){
-                    return "请输入目标";
-                }
-            },
-            ndat:function (value) {
-                if(checkForm(value)){
-                    return "请选择周期";
-                }
-            },
-            type:function (value) {
-                if(checkForm(value)){
-                    return "请选择类型";
-                }
-            },
-            prop:function (value) {
-                if(checkForm(value)){
-                    return "请输入比重";
-                }
-            },
-            perf:function (value) {
-                if(checkForm(value)){
-                    return "请输入完成情况";
-                }
-            },
-            achi:function (value) {
-                if(checkForm(value)){
-                    return "请输入关键成果";
-                }
-            },
-            krprop:function (value) {
-                if(checkForm(value)){
-                    return "请输入KR比重";
-                }
-            },
-            krperf:function (value) {
-                if(checkForm(value)){
-                    return "请输入KR完成情况";
-                }
-            },
-            zgrad:function (value) {
-                if(checkForm(value)){
-                    return "请输入自评分";
-                }
-            },
-            grad:function (value) {
-                if(value > 100 || value < 0){
-                    return "请输入0--100的评分";
+        if(checkFormData(param) && checkFormData(goalParam)){
+            for(var j = 0;j < param.length;j++){
+                if(param[j].name === "asid"){
+                    postDataItem.asid = param[j].value;
+                }else if(param[j].name === "boss"){
+                    postDataItem.boss = param[j].value;
+                }else if(param[j].name === "mdat"){
+                    postDataItem.mdat = param[j].value;
                 }
             }
-        });
+            for(var i = 0;i < goalParam.length;i++){
+                var goal = goalParam[i];
+                var goalItem = {
+                    goal:'',//目标
+                    ndat:'',//周期
+                    type:0,//类型
+                    prop:0,//比重
+                    perf:'',//完成情况
+                    tasks:[],
+                    krperf:'',//KR完成情况
+                    zgrad:0 //自评成绩
+                };
+                goalItem.goal = goal.value;
+                var row = goal.name.substring(5),name,value;
+                for(var k = 0;k < param.length;k++){
+                    name = param[k].name;
+                    value = param[k].value;
+                    if(name.match(/\bprop/) !== null){
+                        if(name.substring(5) === row){
+                            goalItem.prop = value;
+                        }
+                    }else if(name.match(/\bperf/) !== null){
+                        if(name.substring(5) === row){
+                            goalItem.perf = value;
+                        }
+                    }else if(name.match(/\bndat/) !== null){
+                        if(name.substring(5) === row){
+                            goalItem.ndat = value;
+                        }
+                    }else if(name.match(/\btype/) !== null){
+                        if(name.substring(5) === row){
+                            goalItem.type = value;
+                        }
+                    }else if(name.match(/\bzgrad/) !== null){
+                        if(name.substring(6) === row){
+                            goalItem.zgrad = value;
+                        }
+                    }else if(name.match(/\bkrperf/) !== null){
+                        if(name.substring(7) === row){
+                            goalItem.krperf = value;
+                        }
+                    }
+                }
+                var taskCount = $("[id^=okr_item_"+row+"]").length;
 
-        form.on("submit(insert)",function (data) {
-            console.log(data.field);
+                for (var n = 0; n < taskCount; n++) {
+                    var taskItem = {
+                        achi: '',//关键成果
+                        krprop: 0 //KR权重
+                    };
+                    for (var m = 0; m < param.length; m++) {
+                        name = param[m].name;
+                        value = param[m].value;
+                        if (name === "achi_" + row + "_" + n) {
+                            taskItem.achi = value
+                        } else if (name === "krprop_" + row + "_" + n) {
+                            taskItem.krprop = value;
+                        }
+                    }
+                    goalItem.tasks.push(taskItem);
+                }
+                postDataItem.goals.push(goalItem);
+            }
             $.ajax({
                 type:'POST',
                 url:'./insert',
-                data:data.field,
+                data:postDataItem,
                 dataType:'json',
-                success:function (res) {
-                    if(res.code === 1){
-                        layer.confirm(res.msg,{btn:['确定','返回'],offset:'100px',anim:4},function () {
-                            window.location.reload();
-                        },function () {
+                success:function (data) {
+                    if(data.code === 1){
+                        layer.confirm("成功录入，返回主界面？",{btn:['确定返回',"刷新"],offset:'10px',anim:4},function () {
                             window.location.replace("./index");
+                        },function () {
+                            window.location.reload();
                         });
                     }else{
-                        layer.alert(res.msg);
+                        layer.alert(data.msg,{offset:'10px',anim:4});
                     }
                 },
                 error:function (kj) {
-                    layer.alert("发生错误:"+kj.status);
+                    layer.alert("发生错误:"+kj.status,{offset:'10px'});
                 }
             });
-            return false;
-        });
-
+        }
     });
+});
 </script>
+<script src="../static/js/okrInsert.js"></script>
 </body>
 </html>

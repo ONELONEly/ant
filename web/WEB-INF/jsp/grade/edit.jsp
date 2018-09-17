@@ -93,7 +93,7 @@
                 dataType:'json',
                 success:function (data) {
                     if(data.code === 1){
-                        layer.confirm(data.msg,{btn:['确定'],offset:'100px',anim:4},function (index) {
+                        layer.confirm(data.msg,{btn:['确定'],offset:'10px',anim:4},function (index) {
                             layer.close(index);
                             window.location.replace('./index');
                         });

@@ -1,5 +1,7 @@
 package com.gree.ant.vo.request;
 
+import com.gree.ant.vo.Tbuss012VO;
+
 import java.util.List;
 
 /**
@@ -58,6 +60,9 @@ public class GoalVO {
 
     public String getGoal() {
         return goal;
+    }
+
+    public GoalVO() {
     }
 
     public GoalVO(String goal, String ndat, Integer type, Float prop, String perf, String krperf, Float zgrad) {
@@ -136,5 +141,9 @@ public class GoalVO {
 
     public void setOkid(Integer okid) {
         this.okid = okid;
+    }
+
+    public Tbuss012VO getFormatGoal(){
+        return new Tbuss012VO(this.getGoal(),this.getNdat(),this.getType(),this.getProp(),this.getPerf(),this.getKrperf(),this.getZgrad());
     }
 }

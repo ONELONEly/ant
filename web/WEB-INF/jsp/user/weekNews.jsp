@@ -112,7 +112,7 @@
                 form.render();
             },
             error:function (kj) {
-                layer.alert("发生错误:"+kj.status);
+                layer.alert("发生错误:"+kj.status,{offset:'10px'});
             }
         });
 
@@ -131,7 +131,7 @@
                 form.render();
             },
             error:function (kj) {
-                layer.alert("发生错误:"+kj.status);
+                layer.alert("发生错误:"+kj.status,{offset:'10px'});
             }
         });
 
@@ -177,7 +177,7 @@
                 dataType:'json',
                 success:function (data) {
                     if(data.code === 1){
-                        layer.confirm("文档提交成功,返回上一页？",{offset:'100px'},function(){
+                        layer.confirm("文档提交成功,返回上一页？",{offset:'10px'},function(){
                             window.location.replace("./weekNewsManage");
                         },function () {
                             window.location.reload();
@@ -187,7 +187,7 @@
                     }
                 },
                 error:function (kj) {
-                    layer.alert("发生错误:"+kj.status);
+                    layer.alert("发生错误:"+kj.status,{offset:'10px'});
                 }
             });
         });

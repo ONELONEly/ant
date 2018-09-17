@@ -18,13 +18,13 @@ public class Tbuss013VO {
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      */
     @Id
-    @Prev(@SQL("select nvl(max(OKID)+1,1) from Tbuss013"))
+    @Prev(@SQL("select nvl(max(task_id)+1,1) from Tbuss013"))
     private Integer task_id;
     /**
      * @description 关键成果
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      */
-    private String ahci;
+    private String achi;
     /**
      * @description KR完成情况
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
@@ -39,8 +39,8 @@ public class Tbuss013VO {
     public Tbuss013VO() {
     }
 
-    public Tbuss013VO(String ahci, Float krprop) {
-        this.ahci = ahci;
+    public Tbuss013VO(String achi, Float krprop) {
+        this.achi = achi;
         this.krprop = krprop;
     }
 
@@ -52,12 +52,12 @@ public class Tbuss013VO {
         this.task_id = task_id;
     }
 
-    public String getAhci() {
-        return ahci;
+    public String getAchi() {
+        return achi;
     }
 
-    public void setAhci(String ahci) {
-        this.ahci = ahci;
+    public void setAchi(String achi) {
+        this.achi = achi;
     }
 
     public Float getKrprop() {

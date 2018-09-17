@@ -84,7 +84,7 @@
                     offset:'10px'
                 });
             }else if(obj.event === 'del'){
-                layer.confirm('真的删除行么',{offset:'100px',anim:1,btn:['确定','再考虑一下']},function(index){
+                layer.confirm('真的删除行么',{offset:'10px',anim:1,btn:['确定','再考虑一下']},function(index){
                     $.ajax({
                         type:'POST',
                         url:'./deleteRequire',

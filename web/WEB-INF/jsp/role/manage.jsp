@@ -181,7 +181,7 @@
         table.on('tool(role)', function(obj){
             var data = obj.data;
             if(obj.event === 'del'){
-                layer.confirm('真的删除行么',{offset:'100px'},function(index){
+                layer.confirm('真的删除行么',{offset:'10px'},function(index){
                     $.ajax({
                         type:'POST',
                         url:'./deleteRole',

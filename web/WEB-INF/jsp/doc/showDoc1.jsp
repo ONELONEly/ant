@@ -51,8 +51,9 @@
                     title: '请输入分享的邮箱号',
                     btn: ['确认'],
                     formType: 2,
+                    area:'400px',
                     anim: 4,
-                    offset: '100px'
+                    offset: '50px'
                 }, function (res, index) {
                     $.ajax({
                         type: 'POST',
@@ -73,7 +74,7 @@
                     });
                 });
             }else{
-                layer.alert("请先登录！");
+                layer.alert("请先登录！",{offset:'10px'});
             }
         });
     });

@@ -41,9 +41,9 @@
                 layer.prompt({
                     title: '请输入分享的邮箱号',
                     btn: ['确认'],
-                    formType: 2,
+                    formType: 3,
                     anim: 4,
-                    offset: '100px'
+                    offset: '50px'
                 }, function (res, index) {
                     $.ajax({
                         type: 'POST',

@@ -1,0 +1,96 @@
+.task_choose {
+    position: absolute;
+    right:5px;
+    top:10px;
+}
+.task_add{
+    position: absolute;
+    opacity: 0.2;
+    right:0;
+    bottom: 0;
+    margin-right: -8px;
+    margin-bottom: -8px;
+    z-index: 1;
+}
+.task_add:hover{
+    opacity: 1;
+}
+
+.task_del{
+    position: absolute;
+    opacity: 0.2;
+    right:0;
+    top: 0;
+    margin-right: -8px;
+    margin-top: -8px;
+    z-index: 1;
+}
+.task_del:hover{
+    opacity: 1;
+}
+.excel_input{
+    outline:0;
+    width:99%;
+    height:40px;
+    font-weight: lighter;
+    border-width: 0;
+    -webkit-appearance:none;
+    transition:all .3s;
+    -webkit-transition:all .3s;
+    box-sizing:border-box;
+}
+.excel-input:focus{border-color:#C9C9C9!important}
+
+th.center {
+    text-align: center;
+    margin: 0 auto;
+}
+td.none_pdding{
+    padding: 0;
+    text-align: center;
+    margin: 0 auto;
+}
+td.none_border{
+    /*border-left:none;*/
+    /*border-right:none;*/
+    border:none;
+}
+
+th.none_border{
+    border:none;
+}
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #d3d3d3;
+    opacity:  0.5;
+    text-align: center;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #d3d3d3;
+    opacity:  0.5;
+    text-align: center;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #d3d3d3;
+    opacity:  0.5;
+    text-align: center;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color:    #d3d3d3;
+    opacity:  0.5;
+    text-align: center;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+    color:    #d3d3d3;
+    opacity:  0.5;
+    text-align: center;
+}
+
+textarea{
+    resize:none;
+}
+
+.layui-form-select dl{
+    top:42px;
+    bottom:auto;
+}
