@@ -12,6 +12,11 @@ import java.util.List;
 public class GoalVO {
 
     /**
+     * @description 目标ID
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     */
+    private Integer goal_id;
+    /**
      * @description 目标
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      */
@@ -46,17 +51,17 @@ public class GoalVO {
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      */
     private Float zgrad;
+
+    /**
+     * @description 领导评分
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     */
+    private Float mgrad;
     /**
      * @description 任务集合
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      */
     private List<TaskVO> tasks;
-
-    /**
-     * @description OKR绩效表ID
-     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
-     */
-    private Integer okid;
 
     public String getGoal() {
         return goal;
@@ -65,7 +70,7 @@ public class GoalVO {
     public GoalVO() {
     }
 
-    public GoalVO(String goal, String ndat, Integer type, Float prop, String perf, String krperf, Float zgrad) {
+    public GoalVO(String goal, String ndat, Integer type, Float prop, String perf, String krperf, Float zgrad,Float mgrad,Integer goal_id) {
         this.goal = goal;
         this.ndat = ndat;
         this.type = type;
@@ -73,6 +78,8 @@ public class GoalVO {
         this.perf = perf;
         this.krperf = krperf;
         this.zgrad = zgrad;
+        this.mgrad = mgrad;
+        this.goal_id = goal_id;
     }
 
     public void setGoal(String goal) {
@@ -135,15 +142,23 @@ public class GoalVO {
         this.tasks = tasks;
     }
 
-    public Integer getOkid() {
-        return okid;
+    public Float getMgrad() {
+        return mgrad;
     }
 
-    public void setOkid(Integer okid) {
-        this.okid = okid;
+    public void setMgrad(Float mgrad) {
+        this.mgrad = mgrad;
     }
 
-    public Tbuss012VO getFormatGoal(){
+    public Tbuss012VO getTbuss012VO(){
         return new Tbuss012VO(this.getGoal(),this.getNdat(),this.getType(),this.getProp(),this.getPerf(),this.getKrperf(),this.getZgrad());
+    }
+
+    public Integer getGoal_id() {
+        return goal_id;
+    }
+
+    public void setGoal_id(Integer goal_id) {
+        this.goal_id = goal_id;
     }
 }

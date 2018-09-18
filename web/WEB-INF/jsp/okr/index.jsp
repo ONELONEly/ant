@@ -43,7 +43,12 @@
     </table>
 
     <script type="text/html" id="read">
-        <a href="./read?id={{d.OKID}}" class="layui-table-link">{{d.ANAM}}</a>
+        <a href="javascript:" class="layui-table-link" lay-event="show">{{d.ANAM}}</a>
+    </script>
+
+    <script type="text/html" id="operate">
+        <a href="./edit?okid={{d.OKID}}" class="layui-btn layui-btn-xs">编辑</a>
+        <a href="./mark?okid={{d.OKID}}" class="layui-btn layui-btn-xs">评分</a>
     </script>
 </div>
 <script language="JavaScript">
@@ -55,12 +60,25 @@
             cellMinWidth:100,
             page:true,
             cols:[[
-                {field:'ANAM',title:'管理对象',align:'center',templet:'#read'},
+                {field:'ANAM',title:'管理对象',align:'center',toolbar:'#read'},
                 {field:'BNAM',title:'直接领导',align:'center'},
-                {field:'MDAT',title:'管理周期',align:'center'}
+                {field:'MDAT',title:'管理周期',align:'center'},
+                {fixed:'right',title:'操作',align:'center',toolbar:'#operate'}
                 ]],
             response:{
                 statusCode:1
+            }
+        });
+
+        table.on("tool(okr)",function (obj) {
+            if(obj.event === "show"){
+                layer.open({
+                   type:2,
+                   content:'./read?okid='+obj.data.OKID,
+                   area:['90%','80%'],
+                    title:'OKR管理表',
+                    offset:'10px'
+                });
             }
         });
     });

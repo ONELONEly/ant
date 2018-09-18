@@ -41,7 +41,7 @@
 }
 .excel-input:focus{border-color:#C9C9C9!important}
 
-th.center {
+th.center td.center{
     text-align: center;
     margin: 0 auto;
 }

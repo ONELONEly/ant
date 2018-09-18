@@ -25,6 +25,12 @@ public interface TBuss011BasicMO {
      */
     Tbuss011VO insert(Tbuss011VO tbuss011VO,List<Tbuss012VO> tbuss012VOS);
 
+    Integer update(Tbuss011VO tbuss011VO,List<Tbuss012VO> tbuss012VOS);
+
+    Tbuss011VO fetchByOkid(Integer okid);
+
+    Tbuss011VO fetchTransByOkid(Integer okid);
+
     /**
      * @param pager 分页组件
      * @param msg   过滤信息

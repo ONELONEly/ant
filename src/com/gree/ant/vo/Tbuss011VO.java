@@ -2,6 +2,8 @@ package com.gree.ant.vo;
 
 import org.nutz.dao.entity.annotation.*;
 
+import java.util.List;
+
 
 /**
  * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
@@ -54,6 +56,9 @@ public class Tbuss011VO extends ValueObject{
      * @description 目标
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      */
+
+    @Many(target = Tbuss012VO.class,field = "okid",key = "OKID")
+    private List<Tbuss012VO> tbuss012VOS;
 
     public Tbuss011VO() {
 
@@ -111,5 +116,13 @@ public class Tbuss011VO extends ValueObject{
 
     public void setMDAT(String MDAT) {
         this.MDAT = MDAT;
+    }
+
+    public List<Tbuss012VO> getTbuss012VOS() {
+        return tbuss012VOS;
+    }
+
+    public void setTbuss012VOS(List<Tbuss012VO> tbuss012VOS) {
+        this.tbuss012VOS = tbuss012VOS;
     }
 }

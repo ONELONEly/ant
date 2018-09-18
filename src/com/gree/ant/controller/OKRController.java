@@ -1,6 +1,7 @@
 package com.gree.ant.controller;
 
 import com.gree.ant.mo.BussMoFactory;
+import com.gree.ant.util.OKRUtil;
 import com.gree.ant.util.ResultUtil;
 import com.gree.ant.util.TableUtil;
 import com.gree.ant.vo.Tbuss011VO;
@@ -50,14 +51,38 @@ public class OKRController {
 
     @At("/read")
     @Ok("jsp:jsp.okr.read")
-    public String read(@Param("okid")Integer okid,@Attr("usid")String usid){
-        return usid;
+    public Tbuss011VO read(@Param("okid")Integer okid){
+        return bussMoFactory.getTbuss011MO().fetchByOkid(okid);
     }
 
     @At("/edit")
     @Ok("jsp:jsp.okr.edit")
-    public String edit(@Param("okid")Integer okid,@Attr("usid")String usid){
-        return usid;
+    public Tbuss011VO edit(@Param("okid")Integer okid){
+        return bussMoFactory.getTbuss011MO().fetchByOkid(okid);
+    }
+
+    @At("/mark")
+    @Ok("jsp:jsp.okr.mark")
+    public Tbuss011VO mark(@Param("okid")Integer okid){
+        return bussMoFactory.getTbuss011MO().fetchByOkid(okid);
+    }
+
+    @POST
+    @At("/getSingleOkr")
+    @Ok("json")
+    public Map<String,Object> getSingleOkr(@Param("okid") Integer okid){
+        int code = 0;
+        String msg = "服务器异常";
+        OkrVO okrVO = new OkrVO();
+        if(okid != null){
+            Tbuss011VO tbuss011VO = bussMoFactory.getTbuss011MO().fetchTransByOkid(okid);
+            okrVO = OKRUtil.convertToOkr(tbuss011VO);
+            code = 1;
+        }else{
+            msg = "请求参数为空，请确认路径！";
+        }
+        msg = code == 1 ? "成功添加OKR管理项":msg;
+        return ResultUtil.getResult(code,msg,okrVO);
     }
 
     /**
@@ -73,34 +98,54 @@ public class OKRController {
     public Map<String,Object> insert(@Param("::") OkrVO okrVO){
         int code = 0;
         String msg = "服务器异常";
-        if(okrVO != null) {
-            Tbuss011VO tbuss011VO = okrVO.getOkrManager();
-            List<GoalVO> goalVOS = okrVO.getGoals();
-            List<Tbuss012VO> tbuss012VOS = new ArrayList<>();
-            if(goalVOS != null){
-                for(GoalVO goalVO:goalVOS){
-                    Tbuss012VO tbuss012VO = goalVO.getFormatGoal();
-                    List<Tbuss013VO> tbuss013VOList = new ArrayList<>();
-                    for (TaskVO taskVO:goalVO.getTasks()){
-                        Tbuss013VO tbuss013VO = taskVO.formatTask();
-                        tbuss013VOList.add(tbuss013VO);
-                    }
-                    tbuss012VO.setTbuss013VOS(tbuss013VOList);
-                    tbuss012VOS.add(tbuss012VO);
-                }
-               tbuss011VO =  bussMoFactory.getTbuss011MO().insert(tbuss011VO,tbuss012VOS);
-                if(tbuss011VO.getOKID() != null){
-                    code = 1;
-                }
-            }else{
-                msg = "OKR目标为空，请录入有效目标！";
+        OKRUtil okrUtil = new OKRUtil(okrVO);
+        if(okrUtil.getMsg() == null) {
+            Tbuss011VO tbuss011VO = bussMoFactory.getTbuss011MO().insert(okrUtil.getT11(),okrUtil.getT12());
+            if(tbuss011VO.getOKID() != null){
+                code = 1;
             }
         }else{
-            msg = "请求参数为空，请录入有效数据！";
+            msg = okrUtil.getMsg();
         }
         msg = code == 1 ? "成功添加OKR管理项":msg;
         return ResultUtil.getResult(code,msg,"");
     }
+
+    @POST
+    @At("/update")
+    @Ok("json")
+    public Map<String, Object> update(@Param("::") OkrVO okrVO, @Param("okid")Integer okid){
+        int code = 0;
+        String msg = "服务器异常";
+        OKRUtil okrUtil = new OKRUtil(okrVO);
+        if(okrUtil.getMsg() == null && okid != null){
+            Tbuss011VO tbuss011VO = okrUtil.getT11();
+            tbuss011VO.setOKID(okid);
+            code = bussMoFactory.getTbuss011MO().update(tbuss011VO,okrUtil.getT12());
+        }else{
+            msg = okrUtil.getMsg();
+        }
+        msg = code == 1 ? "成功修改OKR管理项":msg;
+        return ResultUtil.getResult(code,msg,"");
+    }
+
+
+    @At("/mark")
+    @Ok("json")
+    @POST
+    public Map<String, Object> mark(@Param("..list") List<Map<String,Float>> scores){
+        int code = 0;
+        String msg = "服务器异常";
+        if(scores != null){
+            bussMoFactory.getTbuss012MO().markGoal(scores);
+            code = 1;
+        }else{
+            msg = "评分项为空，请重新评分！";
+        }
+        msg = code == 1 ? "成功评分OKR管理项":msg;
+        return ResultUtil.getResult(code,msg,"");
+    }
+
 
     /**
      * @param pageNumber 请求的页码

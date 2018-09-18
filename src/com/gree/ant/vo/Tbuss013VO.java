@@ -1,5 +1,6 @@
 package com.gree.ant.vo;
 
+import com.gree.ant.vo.request.TaskVO;
 import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Prev;
 import org.nutz.dao.entity.annotation.SQL;
@@ -74,5 +75,9 @@ public class Tbuss013VO {
 
     public void setGoal_id(Integer goal_id) {
         this.goal_id = goal_id;
+    }
+
+    public TaskVO getTaskVO(){
+        return new TaskVO(this.achi,this.krprop);
     }
 }

@@ -22,6 +22,8 @@ public class BussMoFactory {
     private Tbuss010MO tbuss010MO;
     @Inject
     private Tbuss011MO tbuss011MO;
+    @Inject
+    private Tbuss012MO tbuss012MO;
 
     public Tbuss001MO getTbuss001MO() {
         return tbuss001MO;
@@ -53,5 +55,9 @@ public class BussMoFactory {
 
     public Tbuss011MO getTbuss011MO() {
         return tbuss011MO;
+    }
+
+    public Tbuss012MO getTbuss012MO() {
+        return tbuss012MO;
     }
 }

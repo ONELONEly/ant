@@ -65,28 +65,28 @@
                     <label>序号</label>
                 </th>
                 <th class="center" width="6%">
-                    <label>目标（O）</label>
+                    <label>目标(O)</label>
                 </th>
                 <th class="center" width="10%">
-                    <label>周期</label>
+                    <label>O周期</label>
                 </th>
                 <th class="center" width="10%">
-                    <label>类型</label>
+                    <label>O类型</label>
                 </th>
                 <th class="center" width="5%">
-                    <label>权重</label>
+                    <label>O权重</label>
                 </th>
                 <th class="center" width="10%">
-                    <label>完成情况</label>
+                    <label>O完成情况</label>
                 </th>
                 <th class="center" width="20%">
-                    <label>关键成果</label>
+                    <label>关键成果(KRS)</label>
                 </th>
                 <th class="center" width="7%">
                     <label>KR权重</label>
                 </th>
                 <th class="center" width="18%">
-                    <label>KR完成情况</label>
+                    <label>KRS完成情况</label>
                 </th>
                 <th class="center" width="8%">
                     <label>自评分</label>
@@ -192,7 +192,7 @@ layui.use(['form', 'table','jquery','layer',"laydate"], function () {
             form.render();
         },
         error:function (kellyj) {
-            layer.alert("发生错误，错误码为:"+kellyj.status);
+            layer.alert("发生错误，错误码为:"+kellyj.status,{offset:'10px',anim:1});
         }
     });
 

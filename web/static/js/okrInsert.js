@@ -442,7 +442,7 @@ function checkFormData(param) {
                 layer.tips("请录入数据", "#" + param[i].name);
             }
             return false;
-        }else if ((param[i].name).match(/(\bprop|\Bprop|\bzgrad)/) !== null) {
+        }else if ((param[i].name).match(/(\bprop|\Bprop|\bzgrad|\bmgrad)/) !== null) {
             if((param[i].value).match(/\d+(\.\d+)?$/) === null){
                 layer.tips("请输入数字","#"+param[i].name);
                 return false;

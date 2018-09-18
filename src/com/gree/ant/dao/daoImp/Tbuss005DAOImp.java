@@ -2,10 +2,8 @@ package com.gree.ant.dao.daoImp;
 
 import com.gree.ant.dao.Tbuss005DAO;
 import com.gree.ant.vo.Tbuss005VO;
-import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
-import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 @IocBean

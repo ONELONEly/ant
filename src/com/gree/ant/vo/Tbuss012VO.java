@@ -1,5 +1,6 @@
 package com.gree.ant.vo;
 
+import com.gree.ant.vo.request.GoalVO;
 import org.nutz.dao.entity.annotation.*;
 
 import java.util.List;
@@ -167,5 +168,9 @@ public class Tbuss012VO {
 
     public void setTbuss013VOS(List<Tbuss013VO> tbuss013VOS) {
         this.tbuss013VOS = tbuss013VOS;
+    }
+
+    public GoalVO getGoalVO(){
+        return new GoalVO(this.goal,this.ndat,this.type,this.prop,this.perf,this.krperf,this.zgrad,this.mgrad,this.goal_id);
     }
 }

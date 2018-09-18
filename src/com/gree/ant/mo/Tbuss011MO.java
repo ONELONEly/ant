@@ -10,6 +10,8 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @IocBean
@@ -37,6 +39,38 @@ public class Tbuss011MO implements TBuss011BasicMO {
             }
         });
         return tbuss011[0];
+    }
+
+    @Override
+    public Integer update(final Tbuss011VO tbuss011VO, final List<Tbuss012VO> tbuss012VOS) {
+        final int[] res = {0};
+        Trans.exec(new Atom() {
+            @Override
+            public void run() {
+                res[0] = tbuss011DAOImp.update(tbuss011VO);
+                tbuss012MO.updateOkr(tbuss011VO.getOKID(),tbuss012VOS);
+            }
+        });
+        return res[0];
+    }
+
+    @Override
+    public Tbuss011VO fetchByOkid(Integer okid) {
+        return tbuss011DAOImp.fetchByID(okid);
+    }
+
+    @Override
+    public Tbuss011VO fetchTransByOkid(Integer okid) {
+        Tbuss011VO tbuss011VO = tbuss011DAOImp.fetchTransByIdCnd(okid,"tbuss012VOS",null);
+        if(tbuss011VO.getTbuss012VOS() != null){
+            List<Tbuss012VO> tbuss012VOS = new ArrayList<>();
+            for(Tbuss012VO tbuss012VO:tbuss011VO.getTbuss012VOS()){
+                tbuss012VO = tbuss012MO.fetchTransByVO(tbuss012VO);
+                tbuss012VOS.add(tbuss012VO);
+            }
+            tbuss011VO.setTbuss012VOS(tbuss012VOS);
+        }
+        return tbuss011VO;
     }
 
     @Override
