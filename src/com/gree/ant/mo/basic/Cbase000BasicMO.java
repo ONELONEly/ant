@@ -166,4 +166,6 @@ public interface Cbase000BasicMO {
      * @createTime 2017 :10:31 08:10:20.
      */
     List<Cbase000VO> queryAllUser(Condition cnd, Pager pager);
+
+    Cbase000VO fetchUser(String usid);
 }

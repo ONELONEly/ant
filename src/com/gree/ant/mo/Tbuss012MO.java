@@ -10,7 +10,6 @@ import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
 import java.util.List;
-import java.util.Map;
 
 @IocBean
 public class Tbuss012MO implements Tbuss012BasicMO {
@@ -25,6 +24,21 @@ public class Tbuss012MO implements Tbuss012BasicMO {
     @Override
     public Tbuss012VO insertGoal(Tbuss012VO tbuss012VO) {
         return tbuss012DAOImp.insertWith(tbuss012VO,"tbuss013VOS");
+    }
+
+    @Override
+    public void deleteByOKID(Integer okid) {
+        final List<Tbuss012VO> tbuss012VOList = tbuss012DAOImp.queryByCnd(Cnd.where("okid","=",okid));
+        Trans.exec(new Atom() {
+            @Override
+            public void run() {
+                for (Tbuss012VO tbuss012VO:tbuss012VOList){
+                    tbuss012VO = tbuss012DAOImp.fetchLinks(tbuss012VO,"tbuss013VOS",null);
+                    tbuss012DAOImp.deleteLinks(tbuss012VO,"tbuss013VOS");
+                    tbuss012DAOImp.delete(tbuss012VO);
+                }
+            }
+        });
     }
 
     @Override
@@ -59,20 +73,5 @@ public class Tbuss012MO implements Tbuss012BasicMO {
                 }
             }
         });
-    }
-
-    @Override
-    public Integer markGoal(final List<Map<String, Float>> scores) {
-        Trans.exec(new Atom() {
-            @Override
-            public void run() {
-                for(Map<String,Float> score:scores){
-                    Integer goal_id = score.get("id").intValue();
-                    Float grade = score.get("value");
-                    tbuss012DAOImp.markGoal(goal_id,grade);
-                }
-            }
-        });
-        return null;
     }
 }

@@ -82,4 +82,26 @@ public class Cbase000DAOImp extends BaseDAOImp<Cbase000VO> implements Cbase000DA
         this.getDao().execute(sql);
         return sql.getList(Cbase000VO.class);
     }
+
+    @Override
+    public Cbase000VO findUser(String usid) {
+        String sqlStr = "SELECT USID,DSCA,PAWD,ACCO,DEPTNAM,ACCONAM,JWWJ,GROPNAM,COMPNAM FROM v_CBASE000 where usid = @usid";
+        Sql sql = Sqls.create(sqlStr);
+        sql.setParam("usid",usid);
+        sql.setCallback(new SqlCallback() {
+            @Override
+            public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
+                Cbase000VO cbase000VO = new Cbase000VO();
+                while(rs.next()){
+                    cbase000VO = new Cbase000VO(rs.getString("USID"),rs.getString("DSCA"),
+                            rs.getString("PAWD"),rs.getString("GROPNAM"),rs.getString("DEPTNAM"),
+                            rs.getString("COMPNAM"),rs.getString("ACCONAM"),rs.getString("JWWJ"),
+                            rs.getString("ACCO"));
+                }
+                return cbase000VO;
+            }
+        });
+        this.getDao().execute(sql);
+        return sql.getObject(Cbase000VO.class);
+    }
 }

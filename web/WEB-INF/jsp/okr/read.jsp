@@ -88,25 +88,28 @@
         {{# if(num === 0){ }}
             <tr>
                 <td class="center" rowspan="{{item.tasks.length}}">{{index+1}}</td>
-                <td class="center" rowspan="{{item.tasks.length}}"><a href="javascript:" class="layui-table-link" onclick="showGoal($(this))">{{item.goal}}</a></td>
+                <td class="center" rowspan="{{item.tasks.length}}"><a href="javascript:" class="layui-table-link" onclick="showGoal($(this))">{{item.goal === undefined ? '': item.goal}}</a></td>
                 <td class="center" rowspan="{{item.tasks.length}}">
                     {{ item.ndat === '4' ? '年度':(item.ndat === '3' ?  '季度':(item.ndat === '2' ? '半季度' : (item.ndat === '1' ? '月度' : ''))) }}
                 </td>
                 <td class="center" rowspan="{{item.tasks.length}}">
                     {{ item.type === 4 ? '创新类':(item.type === 3 ?  '管理类':(item.type === 2 ? '质量类' : (item.type === 1 ? '项目类' : ''))) }}
                 </td>
-                <td class="center" rowspan="{{item.tasks.length}}">{{item.prop}}</td>
-                <td class="center" rowspan="{{item.tasks.length}}">{{item.perf}}</td>
-                <td class="center"><a href="javascript:" class="layui-table-link" onclick="showGoal($(this))">{{task.achi}}</a></td>
-                <td class="center">{{task.krprop}}</td>
-                <td class="center" rowspan="{{item.tasks.length}}">{{item.krperf}}</td>
-                <td class="center" rowspan="{{item.tasks.length}}">{{item.zgrad}}</td>
-                <td class="center" rowspan="{{item.tasks.length}}">{{item.mgrad === undefined ? '':item.mgrad}}</td>
+                <td class="center" rowspan="{{item.tasks.length}}">{{item.prop === undefined ? '': item.prop}}</td>
+                <td class="center" rowspan="{{item.tasks.length}}">{{item.perf === undefined ? '': item.perf}}</td>
+                <td class="center"><a href="javascript:" class="layui-table-link" onclick="showGoal($(this))">{{task.achi === undefined ? '': task.achi}}</a></td>
+                <td class="center">{{task.krprop === undefined ? '': task.krprop}}</td>
+                <td class="center">{{task.krperf === undefined ? '': task.krperf}}</td>
+                <td class="center">{{task.zgrad === undefined ? '': task.zgrad}}</td>
+                <td class="center">{{task.mgrad === undefined ? '':task.mgrad}}</td>
             </tr>
         {{# }else{ }}
         <tr>
-            <td class="center" onclick="showGoal($(this))">{{task.achi}}</td>
-            <td class="center">{{task.krprop}}</td>
+            <td class="center"><a href="javascript:" class="layui-table-link" onclick="showGoal($(this))">{{task.achi === undefined ? '': task.achi}}</a></td>
+            <td class="center">{{task.krprop === undefined ? '': task.krprop}}</td>
+            <td class="center">{{task.krperf === undefined ? '': task.krperf}}</td>
+            <td class="center">{{task.zgrad === undefined ? '': task.zgrad}}</td>
+            <td class="center">{{task.mgrad === undefined ? '':task.mgrad}}</td>
         </tr>
         {{# } }}
     {{# }); }}

@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: 180484
-  Date: 2018/9/3
-  Time: 11:06
+  Date: 2018/9/19
+  Time: 15:33
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -17,8 +17,8 @@
 <body>
 <div class="x-nav">
     <span class="layui-breadcrumb">
-        <a href="javascript:"><cite>我的</cite></a>
-        <a href="javascript:location.replace(location.href)"><cite>个人OKR</cite></a>
+        <a href="javascript:"><cite>设置</cite></a>
+        <a href="javascript:location.replace(location.href)"><cite>OKR管理</cite></a>
         <a href="javascript:location.replace(location.href)" class="layui-btn layui-btn-radius layui-btn-sm l-refresh" title="刷新"><i class="layui-icon l-center layui-icon-refresh"></i></a>
     </span>
 </div>
@@ -33,11 +33,12 @@
                     <button class="layui-btn layui-btn-radius" lay-filter="search" lay-submit>查询</button>
                 </div>
                 <div class="layui-input-inline">
-                    <a href="./insert?isManager=false" class="layui-btn layui-btn-radius" lay-filter="set">创建</a>
+                    <a href="./insert?isManager=true" class="layui-btn layui-btn-radius" lay-filter="set">创建</a>
                 </div>
             </div>
         </div>
     </form>
+
     <div class="layui-inline">
         <button class="layui-btn layui-bg-black delete-btn"><i class="layui-icon">&#xe640;</i>批量删除</button>
         <button class="layui-btn post-btn"><i class="layui-icon">&#xe6af;</i>提交</button>
@@ -50,7 +51,8 @@
     </script>
 
     <script type="text/html" id="operate">
-        <a href="./edit?okid={{d.OKID}}&isManager=false" class="layui-btn layui-btn-xs">编辑</a>
+        <a href="./edit?okid={{d.OKID}}&isManager=true" class="layui-btn layui-btn-xs">编辑</a>
+        <a href="./mark?okid={{d.OKID}}" class="layui-btn layui-btn-xs">评分</a>
     </script>
 </div>
 <script language="JavaScript">
@@ -58,7 +60,7 @@
         var table = layui.table,element = layui.element,form = layui.form;
         table.render({
             elem:'#okr',
-            url:'./uQueryAllOKR',
+            url:'./mQueryAllOKR',
             cellMinWidth:100,
             page:true,
             cols:[[
@@ -67,7 +69,7 @@
                 {field:'BNAM',title:'直接领导',align:'center'},
                 {field:'MDAT',title:'管理周期',align:'center'},
                 {fixed:'right',title:'操作',align:'center',toolbar:'#operate'}
-                ]],
+            ]],
             response:{
                 statusCode:1
             }
@@ -76,9 +78,9 @@
         table.on("tool(okr)",function (obj) {
             if(obj.event === "show"){
                 layer.open({
-                   type:2,
-                   content:'./read?okid='+obj.data.OKID,
-                   area:['90%','80%'],
+                    type:2,
+                    content:'./read?okid='+obj.data.OKID,
+                    area:['90%','80%'],
                     title:'OKR管理表',
                     offset:'10px'
                 });
@@ -88,3 +90,4 @@
 </script>
 </body>
 </html>
+

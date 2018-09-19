@@ -34,7 +34,6 @@
                             <span id="asid_0" style="float: right"></span>
                             <select name="asid" lay-filter="asid" id="asid" lay-search>
                                 <option value="" style="display:none;" disabled>请选择管理对象</option>
-                                <option value="${obj.ASID}" style="display:none;" selected>${obj.ANAM}</option>
                             </select>
                         </div>
                     </div>
@@ -55,7 +54,7 @@
                         <label for="mdat" class="layui-form-label">管理周期：</label>
                         <div class="layui-input-block">
                             <input type="text" name="mdat" id="mdat" class="layui-input" style="border:none;"
-                                   value="${obj.MDAT}">
+                                   value="${obj.okr.MDAT}">
                         </div>
                     </div>
                 </td>
@@ -106,9 +105,16 @@
     <div class="layui-input-inline">
         <button class="layui-btn layui-btn-radius" id="update">修改</button>
     </div>
-    <div class="layui-input-inline">
-        <a class="layui-btn layui-btn-radius layui-bg-gray" href="./index">返回</a>
-    </div>
+    <kellyj:if test="${obj.isManager}">
+        <div class="layui-input-inline">
+            <a class="layui-btn layui-btn-radius layui-bg-gray" href="./manage">返回</a>
+        </div>
+    </kellyj:if>
+    <kellyj:if test="${!obj.isManager}">
+        <div class="layui-input-inline">
+            <a class="layui-btn layui-btn-radius layui-bg-gray" href="./index">返回</a>
+        </div>
+    </kellyj:if>
 </div>
 <script id="okr" type="text/html">
     {{# layui.each(d,function(index,item){ }}
@@ -120,7 +126,7 @@
         </td>
         <td class="none_pdding" zIndex="0" rowspan="{{item.tasks.length}}">
             <textarea type="text" name="goal_{{index+1}}" id="goal_{{index+1}}" placeholder="请输入目标"
-                      onfocus="jinyu($(this))" onblur="rose($(this))" autocomplete="off" class="excel_input">{{item.goal}}</textarea>
+                      onfocus="jinyu($(this))" onblur="rose($(this))" autocomplete="off" class="excel_input">{{item.goal === undefined ? '': item.goal}}</textarea>
         </td>
         <td class="none_pdding" zIndex="0" rowspan="{{item.tasks.length}}">
             <span id="ndat_{{index+1}}_0"></span>
@@ -152,33 +158,33 @@
         </td>
         <td class="none_pdding" zIndex="0" rowspan="{{item.tasks.length}}">
             <input type="text" name="prop_{{index+1}}" id="prop_{{index+1}}" placeholder="请输入权重" autocomplete="off"
-                   class="excel_input" value="{{item.prop}}">
+                   class="excel_input" value="{{item.prop === undefined ? '': item.prop}}">
         </td>
         <td class="none_pdding" zIndex="0" rowspan="{{item.tasks.length}}">
             <input type="text" name="perf_{{index+1}}" id="perf_{{index+1}}" placeholder="请输入完成情况" autocomplete="off"
-                   class="excel_input" value="{{item.perf}}">
+                   class="excel_input" value="{{item.perf === undefined ? '': item.perf}}">
         </td>
         <td class="none_pdding" zIndex="1">
             <input type="text" name="achi_{{index+1}}_0" id="achi_{{index+1}}_0" placeholder="请输入关键成果"
-                   autocomplete="off" class="excel_input" value="{{task.achi}}">
+                   autocomplete="off" class="excel_input" value="{{task.achi === undefined ? '': task.achi}}">
             <a href="javascript:" class="task_choose" onclick="task_choose($(this))"><i
                     class="layui-icon layui-icon-search"></i></a>
         </td>
         <td class="none_pdding" zIndex="1">
             <input type="text" name="krprop_{{index+1}}_0" id="krprop_{{index+1}}_0" placeholder="请输入KR权重"
-                   autocomplete="off" class="excel_input" value="{{task.krprop}}">
+                   autocomplete="off" class="excel_input" value="{{task.krprop === undefined ? '': task.krprop}}">
             {{# if(item.tasks.length === 1){ }}
             <a href="javascript:" class="task_add" onclick="task_add($(this))"><i
                     class="layui-icon layui-icon-add-1 layui-bg-green"></i></a>
             {{# } }}
         </td>
-        <td class="none_pdding" zIndex="0" rowspan="{{item.tasks.length}}">
-            <input type="text" name="krperf_{{index+1}}" id="krperf_{{index+1}}" placeholder="请输入KR完成情况"
-                   autocomplete="off" class="excel_input" value="{{item.krperf}}">
+        <td class="none_pdding" zIndex="1">
+            <input type="text" name="krperf_{{index+1}}_0" id="krperf_{{index+1}}_0" placeholder="请输入KR完成情况"
+                   autocomplete="off" class="excel_input" value="{{task.krperf === undefined ? '': task.krperf}}">
         </td>
-        <td class="none_pdding" zIndex="0" rowspan="{{item.tasks.length}}">
-            <input type="text" name="zgrad_{{index+1}}" id="zgrad_{{index+1}}" placeholder="请输入自评分" autocomplete="off"
-                   class="excel_input" value="{{item.zgrad}}">
+        <td class="none_pdding" zIndex="1">
+            <input type="text" name="zgrad_{{index+1}}_0" id="zgrad_{{index+1}}_0" placeholder="请输入自评分" autocomplete="off"
+                   class="excel_input" value="{{task.zgrad === undefined ? '': task.zgrad}}">
         </td>
         <td class="none_pdding none_border" zIndex="0" rowspan="{{item.tasks.length}}">
             <div class="layui-form-item" style="margin: 0 auto;">
@@ -197,19 +203,27 @@
     <tr id="okr_item_{{index+1}}_{{num}}">
         <td class="none_pdding" zIndex="1">
             <input type="text" name="achi_{{index+1}}_{{num}}" id="achi_{{index+1}}_{{num}}" placeholder="请输入关键成果"
-                   autocomplete="off" class="excel_input" value="{{task.achi}}">
+                   autocomplete="off" class="excel_input" value="{{task.achi === undefined ? '': task.achi}}">
             <a href="javascript:" class="task_choose" onclick="task_choose($(this))"><i
                     class="layui-icon layui-icon-search"></i></a>
         </td>
         <td class="none_pdding" zIndex="1">
             <input type="text" name="krprop_{{index+1}}_{{num}}" id="krprop_{{index+1}}_{{num}}" placeholder="请输入KR权重"
-                   autocomplete="off" class="excel_input" value="{{task.krprop}}">
+                   autocomplete="off" class="excel_input" value="{{task.krprop === undefined ? '': task.krprop}}">
             {{# if(num === item.tasks.length - 1){ }}
             <a href='javascript:' class='task_del' onclick=task_del($(this))><i
                     class='layui-icon layui-icon-close layui-bg-red'></i></a>
             <a href='javascript:' class='task_add' onclick=task_add($(this))><i
                     class='layui-icon layui-icon-add-1 layui-bg-green'></i></a>
             {{# } }}
+        </td>
+        <td class="none_pdding" zIndex="1">
+            <input type="text" name="krperf_{{index+1}}_{{num}}" id="krperf_{{index+1}}_{{num}}" placeholder="请输入KR完成情况"
+                   autocomplete="off" class="excel_input" value="{{task.krperf === undefined ? '': task.krperf}}">
+        </td>
+        <td class="none_pdding" zIndex="1">
+            <input type="text" name="zgrad_{{index+1}}_{{num}}" id="zgrad_{{index+1}}_{{num}}" placeholder="请输入自评分" autocomplete="off"
+                   class="excel_input" value="{{task.zgrad === undefined ? '': task.zgrad}}">
         </td>
     </tr>
     {{# } }}
@@ -219,7 +233,7 @@
 <script language="JavaScript">
     layui.use(['form', 'table', 'jquery', 'layer', "laydate", "laytpl"], function () {
         var form = layui.form, $ = layui.jquery, postDataItem, laydate = layui.laydate,
-            laytpl = layui.laytpl, getTpl = okr.innerHTML;
+            laytpl = layui.laytpl, getTpl = okr.innerHTML,isManager = ${obj.isManager};
 
         var start = {
             elem: '#mdat',
@@ -235,13 +249,20 @@
             url: '../util/findC0',
             dataType: 'json',
             success: function (data) {
-                var user = data.c0, boss = $("#boss");
+                var user = data.c0, boss = $("#boss"),asid = $("#asid"),
+                    id = "${obj.okr.ASID}",dsca = "${obj.okr.ANAM}";
                 var uOption = "";
                 for (var i = 0; i < user.length; i++) {
                     uOption += "<option value='" + user[i].id + "'>" + user[i].dsca + "</option>";
                 }
                 boss.append(uOption);
-                boss.val(${obj.BOSS});
+                boss.val(${obj.okr.BOSS});
+                if(isManager){
+                    asid.append(uOption);
+                    asid.val(${obj.okr.ASID});
+                }else{
+                    asid.append("<option value='"+id+"'>"+dsca+"</option>")
+                }
                 form.render();
             },
             error: function (kellyj) {
@@ -251,7 +272,7 @@
 
         $.ajax({
             type: 'POST',
-            url: './getSingleOkr?okid=' +${obj.OKID},
+            url: './getSingleOkr?okid=' +${obj.okr.OKID},
             dataType: 'json',
             success: function (res) {
                 if (res.code === 1) {
@@ -287,8 +308,8 @@
             var selects = formAll.find("select");
             var param = addToParam(addToParam(null, inputs), selects);
             var goalParam = addToParam(null, texts);
-
-            if (checkFormData(param) && checkFormData(goalParam)) {
+            var key = checkManagerData(param);
+            if ((isManager && key) || (key && checkFormData(param) && checkFormData(goalParam))) {
                 for (var j = 0; j < param.length; j++) {
                     if (param[j].name === "asid") {
                         postDataItem.asid = param[j].value;
@@ -306,9 +327,7 @@
                         type: 0,//类型
                         prop: 0,//比重
                         perf: '',//完成情况
-                        tasks: [],
-                        krperf: '',//KR完成情况
-                        zgrad: 0 //自评成绩
+                        tasks: []
                     };
                     goalItem.goal = goal.value;
                     var row = goal.name.substring(5), name, value;
@@ -331,14 +350,6 @@
                             if (name.substring(5) === row) {
                                 goalItem.type = value;
                             }
-                        } else if (name.match(/\bzgrad/) !== null) {
-                            if (name.substring(6) === row) {
-                                goalItem.zgrad = value;
-                            }
-                        } else if (name.match(/\bkrperf/) !== null) {
-                            if (name.substring(7) === row) {
-                                goalItem.krperf = value;
-                            }
                         }
                     }
                     var taskCount = $("[id^=okr_item_" + row + "]").length;
@@ -346,7 +357,9 @@
                     for (var n = 0; n < taskCount; n++) {
                         var taskItem = {
                             achi: '',//关键成果
-                            krprop: 0 //KR权重
+                            krprop: 0, //KR权重
+                            krperf:'',//KR完成情况
+                            zgrad:0 //自评成绩
                         };
                         for (var m = 0; m < param.length; m++) {
                             name = param[m].name;
@@ -355,6 +368,10 @@
                                 taskItem.achi = value
                             } else if (name === "krprop_" + row + "_" + n) {
                                 taskItem.krprop = value;
+                            } else if(name === "krperf_" + row + "_" + n){
+                                taskItem.krperf = value;
+                            } else if(name === "zgrad_" + row + "_" + n){
+                                taskItem.zgrad = value;
                             }
                         }
                         goalItem.tasks.push(taskItem);
@@ -363,7 +380,7 @@
                 }
                 $.ajax({
                     type: 'POST',
-                    url: './update?okid='+${obj.OKID},
+                    url: './update?okid='+${obj.okr.OKID},
                     data: postDataItem,
                     dataType: 'json',
                     success: function (data) {

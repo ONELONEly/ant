@@ -87,8 +87,8 @@ public class LoginController {
     public String loginCheck(@Param("usid") String usid, @Param("pawd")String pawd, HttpSession session){
         if(usid != null && pawd !=null) {
             if (cbase000MO.loginCheck(usid, pawd) || LDAPLogin.authenticate(usid, pawd) != null) {
-                Cbase000VO cbase000VO=cbase000MO.fetchByUsid(usid);
-                session.setAttribute("cbase000VO", cbase000VO);
+                Cbase000VO cbase000VO=cbase000MO.fetchUser(usid);
+                session.setAttribute("user", cbase000VO);
                 session.setAttribute("usid", usid);
                 SecurityUtils.getSubject().login(new SimpleShiroToken(usid));
                 return null;

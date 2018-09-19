@@ -41,22 +41,7 @@ public class GoalVO {
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      */
     private String perf;
-    /**
-     * @description KR完成情况
-     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
-     */
-    private String krperf;
-    /**
-     * @description 自评分
-     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
-     */
-    private Float zgrad;
 
-    /**
-     * @description 领导评分
-     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
-     */
-    private Float mgrad;
     /**
      * @description 任务集合
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
@@ -70,15 +55,12 @@ public class GoalVO {
     public GoalVO() {
     }
 
-    public GoalVO(String goal, String ndat, Integer type, Float prop, String perf, String krperf, Float zgrad,Float mgrad,Integer goal_id) {
+    public GoalVO(String goal, String ndat, Integer type, Float prop, String perf,Integer goal_id) {
         this.goal = goal;
         this.ndat = ndat;
         this.type = type;
         this.prop = prop;
         this.perf = perf;
-        this.krperf = krperf;
-        this.zgrad = zgrad;
-        this.mgrad = mgrad;
         this.goal_id = goal_id;
     }
 
@@ -118,22 +100,6 @@ public class GoalVO {
         this.perf = perf;
     }
 
-    public String getKrperf() {
-        return krperf;
-    }
-
-    public void setKrperf(String krperf) {
-        this.krperf = krperf;
-    }
-
-    public Float getZgrad() {
-        return zgrad;
-    }
-
-    public void setZgrad(Float zgrad) {
-        this.zgrad = zgrad;
-    }
-
     public List<TaskVO> getTasks() {
         return tasks;
     }
@@ -142,17 +108,6 @@ public class GoalVO {
         this.tasks = tasks;
     }
 
-    public Float getMgrad() {
-        return mgrad;
-    }
-
-    public void setMgrad(Float mgrad) {
-        this.mgrad = mgrad;
-    }
-
-    public Tbuss012VO getTbuss012VO(){
-        return new Tbuss012VO(this.getGoal(),this.getNdat(),this.getType(),this.getProp(),this.getPerf(),this.getKrperf(),this.getZgrad());
-    }
 
     public Integer getGoal_id() {
         return goal_id;
@@ -161,4 +116,11 @@ public class GoalVO {
     public void setGoal_id(Integer goal_id) {
         this.goal_id = goal_id;
     }
+
+
+    public Tbuss012VO getTbuss012VO(){
+        return new Tbuss012VO(this.getGoal(),this.getNdat(),this.getType(),this.getProp(),this.getPerf());
+    }
+
+
 }

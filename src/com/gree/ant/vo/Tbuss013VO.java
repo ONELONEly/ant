@@ -37,12 +37,31 @@ public class Tbuss013VO {
      */
     private Integer goal_id;
 
+    /**
+     * @description KR完成情况
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     */
+    private String krperf;
+    /**
+     * @description 自评成绩
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     */
+    private Float zgrad;
+    /**
+     * @description 领导评分
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     */
+    private Float mgrad;
+
     public Tbuss013VO() {
     }
 
-    public Tbuss013VO(String achi, Float krprop) {
+    public Tbuss013VO(Integer task_id, String achi, Float krprop, String krperf, Float zgrad) {
+        this.task_id = task_id;
         this.achi = achi;
         this.krprop = krprop;
+        this.krperf = krperf;
+        this.zgrad = zgrad;
     }
 
     public Integer getTask_id() {
@@ -77,7 +96,31 @@ public class Tbuss013VO {
         this.goal_id = goal_id;
     }
 
+    public String getKrperf() {
+        return krperf;
+    }
+
+    public void setKrperf(String krperf) {
+        this.krperf = krperf;
+    }
+
+    public Float getZgrad() {
+        return zgrad;
+    }
+
+    public void setZgrad(Float zgrad) {
+        this.zgrad = zgrad;
+    }
+
+    public Float getMgrad() {
+        return mgrad;
+    }
+
+    public void setMgrad(Float mgrad) {
+        this.mgrad = mgrad;
+    }
+
     public TaskVO getTaskVO(){
-        return new TaskVO(this.achi,this.krprop);
+        return new TaskVO(this.task_id,this.achi,this.krprop,this.krperf,this.zgrad,this.mgrad);
     }
 }

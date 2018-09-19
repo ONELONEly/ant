@@ -135,11 +135,11 @@
                     <input type="text" name="krprop_1_0" id="krprop_1_0" placeholder="请输入KR权重" autocomplete="off" class="excel_input">
                     <a href="javascript:" class="task_add" onclick="task_add($(this))"><i class="layui-icon layui-icon-add-1 layui-bg-green"></i></a>
                 </td>
-                <td class="none_pdding" zIndex="0" rowspan="">
-                    <input type="text" name="krperf_1" id="krperf_1" placeholder="请输入KR完成情况" autocomplete="off" class="excel_input">
+                <td class="none_pdding" zIndex="1">
+                    <input type="text" name="krperf_1_0" id="krperf_1_0" placeholder="请输入KR完成情况" autocomplete="off" class="excel_input">
                 </td>
-                <td class="none_pdding" zIndex="0" rowspan="">
-                    <input type="text" name="zgrad_1" id="zgrad_1" placeholder="请输入自评分" autocomplete="off" class="excel_input">
+                <td class="none_pdding" zIndex="1">
+                    <input type="text" name="zgrad_1_0" id="zgrad_1_0" placeholder="请输入自评分" autocomplete="off" class="excel_input">
                 </td>
                 <td class="none_pdding none_border" zIndex="0" rowspan="">
                     <div class="layui-form-item" style="margin: 0 auto;">
@@ -160,14 +160,21 @@
     <div class="layui-input-inline">
         <button class="layui-btn layui-btn-radius" id="insert">添加</button>
     </div>
-    <div class="layui-input-inline">
-        <a class="layui-btn layui-btn-radius layui-bg-gray" href="./index">返回</a>
-    </div>
+    <kellyj:if test="${obj.isManager}">
+        <div class="layui-input-inline">
+            <a class="layui-btn layui-btn-radius layui-bg-gray" href="./manage">返回</a>
+        </div>
+    </kellyj:if>
+    <kellyj:if test="${!obj.isManager}">
+        <div class="layui-input-inline">
+            <a class="layui-btn layui-btn-radius layui-bg-gray" href="./index">返回</a>
+        </div>
+    </kellyj:if>
 </div>
 <script language="JavaScript">
 layui.use(['form', 'table','jquery','layer',"laydate"], function () {
-    var form = layui.form,$ = layui.jquery,postDataItem,laydate = layui.laydate;
-
+    var form = layui.form,$ = layui.jquery,postDataItem,
+        laydate = layui.laydate,isManager = ${obj.isManager};
     var start = {
         elem:'#mdat',
         type:'month',
@@ -182,13 +189,17 @@ layui.use(['form', 'table','jquery','layer',"laydate"], function () {
         url:'../util/findC0',
         dataType:'json',
         success:function (data) {
-            var user = data.c0;
+            var user = data.c0,id = "${obj.user.USID}",dsca = "${obj.user.DSCA}";
             var uOption = "";
             for(var i = 0;i<user.length;i++){
                 uOption += "<option value='"+user[i].id+"'>"+user[i].dsca+"</option>";
             }
             $("#boss").append(uOption);
-            $("#asid").append(uOption);
+            if(isManager){
+                $("#asid").append(uOption);
+            }else{
+                $("#asid").append("<option value='"+id+"'>"+dsca+"</option>")
+            }
             form.render();
         },
         error:function (kellyj) {
@@ -213,8 +224,8 @@ layui.use(['form', 'table','jquery','layer',"laydate"], function () {
         var selects = formAll.find("select");
         var param = addToParam(addToParam(null,inputs),selects);
         var goalParam = addToParam(null,texts);
-
-        if(checkFormData(param) && checkFormData(goalParam)){
+        var key = checkManagerData(param);
+        if((isManager && key) || (key && checkFormData(param) && checkFormData(goalParam))){
             for(var j = 0;j < param.length;j++){
                 if(param[j].name === "asid"){
                     postDataItem.asid = param[j].value;
@@ -232,9 +243,7 @@ layui.use(['form', 'table','jquery','layer',"laydate"], function () {
                     type:0,//类型
                     prop:0,//比重
                     perf:'',//完成情况
-                    tasks:[],
-                    krperf:'',//KR完成情况
-                    zgrad:0 //自评成绩
+                    tasks:[]
                 };
                 goalItem.goal = goal.value;
                 var row = goal.name.substring(5),name,value;
@@ -257,14 +266,6 @@ layui.use(['form', 'table','jquery','layer',"laydate"], function () {
                         if(name.substring(5) === row){
                             goalItem.type = value;
                         }
-                    }else if(name.match(/\bzgrad/) !== null){
-                        if(name.substring(6) === row){
-                            goalItem.zgrad = value;
-                        }
-                    }else if(name.match(/\bkrperf/) !== null){
-                        if(name.substring(7) === row){
-                            goalItem.krperf = value;
-                        }
                     }
                 }
                 var taskCount = $("[id^=okr_item_"+row+"]").length;
@@ -272,7 +273,9 @@ layui.use(['form', 'table','jquery','layer',"laydate"], function () {
                 for (var n = 0; n < taskCount; n++) {
                     var taskItem = {
                         achi: '',//关键成果
-                        krprop: 0 //KR权重
+                        krprop: 0, //KR权重
+                        krperf:'',//KR完成情况
+                        zgrad:0 //自评成绩
                     };
                     for (var m = 0; m < param.length; m++) {
                         name = param[m].name;
@@ -281,6 +284,10 @@ layui.use(['form', 'table','jquery','layer',"laydate"], function () {
                             taskItem.achi = value
                         } else if (name === "krprop_" + row + "_" + n) {
                             taskItem.krprop = value;
+                        } else if(name === "krperf_" + row + "_" + n){
+                            taskItem.krperf = value;
+                        } else if(name === "zgrad_" + row + "_" +n){
+                            taskItem.zgrad = value;
                         }
                     }
                     goalItem.tasks.push(taskItem);

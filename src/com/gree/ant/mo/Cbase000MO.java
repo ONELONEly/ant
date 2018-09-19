@@ -99,4 +99,8 @@ public class Cbase000MO implements Cbase000BasicMO{
         return cbase000DAOImp.queryAllUser(cnd,pager);
     }
 
+    @Override
+    public Cbase000VO fetchUser(String usid) {
+        return cbase000DAOImp.findUser(usid);
+    }
 }

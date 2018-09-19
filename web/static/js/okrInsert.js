@@ -3,7 +3,7 @@ var width,height;
 function task_del(present) {
     var parent = present.parent().parent();
     var item_id = parent.attr("id");
-    var secondDot = item_id.indexOf("_",5);
+    var secondDot = item_id.indexOf("_",4);
     var lastDot = item_id.lastIndexOf("_");
     var item_pre = item_id.substring(0,lastDot+1); //获得当前行的前缀
     var item_row = item_id.substring(secondDot+1,lastDot); //获得当前行的行号
@@ -30,7 +30,7 @@ function task_del(present) {
 function task_add(present) {
     var parent = present.parent().parent(); //获得当前行
     var item_id = parent.attr("id"); //获得当前行的ID
-    var secondDot = item_id.indexOf("_",5);
+    var secondDot = item_id.indexOf("_",4);
     var lastDot = item_id.lastIndexOf("_");
     var item_pre = item_id.substring(0,lastDot+1); //获得当前行的前缀
     var item_row = item_id.substring(secondDot+1,lastDot); //获得当前行的行号
@@ -42,7 +42,8 @@ function task_add(present) {
             $(this).attr("rowspan",count+1);
         }
     });
-    var item = "<tr id='okr_item_"+item_row+"_"+count+"'><td class='none_pdding'>\n" +
+    var item = "<tr id='okr_item_"+item_row+"_"+count+"'>" +
+        "               <td class='none_pdding'>\n" +
         "                    <input type='text' name='achi_"+item_row+"_"+count+"' id='achi_"+item_row+"_"+count+"' placeholder='请输入关键成果' autocomplete='off' class='excel_input'>\n" +
         "                    <a href='javascript:' class='task_choose' onclick=\"task_choose($(this))\" data='achi_"+item_row+"_"+count+"'><i class='layui-icon layui-icon-search'></i></a>\n" +
         "                </td>\n" +
@@ -50,7 +51,14 @@ function task_add(present) {
         "                    <input type='text' name='krprop_"+item_row+"_"+count+"' id='krprop_"+item_row+"_"+count+"' placeholder='请输入KR权重' autocomplete='off' class='excel_input'>\n" +
         "                    <a href='javascript:' class='task_del' onclick=\"task_del($(this))\"><i class='layui-icon layui-icon-close layui-bg-red'></i></a>\n" +
         "                    <a href='javascript:' class='task_add' onclick=\"task_add($(this))\"><i class='layui-icon layui-icon-add-1 layui-bg-green'></i></a>\n" +
-        "                </td></tr>";
+        "                </td>" +
+        "                <td class='none_pdding'>\n" +
+        "                    <input type='text' name='krperf__"+item_row+"_"+count+"' id='krperf__"+item_row+"_"+count+"' placeholder='请输入KR完成情况' autocomplete='off' class='excel_input'>\n" +
+        "                </td>\n" +
+        "                <td class='none_pdding'>\n" +
+        "                    <input type='text' name='zgrad__"+item_row+"_"+count+"' id='zgrad__"+item_row+"_"+count+"' placeholder='请输入自评分' autocomplete='off' class='excel_input'>\n" +
+        "                </td>" +
+        "</tr>";
     present.prev("a").remove();
     present.remove();
     $(item).insertAfter("#"+item_id);
@@ -60,7 +68,7 @@ function goal_add(present) {
     var parent = present.parent().parent().parent().parent();
     var item_id = parent.attr("id"); //获得当前行的ID
     var firstDot,secondDot,lastDot;
-    secondDot = item_id.indexOf("_",5);
+    secondDot = item_id.indexOf("_",4);
     lastDot = item_id.lastIndexOf("_");
     var item_row = item_id.substring(secondDot+1, lastDot); //获得当前行的行号
     var id_name = "okr_item_"+item_row+"_";
@@ -73,9 +81,9 @@ function goal_add(present) {
             var children_count = next.children().length;
             var name, name_row, name_pre, name_last,
                 inputs, next_id, next_row, count, now_row, input;
-            if (children_count === 2) {
+            if (children_count === 4) {
                 next_id = next.attr("id");
-                secondDot = next_id.indexOf("_",5);
+                secondDot = next_id.indexOf("_",4);
                 lastDot = next_id.lastIndexOf("_");
                 next_row = next_id.substring(secondDot+1, lastDot);
                 if(item_row-next_row !== 1) {
@@ -88,31 +96,22 @@ function goal_add(present) {
                         input = $(inputs[j]);
                         name = input.attr("name");
                         if (!checkForm(name)) {
-                            if (name.length === 8) {
-                                firstDot = name.indexOf("_");
-                                lastDot = name.lastIndexOf("_");
-                                name_pre = name.substring(0, firstDot+1);
-                                name_row = name.substring(firstDot+1, lastDot);
-                                name_last = name.substring(lastDot+1);
-                                name_row++;
-                                input.attr("name", name_pre + name_row + "_" + name_last);
-                                input.attr("id", name_pre + name_row + "_" + name_last);
-                            } else if (name.length === 10) {
-                                firstDot = name.indexOf("_");
-                                lastDot = name.lastIndexOf("_");
-                                name_pre = name.substring(0, firstDot+1);
-                                name_row = name.substring(firstDot+1, lastDot);
-                                name_last = name.substring(lastDot+1);
-                                name_row++;
-                                input.attr("name", name_pre + name_row + "_" + name_last);
-                                input.attr("id", name_pre + name_row + "_" + name_last);
-                            }
+                            firstDot = name.indexOf("_");
+                            lastDot = name.lastIndexOf("_");
+                            name_pre = name.substring(0, firstDot+1);
+                            name_row = name.substring(firstDot+1, lastDot);
+                            name_last = name.substring(lastDot+1);
+                            console.log(name_row,11);
+                            name_row++;
+                            console.log(name_pre+name_row+"_"+name_last,22);
+                            input.attr("name", name_pre + name_row + "_" + name_last);
+                            input.attr("id", name_pre + name_row + "_" + name_last);
                         }
                     }
                 }
             } else {
                 next_id = next.attr("id");
-                secondDot = next_id.indexOf("_",5);
+                secondDot = next_id.indexOf("_",4);
                 lastDot = next_id.lastIndexOf("_");
                 next_row = next_id.substring(secondDot+1, lastDot);
                 count = next_id.substring(lastDot+1);
@@ -125,40 +124,15 @@ function goal_add(present) {
                     input = $(inputs[k]);
                     name = input.attr("name");
                     if (!checkForm(name)) {
-                        if (name.length === 6) {
+                        if (name.lastIndexOf("_") === 4) {
                             lastDot = name.lastIndexOf("_");
                             name_pre = name.substring(0,lastDot+1);
                             name_row = name.substring(lastDot+1);
                             name_row++;
                             input.attr("name", name_pre + name_row);
                             input.attr("id", name_pre + name_row);
-                        } else if (name.length === 7) {
-                            lastDot = name.lastIndexOf("_");
-                            name_pre = name.substring(0,lastDot+1);
-                            name_row = name.substring(lastDot+1);
-                            name_row++;
-                            input.attr("name", name_pre + name_row);
-                            input.attr("id", name_pre + name_row);
-                        }else if (name.length === 8) {
-                            lastDot = name.lastIndexOf("_");
-                            name_pre = name.substring(0, lastDot);
-                            name_row = name.substring(lastDot+1);
-                            if (name_pre === 'krperf') {
-                                name_row++;
-                                input.attr("name", 'krperf_' + name_row);
-                                input.attr("id", 'krperf_' + name_row);
-                            } else {
-                                secondDot = name.indexOf("_",4);
-                                lastDot = name.lastIndexOf("_");
-                                name_pre = name.substring(0, secondDot+1);
-                                name_row = name.substring(secondDot+1, lastDot);
-                                name_last = name.substring(lastDot+1);
-                                name_row++;
-                                input.attr("name", name_pre + name_row + "_" + name_last);
-                                input.attr("id", name_pre + name_row + "_" + name_last);
-                            }
-                        } else if (name.length === 10) {
-                            secondDot = name.indexOf("_",5);
+                        } else{
+                            secondDot = name.indexOf("_",4);
                             lastDot = name.lastIndexOf("_");
                             name_pre = name.substring(0, secondDot+1);
                             name_row = name.substring(secondDot+1, lastDot);
@@ -243,11 +217,11 @@ function goal_add(present) {
         "                    <input type='text' name='krprop_" + item_row + "_0' id='krprop_" + item_row + "_0' placeholder='请输入KR权重' autocomplete='off' class='excel_input'>\n" +
         "                    <a href='javascript:' class='task_add' onclick='task_add($(this))'><i class='layui-icon layui-icon-add-1 layui-bg-green'></i></a>\n" +
         "                </td>\n" +
-        "                <td class='none_pdding' zIndex='0' rowspan=''>\n" +
-        "                    <input type='text' name='krperf_" + item_row + "' id='krperf_" + item_row + "' placeholder='请输入KR完成情况' autocomplete='off' class='excel_input'>\n" +
+        "                <td class='none_pdding' zIndex='1'>\n" +
+        "                    <input type='text' name='krperf_" + item_row + "_0' id='krperf_" + item_row + "_0' placeholder='请输入KR完成情况' autocomplete='off' class='excel_input'>\n" +
         "                </td>\n" +
-        "                <td class='none_pdding' zIndex='0' rowspan=''>\n" +
-        "                    <input type='text' name='zgrad_" + item_row + "' id='zgrad_" + item_row + "' placeholder='请输入自评分' autocomplete='off' class='excel_input'>\n" +
+        "                <td class='none_pdding' zIndex='1'>\n" +
+        "                    <input type='text' name='zgrad_" + item_row + "_0' id='zgrad_" + item_row + "_0' placeholder='请输入自评分' autocomplete='off' class='excel_input'>\n" +
         "                </td>\n" +
         "                <td class='none_pdding none_border' zIndex='0' rowspan=''>\n" +
         "                    <div class='layui-form-item' style='margin: 0 auto;'>\n" +
@@ -268,7 +242,7 @@ function goal_del(present) {
     var parent = present.parent().parent().parent().parent();
     var item_id = parent.attr("id"); //获得当前行的ID
     var firstDot,secondDot,lastDot;
-    secondDot = item_id.indexOf("_",5);
+    secondDot = item_id.indexOf("_",4);
     lastDot = item_id.lastIndexOf("_");
     var item_row = item_id.substring(secondDot+1,lastDot); //获得当前行的行号
     var id_name = "okr_item_"+item_row+"_";
@@ -284,9 +258,9 @@ function goal_del(present) {
             var children_count = next.children().length;
             var name, name_row, name_pre, name_last,
                 inputs, next_id, next_row, count, now_row, input;
-            if (children_count === 2) {
+            if (children_count === 4) {
                 next_id = next.attr("id");
-                secondDot = next_id.indexOf("_",5);
+                secondDot = next_id.indexOf("_",4);
                 lastDot = next_id.lastIndexOf("_");
                 next_row = next_id.substring(secondDot+1, lastDot);
                 if(item_row-next_row !== 1) {
@@ -299,31 +273,20 @@ function goal_del(present) {
                         input = $(inputs[j]);
                         name = input.attr("name");
                         if (!checkForm(name)) {
-                            if (name.length === 8) {
-                                secondDot = name.indexOf("_",4);
-                                lastDot = name.lastIndexOf("_");
-                                name_pre = name.substring(0, secondDot+1);
-                                name_row = name.substring(secondDot+1, lastDot);
-                                name_last = name.substring(lastDot+1);
-                                name_row--;
-                                input.attr("name", name_pre + name_row + "_" + name_last);
-                                input.attr("id", name_pre + name_row + "_" + name_last);
-                            } else if (name.length === 10) {
-                                secondDot = name.indexOf("_",6);
-                                lastDot = name.lastIndexOf("_");
-                                name_pre = name.substring(0, secondDot+1);
-                                name_row = name.substring(secondDot+1, lastDot);
-                                name_last = name.substring(lastDot+1);
-                                name_row--;
-                                input.attr("name", name_pre + name_row + "_" + name_last);
-                                input.attr("id", name_pre + name_row + "_" + name_last);
-                            }
+                            secondDot = name.indexOf("_",4);
+                            lastDot = name.lastIndexOf("_");
+                            name_pre = name.substring(0, secondDot+1);
+                            name_row = name.substring(secondDot+1, lastDot);
+                            name_last = name.substring(lastDot+1);
+                            name_row--;
+                            input.attr("name", name_pre + name_row + "_" + name_last);
+                            input.attr("id", name_pre + name_row + "_" + name_last);
                         }
                     }
                 }
             } else {
                 next_id = next.attr("id");
-                secondDot = next_id.indexOf("_",5);
+                secondDot = next_id.indexOf("_",4);
                 lastDot = next_id.lastIndexOf("_");
                 next_row = next_id.substring(secondDot+1, lastDot);
                 count = next_id.substring(lastDot+1);
@@ -336,39 +299,14 @@ function goal_del(present) {
                     input = $(inputs[k]);
                     name = input.attr("name");
                     if (!checkForm(name)) {
-                        if (name.length === 6) {
+                        if (name.lastIndexOf("_") === 4) {
                             lastDot = name.lastIndexOf("_");
-                            name_pre = name.substring(0, lastDot+1);
+                            name_pre = name.substring(0,lastDot+1);
                             name_row = name.substring(lastDot+1);
                             name_row--;
                             input.attr("name", name_pre + name_row);
                             input.attr("id", name_pre + name_row);
-                        }else if (name.length === 7) {
-                            lastDot = name.lastIndexOf("_");
-                            name_pre = name.substring(0, lastDot+1);
-                            name_row = name.substring(lastDot+1);
-                            name_row--;
-                            input.attr("name", name_pre + name_row);
-                            input.attr("id", name_pre + name_row);
-                        } else if (name.length === 8) {
-                            lastDot = name.lastIndexOf("_");
-                            name_pre = name.substring(0, lastDot);
-                            name_row = name.substring(lastDot+1);
-                            if (name_pre === 'krperf') {
-                                name_row--;
-                                input.attr("name", 'krperf_' + name_row);
-                                input.attr("id", 'krperf_' + name_row);
-                            } else {
-                                secondDot = name.indexOf("_",4);
-                                lastDot = name.lastIndexOf("_");
-                                name_pre = name.substring(0, secondDot+1);
-                                name_row = name.substring(secondDot+1, lastDot);
-                                name_last = name.substring(lastDot+1);
-                                name_row--;
-                                input.attr("name", name_pre + name_row + "_" + name_last);
-                                input.attr("id", name_pre + name_row + "_" + name_last);
-                            }
-                        } else if (name.length === 10) {
+                        } else{
                             secondDot = name.indexOf("_",4);
                             lastDot = name.lastIndexOf("_");
                             name_pre = name.substring(0, secondDot+1);
@@ -452,6 +390,21 @@ function checkFormData(param) {
     return true;
 }
 
+function checkManagerData(param) {   //之后改善
+    for (var i = 0; i < param.length; i++) {
+        if (checkForm(param[i].value)) {
+            if ((param[i].name).match(/\b(asid|boss)/) !== null) {
+                layer.tips("请选择数据", "#" + param[i].name + "_0");
+                return false;
+            } else if ((param[i].name).match(/\bmdat/) !== null) {
+                layer.tips("请选择数据", "#" + param[i].name);
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 function task_choose(present) {
     var id = present.prev().attr("id");
     layer.open({
@@ -466,11 +419,13 @@ function task_choose(present) {
 }
 
 function rose(present){
-    present.css("height","100%").css("width",width).css("background-color","#fff").css("zIndex",0).css("top","-1px").css("position","absolute").css("transition","0.5s");
+    present.css("height","100%").css("width",width).css("background-color","#fff").css("border","none").css("zIndex",0).
+    css("top","-1px").css("position","absolute").css("transition","0.5s");
     present.parent().css("text-align","left");
 }
 function jinyu(present){
     width = present.css("width");
     height = present.css("height");
-    present.css("zIndex",1).css("width","400px").css("background-color","#d3d3d3").css("height","400px").css("position","absolute").css("transition","0.4s");
+    present.css("zIndex",1).css("width","400px").css("background-color","#fff").css("border","1px solid #d3d3d3").
+    css("height","400px").css("position","absolute").css("transition","0.4s");
 }

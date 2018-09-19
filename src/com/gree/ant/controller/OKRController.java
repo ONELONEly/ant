@@ -4,18 +4,14 @@ import com.gree.ant.mo.BussMoFactory;
 import com.gree.ant.util.OKRUtil;
 import com.gree.ant.util.ResultUtil;
 import com.gree.ant.util.TableUtil;
+import com.gree.ant.vo.Cbase000VO;
 import com.gree.ant.vo.Tbuss011VO;
-import com.gree.ant.vo.Tbuss012VO;
-import com.gree.ant.vo.Tbuss013VO;
-import com.gree.ant.vo.request.GoalVO;
 import com.gree.ant.vo.request.OkrVO;
-import com.gree.ant.vo.request.TaskVO;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.*;
-
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,10 +33,19 @@ public class OKRController {
         return "success";
     }
 
+    @At("/manage")
+    @Ok("jsp:jsp.okr.manager")
+    public String manage(){
+        return "success";
+    }
+
     @At("/insert")
     @Ok("jsp:jsp.okr.insert")
-    public String insert(){
-        return "success";
+    public Map<String, Object> insert(@Param("isManager")Boolean isManager, @Attr("user")Cbase000VO cbase000VO){
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("user",cbase000VO);
+        resultMap.put("isManager",isManager);
+        return resultMap;
     }
 
     @At("/taskChoose")
@@ -57,8 +62,11 @@ public class OKRController {
 
     @At("/edit")
     @Ok("jsp:jsp.okr.edit")
-    public Tbuss011VO edit(@Param("okid")Integer okid){
-        return bussMoFactory.getTbuss011MO().fetchByOkid(okid);
+    public Map<String, Object> edit(@Param("okid")Integer okid, @Param("isManager")Boolean isManager){
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("okr",bussMoFactory.getTbuss011MO().fetchByOkid(okid));
+        resultMap.put("isManager",isManager);
+        return resultMap;
     }
 
     @At("/mark")
@@ -133,12 +141,27 @@ public class OKRController {
     @At("/mark")
     @Ok("json")
     @POST
-    public Map<String, Object> mark(@Param("..list") List<Map<String,Float>> scores){
+    public Map<String, Object> mark(@Param("::list") List<Map<String,Object>> scores){
         int code = 0;
         String msg = "服务器异常";
         if(scores != null){
-            bussMoFactory.getTbuss012MO().markGoal(scores);
+            bussMoFactory.getTbuss013MO().markTask(scores);
             code = 1;
+        }else{
+            msg = "评分项为空，请重新评分！";
+        }
+        msg = code == 1 ? "成功评分OKR管理项":msg;
+        return ResultUtil.getResult(code,msg,"");
+    }
+
+    @At("/delete")
+    @Ok("json")
+    @POST
+    public Map<String, Object> delete(@Param("::list")Integer[] okids){
+        int code = 0;
+        String msg = "服务器异常";
+        if(okids != null){
+            code = bussMoFactory.getTbuss011MO().delete(okids);
         }else{
             msg = "评分项为空，请重新评分！";
         }
@@ -149,20 +172,41 @@ public class OKRController {
 
     /**
      * @param pageNumber 请求的页码
-     * @param pageSize 请求页的大小
-     * @param msg 请求时提供的过滤信息
+     * @param pageSize   请求页的大小
+     * @param msg        请求时提供的过滤信息
+     * @param usid       当前会话的用户ID
      * @return 标准的表格请求结果集
-     * @description 对OKR表的所有数据进行查询
+     * @description 管理员对OKR表的所有数据进行查询
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      * @version 1.0
      */
-    @At("/queryAllOKR")
+    @At("/mQueryAllOKR")
     @Ok("json")
-    public Map<String,Object> queryAllOKR(@Param("page")Integer pageNumber,@Param("limit")Integer pageSize,
-                                          @Param("msg")String msg){
+    public Map<String,Object> mQueryAllOKR(@Param("page")Integer pageNumber,@Param("limit")Integer pageSize,
+                                          @Param("msg")String msg,@Attr("usid")String usid){
         Integer count = bussMoFactory.getTbuss011MO().countByMsg(msg);
         Pager pager = TableUtil.formatPager(pageSize,pageNumber,count);
-        List<Tbuss011VO> tbuss011VOList = bussMoFactory.getTbuss011MO().queryAllByMsgPager(pager,msg);
+        List<Tbuss011VO> tbuss011VOList = bussMoFactory.getTbuss011MO().mQueryAllByMsgPager(pager,usid);
+        return  TableUtil.makeJson(1,"",count,tbuss011VOList);
+    }
+
+    /**
+     * @param pageNumber 请求的页码
+     * @param pageSize   请求页的大小
+     * @param msg        请求时提供的过滤信息
+     * @param usid       当前会话的用户ID
+     * @return 标准的表格请求结果集
+     * @description 用户对OKR表的所有数据进行查询
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     */
+    @At("/uQueryAllOKR")
+    @Ok("json")
+    public Map<String,Object> uQueryAllOKR(@Param("page")Integer pageNumber,@Param("limit")Integer pageSize,
+                                           @Param("msg")String msg,@Attr("usid")String usid){
+        Integer count = bussMoFactory.getTbuss011MO().countByMsg(msg);
+        Pager pager = TableUtil.formatPager(pageSize,pageNumber,count);
+        List<Tbuss011VO> tbuss011VOList = bussMoFactory.getTbuss011MO().uQueryAllByMsgPager(pager,usid);
         return  TableUtil.makeJson(1,"",count,tbuss011VOList);
     }
 

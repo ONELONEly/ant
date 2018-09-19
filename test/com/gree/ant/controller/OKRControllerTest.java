@@ -31,6 +31,5 @@ public class OKRControllerTest {
 
     @Test
     public void queryAllOKR(){
-        System.out.println(okrController.queryAllOKR(1,2,null));
     }
 }

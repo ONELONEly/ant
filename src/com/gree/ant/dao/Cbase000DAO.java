@@ -67,4 +67,6 @@ public interface Cbase000DAO extends BaseDAO<Cbase000VO> {
      * @createTime 2017 :10:31 08:10:20.
      */
     List<Cbase000VO> queryAllUser(Condition cnd, Pager pager);
+
+    Cbase000VO findUser(String usid);
 }

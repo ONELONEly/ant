@@ -21,7 +21,6 @@ public class TaskControllerTest {
         taid[0] = "JK44011224";
 
         try {
-            taskController.updateSta1(11,4,taid,"执行校验通过行为","",(float)1,"",null,null);
         } catch (Exception e) {
             e.printStackTrace();
         }

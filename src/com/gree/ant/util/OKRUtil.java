@@ -63,8 +63,6 @@ public class OKRUtil {
                         Tbuss013VO tbuss013VO = taskVO.formatTask();
                         tbuss013VOList.add(tbuss013VO);
                     }
-                }else{
-                    this.msg = "OKR目标任务为空，请确认录入有效任务！";
                 }
                 tbuss012VO.setTbuss013VOS(tbuss013VOList);
                 tbuss012VOS.add(tbuss012VO);

@@ -302,6 +302,26 @@ public class Cbase000VO extends ValueObject{
         this.JWWJ = JWWJ;
     }
 
+    /**
+     * Instantiates a new Cbase 000 vo.
+     *
+     * @description 查询所有用户时使用
+     * @author create by jinyuk@foxmail.com.
+     * @version V1.0
+     * @createTime 2017 :10:31 08:10:32.
+     */
+    public Cbase000VO(String USID, String DSCA, String PAWD, String GROPNAM, String DEPTNAM, String COMPNAM, String ACCONAM, String JWWJ,String ACCO) {
+        this.USID = USID;
+        this.DSCA = DSCA;
+        this.PAWD = PAWD;
+        this.GROPNAM = GROPNAM;
+        this.DEPTNAM = DEPTNAM;
+        this.COMPNAM = COMPNAM;
+        this.ACCONAM = ACCONAM;
+        this.JWWJ = JWWJ;
+        this.ACCO = ACCO;
+    }
+
     public String getACCONAM() {
         return ACCONAM;
     }

@@ -778,9 +778,8 @@ public class TaskController {
     @Ok("json")
     public Map<String,Object> updateSta1(@Param("operate")Integer operate, @Param("stag")Integer stag,
                                          @Param("::list")String[] taids, @Param("remk")String remk,
-                                         @Param("date")String date, @Param("fahh")Float fahh,@Param("fini")String fini, AdaptorErrorContext error, HttpSession session)throws Exception{
-
-        Cbase000VO cbase000VO=(Cbase000VO)session.getAttribute("cbase000VO");
+                                         @Param("date")String date, @Param("fahh")Float fahh,@Param("fini")String fini,
+                                         AdaptorErrorContext error, HttpSession session,@Attr("user") Cbase000VO cbase000VO)throws Exception{
         StringBuilder msg = new StringBuilder("传入参数为空");
         Integer code = 0;
         String status = "";
@@ -847,7 +846,7 @@ public class TaskController {
                         if (stag != null) {
                             tbuss003VO.setStag(stag);
                            // insertBugCode=tbuss003MO_Ds.insertBug(tbuss003VO,cbase000VO);
-                          insertBugCode=tbuss003MO_Ds.insertBugJieKou(tbuss003VO,cbase000VO);
+                            insertBugCode=tbuss003MO_Ds.insertBugJieKou(tbuss003VO,cbase000VO);
                             if(!insertBugCode.equals("Success")){
                             return ResultUtil.getResult(0, "推送DS失败", null);}
                         } else {

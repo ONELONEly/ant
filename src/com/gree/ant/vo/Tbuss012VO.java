@@ -46,21 +46,6 @@ public class Tbuss012VO {
      */
     private String perf;
     /**
-     * @description KR完成情况
-     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
-     */
-    private String krperf;
-    /**
-     * @description 自评成绩
-     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
-     */
-    private Float zgrad;
-    /**
-     * @description 领导评分
-     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
-     */
-    private Float mgrad;
-    /**
      * @description 管理表ID
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      */
@@ -72,14 +57,12 @@ public class Tbuss012VO {
     public Tbuss012VO() {
     }
 
-    public Tbuss012VO(String goal, String ndat, Integer type, Float prop, String perf, String krperf, Float zgrad) {
+    public Tbuss012VO(String goal, String ndat, Integer type, Float prop, String perf) {
         this.goal = goal;
         this.ndat = ndat;
         this.type = type;
         this.prop = prop;
         this.perf = perf;
-        this.krperf = krperf;
-        this.zgrad = zgrad;
     }
 
     public Integer getGoal_id() {
@@ -130,30 +113,6 @@ public class Tbuss012VO {
         this.perf = perf;
     }
 
-    public String getKrperf() {
-        return krperf;
-    }
-
-    public void setKrperf(String krperf) {
-        this.krperf = krperf;
-    }
-
-    public Float getZgrad() {
-        return zgrad;
-    }
-
-    public void setZgrad(Float zgrad) {
-        this.zgrad = zgrad;
-    }
-
-    public Float getMgrad() {
-        return mgrad;
-    }
-
-    public void setMgrad(Float mgrad) {
-        this.mgrad = mgrad;
-    }
-
     public Integer getOkid() {
         return okid;
     }
@@ -171,6 +130,6 @@ public class Tbuss012VO {
     }
 
     public GoalVO getGoalVO(){
-        return new GoalVO(this.goal,this.ndat,this.type,this.prop,this.perf,this.krperf,this.zgrad,this.mgrad,this.goal_id);
+        return new GoalVO(this.goal,this.ndat,this.type,this.prop,this.perf,this.goal_id);
     }
 }

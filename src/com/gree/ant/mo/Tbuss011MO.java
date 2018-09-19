@@ -55,6 +55,21 @@ public class Tbuss011MO implements TBuss011BasicMO {
     }
 
     @Override
+    public Integer delete(final Integer[] okids) {
+        final Integer[] res = new Integer[1];
+        Trans.exec(new Atom() {
+            @Override
+            public void run() {
+                for (Integer okid:okids) {
+                    res[0] = tbuss011DAOImp.deleteByID(okid);
+                    tbuss012MO.deleteByOKID(okid);
+                }
+            }
+        });
+        return res[0];
+    }
+
+    @Override
     public Tbuss011VO fetchByOkid(Integer okid) {
         return tbuss011DAOImp.fetchByID(okid);
     }
@@ -74,8 +89,16 @@ public class Tbuss011MO implements TBuss011BasicMO {
     }
 
     @Override
-    public List<Tbuss011VO> queryAllByMsgPager(Pager pager, String msg) {
+    public List<Tbuss011VO> mQueryAllByMsgPager(Pager pager, String usid) {
         Cnd cnd = Cnd.NEW();
+        cnd.and("boss","=",usid).or("asid","=",usid);
+        return tbuss011DAOImp.queryByCndPager(cnd,pager);
+    }
+
+    @Override
+    public List<Tbuss011VO> uQueryAllByMsgPager(Pager pager, String usid) {
+        Cnd cnd = Cnd.NEW();
+        cnd.and("asid","=",usid);
         return tbuss011DAOImp.queryByCndPager(cnd,pager);
     }
 
