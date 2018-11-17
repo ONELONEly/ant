@@ -204,33 +204,33 @@ public class Tbuss001MO implements Tbuss001BasicMO{
     }
 
     @Override
-    public List<Tbuss001VO> queryAllByAcco(String acco,String pdat,Pager pager) {
-        return tbuss001DAOImp.queryAllByAcco(acco,pdat,pager);
+    public List<Tbuss001VO> queryAllByAcco(String acco,String pdat,String group,Pager pager) {
+        return tbuss001DAOImp.queryAllByAcco(acco,pdat,group,pager);
     }
 
     @Override
-    public List<Tbuss001VO> queryAllByDept(String dept,String pdat,Pager pager) {
-        return tbuss001DAOImp.queryAllByDept(dept,pdat,pager);
+    public List<Tbuss001VO> queryAllByDept(String dept,String pdat,String group,Pager pager) {
+        return tbuss001DAOImp.queryAllByDept(dept,pdat,group,pager);
     }
 
     @Override
-    public List<Tbuss001VO> queryAllByComp(String comp,String pdat,Pager pager) {
-        return tbuss001DAOImp.queryAllByComp(comp,pdat,pager);
+    public List<Tbuss001VO> queryAllByComp(String comp,String pdat,String group,Pager pager) {
+        return tbuss001DAOImp.queryAllByComp(comp,pdat,group,pager);
     }
 
     @Override
-    public Integer countByAcco(String acco,String pdat) {
-        return tbuss001DAOImp.countByAcco(acco,pdat);
+    public Integer countByAcco(String acco,String pdat,String group) {
+        return tbuss001DAOImp.countByAcco(acco,pdat,group);
     }
 
     @Override
-    public Integer countByDept(String dept,String pdat) {
-        return tbuss001DAOImp.countByDept(dept,pdat);
+    public Integer countByDept(String dept,String pdat,String group) {
+        return tbuss001DAOImp.countByDept(dept,pdat,group);
     }
 
     @Override
-    public Integer countByComp(String comp,String pdat) {
-        return tbuss001DAOImp.countByComp(comp,pdat);
+    public Integer countByComp(String comp,String pdat,String group) {
+        return tbuss001DAOImp.countByComp(comp,pdat,group);
     }
 
     @Override

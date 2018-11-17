@@ -3,7 +3,11 @@ package com.gree.ant.controller;
 import com.gree.ant.dao.daoImp.util.DAOUtil;
 import com.gree.ant.mo.*;
 import com.gree.ant.util.*;
+import com.gree.ant.vo.Cbase000VO;
+import com.gree.ant.vo.Cbase010VO;
 import com.gree.ant.vo.Cbase011VO;
+import com.gree.ant.vo.Tbuss001VO;
+import com.gree.ant.vo.response.GropUser;
 import com.gree.ant.vo.util.TaskUtilVO;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
@@ -11,10 +15,7 @@ import org.nutz.dao.pager.Pager;
 import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Ok;
-import org.nutz.mvc.annotation.POST;
-import org.nutz.mvc.annotation.Param;
+import org.nutz.mvc.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -73,6 +74,12 @@ public class UtilController {
     @Inject("refer:tbuss003MO")
     private Tbuss003MO tbuss003MO;
 
+    @Inject
+    private BaseMoFactory baseMoFactory;
+
+    @Inject
+    private BussMoFactory bussMoFactory;
+
     @Inject("refer:tbuss003MO_Ds")
     private Tbuss003MO_Ds tbuss003MO_Ds;
 
@@ -106,6 +113,20 @@ public class UtilController {
     }
 
     /**
+     * @return
+     * @description C17-科室表的数据请求【okr.manager】
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     */
+    @At
+    @Ok("json")
+    public Map<String,Object> findC17(){
+        Map<String,Object> map = new HashMap<>();
+        map.put("acco",cbase017MO.queryAllAD());
+        return map;
+    }
+
+    /**
      * Find c 0 c 13 map.
      *
      * @return the map
@@ -116,15 +137,20 @@ public class UtilController {
      */
     @At
     @Ok("json")
-    public Map<String,Object> findC0C13C14(HttpSession session){
+    public Map<String,Object> findC0C13C14(@Attr("usid")String usid){
         Condition c=Cnd.where("puno","!=","PU0007").and("puno","!=","PU0006");
-
-        String usid = StringUtil.getUsid(session);
         Map<String,Object> map = new HashMap<>();
+        List<Cbase010VO> cbase010VOS = baseMoFactory.getCbase010MO().queryByCnd(Cnd.where("usid","=",usid));
+        String[] grops = new String[cbase010VOS.size()];
+        int i = 0;
+        for(Cbase010VO cbase010VO:cbase010VOS){
+            grops[i] = cbase010VO.getGrop();
+            i++;
+        }
         map.put("user",cbase000MO.queryAllUD());
         map.put("sys",cbase013MO.queryAllByCnd(null,null));
         map.put("stage",cbase014MO.queryAllByCnd(c,null));
-        map.put("project",tbuss001MO.queryAllPD(Cnd.where("grop","=",cbase000MO.fetchByUsid(usid).getGROP())));
+        map.put("project",tbuss001MO.queryAllPD(Cnd.where("grop","in",grops)));
         return map;
     }
 
@@ -142,6 +168,7 @@ public class UtilController {
     public Map<String,Object> findC13(){
         Map<String,Object> map = new HashMap<>();
         map.put("sys",cbase013MO.queryAllByCnd(null,null));
+        map.put("user",cbase000MO.queryAllUD());
         return map;
     }
 
@@ -166,7 +193,7 @@ public class UtilController {
      * Find c 9 map.
      *
      * @return the map
-     * @description C9-团队表的数据请求【grade.edit,grade.grade】
+     * @description C9-团队表的数据请求【grade.edit,grade.grade，user.modify】
      * @author create by jinyuk@foxmail.com.
      * @version V1.0
      * @createTime 2017 :09:05 03:09:35.
@@ -193,6 +220,14 @@ public class UtilController {
     public Map<String,Object> findC0(){
         Map<String,Object> map = new HashMap<>();
         map.put("c0",cbase000MO.queryAllUD());
+        return map;
+    }
+
+    @At
+    @Ok("json")
+    public Map<String,Object> findGropUser(@Param("grop")String grop){
+        Map<String,Object> map = new HashMap<>();
+        map.put("user",cbase009MO.fetchC9Tran(grop,null));
         return map;
     }
 
@@ -258,11 +293,16 @@ public class UtilController {
      */
     @At
     @Ok("json")
-    public Map<String,Object> findT1(HttpSession session){
+    public Map<String,Object> findT1(@Attr("usid")String usid){
         Map<String,Object> map = new HashMap<>();
-        String usid = StringUtil.getUsid(session);
-        String grop = cbase000MO.fetchByUsid(usid).getGROP();
-        map.put("t1",tbuss001MO.queryAllByCnd(Cnd.where("grop","=",grop),null));
+        List<Cbase010VO> cbase010VOS = baseMoFactory.getCbase010MO().queryByCnd(Cnd.where("usid","=",usid));
+        String[] grops = new String[cbase010VOS.size()];
+        int i = 0;
+        for(Cbase010VO cbase010VO:cbase010VOS){
+            grops[i] = cbase010VO.getGrop();
+            i++;
+        }
+        map.put("t1",tbuss001MO.queryAllByCnd(Cnd.where("grop","in",grops).desc("pdat"),null));
         return map;
     }
 
@@ -282,7 +322,9 @@ public class UtilController {
         List<Cbase011VO> cbase011VOS = cbase011MO.queryAllByCnd(null,null);
         List<Cbase011VO> cbase011VOList = new ArrayList<>();
         for(Cbase011VO cbase011VO:cbase011VOS){
-            cbase011VOList.add(cbase011MO.fetchTransByVO(cbase011VO,"cbase000VO",null));
+            Cbase000VO cbase000VO = cbase000MO.fetchUser(cbase011VO.getUsid());
+            cbase011VO.setCbase000VO(cbase000VO);
+            cbase011VOList.add(cbase011VO);
         }
         map.put("c11",cbase011VOList);
         return map;
@@ -356,22 +398,47 @@ public class UtilController {
     @At
     @Ok("json")
     public Map<String,Object> findtaskInsertC11(@Param("ptno")String ptno){
-        Integer code = 0;
+        Map<String,Object> resultMap = new HashMap<>();
         List<Cbase011VO> cbase011VOS = new ArrayList<>();
+        List<GropUser> gropUsers = new ArrayList<>();
+/*        if(ptno !=null && !"".equals(ptno)) {
+            Tbuss001VO tbuss001VO = tbuss001MO.fectchByName(ptno);
+            String pdat = tbuss001VO.getPdat();
+            Map<String,String> startEnd = DateUtil.getStartEndDate(pdat);
+            Date nowDate = new Date();
+            Date prevDate = DateUtil.formatYMDDate(startEnd.get("prevDate"));
+            Date startDate = DateUtil.formatYMDDate(startEnd.get("startDate"));
+            Date endDate = DateUtil.formatYMDDate(startEnd.get("endDate"));
+            Cnd cnd = Cnd.NEW();
+            cnd.and("stat", "=", "1");
+            if (nowDate.after(prevDate) && nowDate.before(endDate)) {
+                if (nowDate.after(prevDate) && nowDate.before(startDate)) {
+                    cnd = cnd.and("type", "=", 1);
+                } else if (nowDate.after(startDate) && nowDate.before(endDate)) {
+                    cnd = cnd.and("type", "=", 0);
+                }
+                tbuss001VO = tbuss001MO.fetchLinksByVO(tbuss001VO,"cbase011VOS",cnd);
+                cbase011VOS = tbuss001VO.getCbase011VOS();
+            }
+            gropUsers = baseMoFactory.getCbase009MO().fetchC9Tran(tbuss001VO.getGrop(),null);
+        }*/
         if(ptno !=null && !"".equals(ptno)) {
             Condition cnd = Cnd.where("stat", "=", "1");
-             cbase011VOS = tbuss001MO.fetchTransByNameCnd(ptno,"cbase011VOS",cnd).getCbase011VOS();
-             if(cbase011VOS!=null){
-                 code = 1;
-             }
+            Tbuss001VO tbuss001VO = tbuss001MO.fetchTransByNameCnd(ptno,"cbase011VOS",cnd);
+            cbase011VOS = tbuss001VO.getCbase011VOS();
+            gropUsers = baseMoFactory.getCbase009MO().fetchC9Tran(tbuss001VO.getGrop(),null);
         }
-        return ResultUtil.getResult(code,"",cbase011VOS);
+        resultMap.put("rule",cbase011VOS);
+        resultMap.put("user",gropUsers);
+        return resultMap;
     }
 
     @At
     @Ok("json")
     public Map<String,Object> findTaskUtil(@Param("page")Integer pageNumber, @Param("limit")Integer pageSize,
-                                         @Param("order")String order, @Param("sort")String sort, @Param("..")TaskUtilVO taskUtilVO){
+                                           @Param("order")String order, @Param("sort")String sort,
+                                           @Param("..")TaskUtilVO taskUtilVO, @Attr("usid")String usid){
+        taskUtilVO.setCsid(usid);
         Integer count = tbuss003MO.countByTaskUtil(taskUtilVO);
         Pager pager = TableUtil.formatPager(pageSize,pageNumber,count);
         return TableUtil.makeJson(0,"",count,tbuss003MO.queryAllByPagerMsg(pager,taskUtilVO,sort,order));
@@ -391,7 +458,7 @@ public class UtilController {
     @Ok("raw:jpg")
     public OutputStream normal(HttpServletRequest request,HttpServletResponse response){
 //        response.setHeader("Content-Type"," text/html");
-        return FileUtil.getOsByByte(FileUtil.getNormalHeader(request),response);
+        return FileUtil.getOsByByte(FileUtil.getNormalHeader(request,"header.jpg"),response);
     }
 
     /**

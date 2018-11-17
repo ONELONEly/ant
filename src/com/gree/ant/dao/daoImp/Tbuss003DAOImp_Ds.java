@@ -48,7 +48,6 @@ public class Tbuss003DAOImp_Ds implements Tbuss003DAO_Ds {
     }
 
     public  List<String> findT3DS_jied(int ParentID){
-        System.out.println("syno"+ParentID);
         Sql sql= Sqls.create("select ChildID from SubProjectTree where ParentID=@ParentID order by DisplayOrder");
         sql.params().set("ParentID",ParentID);
         sql.setCallback(new SqlCallback() {

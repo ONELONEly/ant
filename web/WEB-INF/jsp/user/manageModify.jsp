@@ -57,7 +57,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">密码</label>
             <div class="layui-input-block">
-                <input type="password" class="layui-input" name="PAWD" id="pawd" value="${obj.user.PAWD}" lay-verify="pawd" disabled/>
+                <input type="password" class="layui-input" name="PAWD" id="pawd" value="${obj.user.PAWD}" lay-verify="pawd" required/>
             </div>
         </div>
 
@@ -269,6 +269,11 @@
                     return "请输入名称";
                 }
             },
+            pawd:function (value) {
+                if(checkForm(value)){
+                    return "请输入密码";
+                }
+            },
             rePawd:function (value) {
                 if(checkForm(value)){
                     return "请确认密码";
@@ -285,7 +290,6 @@
                 }
             },
             grop:function (value) {
-                console.log(value.length);
                 if(checkForm(value)){
                     return "请选择团队";
                 }

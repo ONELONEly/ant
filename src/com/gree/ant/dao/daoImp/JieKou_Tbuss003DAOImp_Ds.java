@@ -1,11 +1,14 @@
 package com.gree.ant.dao.daoImp;
 
+import com.google.gson.JsonObject;
 import com.gree.ant.dao.JieKou_Tbuss003DAO_Ds;
+import com.gree.ant.exception.KellyException;
 import com.gree.ant.util.HttpRequest;
 import com.gree.ant.util.StringUtil;
 import com.gree.ant.vo.Cbase000VO;
 import com.gree.ant.vo.Cbase013VO;
 import com.gree.ant.vo.Tbuss003VO;
+import com.gree.ant.vo.enumVO.ResultEnum;
 import net.sf.json.JSONObject;
 import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
@@ -56,7 +59,6 @@ public class JieKou_Tbuss003DAOImp_Ds implements JieKou_Tbuss003DAO_Ds{
     }
 
     public  List<String> findT3DS_jied(int ParentID){
-        System.out.println("syno"+ParentID);
         Sql sql= Sqls.create("select ChildID from SubProjectTree where ParentID=@ParentID order by DisplayOrder");
         sql.params().set("ParentID",ParentID);
         sql.setCallback(new SqlCallback() {
@@ -97,7 +99,7 @@ public class JieKou_Tbuss003DAOImp_Ds implements JieKou_Tbuss003DAO_Ds{
         sql.setCallback(new SqlCallback() {
             @Override
             public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
-                List cbase013VOList = new ArrayList<>();
+                List<Cbase013VO> cbase013VOList = new ArrayList<>();
                 while(rs.next()){
 
                     cbase013VOList.add(new Cbase013VO(rs.getString("SubProjectID"),rs.getString("Title")));
@@ -153,13 +155,12 @@ public class JieKou_Tbuss003DAOImp_Ds implements JieKou_Tbuss003DAO_Ds{
     }
 
     public String inserRuleBug(Tbuss003VO tbuss003VO,Cbase000VO cbase000VO, int PersonID, String note_ds, String CrntVersionID)throws SQLException{
-        System.out.println("计划开始时间"+tbuss003VO.getIdat());
 
         String url = "http://10.2.4.175/DevTrackAPI/Api/Task/Create?token=8F355D74-CF46-4176-BB16-C76619B9E373";
        // String url = "http://10.3.0.101/DevTrackAPI/api/Task/Create?token=8F355D74-CF46-4176-BB16-C76619B9E373";
-        JSONObject params = new JSONObject();
+        Map<String,Object> params = new HashMap<>();
 
-        List jsonList=new ArrayList();
+        List<Map<String, String>> jsonList = new ArrayList<>();
 
         Map<String, String> jm = new HashMap<String, String>();
         jm.put("FieldId","122");
@@ -263,24 +264,14 @@ public class JieKou_Tbuss003DAOImp_Ds implements JieKou_Tbuss003DAO_Ds{
         params.put("TemplateId", "0");
         params.put("FieldValues", jsonList);
 
-        System.out.println("传过去的参数"+params);
-
-
-        String params1=params.toString();
-        Map<String, Object> params2 = (Map<String, Object>) Json.fromJson(params1);
-        System.out.println(Json.toJson(params2, JsonFormat.compact()));
-
         Header headers = Header.create().set("Content-Type", "application/json");
 
-        Response response = Http.post3(url, Json.toJson(params2, JsonFormat.compact()), headers, 2000);
+        Response response = makeRuleBugPost(url,Json.toJson(params,JsonFormat.compact()),headers,2000,3);
 
-        String content=response.getContent();
-        System.out.println(content);
-        String jsonstr=content.substring(content.indexOf("<Data>")+6,content.indexOf("</Data>"))+","+content.substring(content.indexOf("<Success>")+9,content.indexOf("</Success>"));
+        String content = response.getContent();
 
 
-
-        return jsonstr;
+        return content.substring(content.indexOf("<Data>")+6,content.indexOf("</Data>"))+","+content.substring(content.indexOf("<Success>")+9,content.indexOf("</Success>"));
     }
 
 
@@ -291,7 +282,7 @@ public class JieKou_Tbuss003DAOImp_Ds implements JieKou_Tbuss003DAO_Ds{
        //String url = "http://10.3.0.101/DevTrackAPI/api/Task/Update?token=8F355D74-CF46-4176-BB16-C76619B9E373";
        JSONObject params = new JSONObject();
 
-       List jsonList=new ArrayList();
+       List<Map<String, String>> jsonList=new ArrayList<>();
 
        Map<String, String> jm = new HashMap<String, String>();
        jm.put("FieldId","601");
@@ -308,9 +299,7 @@ public class JieKou_Tbuss003DAOImp_Ds implements JieKou_Tbuss003DAO_Ds{
        //headers.put("token", "8F355D74-CF46-4176-BB16-C76619B9E373");
        //headers.put("content-length", "1430");
        headers.put("content-type", "application/json");
-       String jsonstr= HttpRequest.postJSON(url,params, headers);
-       System.out.println(jsonstr);
-       return jsonstr;
+       return makeBugStatusPost(url,params,headers,3);
     }
 
 /*
@@ -375,6 +364,36 @@ public class JieKou_Tbuss003DAOImp_Ds implements JieKou_Tbuss003DAO_Ds{
         });
         dao1.execute(sql);
         return sql.getInt();
+        }
+
+        private Response makeRuleBugPost(String url,String data,Header header,Integer lazyTime,Integer count){
+            Response response ;
+            try {
+                response = Http.post3(url,data,header,lazyTime);
+            }catch (Exception e){
+                if(count > 0) {
+                    count--;
+                    response = makeRuleBugPost(url, data, header, lazyTime,count);
+                }else{
+                    throw new KellyException(ResultEnum.DS_ERROR);
+                }
+            }
+            return response;
+        }
+
+        private String makeBugStatusPost(String url,JSONObject data,Map<String,String> header,Integer count){
+            String response;
+            try {
+                response = HttpRequest.postJSON(url,data,header);
+            }catch (Exception e){
+                if(count > 0) {
+                    count --;
+                    response = makeBugStatusPost(url, data, header,count);
+                }else{
+                    throw new KellyException(ResultEnum.DS_ERROR);
+                }
+            }
+            return response;
         }
 }
 

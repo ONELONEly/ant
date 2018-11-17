@@ -41,7 +41,6 @@
     </form>
     <hr class="layui-bg-orange"/>
     <div id="main" style="width: 100%;height:100px;"></div>
-
 </div>
 <script language="JavaScript">
     layui.use(['form','jquery'],function () {

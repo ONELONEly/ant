@@ -52,7 +52,7 @@
             type:'GET',
             dataType:'json',
             success:function (data){
-                var base= data.team.cbase000VOS,mark = data.mark,score = data.score;
+                var base= data.team,mark = data.mark,score = data.score;
                 for(var i = 0;i<mark.length;i++){
                     var content = "<div class='layui-colla-item'>"+
                         "<h2 class='layui-colla-title'>"+mark[i].dsca+"(分项占比:"+mark[i].pjjp+"%;基础分:"+mark[i].cons+")</h2>"+
@@ -98,9 +98,11 @@
             var postData = [];
             for(var j = 0;j<util.length;j++){
                 for(var item in data){
-                    var type = item.substring(0,4);
-                    var pjno = item.substring(5,8);
-                    var usid = item.substring(9,15);
+                    var index = item.indexOf("_")
+                    var lastIndex = item.lastIndexOf("_")
+                    var type = item.substring(0,index);
+                    var pjno = item.substring(index+1,lastIndex);
+                    var usid = item.substring(lastIndex+1);
                     if(usid === util[j].value){
                         if(type === 'mark'){
                             var remk = "remk_"+pjno+"_"+usid;

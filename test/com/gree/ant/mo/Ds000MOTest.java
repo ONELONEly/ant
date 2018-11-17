@@ -47,7 +47,6 @@ public void dateTest()throws Exception{
     Date date=null;
     SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     date=formatter.parse(time);
-    System.out.println(date);
 }
 
  @Test
@@ -57,9 +56,6 @@ public void dateTest()throws Exception{
      //tbuss003MO_Ds.insertBugJieKou();
     // tbuss003MO_Ds.update();
      String content="<API_Data_int xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.datacontract.org/2004/07/TechExcel.DTKService.Model.Common\"><Data>15628</Data><Error i:nil=\"true\" /><Success>true</Success></API_Data_int>";
-     //System.out.println(content.indexOf("<Data>"));
-     System.out.println(content.substring(content.indexOf("<Data>")+6,content.indexOf("</Data>")));
-     System.out.println(content.substring(content.indexOf("<Success>")+9,content.indexOf("</Success>")));
 
   }
 
@@ -75,7 +71,6 @@ public void dateTest()throws Exception{
         String params1="{\"ProjectId\":\"417\",\"TemplateId\":\"0\",\"FieldValues\":[{\"FieldId\":\"122\",\"FieldValue\":\"19108\"},{\"FieldId\":\"101\",\"FieldValue\":\"优化采购订单查询时间字段\"},{\"FieldId\":\"103\",\"FieldValue\":\"93\"},{\"FieldId\":\"106\",\"FieldValue\":\"361\"},{\"FieldId\":\"3\",\"FieldValue\":\"3\"},{\"FieldId\":\"104\",\"FieldValue\":\"33\"},{\"FieldId\":\"102\",\"FieldValue\":\"优化采购订单查询时间字段\"},{\"FieldId\":\"13\",\"FieldValue\":\"3\"},{\"FieldId\":\"601\",\"FieldValue\":\"332\"},{\"FieldId\":\"108\",\"FieldValue\":\"1309\"},{\"FieldId\":\"603\",\"FieldValue\":\"1309\"},{\"FieldId\":\"606\",\"Option\":\"1\",\"FieldValue\":\"2018-04-17\"},{\"FieldId\":\"607\",\"Option\":\"1\",\"FieldValue\":\"2018-04-17\"},{\"FieldId\":\"620\",\"FieldValue\":\"3.0\"},{\"FieldId\":\"632\",\"Option\":\"1\",\"FieldValue\":\"2018-04-17\"},{\"FieldId\":\"624\",\"Option\":\"1\",\"FieldValue\":\"2018-04-17\"},{\"FieldId\":\"621\",\"FieldValue\":\"0\"}]}";
 
         Map<String, Object> params2 = (Map<String, Object>) Json.fromJson(params1);
-        System.out.println(Json.toJson(params2, JsonFormat.compact()));
 
         Header headers = Header.create().set("Content-Type", "application/json");
 
@@ -88,8 +83,7 @@ public void dateTest()throws Exception{
 
         /*  Document doc= DocumentHelper.parseText(content);
           Element e1=doc.getRootElement();*/
- /*         String result=parserNode(e1);
-        System.out.println("结果为："+result);*/
+ /*         String result=parserNode(e1);;*/
 
 
      /*    if(list!=null){
@@ -97,14 +91,8 @@ public void dateTest()throws Exception{
                  Map row = (Map) iter.next();
                 name=row.get("name").toString();
                 value=row.get("value").toString();
-                 System.out.println(name+"="+value);
 
              }*/
-
-/*        System.out.println(response.getHeader());*/
-        System.out.println(response.getContent());
-
-//        System.out.println(response);
 
 
 }
@@ -120,7 +108,6 @@ public void dateTest()throws Exception{
             map.put("name",ele.getName());
             map.put("value",ele.getText());
             list.add(map);
-            System.out.println("输出的结果为："+ele.getName()+":"+ele.getText().trim());
             result=ele.getName()+":"+ele.getText().trim();
 
         }
@@ -131,8 +118,6 @@ public void dateTest()throws Exception{
             //每循环一次，解析此节点的一个【属性=值】，没有则输出空
             String name = attr.getName();
             String value = attr.getValue();
-/*            System.out.println("解析的提示name:"+name);
-            System.out.println("解析的提示value："+value);*/
 
         }
 
@@ -184,8 +169,6 @@ public void dateTest()throws Exception{
          String a="";
          if(dsca.indexOf("[项目]")!=-1){
              a=dsca.replace("[项目]","");
-
-             System.out.println("==========="+a);
          }
 
 

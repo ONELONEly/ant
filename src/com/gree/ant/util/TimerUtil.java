@@ -31,7 +31,6 @@ public class TimerUtil {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
-                System.out.println("-------设定要指定任务--------");
             }
         }, 2000);// 设定指定的时间time,此处为2000毫秒
 
@@ -45,7 +44,6 @@ public class TimerUtil {
             public void run() {
      /*           Cbase013MO c=new Cbase013MO();
                 int code = c.tongbuDSSystem();*/
-                System.out.println("设置指定的任务");
             }
         }, 1000, 5000);
         timer.cancel();
@@ -59,7 +57,6 @@ public class TimerUtil {
             public void run() {
 
                 int code = cbase013MO.tongbuDSSystem();
-                System.out.println("-------设定要指定任务--------");
             }
         }, 1000, 5000*10);
     }
@@ -77,7 +74,6 @@ public class TimerUtil {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                System.out.println("-------设定要指定任务--------");
             }
         }, time, 1000 * 60 * 60 * 24);// 这里设定将延时每天固定执行
     }
@@ -89,7 +85,6 @@ public class TimerUtil {
             @Override
             public void run() {
                 int code = cbase013MO.tongbuDSSystem();
-                System.out.println("输出指定的任务");
             }
         },10);
         Lang.quiteSleep(60*1000*3000);

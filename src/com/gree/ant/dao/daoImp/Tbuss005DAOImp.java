@@ -28,4 +28,13 @@ public class Tbuss005DAOImp extends BaseDAOImp<Tbuss005VO> implements Tbuss005DA
         this.getDao().execute(sql);
         return 1;
     }
+
+    @Override
+    public Integer deleteByPtnoPjno(String ptno, String pjno) {
+        String sqlStr = "delete Tbuss005 where ptno = @ptno and pjno = @pjno";
+        Sql sql = Sqls.create(sqlStr);
+        sql.setParam("ptno",ptno).setParam("pjno",pjno);
+        this.getDao().execute(sql);
+        return 1;
+    }
 }

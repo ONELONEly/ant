@@ -24,7 +24,6 @@ public class ControllerUtil {
     public void first(){
         DocToPdfUtil toPdfUtil = new DocToPdfUtil("宿命-东野圭吾.txt");
         toPdfUtil.run();
-        System.out.println(toPdfUtil.getReturnCode()+toPdfUtil.getReturnMsg()+toPdfUtil.getReturnPath());
     }
 
 }

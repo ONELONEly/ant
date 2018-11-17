@@ -44,7 +44,6 @@ public class ReadGradeExcel {
                 }
             }
         }
-        System.out.println(sheet.getFirstRowNum()+"============================="+sheet.getLastRowNum());
         is.close();
     }
 

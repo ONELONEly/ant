@@ -73,10 +73,22 @@
             <label class="layui-form-label">类型:</label>
             <div class="layui-input-block">
                 <div class="layui-input-inline">
-                    <input type="radio" name="stat" class="layui-form-radio" value="0" title="手动" checked/>
+                    <input type="radio" name="stat" class="layui-form-radio" lay-filter="stat" value="0" title="手动" checked/>
                 </div>
                 <div class="layui-input-inline">
-                    <input type="radio" name="stat" class="layui-form-radio" value="1" title="自动" />
+                    <input type="radio" name="stat" class="layui-form-radio" lay-filter="stat" value="1" title="自动" />
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item" id="type">
+            <label class="layui-form-label">属性:</label>
+            <div class="layui-input-block">
+                <div class="layui-input-inline">
+                    <input type="radio" name="type" class="layui-form-radio" lay-filter="type" value="0" title="临时" checked/>
+                </div>
+                <div class="layui-input-inline">
+                    <input type="radio" name="type" class="layui-form-radio" lay-filter="type" value="1" title="计划" />
                 </div>
             </div>
         </div>
@@ -92,6 +104,7 @@
     layui.use(['form','jquery','element','layer','layedit','upload'],function () {
         var form = layui.form,$ = layui.jquery,element = layui.element,
             layer = layui.layer;
+        $("#type").hide()
 
 
         form.verify({
@@ -127,6 +140,16 @@
             }
         });
 
+
+        form.on("radio(stat)",function (data) {
+            var value = data.value
+            if (value === '1'){
+                $("#type").show()
+            } else{
+                $("#type").hide()
+            }
+        })
+
         form.on("submit(set)",function (data) {
             var trans = data.field;
             $.ajax({
@@ -139,7 +162,8 @@
                     deti:trans.deti,
                     cons:trans.cons,
                     remk:trans.remk,
-                    stat:trans.stat
+                    stat:trans.stat,
+                    type:trans.type
                 },
                 dataType:'json',
                 success:function (data) {

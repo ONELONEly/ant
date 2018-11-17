@@ -86,15 +86,12 @@ public class Ds000MOInterfaceTest {
        params.put("TemplateId", "0");
        params.put("FieldValues", jsonList);
 
-       System.out.println(params);
-
        Map<String, String> headers = new HashMap<String, String>();
 
        //headers.put("token", "8F355D74-CF46-4176-BB16-C76619B9E373");
        //headers.put("content-length", "1430");
        headers.put("content-type", "application/json");
        String jsonstr= HttpRequest.postJSON(url,params, headers);
-       System.out.println(jsonstr);
      }
 
 

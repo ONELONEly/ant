@@ -5,6 +5,7 @@ import com.gree.ant.mo.*;
 import com.gree.ant.util.*;
 import com.gree.ant.util.excel.GradeExcel;
 import com.gree.ant.vo.*;
+import com.gree.ant.vo.response.GropUser;
 import com.gree.ant.vo.util.Cbase011_Grade_Trans;
 import com.gree.ant.vo.util.GradeVO;
 import com.gree.ant.vo.util.Tbuss003_Grade_Trans;
@@ -122,8 +123,8 @@ public class GradeController {
      */
     @At
     @Ok("jsp:jsp.grade.showTask")
-    public String showTask(@Param("ptno")String ptno){
-        return ptno;
+    public Tbuss001VO showTask(@Param("ptno")String ptno){
+        return tbuss001MO.fectchByName(ptno);
     }
 
     /**
@@ -177,7 +178,7 @@ public class GradeController {
      */
     @At
     @Ok("json:{dateFormat:'yyyy-MM'}")
-    public Map<String, Object> queryAll(@Param("page")Integer pageNumber,@Param("limit")Integer pageSize,@Param("key")String date,HttpSession session){
+    public Map<String, Object> queryAll(@Param("page")Integer pageNumber,@Param("limit")Integer pageSize,@Param("key")String date,@Param("group")String group,HttpSession session){
         String usid = session.getAttribute("usid").toString();
         Cbase000VO cbase000VO = cbase000MO.fetchByUsid(usid);
         List<Tbuss001VO> tbuss001VOList = new ArrayList<>();
@@ -190,28 +191,39 @@ public class GradeController {
         String grop = cbase000VO.getGROP();
         SqlExpressionGroup e1 = null;
         SqlExpressionGroup e2;
+        SqlExpressionGroup e3;
         if(date !=null) {
             e1 = Cnd.exps("pdat", "like", "%" + date + "%");
         }else{
             date = "";
         }
+        if(group == null){
+            group = "";
+        }
         if(author == 1){
-            e2 = Cnd.exps("grop","=",grop);
+            List<Cbase010VO> cbase010VOS = cbase010MO.queryByCnd(Cnd.where("usid","=",usid));
+            String[] grops = new String[cbase010VOS.size()];
+            int i = 0;
+            for(Cbase010VO cbase010VO:cbase010VOS){
+                grops[i] = cbase010VO.getGrop();
+                i++;
+            }
+            e2 = Cnd.exps("grop","in",grops);
             count = tbuss001MO.countByCnd(Cnd.where(e1).and(e2));
             pager = TableUtil.formatPager(pageSize,pageNumber,count);
             tbuss001VOList = tbuss001MO.queryAllByCnd(Cnd.where(e1).and(e2).desc("pdat"),pager);
         }else if(author == 2){
-            count = tbuss001MO.countByAcco(acco,date);
+            count = tbuss001MO.countByAcco(acco,date,group);
             pager = TableUtil.formatPager(pageSize,pageNumber,count);
-            tbuss001VOList = tbuss001MO.queryAllByAcco(acco,date,pager);
+            tbuss001VOList = tbuss001MO.queryAllByAcco(acco,date,group,pager);
         }else if(author == 3){
-            count = tbuss001MO.countByDept(dept,date);
+            count = tbuss001MO.countByDept(dept,date,group);
             pager = TableUtil.formatPager(pageSize,pageNumber,count);
-            tbuss001VOList = tbuss001MO.queryAllByDept(dept,date,pager);
+            tbuss001VOList = tbuss001MO.queryAllByDept(dept,date,group,pager);
         }else if(author == 4){
-            count = tbuss001MO.countByComp(comp,date);
+            count = tbuss001MO.countByComp(comp,date,group);
             pager = TableUtil.formatPager(pageSize,pageNumber,count);
-            tbuss001VOList = tbuss001MO.queryAllByComp(comp,date,pager);
+            tbuss001VOList = tbuss001MO.queryAllByComp(comp,date,group,pager);
         }
         return TableUtil.makeJson(0,"成功",count,tbuss001VOList);
     }
@@ -227,7 +239,7 @@ public class GradeController {
         SqlExpressionGroup e2;
         String grop = "";
         List<Cbase010VO> cbase010VOS = cbase010MO.queryByCnd(Cnd.where("usid","=",usid));
-        if(cbase010VOS != null){
+        if(cbase010VOS != null && cbase010VOS.size() > 0){
             grop = cbase010VOS.get(0).getGrop();
         }
         if(date !=null) {
@@ -263,7 +275,12 @@ public class GradeController {
         map.put("mark",null);
         if(ptno!=null) {
             if (grop != null) {
-                map.put("team", cbase009MO.fetchC9Trans(grop,null));
+                List<Cbase000VO> cbase000VOS = new ArrayList<>();
+                List<GropUser> gropUsers = cbase009MO.fetchC9Tran(grop,Cnd.where("boss","=","组员"));
+                for (GropUser gropUser:gropUsers){
+                    cbase000VOS.add(new Cbase000VO(gropUser.getUsid(),gropUser.getDsca()));
+                }
+                map.put("team", cbase000VOS);
             }
             List<Cbase011VO> cbase011VOList = tbuss001MO.fetchTransByNameCnd(ptno,"cbase011VOS",Cnd.where("stat","=","0")).getCbase011VOS();
             if(cbase011VOList != null) {
@@ -383,7 +400,6 @@ public class GradeController {
         String msg = "插入失败";
         String usid = request.getSession().getAttribute("usid").toString();
         if(tbuss001VO.getPdat() !=null && tbuss001VO.getDsca() != null && tbuss001VO.getGrop() != null){
-            System.out.println(tbuss001MO.insertCheck(tbuss001VO.getPdat(),tbuss001VO.getGrop()));
             if(tbuss001MO.insertCheck(tbuss001VO.getPdat(),tbuss001VO.getGrop())) {
                 tbuss001VO.setPtno("PT"+FileUtil.getRandomName());
                 tbuss001VO.setUdat(new Date());
@@ -485,13 +501,13 @@ public class GradeController {
     public Map<String,Object> deleteProjectRule(@Param("pjno")String pjno,@Param("::list")String[] pjnos,@Param("ptno")String ptno){
         Integer code = 0;
         String msg = "删除失败";
+        String[] param = new String[1];
         if(ptno !=null) {
             if (pjno != null) {
-                code = tbuss002MO.delete(new Tbuss002VO(pjno,ptno));
+                param[0] = pjno;
+                code = tbuss002MO.delete(param,ptno);
             }else if(pjnos !=null){
-                for(String PJNO:pjnos){
-                    code = tbuss002MO.delete(new Tbuss002VO(PJNO,ptno));
-                }
+                code = tbuss002MO.delete(pjnos,ptno);
             }
             msg = code == 1?"删除成功":"删除失败";
         }
@@ -513,7 +529,6 @@ public class GradeController {
     @Ok("json")
     public Map<String, Object> insertScore(@Param("::list") List<Tbuss005_Grade_Trans> grade_trans) {
         int code = 0;
-        System.out.println(grade_trans);
         if (grade_trans != null) {
             for (Tbuss005_Grade_Trans tbuss005_grade_trans : grade_trans) {
                 String csid = tbuss005_grade_trans.getCsid();
@@ -562,44 +577,47 @@ public class GradeController {
     @POST
     @Ok("json")
     public Map<String,Object> insertAutoScore(@Param("ptno")String ptno){
-        Integer code = 0;
+        int code = 0;
         String msg = "结算失败";
         if(ptno!=null) {
             Tbuss001VO tbuss001VO = tbuss001MO.fectchByName(ptno);
-            List<Cbase000VO> cbase000VOS = cbase009MO.fetchC9Trans(tbuss001MO.fectchByName(ptno).getGrop(),null).getCbase000VOS();
-            if (cbase000VOS != null) {
-                for (Cbase000VO cbase000VO : cbase000VOS) {
-                    Cnd cnd = Cnd.where("stat", "=", 1);
-                    List<Cbase011VO> cbase011VOS = cbase011MO.queryAllByCnd(cnd, null);
-                    for (Cbase011VO cbase011VO : cbase011VOS) {
-                        SqlExpressionGroup e = Cnd.exps("ptyp", "=", cbase011VO.getPjno()).and("ptno", "=", ptno).and("csid", "=", cbase000VO.getUSID());
-                        Integer count = tbuss003MO.countByCnd(Cnd.where(e));
-                        if (count != 0) {
-                            double average = DoubleUtil.format_nice(Double.parseDouble(cbase011VO.getCons())/ count);
-                            double result = 0;
-                            List<Tbuss003VO> tbuss003VOList = tbuss003MO.queryAllByCnd(Cnd.where(e).and("sta1", "=", "11"),null);
-                            if(tbuss003VOList != null){
-                                for(Tbuss003VO tbuss003VO:tbuss003VOList){
-                                    Integer stag = tbuss003VO.getStag();
-                                    if(stag == 0){
-                                        result += average*0.6;
-                                    }else if(stag == 1){
-                                        result += average*0.7;
-                                    }else if(stag == 2){
-                                        result += average*0.8;
-                                    }else if(stag == 3){
-                                        result += average*0.9;
-                                    }else if(stag == 4){
-                                        result += average;
-                                    }
+            List<Cbase000VO> cbase000VOS = new ArrayList<>();
+            List<GropUser> gropUsers = cbase009MO.fetchC9Tran(tbuss001MO.fectchByName(ptno).getGrop(),Cnd.where("boss","=","组员"));
+            for (GropUser gropUser:gropUsers){
+                cbase000VOS.add(new Cbase000VO(gropUser.getUsid(),gropUser.getDsca()));
+            }
+            for (Cbase000VO cbase000VO : cbase000VOS) {
+                Cnd cnd = Cnd.where("stat", "=", 1);
+                Tbuss001VO t1 = tbuss001MO.fetchLinksByVO(tbuss001VO,"cbase011VOS",cnd);
+                List<Cbase011VO> cbase011VOS = t1.getCbase011VOS();
+                for (Cbase011VO cbase011VO : cbase011VOS) {
+                    SqlExpressionGroup e = Cnd.exps("ptyp", "=", cbase011VO.getPjno()).and("ptno", "=", ptno).and("csid", "=", cbase000VO.getUSID());
+                    Integer count = tbuss003MO.countByCnd(Cnd.where(e));
+                    if (count != 0) {
+                        double average = DoubleUtil.format_nice(Double.parseDouble(cbase011VO.getCons())/ count);
+                        double result = 0;
+                        List<Tbuss003VO> tbuss003VOList = tbuss003MO.queryAllByCnd(Cnd.where(e).and("sta1", "=", "11"),null);
+                        if(tbuss003VOList != null){
+                            for(Tbuss003VO tbuss003VO:tbuss003VOList){
+                                Integer stag = tbuss003VO.getStag();
+                                if(stag == 0){
+                                    result += average*0.6;
+                                }else if(stag == 1){
+                                    result += average*0.7;
+                                }else if(stag == 2){
+                                    result += average*0.8;
+                                }else if(stag == 3){
+                                    result += average*0.9;
+                                }else if(stag == 4){
+                                    result += average;
                                 }
                             }
-                            Tbuss005VO tbuss005VO = new Tbuss005VO(ptno, cbase000VO.getUSID(), cbase011VO.getPjno(), DoubleUtil.format_nice(result) + "", "自动打分", new Date(), new Date());
-                            if(tbuss005MO.insertCheck(tbuss005VO)) {
-                                tbuss005MO.insert(tbuss005VO);
-                            }else{
-                                tbuss005MO.updateByVO(tbuss005VO);
-                            }
+                        }
+                        Tbuss005VO tbuss005VO = new Tbuss005VO(ptno, cbase000VO.getUSID(), cbase011VO.getPjno(), DoubleUtil.format_nice(result) + "", "自动打分", new Date(), new Date());
+                        if(tbuss005MO.insertCheck(tbuss005VO)) {
+                            tbuss005MO.insert(tbuss005VO);
+                        }else{
+                            tbuss005MO.updateByVO(tbuss005VO);
                         }
                     }
                 }

@@ -139,4 +139,6 @@ public interface Cbase011BasicMO {
      * @createTime 2017 :09:13 05:09:08.
      */
     Integer deleteByVO(Cbase011VO cbase011VO);
+
+    Integer copyByPjno(String pjno,String usid);
 }

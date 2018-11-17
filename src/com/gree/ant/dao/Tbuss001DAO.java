@@ -44,7 +44,7 @@ public interface Tbuss001DAO extends BaseDAO<Tbuss001VO>{
      * @version V1.0
      * @createTime 2017 :10:17 10:10:38.
      */
-    List<Tbuss001VO> queryAllByAcco(String acco, String pdat, Pager pager);
+    List<Tbuss001VO> queryAllByAcco(String acco, String pdat,String group, Pager pager);
 
     /**
      * Query all by dept list.
@@ -58,7 +58,7 @@ public interface Tbuss001DAO extends BaseDAO<Tbuss001VO>{
      * @version V1.0
      * @createTime 2017 :10:17 10:10:38.
      */
-    List<Tbuss001VO> queryAllByDept(String dept, String pdat,Pager pager);
+    List<Tbuss001VO> queryAllByDept(String dept, String pdat,String group,Pager pager);
 
     /**
      * Query all by comp list.
@@ -72,7 +72,7 @@ public interface Tbuss001DAO extends BaseDAO<Tbuss001VO>{
      * @version V1.0
      * @createTime 2017 :10:17 10:10:38.
      */
-    List<Tbuss001VO> queryAllByComp(String comp, String pdat, org.nutz.dao.pager.Pager pager);
+    List<Tbuss001VO> queryAllByComp(String comp, String pdat,String group,Pager pager);
 
     /**
      * Count by acco integer.
@@ -85,7 +85,7 @@ public interface Tbuss001DAO extends BaseDAO<Tbuss001VO>{
      * @version V1.0
      * @createTime 2017 :10:17 11:10:35.
      */
-    Integer countByAcco(String acco, String pdat);
+    Integer countByAcco(String acco, String pdat,String group);
 
     /**
      * Count by dept integer.
@@ -98,7 +98,7 @@ public interface Tbuss001DAO extends BaseDAO<Tbuss001VO>{
      * @version V1.0
      * @createTime 2017 :10:17 11:10:35.
      */
-    Integer countByDept(String dept, String pdat);
+    Integer countByDept(String dept, String pdat,String group);
 
     /**
      * Count by comp integer.
@@ -111,7 +111,7 @@ public interface Tbuss001DAO extends BaseDAO<Tbuss001VO>{
      * @version V1.0
      * @createTime 2017 :10:17 11:10:35.
      */
-    Integer countByComp(String comp, String pdat);
+    Integer countByComp(String comp, String pdat,String group);
 
     /**
      * Query all pdat list.

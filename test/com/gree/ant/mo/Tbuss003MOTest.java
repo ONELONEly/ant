@@ -1,6 +1,7 @@
 package com.gree.ant.mo;
 
 import com.gree.MyNutTestRunner;
+import com.gree.ant.util.DateUtil;
 import com.gree.ant.util.FileUtil;
 import com.gree.ant.vo.Tbuss003VO;
 import org.junit.Test;
@@ -20,7 +21,6 @@ public class Tbuss003MOTest {
 
     @Test
     public void queryAllByCnd() throws Exception {
-        String usid = "180365";
     }
 
     @Test
@@ -37,7 +37,10 @@ public class Tbuss003MOTest {
 
     @Test
     public void fetchByTaid() throws Exception {
-        System.out.println(tbuss003MO.fetchByTaid("jk42453706").getUnam());
+        String[] tads = new String[2];
+        tads[0] = "JK82576510";
+        tads[1] = "JK10451031";
+        tbuss003MO.markScore(tads,4);
     }
 
     @Test

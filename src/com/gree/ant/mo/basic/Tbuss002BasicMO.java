@@ -38,7 +38,7 @@ public interface Tbuss002BasicMO {
      * @version V1.0
      * @createTime 2017 :09:14 03:09:03.
      */
-    Integer delete(Tbuss002VO tbuss002VO);
+    Integer delete(String[] pjnos,String ptno);
 
     /**
      * Query by cnd boolean.

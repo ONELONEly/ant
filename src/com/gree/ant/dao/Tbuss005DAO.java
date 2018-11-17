@@ -7,4 +7,6 @@ public interface Tbuss005DAO extends BaseDAO<Tbuss005VO>{
     Integer updateByVO(Tbuss005VO tbuss005VO);
 
     Integer deleteByPtno(String ptno);
+
+    Integer deleteByPtnoPjno(String ptno,String pjno);
 }

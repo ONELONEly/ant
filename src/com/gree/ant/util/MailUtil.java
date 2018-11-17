@@ -1,5 +1,8 @@
 package com.gree.ant.util;
 
+import com.gree.ant.vo.Tbuss011VO;
+import com.gree.ant.vo.Tbuss014VO;
+
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -193,7 +196,6 @@ public class MailUtil {
 		// TODO: Refactor to use a default from address (maybe in config?!)
 		if (true) {
 			InternetAddress sentFrom = new InternetAddress(from + "@gree.com.cn");
-			System.out.println(">>>>>>>from>>>>>>>>>"+from);
 			message.setFrom(sentFrom);
 		}
 
@@ -387,6 +389,81 @@ public class MailUtil {
 		}
 	}
 
+	public static void sendPushmail(Tbuss011VO tbuss011VO, String csid) {
+
+		String subject="";
+
+		subject= " <^-^> GREE-ANT GNAW BONE 蚂蚁系统提示:";
+
+		String contentType = "text/html;charset=UTF-8";
+		String content = getPushContent(tbuss011VO,csid);
+		try {
+			sendMessage("AutoMail", csid, null, subject, content, contentType);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void sendBackmail(Tbuss011VO tbuss011VO,String csid) {
+
+		String subject="";
+
+		subject= " <^-^> GREE-ANT GNAW BONE 蚂蚁系统提示:";
+
+		String contentType = "text/html;charset=UTF-8";
+		String content = getBackContent(tbuss011VO,csid);
+		try {
+			sendMessage("AutoMail", csid, null, subject, content, contentType);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void sendRequireBackmail(Tbuss014VO tbuss014VO,String csid) {
+
+		String subject="";
+
+		subject= " <^-^> GREE-ANT GNAW BONE 蚂蚁系统提示:";
+
+		String contentType = "text/html;charset=UTF-8";
+		String content = getReuqireBackContent(tbuss014VO);
+		try {
+			sendMessage("AutoMail", csid, null, subject, content, contentType);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void sendRequirePushmail(Tbuss014VO tbuss014VO,String csid) {
+
+		String subject="";
+
+		subject= " <^-^> GREE-ANT GNAW BONE 蚂蚁系统提示:";
+
+		String contentType = "text/html;charset=UTF-8";
+		String content = getReuqirePushContent(tbuss014VO);
+		try {
+			sendMessage("AutoMail", csid, null, subject, content, contentType);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void sendRequireCarrymail(Tbuss014VO tbuss014VO,String csid) {
+
+		String subject="";
+
+		subject= " <^-^> GREE-ANT GNAW BONE 蚂蚁系统提示:";
+
+		String contentType = "text/html;charset=UTF-8";
+		String content = getReuqireCarryContent(tbuss014VO);
+		try {
+			sendMessage("AutoMail", csid, null, subject, content, contentType);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static void sendmail(String csid,String taid,String tilt,String status) {
 
 		String subject="";
@@ -425,6 +502,131 @@ public class MailUtil {
 				+ "<LI><FONT color=red><B>注:</B></FONT> "
 				+ "此邮件为系统信息,请不要作回复操作。</LI></TD></TR></TBODY></TABLE></DIV></BODY></HTML>";
 
+	}
+
+	private static String getReuqirePushContent(Tbuss014VO tbuss014VO) {
+		return "<HTML><HEAD><TITLE>GREE-ANT GNAW BONE 蚂蚁系统</TITLE>"
+				+ "<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>"
+				+ "<STYLE type=text/css>BODY {FONT-SIZE: 9pt; MARGIN: 0px; OVERFLOW: auto; FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #ffffff}"
+				+ "BODY {FONT-SIZE: 12px; COLOR: #0377C1; FONT-FAMILY: arial}"
+				+ "TABLE {FONT-SIZE: 12px; COLOR: #0377C1; FONT-FAMILY: arial}"
+				+ "DIV#default {BORDER-RIGHT: black 0px solid; PADDING-RIGHT: 10px; BORDER-TOP: black 0px solid; PADDING-LEFT: 10px; BACKGROUND: #fff; PADDING-BOTTOM: 20px; MARGIN: 10pt auto 20pt 20pt; BORDER-LEFT: black 0px solid; WIDTH: 700px; PADDING-TOP: 10px; BORDER-BOTTOM: black 0px solid; TEXT-ALIGN: left}"
+				+ "</STYLE>"
+				+ "<BODY>"
+				+ "<DIV id=default><B>GREE-ANT GNAW BONE 蚂蚁系统邮件提示:</B><BR>"
+				+ "<TABLE width=\"100%\">"
+				+ "  <TBODY>"
+				+ "  <TR>"
+				+ "    <TD colSpan=2>"
+				+ " <LI>尊敬的用户，需求-->"+tbuss014VO.getTitl()+"（"+tbuss014VO.getRaid()+"）已经下发给您，请登录"
+				+ "<FONT>"
+				+ "<A href='http://10.1.18.83:8887/ant/"
+				+"'>查看</A>"
+				+ "</FONT></LI></TD></TR></TR>"
+				+ "<TR>"
+				+ "<TD colSpan=2>"
+				+ "<LI><FONT color=red><B>注:</B></FONT> "
+				+ "此邮件为系统信息,请不要作回复操作。</LI></TD></TR></TBODY></TABLE></DIV></BODY></HTML>";
+	}
+
+	private static String getReuqireBackContent(Tbuss014VO tbuss014VO) {
+		return "<HTML><HEAD><TITLE>GREE-ANT GNAW BONE 蚂蚁系统</TITLE>"
+				+ "<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>"
+				+ "<STYLE type=text/css>BODY {FONT-SIZE: 9pt; MARGIN: 0px; OVERFLOW: auto; FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #ffffff}"
+				+ "BODY {FONT-SIZE: 12px; COLOR: #0377C1; FONT-FAMILY: arial}"
+				+ "TABLE {FONT-SIZE: 12px; COLOR: #0377C1; FONT-FAMILY: arial}"
+				+ "DIV#default {BORDER-RIGHT: black 0px solid; PADDING-RIGHT: 10px; BORDER-TOP: black 0px solid; PADDING-LEFT: 10px; BACKGROUND: #fff; PADDING-BOTTOM: 20px; MARGIN: 10pt auto 20pt 20pt; BORDER-LEFT: black 0px solid; WIDTH: 700px; PADDING-TOP: 10px; BORDER-BOTTOM: black 0px solid; TEXT-ALIGN: left}"
+				+ "</STYLE>"
+				+ "<BODY>"
+				+ "<DIV id=default><B>GREE-ANT GNAW BONE 蚂蚁系统邮件提示:</B><BR>"
+				+ "<TABLE width=\"100%\">"
+				+ "  <TBODY>"
+				+ "  <TR>"
+				+ "    <TD colSpan=2>"
+				+ " <LI>尊敬的用户，需求-->"+tbuss014VO.getTitl()+"（"+tbuss014VO.getRaid()+"）已经被驳回，请登录"
+				+ "<FONT>"
+				+ "<A href='http://10.1.18.83:8887/ant/"
+				+"'>查看</A>"
+				+ "</FONT></LI></TD></TR></TR>"
+				+ "<TR>"
+				+ "<TD colSpan=2>"
+				+ "<LI><FONT color=red><B>注:</B></FONT> "
+				+ "此邮件为系统信息,请不要作回复操作。</LI></TD></TR></TBODY></TABLE></DIV></BODY></HTML>";
+	}
+
+	private static String getReuqireCarryContent(Tbuss014VO tbuss014VO) {
+		return "<HTML><HEAD><TITLE>GREE-ANT GNAW BONE 蚂蚁系统</TITLE>"
+				+ "<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>"
+				+ "<STYLE type=text/css>BODY {FONT-SIZE: 9pt; MARGIN: 0px; OVERFLOW: auto; FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #ffffff}"
+				+ "BODY {FONT-SIZE: 12px; COLOR: #0377C1; FONT-FAMILY: arial}"
+				+ "TABLE {FONT-SIZE: 12px; COLOR: #0377C1; FONT-FAMILY: arial}"
+				+ "DIV#default {BORDER-RIGHT: black 0px solid; PADDING-RIGHT: 10px; BORDER-TOP: black 0px solid; PADDING-LEFT: 10px; BACKGROUND: #fff; PADDING-BOTTOM: 20px; MARGIN: 10pt auto 20pt 20pt; BORDER-LEFT: black 0px solid; WIDTH: 700px; PADDING-TOP: 10px; BORDER-BOTTOM: black 0px solid; TEXT-ALIGN: left}"
+				+ "</STYLE>"
+				+ "<BODY>"
+				+ "<DIV id=default><B>GREE-ANT GNAW BONE 蚂蚁系统邮件提示:</B><BR>"
+				+ "<TABLE width=\"100%\">"
+				+ "  <TBODY>"
+				+ "  <TR>"
+				+ "    <TD colSpan=2>"
+				+ " <LI>尊敬的用户，需求-->"+tbuss014VO.getTitl()+"（"+tbuss014VO.getRaid()+"）已经被执行，请登录"
+				+ "<FONT>"
+				+ "<A href='http://10.1.18.83:8887/ant/"
+				+"'>查看</A>"
+				+ "</FONT></LI></TD></TR></TR>"
+				+ "<TR>"
+				+ "<TD colSpan=2>"
+				+ "<LI><FONT color=red><B>注:</B></FONT> "
+				+ "此邮件为系统信息,请不要作回复操作。</LI></TD></TR></TBODY></TABLE></DIV></BODY></HTML>";
+	}
+
+	private static String getPushContent( Tbuss011VO tbuss011VO,String csid) {
+		return "<HTML><HEAD><TITLE>GREE-ANT GNAW BONE 蚂蚁系统</TITLE>"
+				+ "<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>"
+				+ "<STYLE type=text/css>BODY {FONT-SIZE: 9pt; MARGIN: 0px; OVERFLOW: auto; FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #ffffff}"
+				+ "BODY {FONT-SIZE: 12px; COLOR: #0377C1; FONT-FAMILY: arial}"
+				+ "TABLE {FONT-SIZE: 12px; COLOR: #0377C1; FONT-FAMILY: arial}"
+				+ "DIV#default {BORDER-RIGHT: black 0px solid; PADDING-RIGHT: 10px; BORDER-TOP: black 0px solid; PADDING-LEFT: 10px; BACKGROUND: #fff; PADDING-BOTTOM: 20px; MARGIN: 10pt auto 20pt 20pt; BORDER-LEFT: black 0px solid; WIDTH: 700px; PADDING-TOP: 10px; BORDER-BOTTOM: black 0px solid; TEXT-ALIGN: left}"
+				+ "</STYLE>"
+				+ "<BODY>"
+				+ "<DIV id=default><B>GREE-ANT GNAW BONE 蚂蚁系统邮件提示:</B><BR>"
+				+ "<TABLE width=\"100%\">"
+				+ "  <TBODY>"
+				+ "  <TR>"
+				+ "    <TD colSpan=2>"
+				+ " <LI>尊敬的领导，"+tbuss011VO.getANAM()+"("+ csid+")已经提交（"+tbuss011VO.getOKID()+"月份）OKR计划（完成）表给您，请登录"
+				+ "<FONT>"
+				+ "<A href='http://10.1.18.83:8887/ant/"
+				+"'>查看</A>"
+				+ "</FONT></LI></TD></TR></TR>"
+				+ "<TR>"
+				+ "<TD colSpan=2>"
+				+ "<LI><FONT color=red><B>注:</B></FONT> "
+				+ "此邮件为系统信息,请不要作回复操作。</LI></TD></TR></TBODY></TABLE></DIV></BODY></HTML>";
+	}
+
+	private static String getBackContent( Tbuss011VO tbuss011VO,String csid) {
+		return "<HTML><HEAD><TITLE>GREE-ANT GNAW BONE 蚂蚁系统</TITLE>"
+				+ "<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>"
+				+ "<STYLE type=text/css>BODY {FONT-SIZE: 9pt; MARGIN: 0px; OVERFLOW: auto; FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #ffffff}"
+				+ "BODY {FONT-SIZE: 12px; COLOR: #0377C1; FONT-FAMILY: arial}"
+				+ "TABLE {FONT-SIZE: 12px; COLOR: #0377C1; FONT-FAMILY: arial}"
+				+ "DIV#default {BORDER-RIGHT: black 0px solid; PADDING-RIGHT: 10px; BORDER-TOP: black 0px solid; PADDING-LEFT: 10px; BACKGROUND: #fff; PADDING-BOTTOM: 20px; MARGIN: 10pt auto 20pt 20pt; BORDER-LEFT: black 0px solid; WIDTH: 700px; PADDING-TOP: 10px; BORDER-BOTTOM: black 0px solid; TEXT-ALIGN: left}"
+				+ "</STYLE>"
+				+ "<BODY>"
+				+ "<DIV id=default><B>GREE-ANT GNAW BONE 蚂蚁系统邮件提示:</B><BR>"
+				+ "<TABLE width=\"100%\">"
+				+ "  <TBODY>"
+				+ "  <TR>"
+				+ "    <TD colSpan=2>"
+				+ " <LI>尊敬的用户("+csid+")，您提交的（"+tbuss011VO.getOKID()+"）月份OKR计划（完成）表已经被驳回，请登录"
+				+ "<FONT>"
+				+ "<A href='http://10.1.18.83:8887/ant/"
+				+"'>查看</A>"
+				+ "</FONT></LI></TD></TR></TR>"
+				+ "<TR>"
+				+ "<TD colSpan=2>"
+				+ "<LI><FONT color=red><B>注:</B></FONT> "
+				+ "此邮件为系统信息,请不要作回复操作。</LI></TD></TR></TBODY></TABLE></DIV></BODY></HTML>";
 	}
 
 	private static String getContent( String ptno,String grop) {

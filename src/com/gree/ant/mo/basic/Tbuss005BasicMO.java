@@ -90,4 +90,6 @@ public interface Tbuss005BasicMO {
      * @createTime 2017 :09:20 02:09:45.
      */
     Integer deleteByPtno(String ptno);
+
+    Integer deleteByPtnoRule(String ptno,String pjno);
 }

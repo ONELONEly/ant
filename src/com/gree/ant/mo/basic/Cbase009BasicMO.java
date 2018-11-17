@@ -1,6 +1,7 @@
 package com.gree.ant.mo.basic;
 
 import com.gree.ant.vo.Cbase009VO;
+import com.gree.ant.vo.response.GropUser;
 import com.gree.ant.vo.util.ResultVO;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
@@ -67,6 +68,9 @@ public interface Cbase009BasicMO{
      * @createTime 2017 :09:06 06:09:10.
      */
     Cbase009VO fetchC9Trans(String grop,Condition cnd);
+
+
+    List<GropUser> fetchC9Tran(String grop,Condition cnd);
 
     /**
      * Fetch one trans cbase 009 vo.

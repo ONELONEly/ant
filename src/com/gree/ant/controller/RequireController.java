@@ -1,22 +1,13 @@
 package com.gree.ant.controller;
 
-import com.gree.ant.mo.Tbuss003MO;
-import com.gree.ant.util.FileUtil;
-import com.gree.ant.util.ResultUtil;
-import com.gree.ant.util.StringUtil;
-import com.gree.ant.util.TableUtil;
-import com.gree.ant.vo.Tbuss003VO;
-import org.nutz.dao.Cnd;
-import org.nutz.dao.pager.Pager;
-import org.nutz.dao.util.cri.SqlExpressionGroup;
+import com.gree.ant.mo.BussMoFactory;
+import com.gree.ant.util.*;
+import com.gree.ant.vo.Tbuss014VO;
+import org.nutz.dao.QueryResult;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Ok;
-import org.nutz.mvc.annotation.POST;
-import org.nutz.mvc.annotation.Param;
-
-import javax.servlet.http.HttpSession;
+import org.nutz.mvc.annotation.*;
+import java.sql.Clob;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,15 +25,14 @@ import java.util.Map;
 @IocBean
 public class RequireController {
 
-
-    @Inject("refer:tbuss003MO")
-    private Tbuss003MO tbuss003MO;
+    @Inject
+    private BussMoFactory bussMoFactory;
 
     /**
      * Index string.
      *
      * @return the string
-     * @description 用户需求界面入口
+     * @description 需求指派界面入口
      * @author create by jinyuk@foxmail.com.
      * @version V1.0
      * @createTime 2017 :10:31 04:10:44.
@@ -50,6 +40,18 @@ public class RequireController {
     @At
     @Ok("jsp:jsp.require.index")
     public String index(){
+        return "success!";
+    }
+
+    /**
+     * @return TODO
+     * @description 个人需求入口处
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     */
+    @At
+    @Ok("jsp:jsp.require.user")
+    public String user(){
         return "success!";
     }
 
@@ -71,7 +73,7 @@ public class RequireController {
     /**
      * Modify map.
      *
-     * @param taid the taid
+     * @param raid the raid
      * @return the map
      * @description 修改用户需求界面
      * @author create by jinyuk@foxmail.com.
@@ -80,12 +82,13 @@ public class RequireController {
      */
     @At
     @Ok("jsp:jsp.require.modify")
-    public Map<String,Object> modify(@Param("taid")String taid){
+    public Map<String,Object> modify(@Param("raid")String raid){
         HashMap<String,Object> map = new HashMap<>();
-        Tbuss003VO tbuss003VO = tbuss003MO.fetchByTaid(taid);
-        map.put("note",FileUtil.convertClob(tbuss003VO.getNote()));
-        tbuss003VO.setNote(null);
-        map.put("task",tbuss003VO);
+        Tbuss014VO tbuss014VO = bussMoFactory.getTbuss014MO().fetchByRaid(raid);
+        map.put("note",FileUtil.convertClob(tbuss014VO.getNote()));
+        tbuss014VO.setNote(null);
+        map.put("ydat", DateUtil.formatYMDHMSDate(tbuss014VO.getYdat()));
+        map.put("task",tbuss014VO);
         return map;
     }
 
@@ -110,7 +113,6 @@ public class RequireController {
      * @param pageNumber 页数
      * @param pageSize   页的大小
      * @param key        过滤管检测
-     * @param session    the session
      * @return 标准的表格请求结果集合
      * @description 获得个人用户的所有需求
      * @author create by jinyuk@foxmail.com.
@@ -118,17 +120,30 @@ public class RequireController {
      * @createTime 2017 :10:31 04:10:44.
      */
     @At
-    @Ok("json")
-    public Map<String,Object> queryUserRequire(@Param("page")Integer pageNumber, @Param("limit")Integer pageSize,@Param("key")String key,HttpSession session){
-        SqlExpressionGroup e = null;
-        if(key != null){
-            e = Cnd.exps("taid","like","%"+key+"%").or("synonam","like","%"+key+"%").or("titl","like","%"+key+"%");
-        }
-        String usid = StringUtil.getUsid(session);
-        Pager pager = new Pager(pageNumber,pageSize);
-        Cnd cnd = Cnd.where("puno","=","PU0007").and("usid","=",usid).and(e);
-        return TableUtil.makeJson(0,"",tbuss003MO.countByCnd(cnd),tbuss003MO.queryAllByCnd(cnd,pager));
+    @Ok("json:{dateFormat:'yy-MM-dd hh:MM:ss'}")
+    public Map<String,Object> queryUserRequire(@Param("page")Integer pageNumber, @Param("limit")Integer pageSize,
+                                               @Param("stat")Integer stat,@Param("key")String key,@Attr("usid")String usid){
+        QueryResult queryResult = bussMoFactory.getTbuss014MO().queryAllByMsg(pageNumber,pageSize,key,stat,null,usid);
+        return TableUtil.makeJson(0,"",queryResult.getPager().getRecordCount(),queryResult.getList(Tbuss014VO.class));
     }
+
+    /**
+     * @param pageNumber 页数
+     * @param pageSize   页的大小
+     * @param key        过滤管检测
+     * @return 标准的表格请求结果集合
+     * @description 获得个人用户下发的所有需求
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     */
+    @At
+    @Ok("json:{dateFormat:'yy-MM-dd hh:MM:ss'}")
+    public Map<String,Object> queryDownRequire(@Param("page")Integer pageNumber, @Param("limit")Integer pageSize,
+                                               @Param("key")String key,@Param("stat")Integer stat,@Attr("usid")String usid){
+        QueryResult queryResult = bussMoFactory.getTbuss014MO().queryAllByMsg(pageNumber,pageSize,key,stat,usid,null);
+        return TableUtil.makeJson(0,"",queryResult.getPager().getRecordCount(),queryResult.getList(Tbuss014VO.class));
+    }
+
 
     /**
      * Query all require map.
@@ -143,23 +158,18 @@ public class RequireController {
      * @createTime 2017 :10:31 04:10:44.
      */
     @At
-    @Ok("json")
-    public Map<String,Object> queryAllRequire(@Param("page")Integer pageNumber, @Param("limit")Integer pageSize,@Param("key")String key){
-        SqlExpressionGroup e = null;
-        if(key != null){
-            e = Cnd.exps("taid","like","%"+key+"%").or("synonam","like","%"+key+"%").or("titl","like","%"+key+"%");
-        }
-        Pager pager = new Pager(pageNumber,pageSize);
-        Cnd cnd = Cnd.where("puno","=","PU0007").and(e);
-        return TableUtil.makeJson(0,"",tbuss003MO.countByCnd(cnd),tbuss003MO.queryAllByCnd(cnd,pager));
+    @Ok("json:{dateFormat:'yy-MM-dd hh:MM:ss'}")
+    public Map<String,Object> queryAllRequire(@Param("page")Integer pageNumber, @Param("limit")Integer pageSize,
+                                              @Param("stat")Integer stat,@Param("key")String key){
+        QueryResult queryResult = bussMoFactory.getTbuss014MO().queryAllByMsg(pageNumber,pageSize,key,stat,null,null);
+        return TableUtil.makeJson(0,"",queryResult.getPager().getRecordCount(),queryResult.getList(Tbuss014VO.class));
     }
 
     /**
      * Insert require map.
      *
-     * @param tbuss003VO 任务实体
+     * @param tbuss014VO 需求实体
      * @param edit       用户需求的内容
-     * @param session    the session
      * @return 标准的数据请求结果集合
      * @description 插入单条用户需求
      * @author create by jinyuk@foxmail.com.
@@ -169,21 +179,18 @@ public class RequireController {
     @At
     @POST
     @Ok("json")
-    public Map<String,Object> insertRequire(@Param("..")Tbuss003VO tbuss003VO,@Param("edit")String edit,HttpSession session){
-        String msg = "";
-        Integer code = 0;
-        String usid = StringUtil.getUsid(session);
-        String taid = tbuss003VO.getTaid();
-        if(StringUtil.checkString(taid) && StringUtil.checkString(edit,tbuss003VO.getTitl(),tbuss003VO.getSyno())){
-            tbuss003VO.setNote(FileUtil.formatClobByString(edit));
-            tbuss003VO.setUsid(usid);
-            tbuss003VO.setStag(0);
-            tbuss003VO.setSta1(0);
-            tbuss003VO.setCdat(new Date());
-            tbuss003VO.setPuno("PU0007");
-            tbuss003VO.setFahh(0f);
-            tbuss003VO = tbuss003MO.insertByVO(tbuss003VO);
-            if(tbuss003VO != null){
+    public Map<String,Object> insertRequire(@Param("..") Tbuss014VO tbuss014VO, @Param("edit")String edit, @Attr("usid")String usid){
+        String msg = "系统异常";
+        int code = 0;
+        if(StringUtil.checkString(tbuss014VO.getRaid(),tbuss014VO.getCsid(),tbuss014VO.getTitl()) && StringUtil.checkString(edit)){
+            Clob note = FileUtil.formatClobByString(edit);
+            tbuss014VO.setNote(note);
+            tbuss014VO.setStat(0);
+            tbuss014VO.setUsid(usid);
+            tbuss014VO.setCdat(new Date());
+            tbuss014VO = bussMoFactory.getTbuss014MO().insertByVO(tbuss014VO);
+            if(tbuss014VO != null){
+                MailUtil.sendRequirePushmail(tbuss014VO,tbuss014VO.getCsid());
                 code = 1;
             }
         }else{
@@ -196,8 +203,7 @@ public class RequireController {
     /**
      * Delete require map.
      *
-     * @param taid  任务ID
-     * @param taids 任务ID集合
+     * @param raid  需求ID
      * @return 标准的数据请求结果集合
      * @description 删除用户需求.
      * @author create by jinyuk@foxmail.com.
@@ -207,15 +213,13 @@ public class RequireController {
     @At
     @POST
     @Ok("json")
-    public Map<String,Object> deleteRequire(@Param("taid")String taid,@Param("::list")String[] taids){
+    public Map<String,Object> deleteRequire(@Param("raid")String raid,@Param("::list")String[] raids){
         String msg = "";
         Integer code = 0;
-        if(StringUtil.checkString(taid)){
-            code = tbuss003MO.deleteByTaid(taid);
-        }else if(taids != null){
-            for(String TAID:taids){
-                code = tbuss003MO.deleteByTaid(TAID);
-            }
+        if(StringUtil.checkString(raid)){
+            code = bussMoFactory.getTbuss014MO().deleteByRaid(raid);
+        }else if(raids != null){
+            code = bussMoFactory.getTbuss014MO().deleteByRaids(raids);
         }else{
             msg = "请求参数为空！";
         }
@@ -226,7 +230,6 @@ public class RequireController {
     /**
      * Edit require map.
      *
-     * @param tbuss003VO 任务实体
      * @param edit       用户需求的内容
      * @return 标准的数据请求结果集合
      * @description 修改用户需求
@@ -237,18 +240,17 @@ public class RequireController {
     @At
     @POST
     @Ok("json")
-    public Map<String,Object> editRequire(@Param("..")Tbuss003VO tbuss003VO,@Param("edit")String edit){
-        String msg = "";
+    public Map<String,Object> editRequire(@Param("..")Tbuss014VO tbuss014VO,@Param("edit")String edit,@Attr("usid")String usid){
+        String msg = "服务器异常";
         Integer code = 0;
-        String taid = tbuss003VO.getTaid();
-        if(StringUtil.checkString(taid) && StringUtil.checkString(edit,tbuss003VO.getTitl(),tbuss003VO.getSyno())) {
-            Tbuss003VO tbuss003VO1 = tbuss003MO.fetchByTaid(taid);
-            tbuss003VO1.setNote(FileUtil.formatClobByString(edit));
-            tbuss003VO1.setSyno(tbuss003VO.getSyno());
-            tbuss003VO1.setTitl(tbuss003VO.getTitl());
-            tbuss003VO1.setSta2(tbuss003VO.getSta2());
-            tbuss003VO1.setSta3(tbuss003VO.getSta3());
-            code = tbuss003MO.updateByVO(tbuss003VO1);
+        String raid = tbuss014VO.getRaid();
+        if(StringUtil.checkString(raid) && StringUtil.checkString(tbuss014VO.getSyno(),tbuss014VO.getTitl(),tbuss014VO.getCsid())) {
+            Tbuss014VO tbuss014VO1 = bussMoFactory.getTbuss014MO().fetchByRaid(raid);
+            tbuss014VO.setNote(FileUtil.formatClobByString(edit));
+            tbuss014VO.setStat(0);
+            tbuss014VO.setUsid(usid);
+            tbuss014VO.setCdat(tbuss014VO1.getCdat());
+            code = bussMoFactory.getTbuss014MO().updateByVO(tbuss014VO);
         }else{
             msg = "请确认您已经输入了所有信息！";
         }
@@ -259,7 +261,7 @@ public class RequireController {
     /**
      * Copy task map.
      *
-     * @param taids 任务ID集合
+     * @param raids 需求ID集合
      * @return 标准的数据请求结果集合
      * @description 复制用户需求.
      * @author create by jinyuk@foxmail.com.
@@ -269,24 +271,39 @@ public class RequireController {
     @At
     @POST
     @Ok("json")
-    public Map<String,Object> copyTask(@Param("::list")String[] taids){
-        String msg = "";
-        Integer code = 0;
-        if(taids!=null){
-            for(String taid:taids){
-                Tbuss003VO tbuss003VO = tbuss003MO.fetchByTaid(taid);
-                tbuss003VO.setTaid("JK"+ FileUtil.getRandomName());
-                tbuss003VO.setCdat(new Date());
-                tbuss003VO.setFahh(0f);
-                tbuss003VO = tbuss003MO.insertByVO(tbuss003VO);
-                if(tbuss003VO != null){
-                    code = 1;
-                }
-            }
+    public Map<String,Object> copyTask(@Param("::list")String[] raids,@Attr("usid")String usid){
+        String msg = "服务器异常";
+        int code = 0;
+        if(raids!=null){
+            bussMoFactory.getTbuss014MO().copyByRaids(raids,usid);
+            code = 1;
         }else{
-            msg = "请求参数为空！请选中任务！";
+            msg = "请求参数为空！请选中需求！";
         }
         msg = code == 1?"复制成功！":msg;
+        return ResultUtil.getResult(code,msg,null);
+    }
+
+    /**
+     * @param raids
+     * @return TODO
+     * @description 驳回需求
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     */
+    @At
+    @POST
+    @Ok("json")
+    public Map<String,Object> backRequire(@Param("::list")String[] raids){
+        String msg = "服务器异常";
+        int code = 0;
+        if(raids!=null){
+            bussMoFactory.getTbuss014MO().backByRaids(raids);
+            code = 1;
+        }else{
+            msg = "请求参数为空！请选中需求！";
+        }
+        msg = code == 1?"驳回成功！":msg;
         return ResultUtil.getResult(code,msg,null);
     }
 

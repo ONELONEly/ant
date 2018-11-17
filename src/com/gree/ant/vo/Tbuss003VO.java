@@ -391,6 +391,26 @@ public class Tbuss003VO extends ValueObject{
     /**
      * Instantiates a new Tbuss 003 vo.
      *
+     * @description 需求转换成个人任务时使用
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     */
+    public Tbuss003VO(String taid, Clob note, Date cdat, String usid, String csid,Integer sta2, Integer sta3, String syno, String titl,String cnam,String synonam) {
+        this.taid = taid;
+        this.note = note;
+        this.cdat = cdat;
+        this.usid = usid;
+        this.csid = csid;
+        this.sta2 = sta2;
+        this.sta3 = sta3;
+        this.syno = syno;
+        this.titl = titl;
+        this.cnam = cnam;
+        this.synonam = synonam;
+    }
+
+    /**
+     * Instantiates a new Tbuss 003 vo.
+     *
      * @description 绩效管理任务时使用
      * @author create by jinyuk@foxmail.com.
      * @version V1.0
@@ -411,16 +431,19 @@ public class Tbuss003VO extends ValueObject{
         this.adat = adat;
     }
 
-    public Tbuss003VO(String taid, String titl, Date cdat, String cnam, String sta1nam, Date pdat, String knam, String synonam, String punonam, Date fdat, Date tdat, Date adat,Float fahh) {
+    public Tbuss003VO(String taid, String titl, Date cdat, String cnam, String sta1nam,String sta2nam,String sta3nam, Date pdat, String knam, String synonam, String punonam, String ptypnam, Date fdat, Date tdat, Date adat,Float fahh) {
         this.taid = taid;
         this.titl = titl;
         this.cdat = cdat;
         this.cnam = cnam;
         this.sta1nam = sta1nam;
+        this.sta2nam = sta2nam;
+        this.sta3nam = sta3nam;
         this.pdat = pdat;
         this.knam = knam;
         this.synonam = synonam;
         this.punonam = punonam;
+        this.ptypnam = ptypnam;
         this.fdat = fdat;
         this.tdat = tdat;
         this.adat = adat;
@@ -520,6 +543,8 @@ public class Tbuss003VO extends ValueObject{
             String rose = (perc*100+"");
             if(rose.length() == 3){
                 res = rose.substring(0,1)+res;
+            }else if (rose.length() == 1){
+                res = rose + res;
             }else{
                 res = rose.substring(0,2)+res;
             }

@@ -1,6 +1,9 @@
 package com.gree.ant.mo.basic;
 
+import com.gree.ant.vo.Cbase000VO;
 import com.gree.ant.vo.Tbuss003VO;
+import com.gree.ant.vo.Tbuss014VO;
+import com.gree.ant.vo.response.FahhVO;
 import com.gree.ant.vo.util.TaskUtilVO;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
@@ -65,7 +68,7 @@ public interface Tbuss003BasicMO {
      * @version V1.0
      * @createTime 2017 :09:09 11:09:29.
      */
-    Integer updateByVO(Tbuss003VO tbuss003VO);
+    Integer updateByVO(Tbuss003VO tbuss003VO, Integer operate, Cbase000VO cbase000VO, Tbuss014VO tbuss014VO);
 
     /**
      * Fetch by taid tbuss 003 vo.
@@ -206,4 +209,10 @@ public interface Tbuss003BasicMO {
     Integer countByTaskUtil(TaskUtilVO taskUtilVO);
 
     List<TaskUtilVO> queryAllByPagerMsg(Pager pager,TaskUtilVO taskUtilVO,String sort,String order);
+
+    List<FahhVO> queryAllProjectFahh(String date);
+
+    List<FahhVO> queryAllNotProjectFahh(String date);
+
+    void markScore(String[] taids,Integer stage);
 }

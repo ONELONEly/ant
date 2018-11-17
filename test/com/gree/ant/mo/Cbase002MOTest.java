@@ -25,7 +25,6 @@ public class Cbase002MOTest {
 
     @Test
     public void deleteByPONO() throws Exception {
-        System.out.print(cbase002MO.queryAllMenuByUSID("180365"));
     }
 
     @Test

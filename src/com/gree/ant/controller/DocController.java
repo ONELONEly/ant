@@ -357,10 +357,11 @@ public class DocController {
     @Filters
     @Ok("json:{dateFormat:'yyyy-MM-dd'}")
     public Map<String,Object> queryAllDoc(@Param("page")Integer pageNumber,@Param("limit")Integer pageSize,
-                                          @Param("key")String key,@Param("ctyp")Integer ctyp,@Param("week")String week,@Param("sdat")String sdat,@Param("grop")String grop,HttpSession session){
-        System.out.println("ctyp"+ctyp);
+                                          @Param("key")String key,@Param("ctyp")Integer ctyp,@Param("week")String week,
+                                          @Param("sdat")String sdat,@Param("grop")String grop,@Attr("user")Cbase000VO cbase000VO,
+                                          HttpSession session){
         String usid = StringUtil.getUsid(session);
-        Integer sta2 = cbase000MO.fetchByUsid(usid).getSTA2();
+        Integer sta2 = cbase000VO.getSTA2();
         String stage = "";
         List<Tbuss009VO> tbuss009VOS;
         Pager pager;
@@ -382,19 +383,15 @@ public class DocController {
                     .or("unam","like","%"+key+"%");
         }
         if(ctyp!=null){
-            System.out.println("类型不为空"+ctyp);
             e6 = Cnd.exps("ctyp","=",ctyp);
         }
-        if(StringUtil.checkString(week)){
-            System.out.println("周数不为空"+week);
+        if(StringUtil.checkString(week) && ctyp!= null && ctyp == 1){
             e7 = Cnd.exps("week","=",week);
         }
-        if(StringUtil.checkString(sdat)){
-            System.out.println("日期不为空"+sdat);
+        if(StringUtil.checkString(sdat) && ctyp!= null && ctyp == 1){
             e8 = Cnd.exps("sdat","=",sdat);
         }
         if(StringUtil.checkString(grop)){
-            System.out.println("团队不为空"+grop);
             e9 = Cnd.exps("grop","=",grop);
         }
 

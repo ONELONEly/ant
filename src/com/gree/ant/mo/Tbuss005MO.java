@@ -107,4 +107,9 @@ public class Tbuss005MO implements Tbuss005BasicMO{
     public Integer deleteByPtno(String ptno) {
         return tbuss005DAOImp.deleteByPtno(ptno);
     }
+
+    @Override
+    public Integer deleteByPtnoRule(String ptno, String pjno) {
+        return tbuss005DAOImp.deleteByPtnoPjno(ptno, pjno);
+    }
 }

@@ -22,10 +22,11 @@
         <a href="javascript:"><cite style="cursor: pointer;">首页</cite></a>
         <a href="javascript:"><cite style="cursor: pointer;">项目</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">绩效</cite></a>
+        <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center layui-icon-refresh"></i></a>
     </span>
 </div>
 <div class="x-body">
-    <form class="layui-form" action="" style="width:50%">
+    <form class="layui-form" action="">
         <div class="layui-form-pane" style="margin-top: 15px;">
             <div class="layui-form-item">
                 <div class="layui-input-inline">
@@ -39,10 +40,9 @@
                 </div>
 
                 <div class="layui-input-inline">
-                    <label for="team"></label><select name="team" lay-filter="team" id="team" lay-search>
-                    <option value="" style="display:none;" disabled selected>请选择Team</option>
-                </select>
-
+                    <select name="team" lay-filter="team" id="team" lay-search>
+                        <option value="" style="display:none;" disabled selected>请选择Team</option>
+                    </select>
                 </div>
                 <div class="layui-input-inline">
                     <button class="layui-btn layui-btn-radius" lay-filter="add" lay-submit="">增加</button>
@@ -51,7 +51,7 @@
         </div>
     </form>
 
-    <form class="layui-form" style="width:50%">
+    <form class="layui-form">
         <div class="layui-form-pane" style="margin-top: 15px;">
             <div class="layui-form-item">
                 <div class="layui-input-inline">
@@ -59,6 +59,11 @@
                 </div>
                 <div class="layui-input-inline">
                     <button class="layui-btn layui-btn-radius" lay-filter="search" lay-submit="">查询</button>
+                </div>
+                <div class="layui-input-inline">
+                    <select name="group" lay-filter="group" id="group" lay-search>
+                        <option value="" style="display:none;" disabled selected>团队过滤</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -77,10 +82,11 @@
                 <th lay-data="{checkbox:true,width:50,fixed:true}"></th>
                 <th lay-data="{field:'ptno',align:'center',width:170,sort:true}">编号</th>
                 <th lay-data="{field:'pdat',align:'center',width:170,sort:true}">月份</th>
-                <th lay-data="{field:'dsca',align:'center',width:'20%',templet:'#themeTpl'}">主题</th>
+                <th lay-data="{align:'center',width:170,templet:'#taskTpl'}">任务评分</th>
+                <th lay-data="{field:'dsca',align:'center',width:'20%',templet:'#themeTpl'}">日常评分</th>
                 <th lay-data="{field:'count',align:'center',width:170,templet:'#countTpl'}">统计</th>
+                <th lay-data="{field:'gropnam',align:'center',width:170,sort:true}">团队</th>
                 <th lay-data="{align:'center',width:170,templet:'#ruleTpl'}">规则</th>
-                <th lay-data="{align:'center',width:170,templet:'#taskTpl'}">任务进度</th>
                 <th lay-data="{fixed:'right',toolbar:'#operate',width:400,align:'center'}">操作</th>
             </tr>
             </thead>
@@ -117,6 +123,15 @@
             form = layui.form,
             $ = layui.jquery;
 
+        form.on("select(group)",function (data) {
+            table.reload("grade",{
+                where:{
+                    group:data.value,
+                    key:$("#verify").val()
+                }
+            });
+        });
+
         var start = {
             elem: '#date',
             type: 'month',
@@ -149,7 +164,7 @@
                 dataType: 'json',
                 success: function (data) {
                     if (data.code === 1) {
-                        layer.confirm(data.msg, function (index) {
+                        layer.confirm(data.msg, {offset: '10px'},function (index) {
                             table.reload("grade");
                             layer.close(index);
                         });
@@ -168,7 +183,8 @@
             var infor = data.field;
             table.reload("grade", {
                 where: {
-                    key: infor.verify
+                    key: infor.verify,
+                    group:$("#group option:selected").val()
                 }
             });
             return false;
@@ -185,6 +201,7 @@
                     option += "<option value='" + c9s[i].id + "'>" + c9s[i].dsca + "</option>";
                 }
                 $("#team").append(option);
+                $("#group").append(option);
                 form.render();
             },
             error: function (kj) {
@@ -195,7 +212,7 @@
         table.on("tool(grade)", function (obj) {
             var data = obj.data;
             if (obj.event === 'del') {
-                layer.confirm('真的删除行么', function (index) {
+                layer.confirm('真的删除行么',{offset: '10px'}, function (index) {
                     $.ajax({
                         type: 'POST',
                         url: '${base}/grade/deleteGrade',
@@ -216,7 +233,6 @@
                     });
                 });
             } else if (obj.event === 'push') {
-                console.log(obj);
                 $.ajax({
                     type: 'POST',
                     url: '${base}/grade/pushGrade',

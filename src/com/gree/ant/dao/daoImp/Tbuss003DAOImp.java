@@ -4,6 +4,7 @@ import com.gree.ant.dao.Tbuss003DAO;
 import com.gree.ant.dao.daoImp.util.DAOUtil;
 import com.gree.ant.util.FileUtil;
 import com.gree.ant.vo.Tbuss003VO;
+import com.gree.ant.vo.response.FahhVO;
 import com.gree.ant.vo.util.TaskUtilVO;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
@@ -36,8 +37,8 @@ public class Tbuss003DAOImp extends BaseDAOImp<Tbuss003VO> implements Tbuss003DA
 
     @Override
     public List<Tbuss003VO> queryAllGradeTask(String usid, Pager pager,Condition condition) {
-        String sqlStr = "select t.taid,t.titl,t.cdat,t.cnam,t.sta1nam,t.pdat,t.knam,t.synonam,t.punonam,t.fdat,t.tdat,t.adat," +
-                "t.perc,(select count(*) from TBUSS010 s where s.USID = @usid AND s.TAID = t.TAID)coun,t.fahh,(select t1.dsca from tbuss001 t1 where t1.ptno = t.ptno)t1dsca from V_TBUSS003 t $condition";
+        String sqlStr = "select t.taid,t.titl,t.cdat,t.cnam,t.sta1nam,t.sta2nam,t.sta3nam,t.pdat,t.knam,t.synonam,t.punonam,t.ptypnam,t.fdat,t.tdat,t.adat," +
+                "t.perc,(select count(*) from TBUSS010 s where s.USID = @usid AND s.TAID = t.TAID)coun,t.fahh,(select t1.dsca from tbuss001 t1 where t1.ptno = t.ptno)t1dsca,t.stag from V_TBUSS003 t $condition";
         Sql sql = Sqls.create(sqlStr);
         sql.setParam("usid",usid);
         sql.setPager(pager);
@@ -49,12 +50,14 @@ public class Tbuss003DAOImp extends BaseDAOImp<Tbuss003VO> implements Tbuss003DA
                 while(rs.next()){
                     Tbuss003VO tbuss003VO = new Tbuss003VO(rs.getString("taid"),rs.getString("titl"),
                             rs.getDate("cdat"),rs.getString("cnam"),rs.getString("sta1nam"),
+                            rs.getString("sta2nam"),rs.getString("sta3nam"),
                             rs.getDate("pdat"),rs.getString("knam"),rs.getString("synonam"),
-                            rs.getString("punonam"),rs.getDate("fdat"),rs.getDate("tdat"),
+                            rs.getString("punonam"),rs.getString("ptypnam"),rs.getDate("fdat"),rs.getDate("tdat"),
                             rs.getDate("adat"),rs.getFloat("fahh"));
                     tbuss003VO.setPerc(rs.getDouble("perc"));
                     tbuss003VO.setEye(rs.getInt("coun"));
                     tbuss003VO.setT1dsca(rs.getString("t1dsca"));
+                    tbuss003VO.setStag(rs.getInt("stag"));
                     tbuss003VOS.add(tbuss003VO);
                 }
                 return tbuss003VOS;
@@ -148,6 +151,46 @@ public class Tbuss003DAOImp extends BaseDAOImp<Tbuss003VO> implements Tbuss003DA
         sql.setPager(pager);
         sql.setCondition(cnd);
         return DAOUtil.getTU(sql,this.getDao());
+    }
+
+    @Override
+    public List<FahhVO> queryAllProjectFahh(String startDate, String endDate) {
+        String sqlStr = "select sum(FAHH) as SCORE,count(TAID) as num,CNAM,CSID from v_TBUSS003 where sta1 = 11 and SYNO in (select SYNO from CBASE013 where DSCA like '[项目]%') and" +
+                "  (FDAT >= to_date(@start,'yyyy-MM-dd') and FDAT <= to_date(@end,'YYYY-MM-DD')) group by CNAM,CSID";
+        return queryFahhResultFormat(startDate,endDate,sqlStr,this.getDao());
+    }
+
+    @Override
+    public List<FahhVO> queryAllNotProjectFahh(String startDate, String endDate) {
+        String sqlStr = "select sum(FAHH) as SCORE,count(TAID) as num,CNAM,CSID from v_TBUSS003 where sta1 = 11 and SYNO not in (select SYNO from CBASE013 where DSCA like '[项目]%') and" +
+                "  (FDAT >= to_date(@start,'yyyy-MM-dd') and FDAT <= to_date(@end,'YYYY-MM-DD')) group by CNAM,CSID";
+        return queryFahhResultFormat(startDate,endDate,sqlStr,this.getDao());
+    }
+
+    @Override
+    public void markScore(Condition condition,Integer stag) {
+        String sqlStr = "update tbuss003 set stag = @stag $condition";
+        Sql sql = Sqls.create(sqlStr);
+        sql.setParam("stag",stag);
+        sql.setCondition(condition);
+        this.getDao().execute(sql);
+    }
+
+    private List<FahhVO> queryFahhResultFormat(String startDate, String endDate, String sqlStr, Dao dao){
+        Sql sql = Sqls.create(sqlStr);
+        sql.setParam("start",startDate).setParam("end",endDate);
+        sql.setCallback(new SqlCallback() {
+            @Override
+            public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
+                List<FahhVO> fahhVOS = new ArrayList<>();
+                while(rs.next()){
+                    fahhVOS.add(new FahhVO(rs.getString("CSID"),rs.getString("CNAM"),rs.getInt("num"),rs.getFloat("SCORE")));
+                }
+                return fahhVOS;
+            }
+        });
+        dao.execute(sql);
+        return sql.getList(FahhVO.class);
     }
 
     /**

@@ -70,7 +70,6 @@ public class UicController {
     @At
     @Ok("jsp:jsp.test")
     public Map<String,Object> test(){
-        System.out.println("测试");
         return null;
     }
 
@@ -363,7 +362,6 @@ public class UicController {
     @Ok("json:{dateFormat:'yyyy-MM-dd'}")
     public Map<String,Object> queryAllDoc(@Param("page")Integer pageNumber,@Param("limit")Integer pageSize,
                                           @Param("key")String key,@Param("ctyp")Integer ctyp,@Param("week")String week,@Param("sdat")String sdat,@Param("grop")String grop,HttpSession session){
-        System.out.println("ctyp"+ctyp);
         String usid = StringUtil.getUsid(session);
         Integer sta2 = cbase000MO.fetchByUsid(usid).getSTA2();
         String stage = "";
@@ -387,19 +385,15 @@ public class UicController {
                     .or("unam","like","%"+key+"%");
         }
         if(ctyp!=null){
-            System.out.println("类型不为空"+ctyp);
             e6 = Cnd.exps("ctyp","=",ctyp);
         }
         if(StringUtil.checkString(week)){
-            System.out.println("周数不为空"+week);
             e7 = Cnd.exps("week","=",week);
         }
         if(StringUtil.checkString(sdat)){
-            System.out.println("日期不为空"+sdat);
             e8 = Cnd.exps("sdat","=",sdat);
         }
         if(StringUtil.checkString(grop)){
-            System.out.println("团队不为空"+grop);
             e9 = Cnd.exps("grop","=",grop);
         }
 

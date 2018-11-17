@@ -38,7 +38,6 @@ public class Cbase007MOTest {
 
     @Test
     public void fetchTransByCndROID() throws Exception {
-        System.out.println(cbase007MO.fetchTransByCndROID(null,"R00000","cbase002VOS").getCbase002VOS().size());
     }
 
     @Test

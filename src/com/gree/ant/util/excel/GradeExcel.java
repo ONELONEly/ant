@@ -375,7 +375,7 @@ public class GradeExcel {
                 sheet.addCell(cell);
                 cell = new Label(2, col, tbuss003VO.getSynonam() == null ? "" : tbuss003VO.getSynonam(), format);
                 sheet.addCell(cell);
-                cell = new Label(3, col, cbase011VO.getPjjp() == null?"":cbase011VO.getPjjp(), format);
+                cell = new Label(3, col, cbase011VO.getPjjp() == null?"":average+"", format);
                 sheet.addCell(cell);
                 cell = new Label(4, col, tbuss003VO.getTitl() == null ? "" : tbuss003VO.getTitl(), format);
                 sheet.addCell(cell);

@@ -2,9 +2,7 @@ package com.gree.ant.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 
 public class DateUtil {
 
@@ -105,6 +103,24 @@ public class DateUtil {
     }
 
     /**
+     * @param date 日期的标准格式，为String格式，如：yyyy-MM
+     * @return the date
+     * @description 将String转成date格式
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     */
+    public static Date formatYMDate(String date){
+        Date day = null;
+        SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM");
+        try {
+            day = simple.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return day;
+    }
+
+    /**
      * Format ymd date string.
      *
      * @param date the date
@@ -132,6 +148,41 @@ public class DateUtil {
     public static String formatYMDate(Date date){
         SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM");
         return simple.format(date);
+    }
+
+    /**
+     * @param date
+     * @return 返回当前日期
+     * @description 生成当前日期
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     */
+    public static String getPresentDay(Date date){
+        SimpleDateFormat simple = new SimpleDateFormat("dd");
+        return simple.format(date);
+    }
+
+    public static String formatYMDHMSDate(Date date){
+        SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd hh:MM:ss");
+        return simple.format(date);
+    }
+
+    public static Map<String,String> getStartEndDate(String date){
+        Map<String,String> resultMap = new HashMap<>();
+        if (!StringUtil.checkString(date)) {
+            date = formatYMDate(new Date());
+
+        }
+        Integer lastIndex = date.lastIndexOf("-");
+        String prev = date.substring(0,lastIndex+1);
+        Integer num = Integer.parseInt(date.substring(lastIndex+1));
+        String prevStart = prev+(num-2)+"-26"; //前个月26号
+        String startDate = prev+(num-1)+"-26"; //上个月26号
+        String endDate = prev+num+"-26"; //本个月26号
+        resultMap.put("prevDate",prevStart);
+        resultMap.put("startDate",startDate);
+        resultMap.put("endDate",endDate);
+        return resultMap;
     }
 
 }

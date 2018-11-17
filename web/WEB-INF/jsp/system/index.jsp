@@ -112,7 +112,7 @@
             var data = check.data;
             var param ={};
             for(var i = 0;i < data.length;i++){
-                param[i] = data[0].taid;
+                param[i] = data[i].taid;
             }
             $.ajax({
                 type:'POST',

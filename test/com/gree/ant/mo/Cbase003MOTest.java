@@ -33,7 +33,6 @@ public class Cbase003MOTest {
 
     @Test
     public void fetchByPONO() throws Exception {
-        System.out.println(cbase003MO.fetchTransByFLNO("010"));
     }
 
     @Test

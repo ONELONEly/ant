@@ -13,8 +13,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>看板</title>
-    <script type="text/javascript" src="../static/js/startScore.js"></script>
-    <link rel="stylesheet" href="../static/css/startScore.css" media="all">
     <c:import url="../../static1.html"/>
 </head>
 <body>
@@ -94,20 +92,14 @@
     <script type="text/html" id="logTpl">
         <a href="./log?taid={{d.taid}}" class="layui-table-link">任务日志</a>
     </script>
-    <div id="score" class="block clearfix x-center n-display">
-        <div class="star_score x-margin" style="margin: auto"></div>
-        <p class="x-margin">您的评分：<span class="stage"></span> 级</p>
-    </div>
 </div>
 <script language="JavaScript">
     layui.use(['jquery','element','table','laydate','layer','form'],function () {
         var $ = layui.jquery,element = layui.element,table = layui.table,laydate = layui.laydate,
             layer = layui.layer,form = layui.form,msg = "",choose = "",ptno = "";
 
-        scoreFun($("#score"),{
-            fen_d:22,//每一个a的宽度
-            ScoreGrade:5//a的个数 10或者
-        });
+
+        sessionStorage.setItem("token","${obj}")
 
         form.on("submit(search)",function (data) {
             var infor = data.field;
@@ -196,24 +188,7 @@
         form.on('submit(rPass)',function () {
             var choose = table.checkStatus('manage');
             var data = choose.data;
-            layer.open({
-                type:1,
-                title:'请选择等级',
-                area:'20%',
-                content:$("#score"),
-                btn:['确认'],
-                anim:4,
-                offset:'10px',
-                yes:function () {
-                    var value = $(".stage").text();
-                    if (value === null || value === "") {
-                        layer.tips('请选择等级','#score');
-                    } else {
-                        operate(data,11,"执行校验通过行为",value-1);
-                        layer.closeAll();
-                    }
-                }
-            });
+            operate(data,11,"执行校验通过行为",null);
         });
 
         form.on('submit(rReturn)',function () {
@@ -237,14 +212,13 @@
                     list:param,
                     operate:code,
                     remk:remk,
-                    stag:stage
+                    token:sessionStorage.getItem("token")
                 },
                 dataType:'json',
                 success:function (res) {
-                    if(res.code === 1){
-                        getCount();
-                        table.reload("manage");
-                    }
+                    sessionStorage.setItem("token",res.data)
+                    getCount();
+                    table.reload("manage");
                     return layer.msg(res.msg,{offset:'10px'});
                 },
                 error:function (kellyj) {

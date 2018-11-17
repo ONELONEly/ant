@@ -1,7 +1,9 @@
 package com.gree.ant.dao;
 
 import com.gree.ant.vo.Cbase009VO;
+import com.gree.ant.vo.response.GropUser;
 import com.gree.ant.vo.util.ResultVO;
+import org.nutz.dao.Condition;
 
 import java.util.List;
 
@@ -38,4 +40,7 @@ public interface Cbase009DAO extends BaseDAO<Cbase009VO>{
      * @createTime 2017 :10:26 04:10:09.
      */
     List<ResultVO> queryAllGD();
+
+
+    List<GropUser> fetchC9Trans(String grop,Condition cnd);
 }

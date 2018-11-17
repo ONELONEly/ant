@@ -43,7 +43,7 @@ public class FileUtil {
     private static String IMAGE_SAVEPATH = "\\\\192.13.183.83\\ant\\image\\";
     private static String FILE_SAVEPATH = "\\\\192.13.183.83\\ant\\file\\";
     private static String BASIC_SAVEPATH = "\\\\192.13.183.83\\ant\\";
-    private static String NORMALIMAGE = "static\\images\\header.jpg";
+    private static String NORMALIMAGE = "static\\images\\";
 
 
     /**
@@ -243,8 +243,8 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :09:06 09:09:47.
      */
-    public static byte[] getNormalHeader(HttpServletRequest request){
-        String path = request.getSession().getServletContext().getRealPath(NORMALIMAGE);
+    public static byte[] getNormalHeader(HttpServletRequest request,String IMAGE_NAME){
+        String path = request.getSession().getServletContext().getRealPath(NORMALIMAGE+IMAGE_NAME);
         byte[] buffer = null;
         try {
             fis = new FileInputStream(new File(path));
@@ -273,10 +273,6 @@ public class FileUtil {
         String suffix = getFileSuffix(oldFileName);
         String fileName = getRandomName13()+suffix;
         String savePath = getSavePath(suffix);
-        System.out.println("oldFileName====="+oldFileName);
-        System.out.println("suffix========"+suffix);
-        System.out.println("fileName======"+fileName);
-        System.out.println("savePath======"+savePath);
         Integer fileSize = 0;
         checkSavePath(savePath);
         Date date = null;

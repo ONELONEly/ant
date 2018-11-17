@@ -10,6 +10,7 @@ import com.gree.ant.util.TableUtil;
 import com.gree.ant.vo.Cbase000VO;
 import com.gree.ant.vo.Cbase009VO;
 import com.gree.ant.vo.Cbase010VO;
+import com.gree.ant.vo.response.GropUser;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -196,17 +197,12 @@ public class GroupController {
      */
     @At
     @Ok("json")
-    public Map<String,Object> queryAllGropUser(@Param("grop")String grop,@Param("key")String key){
+    public Map<String,Object>queryAllGropUser(@Param("grop")String grop,@Param("key")String key){
         Cnd cnd = null;
-        List<Cbase000VO> cbase000VOList = new ArrayList<>();
         if(key!=null){
             cnd = Cnd.where("dsca","like","%"+key+"%").or("usid","like","%"+key+"%");
         }
-        Cbase009VO cbase009VO = cbase009MO.fetchC9Trans(grop,cnd);
-        if(cbase009VO!=null){
-            cbase000VOList = cbase009VO.getCbase000VOS();
-        }
-        return TableUtil.makeJson(0,"",null,cbase000VOList);
+        return TableUtil.makeJson(0,"",null,cbase009MO.fetchC9Tran(grop,cnd));
     }
 
     /**

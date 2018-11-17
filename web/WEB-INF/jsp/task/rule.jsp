@@ -40,6 +40,7 @@
     </form>
     <div class="layui-inline">
         <button class="layui-btn layui-bg-black delete-btn"><i class="layui-icon">&#xe640;</i>批量删除</button>
+        <button class="layui-btn copy-btn"><i class="layui-icon">&#xe640;</i>批量复制</button>
     </div>
     <table class="layui-table" lay-data="{url:'${base}/task/queryAllRule',initSort:{field:'udat',type:'desc'},page:true,limit:10,limits:[10,15,20,25,30,50],id:'rule'}" lay-filter="rule">
         <thead>
@@ -53,7 +54,10 @@
             <th lay-data="{field:'cons',edit:'true',align:'center',width:150}">基础分数</th>
             <th lay-data="{field:'usid',align:'center',width:150}">创建用户</th>
             <th lay-data="{field:'udat',align:'center',width:150,sort:true}">创建时间</th>
-            <th lay-data="{field:'stat',edit:'true',align:'center',width:150,toolbar:'#type'}">类型</th>
+            <th lay-data="{field:'stat',edit:'true',align:'center',width:150}">类型</th>
+            <th lay-data="{field:'stat',edit:'true',align:'center',width:150,toolbar:'#statType'}">类型</th>
+            <th lay-data="{field:'type',edit:'true',align:'center',width:150}">属性</th>
+            <th lay-data="{field:'type',edit:'true',align:'center',width:150,toolbar:'#typeType'}">属性</th>
             <th lay-data="{field:'remk',edit:'true',align:'center',width:150}">备注</th>
             <th lay-data="{field:'usid',edit:'true',align:'center',width:150}">创建用户</th>
             <th lay-data="{fixed:'right',align:'center',width:150,templet:'#opcoTpl',align:'center'}">评分细节</th>
@@ -64,11 +68,20 @@
     <script type="text/html" id="opcoTpl">
         <a href="${base}/task/ruleScore?pjno={{d.pjno}}" class="layui-table-link">查看</a>
     </script>
-    <script type="text/html" id="type">
+    <script type="text/html" id="statType">
         {{# if(d.stat == 0){ }}
         <span>手动任务</span>
         {{# }else if( d.stat == 1){ }}
         <span>自动任务</span>
+        {{# }else{ }}
+        <span>错误数据</span>
+        {{# } }}
+    </script>
+    <script type="text/html" id="typeType">
+        {{# if(d.type == 0){ }}
+        <span>临时任务</span>
+        {{# }else if( d.type == 1){ }}
+        <span>计划任务</span>
         {{# }else{ }}
         <span>错误数据</span>
         {{# } }}
@@ -89,8 +102,7 @@
 
         form.on("submit(search)",function (data) {
             var infor = data.field;
-            console.log(infor);
-            table.reload("manage",{
+            table.reload("rule",{
                 where:{
                     key:infor.msg
                 }
@@ -157,6 +169,34 @@
             $.ajax({
                 type:'POST',
                 url:'${base}/task/deleteRule',
+                data:{
+                    list:param
+                },
+                dataType:'json',
+                success:function (res) {
+                    if(res.code === 1){
+                        layer.alert(res.msg,{offset:'10px'});
+                        table.reload("rule")
+                    }else{
+                        layer.alert(res.msg,{offset:'10px'});
+                    }
+                },
+                error:function (kj) {
+                    layer.alert("发生错误:"+kj.status,{offset:'10px'});
+                }
+            });
+        });
+
+        $(".copy-btn").on("click",function () {
+            var check = table.checkStatus('rule');
+            var data = check.data;
+            var param = {};
+            for(var i = 0;i < data.length;i++){
+                param[i] = data[i].pjno;
+            }
+            $.ajax({
+                type:'POST',
+                url:'${base}/task/copyRule',
                 data:{
                     list:param
                 },

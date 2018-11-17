@@ -15,6 +15,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>文档添加</title>
     <c:import url="../../static1.html"/>
+    <style>
+        #LAY_layedit_1 {
+            background-color: #fff;
+        }
+    </style>
 </head>
 <body>
 <div>
@@ -28,54 +33,55 @@
     </div>
     <div class="x-body">
         <form class="layui-form layui-form-panel">
-            <input type="hidden" value="${obj}" id="doid">
-            <div class="layui-form-item">
-                <div class="x-center">
-                    <input type="text" class="layui-input x-center" name="tilt" id="tilt" placeholder="请输入标题" lay-verify="required|tilt" required/>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">文档类型</label>
-                <div class="layui-input-inline">
-                    <select name="ctyp" id="ctyp" lay-verify="required|ctyp" lay-search="">
-                        <option value="" class="n-display" disabled selected>请选择文档类型</option>
-                    </select>
-                </div>
-
-                <label class="layui-form-label">接收人</label>
-                <div class="layui-input-inline">
-                    <select name="csid" id="csid" lay-verify="required|csid" lay-search="">
-                        <option value="" class="n-display" disabled selected>请选择接收人</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="layui-form-item">
-                <textarea id="doc" class="n-display"></textarea>
-            </div>
-
-            <div class="layui-form-item">
-                <div class="layui-upload">
-                    <button type="button" class="layui-btn layui-btn-radius layui-bg-black" id="uploadList">选择多文件</button>
-                    <div class="layui-upload-list">
-                        <table class="layui-table">
-                            <thead>
-                            <tr>
-                                <th>文件名</th>
-                                <th>大小</th>
-                                <th>状态</th>
-                                <th>操作</th>
-                            </tr>
-                            </thead>
-                            <tbody id="fileList"></tbody>
-                        </table>
+            <div style="padding-bottom: 40px;">
+                <input type="hidden" value="${obj}" id="doid">
+                <div class="layui-form-item">
+                    <div class="x-center">
+                        <input type="text" class="layui-input x-center" name="tilt" id="tilt" placeholder="请输入标题" lay-verify="required|tilt" required/>
                     </div>
                 </div>
-                <button type="button" class="layui-btn layui-btn-radius layui-bg-red" id="upload" lay-submit="">上传文件</button>
-                <button type="button" class="layui-btn layui-btn-radius layui-btn-warm" id="check-table">检测</button>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">文档类型</label>
+                    <div class="layui-input-inline">
+                        <select name="ctyp" id="ctyp" lay-verify="required|ctyp" lay-search="">
+                            <option value="" class="n-display" disabled selected>请选择文档类型</option>
+                        </select>
+                    </div>
+
+                    <label class="layui-form-label">接收人</label>
+                    <div class="layui-input-inline">
+                        <select name="csid" id="csid" lay-verify="required|csid" lay-search="">
+                            <option value="" class="n-display" disabled selected>请选择接收人</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <textarea id="doc" class="n-display"></textarea>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-upload">
+                        <button type="button" class="layui-btn layui-btn-radius layui-bg-black" id="uploadList">选择多文件</button>
+                        <div class="layui-upload-list">
+                            <table class="layui-table">
+                                <thead>
+                                <tr>
+                                    <th>文件名</th>
+                                    <th>大小</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody id="fileList"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <button type="button" class="layui-btn layui-btn-radius layui-bg-red" id="upload" lay-submit="">上传文件</button>
+                </div>
             </div>
-            <div class="layui-form-item">
-                <div class="layui-input-inline">
+            <div class="x-center x-body bottom-buttom" style="margin-left:-20px;">
+                <div class="layui-form-item">
                     <button type="button" class="layui-btn layui-btn-radius layui-bg-green" lay-filter="put" lay-submit="">提交</button>
                 </div>
             </div>
@@ -87,11 +93,6 @@
                 form = layui.form,upload = layui.upload,table = layui.table;
 
             var fileList = $("#fileList"),doid = $("#doid").val();
-
-            $("#check-table").on('click',function () {
-                var tr = filedList.find("tr");
-                console.log(tr.length);
-            });
 
             var files,fileUploadOption = {
                 elem:'#uploadList',

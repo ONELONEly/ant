@@ -14,6 +14,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>评分显示</title>
+    <script type="text/javascript" src="../static/js/startScore.js"></script>
+    <link rel="stylesheet" href="../static/css/startScore.css" media="all">
     <c:import url="../../static1.html"/>
 </head>
 <body>
@@ -30,22 +32,44 @@
 <fieldset class="layui-elem-field layui-field-title">
     <legend>当月任务</legend>
 </fieldset>
-<table class="layui-table" lay-data="{url:'${base}/task/queryAllGradeTask?ptno=${obj}',initSort:{field:'cdat',type:'desc'},page:true,limit:10,limits:[10,15,20,25,30,50],id:'manage'}" lay-filter="manage">
+<form class="layui-form layui-form-panel">
+    <div class="layui-inline">
+        <button class="layui-btn mark-btn"><i class="layui-icon">&#xe6af;</i>评分</button>
+    </div>
+    <div class="layui-input-inline">
+        <select name="user" lay-filter="user" id="user" lay-search>
+            <option value="" style="display:none;" disabled selected>请筛选用户</option>
+        </select>
+    </div>
+    <div class="layui-input-inline">
+        <select name="status" lay-filter="status" id="status" lay-search>
+            <option value="" style="display:none;" disabled selected>请筛选状态</option>
+            <option value="0">未评分</option>
+            <option value="1">已评分</option>
+        </select>
+    </div>
+</form>
+<table class="layui-table" lay-data="{url:'${base}/task/queryAllGradeTask?ptno=${obj.ptno}',initSort:{field:'cdat',type:'desc'},page:true,limit:10,limits:[10,15,20,25,30,50],id:'manage'}" lay-filter="manage">
     <thead>
     <tr>
+        <th lay-data="{checkbox:true,width:50,fixed:true}"></th>
+        <th lay-data="{fixed:'left',align:'center',width:150,templet:'#mark'}">状态</th>
         <th lay-data="{fixed:'left',field:'perc',align:'center',width:150,sort:true}">完成度</th>
         <th lay-data="{fixed:'left',field:'titl',align:'center',width:350,toolbar:'#noteTpl'}">标题</th>
+        <th lay-data="{field:'fahh',align:'center',width:150,sort:true}">工时</th>
         <th lay-data="{field:'synonam',align:'center',width:350}">系统</th>
         <th lay-data="{field:'cnam',align:'center',width:150}">派发给</th>
         <th lay-data="{field:'sta1nam',align:'center',width:150}">状态</th>
+        <th lay-data="{field:'sta2nam',align:'center',width:150}">紧急状态</th>
+        <th lay-data="{field:'sta3nam',align:'center',width:150}">重要程度</th>
         <th lay-data="{field:'punonam',align:'center',width:150}">任务类型</th>
+        <th lay-data="{field:'ptypnam',align:'center',width:150}">评分类型</th>
         <th lay-data="{field:'knam',align:'center',width:150}">关键用户</th>
         <th lay-data="{field:'adat',align:'center',width:150,sort:true}">执行时间</th>
         <th lay-data="{field:'pdat',align:'center',width:150,sort:true}">计划时间</th>
         <th lay-data="{field:'tdat',align:'center',width:150,sort:true}">测试时间</th>
         <th lay-data="{field:'fdat',align:'center',width:150,sort:true}">验收时间</th>
         <th lay-data="{field:'cdat',align:'center',width:150,sort:true}">创建时间</th>
-        <th lay-data="{field:'fahh',align:'center',width:150,sort:true}">工时</th>
         <th lay-data="{field:'t1dsca',align:'center',width:350}">绩效表主题</th>
         <th lay-data="{field:'eye',fixed:'right',align:'center',width:200}">关注</th>
     </tr>
@@ -54,11 +78,114 @@
 <script type="text/html" id="noteTpl">
     <a href="javascript:" class="layui-table-link" lay-event="show">{{d.titl}}</a>
 </script>
+<script type="text/html" id="mark">
+    {{# if(d.stag > 0){ }}
+    <span style="color:green;">已评分</span>
+    {{# }else{ }}
+    <span style="color: #f00;">未评分</span>
+    {{# } }}
+</script>
+<div id="score" class="block clearfix x-center n-display">
+    <div class="star_score x-margin" style="margin: auto"></div>
+    <p class="x-margin">您的评分：<span class="stage"></span> 级</p>
+</div>
 </div>
 <script language="JavaScript">
     layui.use(["laydate","laypage","element","layer","table","jquery","form"],function () {
         var laypage = layui.laypage, element = layui.element, layer = layui.layer,
             table = layui.table, form = layui.form, $ = layui.jquery;
+
+        scoreFun($("#score"),{
+            fen_d:22,//每一个a的宽度
+            ScoreGrade:5//a的个数 10或者
+        });
+
+        $.ajax({
+            url: '${base}/util/findGropUser',
+            data:{
+              grop:"${obj.grop}"
+            },
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var user = data.user;
+                var option = "";
+                for (var i = 0; i < user.length; i++) {
+                    option += "<option value='" + user[i].usid + "'>" + user[i].dsca +'('+user[i].usid+')'+"</option>";
+                }
+                $("#user").append(option);
+                form.render();
+            },
+            error: function (kj) {
+                alert("发生错误,错误码为:" + kj.status);
+            }
+        });
+
+        form.on("select(user)",function (data) {
+            table.reload("manage",{
+                where:{
+                    key:data.value,
+                    stag:$("#status option:selected").val()
+                }
+            })
+        });
+
+        form.on("select(status)",function (data) {
+            table.reload("manage",{
+                where:{
+                    stag:data.value,
+                    key:$("#user option:selected").val()
+                }
+            })
+        });
+        $(".mark-btn").click(function () {
+            layer.open({
+                type:1,
+                title:'请选择等级',
+                area:'20%',
+                content:$("#score"),
+                btn:['确认'],
+                anim:4,
+                offset:'10px',
+                yes:function () {
+                    var value = $(".stage").text();
+                    if (value === null || value === "") {
+                        layer.tips('请选择等级','#score');
+                    } else {
+                        var check = table.checkStatus('manage');
+                        var data = check.data;
+                        var param = {};
+                        for(var i = 0;i < data.length;i++){
+                            param[i] = data[i].taid;
+                        }
+                        $.ajax({
+                            type:'POST',
+                            url:'${base}/task/markScore',
+                            data:{
+                                list:param,
+                                stag:value-1
+                            },
+                            dataType:'json',
+                            success:function (res) {
+                                table.reload("manage",{
+                                    where:{
+                                        stag:$("#status option:selected").val(),
+                                        key:$("#user option:selected").val()
+                                    }
+                                });
+                                layer.msg(res.msg,{offset:'10px'});
+                            },
+                            error:function (kj) {
+                                layer.alert("发生错误:"+kj.status,{offset:'10px'});
+                            }
+                        });
+                        layer.closeAll();
+                    }
+                }
+            });
+            return false;
+        });
+
 
         table.on('tool(manage)', function(obj){
             var data = obj.data;

@@ -1,9 +1,16 @@
 package com.gree.ant.mo;
 
 import com.gree.ant.dao.daoImp.Tbuss003DAOImp;
+import com.gree.ant.exception.KellyException;
 import com.gree.ant.mo.basic.Tbuss003BasicMO;
+import com.gree.ant.util.DateUtil;
+import com.gree.ant.util.MailUtil;
 import com.gree.ant.util.StringUtil;
+import com.gree.ant.vo.Cbase000VO;
 import com.gree.ant.vo.Tbuss003VO;
+import com.gree.ant.vo.Tbuss014VO;
+import com.gree.ant.vo.enumVO.ResultEnum;
+import com.gree.ant.vo.response.FahhVO;
 import com.gree.ant.vo.util.TaskUtilVO;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
@@ -15,6 +22,7 @@ import org.nutz.trans.Trans;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @IocBean
@@ -25,6 +33,12 @@ public class Tbuss003MO implements Tbuss003BasicMO{
 
     @Inject("refer:tbuss003DAOImp")
     private Tbuss003DAOImp tbuss003DAOImp;
+
+    @Inject
+    private Tbuss014MO tbuss014MO;
+
+    @Inject
+    private Tbuss003MO_Ds tbuss003MO_ds;
 
     @Override
     public List<Tbuss003VO> queryAllByCnd(Condition cnd, Pager pager) {
@@ -62,8 +76,32 @@ public class Tbuss003MO implements Tbuss003BasicMO{
      * @createTime 2017 :09:09 11:09:29.
      */
     @Override
-    public Integer updateByVO(Tbuss003VO tbuss003VO) {
-        return tbuss003DAOImp.update(tbuss003VO);
+    public Integer updateByVO(final Tbuss003VO tbuss003VO, final Integer operate, final Cbase000VO cbase000VO, final Tbuss014VO tbuss014VO){
+        final int[] code = {0};
+        Trans.exec(new Atom() {
+            @Override
+            public void run() {
+                if(operate != null && cbase000VO != null && operate == 11){
+                    try {
+                        String insertBugCode = tbuss003MO_ds.insertBugJieKou(tbuss003VO,cbase000VO);
+                        if(insertBugCode.equals("Success")){
+                            code[0] = tbuss003DAOImp.update(tbuss003VO);
+                        }
+                    } catch (Exception e) {
+                        throw new KellyException(ResultEnum.DS_ERROR);
+                    }
+                }else{
+                    if(tbuss014VO != null){
+                        code[0] = tbuss014MO.updateByVO(tbuss014VO);
+                        tbuss003DAOImp.insert(tbuss003VO);
+                        MailUtil.sendRequireCarrymail(tbuss014VO,tbuss014VO.getUsid());
+                    }else {
+                        code[0] = tbuss003DAOImp.update(tbuss003VO);
+                    }
+                }
+            }
+        });
+        return code[0];
     }
 
     /**
@@ -178,6 +216,27 @@ public class Tbuss003MO implements Tbuss003BasicMO{
             cnd.orderBy("pdat","desc");
         }
         return tbuss003DAOImp.queryAllTaskByPagerCnd(pager,cnd);
+    }
+
+    @Override
+    public List<FahhVO> queryAllProjectFahh(String date) {
+        Map<String,String> dateMap = DateUtil.getStartEndDate(date);
+        return tbuss003DAOImp.queryAllProjectFahh(dateMap.get("startDate"),dateMap.get("endDate"));
+    }
+
+    @Override
+    public List<FahhVO> queryAllNotProjectFahh(String date) {
+        Map<String,String> dateMap = DateUtil.getStartEndDate(date);
+        return tbuss003DAOImp.queryAllNotProjectFahh(dateMap.get("startDate"),dateMap.get("endDate"));
+    }
+
+    @Override
+    public void markScore(String[] taids, Integer stage) {
+        Cnd cnd = Cnd.NEW();
+        if(taids != null) {
+            cnd.and("taid", "in", taids);
+        }
+        tbuss003DAOImp.markScore(cnd,stage);
     }
 
     /**

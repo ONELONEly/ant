@@ -278,9 +278,9 @@ public class Cbase000VO extends ValueObject{
     public Cbase000VO() {
     }
 
-    public Cbase000VO(String USID, String PAWD) {
+    public Cbase000VO(String USID, String DSCA) {
         this.USID = USID;
-        this.PAWD = PAWD;
+        this.DSCA = DSCA;
     }
 
     /**
@@ -305,21 +305,19 @@ public class Cbase000VO extends ValueObject{
     /**
      * Instantiates a new Cbase 000 vo.
      *
-     * @description 查询所有用户时使用
+     * @description 登录时查询所有用户时使用
      * @author create by jinyuk@foxmail.com.
      * @version V1.0
      * @createTime 2017 :10:31 08:10:32.
      */
-    public Cbase000VO(String USID, String DSCA, String PAWD, String GROPNAM, String DEPTNAM, String COMPNAM, String ACCONAM, String JWWJ,String ACCO) {
+    public Cbase000VO(String USID, String DSCA,String ACCO,String COMP,String DEPT,String GROP,Integer STA2) {
         this.USID = USID;
         this.DSCA = DSCA;
-        this.PAWD = PAWD;
-        this.GROPNAM = GROPNAM;
-        this.DEPTNAM = DEPTNAM;
-        this.COMPNAM = COMPNAM;
-        this.ACCONAM = ACCONAM;
-        this.JWWJ = JWWJ;
         this.ACCO = ACCO;
+        this.COMP = COMP;
+        this.DEPT = DEPT;
+        this.GROP = GROP;
+        this.STA2 = STA2;
     }
 
     public String getACCONAM() {

@@ -30,7 +30,6 @@ public class timeTest {
                 @Override
                 public void run() {
                     int code = cbase013MO.tongbuDSSystem();
-                    System.out.println("输出指定的任务");
                 }
             },10);
             Lang.quiteSleep(60*1000);

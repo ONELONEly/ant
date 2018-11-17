@@ -6,8 +6,6 @@ import org.junit.runner.RunWith;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
-import static org.junit.Assert.*;
-
 @RunWith(MyNutTestRunner.class)
 @IocBean
 public class Cbase015MOTest {
@@ -21,7 +19,6 @@ public class Cbase015MOTest {
 
     @Test
     public void deleteByTaid() throws Exception {
-        System.out.println(cbase015MO.deleteByTaid("fwerw"));
     }
 
 }

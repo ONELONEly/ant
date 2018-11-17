@@ -44,7 +44,7 @@ function task_add(present) {
     });
     var item = "<tr id='okr_item_"+item_row+"_"+count+"'>" +
         "               <td class='none_pdding'>\n" +
-        "                    <input type='text' name='achi_"+item_row+"_"+count+"' id='achi_"+item_row+"_"+count+"' placeholder='请输入关键成果' autocomplete='off' class='excel_input'>\n" +
+        "                    <input type='text' name='achi_"+item_row+"_"+count+"' id='achi_"+item_row+"_"+count+"' onfocus='jinyu($(this))' onblur='rose($(this))' placeholder='请输入关键成果' autocomplete='off' class='excel_input'>\n" +
         "                    <a href='javascript:' class='task_choose' onclick=\"task_choose($(this))\" data='achi_"+item_row+"_"+count+"'><i class='layui-icon layui-icon-search'></i></a>\n" +
         "                </td>\n" +
         "                <td class='none_pdding'>\n" +
@@ -53,10 +53,10 @@ function task_add(present) {
         "                    <a href='javascript:' class='task_add' onclick=\"task_add($(this))\"><i class='layui-icon layui-icon-add-1 layui-bg-green'></i></a>\n" +
         "                </td>" +
         "                <td class='none_pdding'>\n" +
-        "                    <input type='text' name='krperf__"+item_row+"_"+count+"' id='krperf__"+item_row+"_"+count+"' placeholder='请输入KR完成情况' autocomplete='off' class='excel_input'>\n" +
+        "                    <input type='text' name='krperf_"+item_row+"_"+count+"' id='krperf_"+item_row+"_"+count+"' placeholder='请输入KR完成情况' autocomplete='off' class='excel_input'>\n" +
         "                </td>\n" +
         "                <td class='none_pdding'>\n" +
-        "                    <input type='text' name='zgrad__"+item_row+"_"+count+"' id='zgrad__"+item_row+"_"+count+"' placeholder='请输入自评分' autocomplete='off' class='excel_input'>\n" +
+        "                    <input type='text' name='zgrad_"+item_row+"_"+count+"' id='zgrad_"+item_row+"_"+count+"' placeholder='请输入自评分' autocomplete='off' class='excel_input'>\n" +
         "                </td>" +
         "</tr>";
     present.prev("a").remove();
@@ -101,9 +101,7 @@ function goal_add(present) {
                             name_pre = name.substring(0, firstDot+1);
                             name_row = name.substring(firstDot+1, lastDot);
                             name_last = name.substring(lastDot+1);
-                            console.log(name_row,11);
                             name_row++;
-                            console.log(name_pre+name_row+"_"+name_last,22);
                             input.attr("name", name_pre + name_row + "_" + name_last);
                             input.attr("id", name_pre + name_row + "_" + name_last);
                         }
@@ -210,7 +208,7 @@ function goal_add(present) {
         "                    <input type='text' name='perf_" + item_row + "' id='perf_" + item_row + "' placeholder='请输入完成情况' autocomplete='off' class='excel_input'>\n" +
         "                </td>\n" +
         "                <td class='none_pdding' zIndex='1' >\n" +
-        "                    <input type='text' name='achi_" + item_row + "_0' id='achi_" + item_row + "_0' placeholder='请输入关键成果' autocomplete='off' class='excel_input'>\n" +
+        "                    <input type='text' name='achi_" + item_row + "_0' id='achi_" + item_row + "_0' onfocus='jinyu($(this))' onblur='rose($(this))' placeholder='请输入关键成果' autocomplete='off' class='excel_input'>\n" +
         "                    <a href='javascript:' class='task_choose' onclick='task_choose($(this))'><i class='layui-icon layui-icon-search'></i></a>\n" +
         "                </td>\n" +
         "                <td class='none_pdding' zIndex='1' >\n" +
@@ -371,29 +369,116 @@ function addToParam(param,formData) {
     return param;
 }
 
-function checkFormData(param) {
+function checkFormData(param,option) {
+    var rule = '2';
+    if(option !== null){
+        rule = option.attr("value");
+    }
+    if(rule === '0'){
+
+    }
     for (var i = 0; i < param.length; i++) {
-        if (checkForm(param[i].value)) {
-            if ((param[i].name).match(/\b(ndat|type|asid|boss)/) !== null) {
-                layer.tips("请选择数据", "#" + param[i].name + "_0");
-            } else {
-                layer.tips("请录入数据", "#" + param[i].name);
-            }
-            return false;
-        }else if ((param[i].name).match(/(\bprop|\Bprop|\bzgrad|\bmgrad)/) !== null) {
-            if((param[i].value).match(/\d+(\.\d+)?$/) === null){
-                layer.tips("请输入数字","#"+param[i].name);
+        if(rule === '2') {
+            if (checkForm(param[i].value)) {
+                if ((param[i].name).match(/\b(ndat|type|asid|boss)/) !== null) {
+                    layer.tips("请选择数据", "#" + param[i].name + "_0");
+                } else {
+                    layer.tips("请录入数据", "#" + param[i].name);
+                }
                 return false;
+            } else if ((param[i].name).match(/(\bprop|\Bkrprop|\bzgrad|\bmgrad)/) !== null) {
+                if ((param[i].value).match(/\d+(\.\d+)?$/) === null) {
+                    layer.tips("请输入数字", "#" + param[i].name);
+                    return false;
+                }
+            }
+        }else{
+            if (checkForm(param[i].value) && param[i].name.match(/\b(perf|krperf|zgrad)/) === null) {
+                if ((param[i].name).match(/\b(ndat|type|asid|boss)/) !== null) {
+                    layer.tips("请选择数据", "#" + param[i].name + "_0");
+                } else {
+                    layer.tips("请录入数据", "#" + param[i].name);
+                }
+                return false;
+            } else if ((param[i].name).match(/(\bprop|\Bkrprop)/) !== null) {
+                if ((param[i].value).match(/\d+(\.\d+)?$/) === null) {
+                    layer.tips("请输入数字", "#" + param[i].name);
+                    return false;
+                }
+            } else if((param[i].name).match(/(\bbzgrad|\bmgrad)/) !== null && !checkForm(param[i].value)){
+                if ((param[i].value).match(/\d+(\.\d+)?$/) === null) {
+                    layer.tips("请输入数字", "#" + param[i].name);
+                    return false;
+                }
             }
         }
     }
     return true;
 }
 
-function checkManagerData(param) {   //之后改善
+function checkProp(propParam,krPropParam,zgradParam) {
+    var sum = 0;
+    var count = 0;
+    var gradCheck = false;
+    var result = true;
+    if(propParam !== null){
+        for (var j = 0; j < propParam.length; j++) {
+            if(!checkForm(propParam[j]).value){
+                propParam[j].value++;
+                propParam[j].value--;
+                sum += propParam[j].value;
+            }
+            count ++;
+        }
+    }
+
+    if(krPropParam !== null) {
+        for (var i = 1; i <= count; i++) {
+            var mark = 0;
+            for (var m = 0; m < krPropParam.length; m++) {
+                eval("var role = /\\bkrprop_" + i + "_/");
+                if (krPropParam[m].name.match(role) !== null) {
+                    if (!checkForm(krPropParam[m]).value) {
+                        krPropParam[m].value++;
+                        krPropParam[m].value--;
+                        mark += krPropParam[m].value;
+                    }
+                }
+            }
+            if (mark !== 100) {
+                break;
+            }
+        }
+    }
+
+    if(zgradParam !== null) {
+        for (var k = 0; k < zgradParam.length; k++) {
+            if (!checkForm(zgradParam[k].value)) {
+                if (zgradParam[k].value.match(/^(([0-9])|1[0])$/) === null) {
+                    gradCheck = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    if(sum !== 100 && propParam !== null){
+        layer.msg("所有OKR目标的比重总和不满足100",{offset:'10px'});
+        result = false;
+    }else if(mark !== 100 && krPropParam !== null){
+        layer.msg("有个别OKR目标的KR比重总和不满足100",{offset:'10px'});
+        result = false;
+    }else if(gradCheck && zgradParam !== null){
+        layer.msg("评分成绩应该为0-10",{offset:'10px'});
+        result = false;
+    }
+    return result;
+}
+
+function checkManagerData(param) {   // TODO 之后改善
     for (var i = 0; i < param.length; i++) {
         if (checkForm(param[i].value)) {
-            if ((param[i].name).match(/\b(asid|boss)/) !== null) {
+            if ((param[i].name).match(/\b(asid|boss|rule)/) !== null) {
                 layer.tips("请选择数据", "#" + param[i].name + "_0");
                 return false;
             } else if ((param[i].name).match(/\bmdat/) !== null) {

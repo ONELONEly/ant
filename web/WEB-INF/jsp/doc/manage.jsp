@@ -30,7 +30,16 @@
                 <div class="layui-input-inline">
                     <input type="text" name="msg" id="msg" placeholder="请输入查询信息" lay-verify="msg" class="layui-input"/>
                 </div>
+
+                <div class="layui-input-inline">
+                    <button class="layui-btn layui-btn-radius" lay-filter="search" lay-submit>查询</button>
+                    <a href="./insert" class="layui-btn layui-btn-radius" lay-filter="set">创建</a>
+                </div>
             </div>
+        </div>
+    </form>
+    <form class="layui-form">
+        <div class="layui-form-panel">
             <div class="layui-form-item">
                 <div class="layui-input-inline">
                     <select name="ctyp" id="ctyp" lay-filter="ctyp" lay-search="">
@@ -41,6 +50,7 @@
                         <option value="4">学习文档</option>
                     </select>
                 </div>
+
                 <div class="layui-input-inline">
                     <input type="text" name="sdat" id="sdat" placeholder="请选择日期" class="layui-input" required/>
                 </div>
@@ -58,10 +68,6 @@
                     <select name="grop" id="grop" lay-verify="grop" class="grop" lay-filter="grop" lay-search="">
                         <option value="" class="n-display" disabled selected>请选择团队</option>
                     </select>
-                </div>
-                <div class="layui-input-inline">
-                    <button class="layui-btn layui-btn-radius" lay-filter="search" lay-submit>查询</button>
-                    <a href="./insert" class="layui-btn layui-btn-radius" lay-filter="set">创建</a>
                 </div>
             </div>
         </div>
@@ -97,40 +103,52 @@
 <script language="JavaScript">
     layui.use(['form','jquery','table','layer','element','laydate'],function () {
         var $ = layui.jquery,form = layui.form,table = layui.table,
-            layer = layui.layer,elemnt = layui.element,laydate=layui.laydate,key='',ctyp='',week='',sdat='';
+            layer = layui.layer,elemnt = layui.element,laydate=layui.laydate;
 
         form.on("submit(search)",function (data) {
-            var infor = data.field;
-            var grop=$(".grop").val();
-            ctyp = $("select[name='ctyp']:selected").val();
+            tableLoad();
 
-
-            table.reload("manage",{
-                where:{
-                    key:infor.msg,
-                    ctyp:infor.ctyp,
-                    sdat:infor.sdat,
-                    week:infor.week,
-                    grop:infor.grop
-                }
-            });
             return false;
         });
 
+        function tableLoad(value){
+            var key = $("#msg").val();
+            var ctyp = $("select[name='ctyp'] option:selected").val();
+            var week = $("#week option:selected").val();
+            var sdat = $("#sdat").val()
+            if(!checkForm(value)){
+                sdat = value;
+            }
+            var grop = $("#grop option:selected").val();
+            table.reload("manage",{
+                where:{
+                    key:key,
+                    ctyp:ctyp,
+                    sdat:sdat,
+                    week:week,
+                    grop:grop
+                }
+            });
+        }
         laydate.render({
-            elem: '#sdat'
-            ,type: 'month'
+            elem: '#sdat',
+            type: 'month',
+            done:function (value,obj) {
+                tableLoad(value);
+            }
         });
 
-        /*       form.on("select(ctyp)",function (data) {
-         key = $("#msg").val();
-         table.reload("manage",{
-         where:{
-         key:key,
-         ctyp:data.value
-         }
-         })
-         });*/
+        form.on("select(ctyp)", function (data) {
+            tableLoad();
+        });
+
+        form.on("select(week)", function (data) {
+            tableLoad();
+        });
+
+        form.on("select(grop)", function (data) {
+            tableLoad();
+        });
 
 
 
@@ -140,9 +158,6 @@
             dataType:'json',
             success:function (data) {
                 var grops = data.c9;
-                console.log(grops);
-                /*console.log(data);
-                 console.log(grops);*/
                 var option = "";
                 for(var i = 0;i<grops.length;i++){
 

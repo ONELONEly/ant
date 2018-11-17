@@ -4,6 +4,7 @@ import com.gree.ant.dao.daoImp.Cbase009DAOImp;
 import com.gree.ant.mo.basic.Cbase009BasicMO;
 import com.gree.ant.vo.Cbase000VO;
 import com.gree.ant.vo.Cbase009VO;
+import com.gree.ant.vo.response.GropUser;
 import com.gree.ant.vo.util.ResultVO;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
@@ -46,6 +47,11 @@ public class Cbase009MO implements Cbase009BasicMO{
     public Cbase009VO fetchC9Trans(String grop,Condition cnd){
         Cbase009VO cbase009VO = fetchByGrop(grop);
         return cbase009DAOImp.fetchLinks(cbase009VO,"cbase000VOS",cnd);
+    }
+
+    @Override
+    public List<GropUser> fetchC9Tran(String grop,Condition cnd) {
+        return cbase009DAOImp.fetchC9Trans(grop,cnd);
     }
 
     @Override

@@ -57,12 +57,12 @@
                 </li>
 
                 <li class="layui-nav-item">
-                    <a lay-href="./doc/knowledgeDoc?type=3" data-url="./doc/knowledgeDoc" data-icon="&#xe628;"
+                    <a lay-href="./doc/knowledgeDoc?type=4" data-url="./doc/knowledgeDoc?type=4" data-icon="&#xe628;"
                        data-title="学习文档" kit-target data-id='学习文档'/>学习文档</a>
                 </li>
 
                 <li class="layui-nav-item">
-                    <a lay-href="./doc/wisdomDoc" data-url="./doc/wisdomDoc" data-icon="&#xe628;" data-title="会议纪要"
+                    <a lay-href="./doc/knowledgeDoc?type=2" data-url="./doc/knowledgeDoc?type=2" data-icon="&#xe628;" data-title="会议纪要"
                        kit-target data-id='会议纪要'/>会议纪要</a>
                 </li>
 

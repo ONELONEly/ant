@@ -8,8 +8,6 @@ import org.junit.runner.RunWith;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
-import static org.junit.Assert.*;
-
 /**
  * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
  * @version 1.0
@@ -26,7 +24,6 @@ public class OKRControllerTest {
     public void insert() {
         Tbuss011VO tbuss011VO = new Tbuss011VO();
         tbuss011VO.setASID("180366");
-//        System.out.println(okrController.insert(tbuss011VO));
     }
 
     @Test

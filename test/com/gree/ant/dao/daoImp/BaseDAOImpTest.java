@@ -86,39 +86,24 @@ public class BaseDAOImpTest {
             }
 
     @Test
-    public void update1() throws Exception {
-        Cbase012VO cbase012VO = new Cbase012VO();
-        cbase012VO.setPjno("P08");
-        cbase012VO.setOpco("+2");
-        System.out.println();
-    }
-
-    @Test
     public void fetchByID() throws Exception {
     }
 
     @Test
     public void clear() throws Exception {
-
-        System.out.println();
     }
 
     @Test
     public void create() throws Exception {
-
-        System.out.println();
     }
 
     @Test
     public void drop() throws Exception {
-
-        System.out.println();
     }
 
     @Test
     public void func() throws Exception {
 
-        System.out.println();
     }
 
 }

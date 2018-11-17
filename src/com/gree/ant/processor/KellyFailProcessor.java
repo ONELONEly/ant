@@ -37,6 +37,7 @@ public class KellyFailProcessor extends ViewProcessor {
         Throwable error = ac.getError();
         PrintWriter writer = response.getWriter();
         String method = request.getMethod();
+        String errorString = StringUtil.getStackTraceText(error);
         logger.info(method);
         if("GET".equals(method)) {
             response.setContentType("text/html;charset=UTF-8");
@@ -47,7 +48,6 @@ public class KellyFailProcessor extends ViewProcessor {
             resultVO = getResultVO(error);
             writer.append(Json.toJson(resultVO));
         }
-        error.printStackTrace();
     }
 
     private MVCResultVO getResultVO(Throwable error){

@@ -56,14 +56,14 @@
         <div class="layui-form-item">
             <label class="layui-form-label">密码</label>
             <div class="layui-input-block">
-                <input type="password" class="layui-input" name="PAWD" id="pawd" value="${obj.user.PAWD}" lay-verify="pawd" disabled/>
+                <input type="password" class="layui-input" name="PAWD" id="pawd" value="${obj.user.PAWD}" lay-verify="pawd"/>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">确认密码</label>
             <div class="layui-input-block">
-                <input type="password" class="layui-input" name="rePawd" id="rePawd" lay-verify="rePawd" required/>
+                <input type="password" class="layui-input" name="rePawd" id="rePawd" value="${obj.user.PAWD}" lay-verify="rePawd" required/>
             </div>
         </div>
 
@@ -92,6 +92,15 @@
             <label class="layui-form-label">岗位</label>
             <div class="layui-input-block">
                 <input type="text" class="layui-input" name="JWWJ" value="${obj.user.JWWJ}" lay-verify="jwwj" required/>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">团队</label>
+            <div class="layui-input-block">
+                <select name="GROP" id="grop" lay-filter="grop" lay-verify="grop" lay-search>
+                    <option value="${obj.user.GROP}" class="n-select" disabled selected>${obj.user.GROPNAM}</option>
+                </select>
             </div>
         </div>
 
@@ -137,6 +146,24 @@
     layui.use(['element','form','jquery','upload'],function () {
         var element = layui.element,form = layui.form,$ = layui.jquery,upload = layui.upload;
 
+        $.ajax({
+            type:'POST',
+            url:'${base}/util/findC9',
+            dataType:'json',
+            success:function (data) {
+                var grop = data.c9;
+                var gOption = "";
+                for(var j = 0;j<grop.length;j++){
+                    gOption += "<option value='"+grop[j].id+"'>"+grop[j].dsca+"</option>";
+                }
+                $("#grop").append(gOption);
+                form.render();
+            },
+            error:function (kellyj) {
+                layer.msg("发生错误:"+kellyj.status,{offset:'10px'});
+            }
+        });
+
         var uploadInsert = upload.render({
             elem:"#modify",
             url:'${base}/user/modifyHeader?usid=${obj.user.USID}',
@@ -171,6 +198,11 @@
                     return "请输入名称"
                 }
             },
+            pawd:function (value) {
+                if(checkForm(value)){
+                    return "请输入密码";
+                }
+            },
             rePawd:function (value) {
                 if(checkForm(value)){
                     return "请确认密码"
@@ -195,7 +227,12 @@
                 if(checkForm(value)){
                     return "请输入岗位"
                 }
-            }
+            },
+            grop:function (value) {
+                if(checkForm(value)){
+                    return "请选择团队";
+                }
+            },
         });
 
         form.on("submit(modify)",function (data){

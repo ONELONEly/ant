@@ -37,6 +37,8 @@ public class Cbase010VO extends ValueObject{
      */
     private String grop;
 
+    private Integer boss;
+
     public Cbase010VO() {
 
     }
@@ -64,5 +66,13 @@ public class Cbase010VO extends ValueObject{
 
     public void setGrop(String grop) {
         this.grop = grop;
+    }
+
+    public Integer getBoss() {
+        return boss;
+    }
+
+    public void setBoss(Integer boss) {
+        this.boss = boss;
     }
 }

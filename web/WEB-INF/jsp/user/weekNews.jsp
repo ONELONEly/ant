@@ -13,6 +13,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>个人周报</title>
     <c:import url="../../static1.html"/>
+    <style>
+        #LAY_layedit_1 {
+            background-color: #fff;
+        }
+    </style>
 </head>
 <body>
 <div>
@@ -26,44 +31,47 @@
     </div>
     <div class="x-body">
         <form class="layui-form layui-form-panel">
-            <input type="hidden" value="${obj}" name="doid" id="doid"/>
-            <div class="layui-form-item">
-                <div class="x-center">
-                    <input type="text" class="layui-input x-center" name="tilt" id="tilt" placeholder="请输入标题" lay-verify="required|tilt" required/>
+            <div style="padding-bottom: 40px;">
+                <input type="hidden" value="${obj}" name="doid" id="doid"/>
+                <div class="layui-form-item">
+                    <div class="x-center">
+                        <input type="text" class="layui-input x-center" name="tilt" id="tilt" placeholder="请输入标题" lay-verify="required|tilt" required/>
+                    </div>
                 </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">接收人</label>
-                <div class="layui-input-inline">
-                    <select name="csid" id="csid" lay-verify="required|csid" lay-search="">
-                        <option value="" class="n-display" disabled selected>请选择接收人</option>
-                    </select>
-                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">接收人</label>
+                    <div class="layui-input-inline">
+                        <select name="csid" id="csid" lay-verify="required|csid" lay-search="">
+                            <option value="" class="n-display" disabled selected>请选择接收人</option>
+                        </select>
+                    </div>
 
-                <div class="layui-input-inline">
-                    <input type="text" name="sdat" id="sdat" placeholder="请选择日期" lay-verify="required|sdat" autocomplete="off" class="layui-input" required/>
-                </div>
+                    <div class="layui-input-inline">
+                        <input type="text" name="sdat" id="sdat" placeholder="请选择日期" lay-verify="required|sdat" autocomplete="off" class="layui-input" required/>
+                    </div>
 
-                <div class="layui-input-inline">
-                    <select name="week" id="week" lay-verify="required|week" lay-search="">
-                        <option value="" class="n-display" disabled selected>请选择周数</option>
-                        <option value="1" class="n-display" >第一周</option>
-                        <option value="2" class="n-display" >第二周</option>
-                        <option value="3" class="n-display" >第三周</option>
-                        <option value="4" class="n-display" >第四周</option>
-                    </select>
+                    <div class="layui-input-inline">
+                        <select name="week" id="week" lay-verify="required|week" lay-search="">
+                            <option value="" class="n-display" disabled selected>请选择周数</option>
+                            <option value="1" class="n-display" >第一周</option>
+                            <option value="2" class="n-display" >第二周</option>
+                            <option value="3" class="n-display" >第三周</option>
+                            <option value="4" class="n-display" >第四周</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline">
+                        <select name="grop" id="grop" lay-verify="required|grop" lay-filter="grop">
+                            <option value="" class="n-display" disabled selected>请选择团队</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="layui-input-inline">
-                    <select name="grop" id="grop" lay-verify="required|grop" lay-filter="grop">
-                        <option value="" class="n-display" disabled selected>请选择团队</option>
-                    </select>
+                <div class="layui-form-item">
+                    <textarea id="doc" class="n-display"></textarea>
                 </div>
             </div>
-            <div class="layui-form-item">
-                <textarea id="doc" class="n-display"></textarea>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-input-inline">
+
+            <div class="x-center x-body bottom-buttom" style="margin-left:-20px;">
+                <div class="layui-form-item">
                     <button type="button" class="button layui-btn layui-btn-radius layui-bg-green" lay-filter="put" lay-submit="">提交</button>
                 </div>
             </div>
@@ -81,7 +89,7 @@
                 url:'${base}/task/insertImage',
                 type:'POST'
             },
-            height:'800px'
+            height:'500px'
         };
         var note = layedit.build('doc',layeditOption);
 

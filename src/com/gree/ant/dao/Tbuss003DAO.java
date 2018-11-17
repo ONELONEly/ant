@@ -1,6 +1,7 @@
 package com.gree.ant.dao;
 
 import com.gree.ant.vo.Tbuss003VO;
+import com.gree.ant.vo.response.FahhVO;
 import com.gree.ant.vo.util.TaskUtilVO;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
@@ -120,4 +121,10 @@ public interface Tbuss003DAO extends BaseDAO<Tbuss003VO>{
     Integer countTaskUtilByCnd(Condition cnd);
 
     List<TaskUtilVO> queryAllTaskByPagerCnd(Pager pager, Cnd cnd);
+
+    List<FahhVO> queryAllProjectFahh(String startDate,String endDate);
+
+    List<FahhVO> queryAllNotProjectFahh(String startDate,String endDate);
+
+    void markScore(Condition condition,Integer stag);
 }

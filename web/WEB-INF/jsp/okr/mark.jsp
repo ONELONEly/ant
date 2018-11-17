@@ -28,12 +28,12 @@
                 <td colspan="11" class="x-center">OKR管理表</td>
             </tr>
             <tr>
-                <td colspan="6">
+                <td colspan="3">
                     <div class="layui-form-item">
                         <label class="layui-form-label">管理对象：</label>${obj.ANAM}
                     </div>
                 </td>
-                <td colspan="2">
+                <td colspan="3">
                     <div class="layui-form-item">
                         <label class="layui-form-label">直接上级：</label>${obj.BNAM}
                     </div>
@@ -43,39 +43,44 @@
                         <label class="layui-form-label">管理周期：</label>${obj.MDAT}
                     </div>
                 </td>
+                <td colspan="2">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">提交类型：</label>${obj.TYPENAM}
+                    </div>
+                </td>
             </tr>
             <tr id="okr_item_0_0">
-                <th class="center" width="4%">
+                <th class="center" width="4%" nowrap="nowrap">
                     <label>序号</label>
                 </th>
-                <th class="center" width="6%">
+                <th class="center" width="6%" nowrap="nowrap">
                     <label>目标(O)</label>
                 </th>
-                <th class="center" width="10%">
+                <th class="center" width="10%" nowrap="nowrap">
                     <label>O周期</label>
                 </th>
-                <th class="center" width="10%">
+                <th class="center" width="10%" nowrap="nowrap" >
                     <label>O类型</label>
                 </th>
-                <th class="center" width="5%">
-                    <label>O权重</label>
+                <th class="center" width="5%" nowrap="nowrap">
+                    <label>O权重(%)</label>
                 </th>
-                <th class="center" width="10%">
+                <th class="center" width="10%" nowrap="nowrap">
                     <label>O完成情况</label>
                 </th>
-                <th class="center" width="18%">
+                <th class="center" width="18%" nowrap="nowrap">
                     <label>关键成果(KRS)</label>
                 </th>
-                <th class="center" width="7%">
-                    <label>KR权重</label>
+                <th class="center" width="7%" nowrap="nowrap">
+                    <label>KR权重(%)</label>
                 </th>
-                <th class="center" width="18%">
+                <th class="center" width="18%" nowrap="nowrap">
                     <label>KRS完成情况</label>
                 </th>
-                <th class="center" width="5%">
+                <th class="center" width="5%" nowrap="nowrap">
                     <label>自评分</label>
                 </th>
-                <th class="center" width="7%">
+                <th class="center" width="7%" nowrap="nowrap">
                     <label>领导评分</label>
                 </th>
             </tr>
@@ -156,7 +161,7 @@
             var formAll = $(".layui-form").children();
             var inputs = formAll.find("input");
             var param = addToParam(null,inputs);
-            if(checkFormData(param)){
+            if(checkFormData(param,null) && checkProp(null,null,param)){
                 var postParam = [];
                 for(var item in param){
                     var data = {
@@ -179,7 +184,7 @@
                     success:function (data) {
                         if(data.code === 1){
                             layer.confirm("成功评分，返回主界面？",{btn:['确定返回',"刷新"],offset:'10px',anim:4},function () {
-                                window.location.replace("./index");
+                                window.location.replace("./manage");
                             },function () {
                                 window.location.reload();
                             });

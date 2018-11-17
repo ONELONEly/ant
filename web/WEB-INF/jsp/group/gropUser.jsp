@@ -35,6 +35,9 @@
                     </select>
                 </div>
                 <div class="layui-input-inline">
+                    <input type="checkbox" id="boss" name="boss" checked="" lay-skin="switch" lay-filter="switchTest" lay-text="组长|组员">
+                </div>
+                <div class="layui-input-inline">
                     <button class="layui-btn layui-btn-radius" lay-filter="add" lay-submit>添加</button>
                 </div>
                 <div class="layui-input-inline">
@@ -50,9 +53,10 @@
         <thead>
         <tr>
             <th lay-data="{checkbox:true,width:50,fixed:true}"></th>
-            <th lay-data="{field:'USID',align:'center',width:'35%',sort:true}">用户编号</th>
-            <th lay-data="{field:'DSCA',align:'center',width:'35%'}">描述</th>
-            <th lay-data="{fixed: 'right', toolbar: '#operate', width:'30%'-50, align:'center'}">操作</th>
+            <th lay-data="{field:'usid',align:'center',width:'25%',sort:true}">用户编号</th>
+            <th lay-data="{field:'dsca',align:'center',width:'25%'}">描述</th>
+            <th lay-data="{field:'boss',align:'center',width:'25%'}">职务</th>
+            <th lay-data="{fixed: 'right', toolbar: '#operate', width:'20%'-50, align:'center'}">操作</th>
         </tr>
         </thead>
     </table>
@@ -82,12 +86,14 @@
 
         form.on("submit(add)",function (data) {
             var infor = data.field;
+            var boss = $("#boss").attr("checked") === 'checked' ? 1:0;
             $.ajax({
                 type:'POST',
                 url:'./insertGropUser',
                 data:{
                     usid:infor.usid,
-                    grop:infor.grop
+                    grop:infor.grop,
+                    boss:boss
                 },
                 dataType:'json',
                 success:function (res) {
@@ -112,7 +118,7 @@
                         type:'POST',
                         url:'./deleteGropUser',
                         data:{
-                            usid:data.USID,
+                            usid:data.usid,
                             grop:grop
                         },
                         dataType:'json',
@@ -137,7 +143,7 @@
             var data = check.data;
             var param = [];
             for(var i = 0;i < data.length;i++){
-                param[i] = data[i].USID;
+                param[i] = data[i].usid;
             }
             $.ajax({
                 type:'POST',

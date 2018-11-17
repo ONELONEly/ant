@@ -14,204 +14,238 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>修改任务</title>
     <c:import url="../../static1.html"/>
+    <style>
+        #LAY_layedit_1 {
+            background-color: #fff;
+        }
+    </style>
 </head>
 <body>
 <div class="x-nav">
     <span class="layui-breadcrumb">
         <a href="javascript:" style="line-height: 40px;"><cite style="cursor: pointer;">我的</cite></a>
-        <a href="./index"><cite style="cursor: pointer;">用户需求</cite></a>
-        <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">修改任务</cite></a>
+        <a href="./index"><cite style="cursor: pointer;">需求指派</cite></a>
+        <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">修改需求</cite></a>
         <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center layui-icon-refresh"></i></a>
     </span>
 </div>
 <div class="x-body">
     <form class="layui-form layui-form-pane">
-
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <input type="hidden" name="taid" value="${obj.task.taid}" id="taid"/>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <div class="x-center">
-                <input type="text" class="layui-input x-center" name="titl" id="titl" placeholder="请输入标题" lay-verify="required|titl" value="${obj.task.titl}" required/>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <textarea id="note" class="n-display">${obj.note}</textarea>
-        </div>
-
-        <div class="layui-form-item">
-            <div class="layui-input-inline">
-                <label class="layui-form-label">系统:</label>
-            </div>
-            <div class="layui-input-inline">
-                <select name="syno" id="syno" lay-filter="syno" lay-verify="syno" lay-search>
-                    <option value="${obj.task.syno}" class="n-display" disabled selected>${obj.task.synonam}</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <div class="layui-input-inline">
-                <label class="layui-form-label">优先级:</label>
-            </div>
-            <c:if test="${obj.task.sta2 == 0 || obj.task.sta2 == null}">
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="0" class="layui-form-radio" title="低" checked/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="1" class="layui-form-radio" title="中"/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="2" class="layui-form-radio" title="高"/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="3" class="layui-form-radio" title="紧急"/>
-                </div>
-            </c:if>
-            <c:if test="${obj.task.sta2 == 1}">
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="0" class="layui-form-radio" title="低"/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="1" class="layui-form-radio" title="中" checked/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="2" class="layui-form-radio" title="高"/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="3" class="layui-form-radio" title="紧急"/>
-                </div>
-            </c:if>
-            <c:if test="${obj.task.sta2 == 2}">
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="0" class="layui-form-radio" title="低"/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="1" class="layui-form-radio" title="中"/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="2" class="layui-form-radio" title="高" checked/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="3" class="layui-form-radio" title="紧急"/>
-                </div>
-            </c:if>
-            <c:if test="${obj.task.sta2 == 3}">
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="0" class="layui-form-radio" title="低"/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="1" class="layui-form-radio" title="中"/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="2" class="layui-form-radio" title="高"/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta2" value="3" class="layui-form-radio" title="紧急" checked/>
-                </div>
-            </c:if>
-        </div>
-
-        <div class="layui-form-item">
-            <div class="layui-input-inline">
-                <label class="layui-form-label">严重程度:</label>
-            </div>
-            <c:if test="${obj.task.sta3 == 0 || obj.task.sta3 == null}">
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta3" value="0" class="layui-form-radio" title="一般" checked/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta3" value="1" class="layui-form-radio" title="严重"/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta3" value="2" class="layui-form-radio" title="关键"/>
-                </div>
-            </c:if>
-            <c:if test="${obj.task.sta3 == 1}">
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta3" value="0" class="layui-form-radio" title="一般"/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta3" value="1" class="layui-form-radio" title="严重" checked/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta3" value="2" class="layui-form-radio" title="关键"/>
-                </div>
-            </c:if>
-            <c:if test="${obj.task.sta3 == 2}">
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta3" value="0" class="layui-form-radio" title="一般"/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta3" value="1" class="layui-form-radio" title="严重"/>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="radio" name="sta3" value="2" class="layui-form-radio" title="关键" checked/>
-                </div>
-            </c:if>
-        </div>
-
-        <div class="layui-form-item">
-            <div class="layui-upload">
-                <button type="button" class="layui-btn layui-bg-black" id="uploadList">选择多文件</button>
-                <div class="layui-upload-list">
-                    <table class="layui-table">
-                        <thead>
-                        <tr>
-                            <th>文件名</th>
-                            <th>大小</th>
-                            <th>状态</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody id="fileList"></tbody>
-                    </table>
+        <div style="padding-bottom: 40px;">
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input type="hidden" name="raid" value="${obj.task.raid}" id="raid"/>
                 </div>
             </div>
-            <button type="button" class="layui-btn layui-btn-radius layui-btn-danger" id="upload"  lay-submit>上传文件</button>
+
+            <div class="layui-form-item">
+                <div class="x-center">
+                    <input type="text" class="layui-input x-center" name="titl" id="titl" placeholder="请输入标题" lay-verify="required|titl" value="${obj.task.titl}" required/>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <textarea id="note" class="n-display">${obj.note}</textarea>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <label class="layui-form-label">系统:</label>
+                </div>
+                <div class="layui-input-inline">
+                    <select name="syno" id="syno" lay-filter="syno" lay-verify="syno" lay-search>
+                        <option value="${obj.task.syno}" class="n-display" disabled selected>${obj.task.synonam}</option>
+                    </select>
+                </div>
+
+                <div class="layui-input-inline">
+                    <label class="layui-form-label">指派给:</label>
+                </div>
+                <div class="layui-input-inline">
+                    <select name="csid" id="csid" lay-filter="csid" lay-verify="csid" lay-search>
+                        <option value="${obj.task.csid}" class="n-display" disabled selected>${obj.task.cnam}</option>
+                    </select>
+                </div>
+            </div>
+
+
+
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <label class="layui-form-label">期望完成时间:</label>
+                </div>
+                <div class="layui-input-inline">
+                    <input type="text" name="ydat" id="ydat" placeholder="请选择日期" class="layui-input" value="${obj.ydat}" required/>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <label class="layui-form-label">优先级:</label>
+                </div>
+                <c:if test="${obj.task.sta2 == 33 || obj.task.sta2 == null}">
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta2" value="33" class="layui-form-radio" title="低" checked/>
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta2" value="32" class="layui-form-radio" title="中"/>
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta2" value="36" class="layui-form-radio" title="高"/>
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta2" value="37" class="layui-form-radio" title="紧急"/>
+                    </div>
+                </c:if>
+                <c:if test="${obj.task.sta2 == 32}">
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta2" value="33" class="layui-form-radio" title="低"/>
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta2" value="32" class="layui-form-radio" title="中" checked/>
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta2" value="36" class="layui-form-radio" title="高"/>
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta2" value="37" class="layui-form-radio" title="紧急"/>
+                    </div>
+                </c:if>
+                <c:if test="${obj.task.sta2 == 36}">
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta2" value="33" class="layui-form-radio" title="低"/>
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta2" value="32" class="layui-form-radio" title="中"/>
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta2" value="36" class="layui-form-radio" title="高" checked/>
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta2" value="37" class="layui-form-radio" title="紧急"/>
+                    </div>
+                </c:if>
+                <c:if test="${obj.task.sta2 == 37}">
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta2" value="33" class="layui-form-radio" title="低"/>
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta2" value="32" class="layui-form-radio" title="中"/>
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta2" value="36" class="layui-form-radio" title="高"/>
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta2" value="37" class="layui-form-radio" title="紧急" checked/>
+                    </div>
+                </c:if>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <label class="layui-form-label">严重程度:</label>
+                </div>
+                <c:if test="${obj.task.sta3 == 3 || obj.task.sta3 == null}">
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta3" value="3" class="layui-form-radio" title="一般" checked/>
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta3" value="2" class="layui-form-radio" title="严重"/>
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta3" value="1" class="layui-form-radio" title="关键"/>
+                    </div>
+                </c:if>
+                <c:if test="${obj.task.sta3 == 2}">
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta3" value="3" class="layui-form-radio" title="一般"/>
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta3" value="2" class="layui-form-radio" title="严重" checked/>
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta3" value="1" class="layui-form-radio" title="关键"/>
+                    </div>
+                </c:if>
+                <c:if test="${obj.task.sta3 == 1}">
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta3" value="3" class="layui-form-radio" title="一般"/>
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta3" value="2" class="layui-form-radio" title="严重"/>
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="sta3" value="1" class="layui-form-radio" title="关键" checked/>
+                    </div>
+                </c:if>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn layui-bg-black" id="uploadList">选择多文件</button>
+                    <div class="layui-upload-list">
+                        <table class="layui-table">
+                            <thead>
+                            <tr>
+                                <th>文件名</th>
+                                <th>大小</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="fileList"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <button type="button" class="layui-btn layui-btn-radius layui-btn-danger" id="upload"  lay-submit>上传文件</button>
+            </div>
+            <table class="layui-table" lay-data="{,url:'../task/queryAllFile?taid=${obj.task.raid}',page:false,id:'file'}" lay-filter="file">
+                <thead>
+                <tr>
+                    <th lay-data="{field:'ffil',align:'center',width:1200}">文件名</th>
+                    <th lay-data="{field:'fsiz',align:'center',width:100}">大小</th>
+                    <th lay-data="{fixed:'right',align:'center',align:'center',width:100,templet:'#operate'}">操作</th>
+                </tr>
+                </thead>
+            </table>
+            <script type="text/html" id="operate">
+                <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+            </script>
         </div>
-        <table class="layui-table" lay-data="{,url:'../task/queryAllFile?taid=${obj.task.taid}',page:false,id:'file'}" lay-filter="file">
-            <thead>
-            <tr>
-                <th lay-data="{field:'ffil',align:'center',width:1200}">文件名</th>
-                <th lay-data="{field:'fsiz',align:'center',width:100}">大小</th>
-                <th lay-data="{fixed:'right',align:'center',align:'center',width:100,templet:'#operate'}">操作</th>
-            </tr>
-            </thead>
-        </table>
-        <script type="text/html" id="operate">
-            <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
-        </script>
         <hr class="layui-bg-green"/>
-        <div class="layui-form-item">
-            <button type="button" class="layui-btn layui-btn-radius" id="modify" lay-filter="modify" lay-submit>确认更改</button>
+        <div class="x-center x-body bottom-buttom" style="margin-left:-20px;">
+            <div class="layui-form-item">
+                <button type="button" class="layui-btn layui-btn-radius" id="modify" lay-filter="modify" lay-submit>保存</button>
+            </div>
         </div>
     </form>
 
 </div>
 <script language="JavaScript">
-    layui.use(['form','jquery','element','layer','layedit','upload','table'],function () {
+    layui.use(['form','jquery','element','layer','layedit','upload','table','laydate'],function () {
         var form = layui.form,$ = layui.jquery,element = layui.element,
             layer = layui.layer,layedit = layui.layedit,upload = layui.upload,
-            table = layui.table;
-        var fileList = $("#fileList"),taid = $("#taid").val();
+            table = layui.table,laydate = layui.laydate;
+        var fileList = $("#fileList"),raid = $("#raid").val();
 
         var layEditOption = {
             uploadImage: {
                 url:'${base}/task/insertImage',
                 type:'POST'
-            }
+            },
+            height:'300px'
         };
+
+        laydate.render({
+            elem: '#ydat'
+            ,type: 'datetime'
+        });
 
         var files,fileUploadOption = {
             elem:'#uploadList',
             url:'${base}/task/uploadFiles',
             data:{
-                taid:taid
+                taid:raid
             },
             accept:'file',
             multiple:true,
@@ -278,8 +312,10 @@
                     syno:trans.syno,
                     sta2:trans.sta2,
                     sta3:trans.sta3,
+                    csid:trans.csid,
+                    ydat:trans.ydat,
                     edit:noteContent,
-                    taid:trans.taid
+                    raid:trans.raid
                 },
                 dataType:'json',
                 success:function (data) {
@@ -327,11 +363,15 @@
             url:'${base}/util/findC13',
             dataType:'json',
             success:function (res) {
-                var sys = res.sys,sOption = "";
+                var sys = res.sys,user = res.user,sOption = "",uOption = "";
                 for(var i = 0;i<sys.length;i++){
                     sOption += "<option value='"+sys[i].syno+"'>"+sys[i].dsca+"</option>";
                 }
+                for (var j = 0; j < user.length; j++) {
+                    uOption += "<option value='" + user[j].id + "'>" + user[j].dsca + '(' + user[j].id + ')' + "</option>";
+                }
                 $("#syno").append(sOption);
+                $("#csid").append(uOption);
                 form.render();
             },
             error:function (kellyj) {

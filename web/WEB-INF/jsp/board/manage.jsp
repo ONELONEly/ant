@@ -13,8 +13,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>看板</title>
-    <script type="text/javascript" src="../static/js/startScore.js"></script>
-    <link rel="stylesheet" href="../static/css/startScore.css" media="all">
     <c:import url="../../static1.html"/>
 </head>
 <body>
@@ -114,10 +112,6 @@
             <a href="javascript:" class="layui-table-link" lay-event="show">{{d.titl}}</a>
         </script>
     </div>
-    <div id="score" class="block clearfix x-center n-display">
-        <div class="star_score x-margin" style="margin: auto"></div>
-        <p class="x-margin">您的评分：<span class="stage"></span> 级</p>
-    </div>
 </div>
 <div class="layui-form-item carryUtil n-display">
     <input type="text" name="finishTime" id="finishTime" placeholder="请选择开始时间" class="layui-input x-center"/>
@@ -130,10 +124,7 @@
             laydate = layui.laydate,layer = layui.layer,form = layui.form,
             msg = "",choose = "",ptno = "";
 
-        scoreFun($("#score"),{
-            fen_d:22,//每一个a的宽度
-            ScoreGrade:5//a的个数 10或者
-        });
+        sessionStorage.setItem("token","${obj}")
 
         form.on("submit(search)",function (data) {
             var infor = data.field;
@@ -368,24 +359,7 @@
         form.on('submit(rPass)',function () {
             var choose = table.checkStatus('manage');
             var data = choose.data;
-            layer.open({
-                type:1,
-                title:'请选择等级',
-                area:'20%',
-                content:$("#score"),
-                btn:['确认'],
-                anim:4,
-                offset:'10px',
-                yes:function () {
-                    var value = $(".stage").text();
-                    if (value === null || value === "") {
-                        layer.tips('请选择等级','#score');
-                    } else {
-                        operate(data,11,"执行校验通过行为",null,value-1,null,null);
-                        layer.closeAll();
-                    }
-                }
-            });
+            operate(data,11,"执行校验通过行为",null,null,null,null);
         });
 
         form.on('submit(rReturn)',function () {
@@ -412,16 +386,15 @@
                     operate:code,
                     remk:remk,
                     date:date,
-                    stag:stage,
                     fahh:fahh,
-                    fini:fini
+                    fini:fini,
+                    token:sessionStorage.getItem("token")
                 },
                 dataType:'json',
                 success:function (res) {
-                    if(res.code === 1){
-                        table.reload("manage");
-                        getCount();
-                    }
+                    sessionStorage.setItem("token",res.data)
+                    table.reload("manage");
+                    getCount();
                     return layer.msg(res.msg,{offset:'10px'});
                 },
                 error:function (kellyj) {

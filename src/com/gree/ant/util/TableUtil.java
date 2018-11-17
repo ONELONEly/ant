@@ -1,8 +1,10 @@
 package com.gree.ant.util;
 
+import org.nutz.dao.QueryResult;
 import org.nutz.dao.pager.Pager;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TableUtil {
@@ -47,5 +49,12 @@ public class TableUtil {
         pager.setPageSize(pageSize);
         pager.setRecordCount(recordCount);
         return pager;
+    }
+
+    public static QueryResult formatQueryResult(Pager pager, List<?> classes){
+        QueryResult queryResult = new QueryResult();
+        queryResult.setPager(pager);
+        queryResult.setList(classes);
+        return queryResult;
     }
 }

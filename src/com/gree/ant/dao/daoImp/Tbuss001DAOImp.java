@@ -41,53 +41,59 @@ public class Tbuss001DAOImp extends BaseDAOImp<Tbuss001VO> implements Tbuss001DA
     }
 
     @Override
-    public List<Tbuss001VO> queryAllByAcco(String acco, String pdat, Pager pager) {
-        String sqlStr = "select t.* from v_tbuss001 t where t.usid in (select c.usid from cbase000 c where c.acco = @acco) and pdat like @pdat order by t.pdat desc";
+    public List<Tbuss001VO> queryAllByAcco(String acco, String pdat,String group, Pager pager) {
+        String sqlStr = "select t.* from v_tbuss001 t where t.usid in (select c.usid from cbase000 c where c.acco = @acco)" +
+                " and pdat like @pdat and grop like @grop order by t.pdat desc";
         Sql sql = Sqls.create(sqlStr);
         sql.setPager(pager);
-        sql.setParam("acco",acco).setParam("pdat","%"+pdat+"%");
+        sql.setParam("acco",acco).setParam("pdat","%"+pdat+"%").setParam("grop","%"+group+"%");
         return DAOUtil.getT1(sql,this.getDao());
     }
 
     @Override
-    public List<Tbuss001VO> queryAllByDept(String dept,String pdat, Pager pager) {
-        String sqlStr = "select t.* from v_tbuss001 t where t.usid in (select c.usid from cbase000 c where c.dept = @dept) and pdat like @pdat order by t.pdat desc";
+    public List<Tbuss001VO> queryAllByDept(String dept,String pdat,String group, Pager pager) {
+        String sqlStr = "select t.* from v_tbuss001 t where t.usid in (select c.usid from cbase000 c where c.dept = @dept) " +
+                "and pdat like @pdat and grop like @grop order by t.pdat desc";
         Sql sql = Sqls.create(sqlStr);
         sql.setPager(pager);
-        sql.setParam("dept",dept).setParam("pdat","%"+pdat+"%");
+        sql.setParam("dept",dept).setParam("pdat","%"+pdat+"%").setParam("grop","%"+group+"%");
         return DAOUtil.getT1(sql,this.getDao());
     }
 
     @Override
-    public List<Tbuss001VO> queryAllByComp(String comp, String pdat, org.nutz.dao.pager.Pager pager) {
-        String sqlStr = "select t.* from v_tbuss001 t where t.usid in (select c.usid from cbase000 c where c.comp = @comp) and pdat like @pdat";
+    public List<Tbuss001VO> queryAllByComp(String comp, String pdat,String group, Pager pager) {
+        String sqlStr = "select t.* from v_tbuss001 t where t.usid in (select c.usid from cbase000 c where c.comp = @comp) " +
+                "and pdat like @pdat and grop like @grop order by t.pdat desc";
         Sql sql = Sqls.create(sqlStr);
         sql.setPager(pager);
-        sql.setParam("comp",comp).setParam("pdat","%"+pdat+"%");
+        sql.setParam("comp",comp).setParam("pdat","%"+pdat+"%").setParam("grop","%"+group+"%");
         return DAOUtil.getT1(sql,this.getDao());
     }
 
     @Override
-    public Integer countByAcco(String acco, String pdat) {
-        String sqlStr = "select count(*) from v_tbuss001 t where t.usid in (select c.usid from cbase000 c where c.acco = @acco)";
+    public Integer countByAcco(String acco, String pdat,String group) {
+        String sqlStr = "select count(*) from v_tbuss001 t where t.usid in (select c.usid from cbase000 c where c.acco = @acco) " +
+                "and pdat like @pdat and grop like @grop";
         Sql sql = Sqls.create(sqlStr);
-        sql.setParam("acco",acco).setParam("pdat","%"+pdat+"%");
+        sql.setParam("acco",acco).setParam("pdat","%"+pdat+"%").setParam("grop","%"+group+"%");
         return DAOUtil.getTiCount(sql,this.getDao());
     }
 
     @Override
-    public Integer countByDept(String dept, String pdat) {
-        String sqlStr = "select count(*) from v_tbuss001 t where t.usid in (select c.usid from cbase000 c where c.dept = @dept)";
+    public Integer countByDept(String dept, String pdat,String group) {
+        String sqlStr = "select count(*) from v_tbuss001 t where t.usid in (select c.usid from cbase000 c where c.dept = @dept) " +
+                "and pdat like @pdat and grop like @grop";
         Sql sql = Sqls.create(sqlStr);
-        sql.setParam("dept",dept).setParam("pdat","%"+pdat+"%");
+        sql.setParam("dept",dept).setParam("pdat","%"+pdat+"%").setParam("grop","%"+group+"%");
         return DAOUtil.getTiCount(sql,this.getDao());
     }
 
     @Override
-    public Integer countByComp(String comp, String pdat) {
-        String sqlStr = "select count(*) from v_tbuss001 t where t.usid in (select c.usid from cbase000 c where c.comp = @comp)";
+    public Integer countByComp(String comp, String pdat,String group) {
+        String sqlStr = "select count(*) from v_tbuss001 t where t.usid in (select c.usid from cbase000 c where c.comp = @comp) " +
+                "and pdat like @pdat and grop like @grop";
         Sql sql = Sqls.create(sqlStr);
-        sql.setParam("comp",comp).setParam("pdat","%"+pdat+"%");
+        sql.setParam("comp",comp).setParam("pdat","%"+pdat+"%").setParam("grop","%"+group+"%");
         return DAOUtil.getTiCount(sql,this.getDao());
     }
 
@@ -111,7 +117,7 @@ public class Tbuss001DAOImp extends BaseDAOImp<Tbuss001VO> implements Tbuss001DA
 
     @Override
     public List<ResultVO> queryAllPD(Condition cnd) {
-        String sqlStr = "select ptno,dsca from tbuss001 $condition order by dsca asc";
+        String sqlStr = "select ptno,dsca from tbuss001 $condition order by pdat desc";
         Sql sql = Sqls.create(sqlStr);
         sql.setCondition(cnd);
         return DAOUtil.getResultVO(sql,this.getDao());

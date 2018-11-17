@@ -3,10 +3,12 @@ package com.gree.ant.mo;
 import com.gree.ant.dao.daoImp.BaseDAOImp;
 import com.gree.ant.dao.daoImp.JieKou_Tbuss003DAOImp_Ds;
 import com.gree.ant.dao.daoImp.Tbuss003DAOImp_Ds;
+import com.gree.ant.exception.KellyException;
 import com.gree.ant.mo.basic.Tbuss003BasicMO_Ds;
 import com.gree.ant.vo.Cbase000VO;
 import com.gree.ant.vo.Cbase013VO;
 import com.gree.ant.vo.Tbuss003VO;
+import com.gree.ant.vo.enumVO.ResultEnum;
 import net.sf.json.JSONObject;
 import org.nutz.dao.Dao;
 import org.nutz.http.Header;
@@ -69,7 +71,6 @@ public class Tbuss003MO_Ds implements Tbuss003BasicMO_Ds {
     @Override
     public int insertBug (Tbuss003VO tbuss003VO, Cbase000VO cbase000VO)throws Exception{
         int code=0;
-        System.out.println("进入insertBug");
         //根据项目名称查找出项目才能通过名称到LanguageCfgLookupValues找出项目id
         Cbase013VO cbase013VO= cbase013MO.fetchBySyno(tbuss003VO.getSyno());
         String dsca=cbase000VO.getDSCA();
@@ -79,7 +80,6 @@ public class Tbuss003MO_Ds implements Tbuss003BasicMO_Ds {
         }
         //去LanguageCfgLookupValues表通过名称找出id
         String CrntVersionID=tbuss003DAOImp_Ds.findIdByDscaLang(projectName);
-        System.out.println("找出最大的id");
         //找出项目最大的BugID
         int BugID=tbuss003DAOImp_Ds.selectMAX();
         //找出ds系统对应邮箱号的插入任务的人的id
@@ -120,32 +120,35 @@ public class Tbuss003MO_Ds implements Tbuss003BasicMO_Ds {
         String dsca=cbase013VO.getDsca();
 
         String projectName="";
-        if(dsca.indexOf("[项目]")!=-1){
+        if(dsca.contains("[项目]")){
             projectName=dsca.replace("[项目]","");
         }
         //去LanguageCfgLookupValues表通过名称找出id
         String CrntVersionID=tbuss003DAOImp_Ds.findIdByDscaLang(projectName);
         //找出ds系统对应邮箱号的插入任务的人的id
-        int PersonID=tbuss003DAOImp_Ds.findPersonIDByLogin(tbuss003VO.getCsid(),tbuss003VO.getUnam());
-          /*任务内容从clob转换成String,内容在去除掉ant系统自带的html的内容*/
-        String note_ds=tbuss003DAOImp_Ds.StringChange(tbuss003VO.getNote());
-        //插入ds系统的任务表Bug
-        //jieKou_Tbuss003DAOImp_Ds
-        String insertRuleJson=jieKou_Tbuss003DAOImp_Ds.inserRuleBug(tbuss003VO,cbase000VO,PersonID,note_ds,CrntVersionID);
-        String[] results=insertRuleJson.split(",");
-        String Sussess=results[1];
-        String data=results[0];
-        String updateResult="";
-        if(results!=null){
-            if(Sussess.equals("true")){
-                updateResult=jieKou_Tbuss003DAOImp_Ds.updateBugStatus(data);
-                JSONObject resultJson=JSONObject.fromObject(updateResult);
-                if(Boolean.valueOf(resultJson.get("Success").toString())){
-                    return "Success";
+        int PersonID=tbuss003DAOImp_Ds.findPersonIDByLogin(tbuss003VO.getCsid(),tbuss003VO.getCnam());
+        if(PersonID != 0) {
+            /*任务内容从clob转换成String,内容在去除掉ant系统自带的html的内容*/
+            String note_ds = tbuss003DAOImp_Ds.StringChange(tbuss003VO.getNote());
+            //插入ds系统的任务表Bug
+            //jieKou_Tbuss003DAOImp_Ds
+            String insertRuleJson = jieKou_Tbuss003DAOImp_Ds.inserRuleBug(tbuss003VO, cbase000VO, PersonID, note_ds, CrntVersionID);
+            String[] results = insertRuleJson.split(",");
+            if (results.length > 1) {
+                String Sussess = results[1];
+                String data = results[0];
+                String updateResult = "";
+                if (Sussess.equals("true")) {
+                    updateResult = jieKou_Tbuss003DAOImp_Ds.updateBugStatus(data);
+                    JSONObject resultJson = JSONObject.fromObject(updateResult);
+                    if (Boolean.valueOf(resultJson.get("Success").toString())) {
+                        return "Success";
+                    }
                 }
             }
+        }else{
+            throw new KellyException(ResultEnum.DS_NONE_ID);
         }
-
         return "false";
     }
 
@@ -156,7 +159,6 @@ public class Tbuss003MO_Ds implements Tbuss003BasicMO_Ds {
         String params1="{\"ProjectId\":\"417\",\"TemplateId\":\"0\",\"FieldValues\":[{\"FieldId\":\"122\",\"FieldValue\":\"19108\"},{\"FieldId\":\"101\",\"FieldValue\":\"测试插入DS\"},{\"FieldId\":\"103\",\"FieldValue\":\"93\"},{\"FieldId\":\"106\",\"FieldValue\":\"361\"},{\"FieldId\":\"3\",\"FieldValue\":\"3\"},{\"FieldId\":\"104\",\"FieldValue\":\"33\"},{\"FieldId\":\"102\",\"FieldValue\":\"测试插入DS\"},{\"FieldId\":\"13\",\"FieldValue\":\"3\"},{\"FieldId\":\"601\",\"FieldValue\":\"332\"},{\"FieldId\":\"108\",\"FieldValue\":\"1309\"},{\"FieldId\":\"603\",\"FieldValue\":\"1309\"},{\"FieldId\":\"606\",\"Option\":\"1\",\"FieldValue\":\"2018-04-17\"},{\"FieldId\":\"607\",\"Option\":\"1\",\"FieldValue\":\"2018-04-17\"},{\"FieldId\":\"620\",\"FieldValue\":\"3.0\"},{\"FieldId\":\"632\",\"Option\":\"1\",\"FieldValue\":\"2018-04-17\"},{\"FieldId\":\"624\",\"Option\":\"1\",\"FieldValue\":\"2018-04-17\"},{\"FieldId\":\"621\",\"FieldValue\":\"0\"}]}";
 
         Map<String, Object> params2 = (Map<String, Object>) Json.fromJson(params1);
-        System.out.println(Json.toJson(params2, JsonFormat.compact()));
 
         Header headers = Header.create().set("Content-Type", "application/json");
 
@@ -165,9 +167,6 @@ public class Tbuss003MO_Ds implements Tbuss003BasicMO_Ds {
 //        Response response = Sender.create(Request.create(url, Request.METHOD.POST, params2, headers))
 //                .setTimeout(60000)
 //                .send();
-
-        System.out.println(response.getHeader());
-        System.out.println(response.getContent());
     }
 
     public void update(){

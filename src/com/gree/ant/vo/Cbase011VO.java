@@ -103,12 +103,18 @@ public class Cbase011VO extends ValueObject{
     /**
      * The Stat.
      *
-     * @description 1：自动，0：手动
+     * @description 规则类型 1：自动，0：手动
      * @author create by jinyuk@foxmail.com.
      * @version V1.0
      * @createTime 2017 :09:12 04:09:35.
      */
     private Integer stat;
+
+    /**
+     * @description 规则属性 1：计划，0：临时
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     */
+    private Integer type;
 
     /**
      * The Cbase 012 vos.
@@ -230,6 +236,14 @@ public class Cbase011VO extends ValueObject{
 
     public void setUdat(Date udat) {
         this.udat = udat;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public List<Cbase012VO> getCbase012VOS() {

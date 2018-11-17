@@ -37,7 +37,6 @@ public class SystemController {
     @At
     @Ok("jsp:jsp.system.manage")
     public Map<String, Object> tongbuDSSystem() {
-        System.out.println("进入后台");
         int code = cbase013MO.tongbuDSSystem();
         String msg = "系统同步成功";
         return ResultUtil.getResult(code,msg,null);
@@ -57,7 +56,6 @@ public class SystemController {
     @At
     @Ok("jsp:jsp.system.manage")
     public String manage(){
-        System.out.println("---------");
         return "success!";
     }
 /*    *//**
@@ -87,7 +85,6 @@ public class SystemController {
     @At
     @Ok("jsp:jsp.system.modify")
     public Map<String, Object> modify(String syno){
-        System.out.println("进入修改");
        Cbase013VO cbase013VO=cbase013MO.fetchBySyno(syno);
        Map<String,Object> map = new HashMap<>();
        map.put("sys",cbase013VO);
@@ -153,7 +150,6 @@ public class SystemController {
 
         if(StringUtil.checkString(syno)){
             code=cbase013MO.deleteBySyno(syno);
-            System.out.println("code"+code);
             code=1;
         }else if(synos!=null){
             for (String syno1:synos){

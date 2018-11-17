@@ -3,6 +3,7 @@ package com.gree.ant.controller;
 import com.gree.ant.mo.Tbuss003MO;
 import com.gree.ant.mo.Tbuss004MO;
 import com.gree.ant.util.ResultUtil;
+import com.gree.ant.util.TokenUtil;
 import com.gree.ant.vo.Tbuss004VO;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
@@ -13,6 +14,7 @@ import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,8 +42,10 @@ public class BoardController {
 
     @At
     @Ok("jsp:jsp.board.manage")
-    public Map<String, Object> manage(){
-        return null;
+    public String manage(HttpServletRequest request){
+        Map<String,String> tokenMap = TokenUtil.getInstance().makeToken();
+        request.getSession().setAttribute("password",tokenMap.get("password"));
+        return tokenMap.get("token");
     }
 
     /**
@@ -55,8 +59,10 @@ public class BoardController {
      */
     @At
     @Ok("jsp:jsp.board.user")
-    public String user(){
-        return "success";
+    public String user(HttpServletRequest request){
+        Map<String,String> tokenMap = TokenUtil.getInstance().makeToken();
+        request.getSession().setAttribute("password",tokenMap.get("password"));
+        return tokenMap.get("token");
     }
 
     /**

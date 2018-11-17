@@ -21,7 +21,6 @@ public class Cbase013MO implements Cbase013BasicMO{
     private Tbuss003DAOImp_Ds tbuss003DAOImp_Ds;
 
     public  int tongbuDSSystem(){
-        System.out.println("进入后台");
         List<Cbase013VO> systemList=tbuss003DAOImp_Ds.findAllSystemByDs();
         tbuss003DAOImp_Ds.delerefromCbase013();
         int code=0;

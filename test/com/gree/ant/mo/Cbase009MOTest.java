@@ -18,8 +18,6 @@ public class Cbase009MOTest {
 
     @Test
     public void insertCheck() throws Exception {
-
-        System.out.println(cbase009MO.insertCheck("蚂蚁啃骨fgses"));
     }
 
 }

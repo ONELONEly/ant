@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
-import javax.sql.rowset.serial.SerialBlob;
+import javax.servlet.http.HttpServletRequest;
 
 @RunWith(MyNutTestRunner.class)
 @IocBean
@@ -19,7 +19,6 @@ public class Cbase000MOTest {
 
     @Test
     public void queryAllByCnd() throws Exception {
-        System.out.println(cbase000MO.fetchTranByUsidPRI("180365","cbase007VOS",null).getCbase007VOS().size());
     }
 
     @Test
@@ -28,16 +27,10 @@ public class Cbase000MOTest {
 
     @Test
     public void insert() throws Exception {
-        Cbase000VO cbase000VO = new Cbase000VO();
-        cbase000VO.setUSID("123456");
-        cbase000VO.setDSCA("测试用户");
-        cbase000VO.setPAWD("123456");
-        cbase000VO.setDEPT("D00024");
-        cbase000VO.setJWWJ("测试用户");
-        cbase000VO.setGROP("ANT001");
-        cbase000VO.setACCO("K00003");
-        cbase000VO.setCOMM("400");
-        cbase000MO.insert(cbase000VO);
+        Cbase000VO cbase000VO = cbase000MO.fetchUser("180484");
+        HttpServletRequest request = null;
+        cbase000VO.setBLOB(FileUtil.formatBlobByByte(FileUtil.getNormalHeader(request,"")));
+        cbase000MO.updateByVO(cbase000VO);
     }
 
 }

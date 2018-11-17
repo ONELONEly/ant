@@ -1,12 +1,13 @@
 package com.gree.ant.controller;
 
-import com.gree.ant.dao.daoImp.BaseDAOImp;
 import com.gree.ant.dao.daoImp.JieKou_Tbuss003DAOImp_Ds;
 import com.gree.ant.dao.daoImp.Tbuss003DAOImp_Ds;
+import com.gree.ant.exception.KellyException;
 import com.gree.ant.mo.*;
 import com.gree.ant.util.*;
 import com.gree.ant.util.excel.TaskExcel;
 import com.gree.ant.vo.*;
+import com.gree.ant.vo.enumVO.ResultEnum;
 import jxl.write.WriteException;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
@@ -70,6 +71,22 @@ public class TaskController {
     @Inject("refer:tbuss003DAOImp_Ds")
     private Tbuss003DAOImp_Ds tbuss003DAOImp_Ds;
 
+    @Inject
+    private BussMoFactory bussMoFactory;
+
+    /**
+     * 提交锁
+     */
+    private Boolean post_key = true;
+
+//    private synchronized static void update_post_key(){
+//        post_key = !post_key;
+//    }
+
+    private void update_post_key(){
+        post_key = !post_key;
+    }
+
 
     /**
      * Insert string.
@@ -82,13 +99,14 @@ public class TaskController {
      */
     @At
     @Ok("jsp:jsp.task.insert")
-    public Map<String,Object> insert(@Param("type")String type){
+    public Map<String,Object> insert(@Param("type")String type,@Attr("user")Cbase000VO cbase000VO){
         HashMap<String,Object> resultMap = new HashMap<>();
         boolean isManager = true;
         if(StringUtil.checkString(type)){
             isManager = false;
         }
         resultMap.put("isManager",isManager);
+        resultMap.put("user",cbase000VO);
         resultMap.put("taid","JK"+FileUtil.getRandomName());
         return resultMap;
     }
@@ -121,7 +139,13 @@ public class TaskController {
     @At
     @Ok("jsp:jsp.task.edit")
     public Map<String,Object> edit(@Param("taid")String taid,@Param("state")String state,@Param("type")String type){
-        Tbuss003VO tbuss003VO = tbuss003MO.fetchByTaid(taid);
+        Tbuss003VO tbuss003VO;
+        if(("require").equals(state)){
+            Tbuss014VO tbuss014VO = bussMoFactory.getTbuss014MO().fetchByRaid(taid);
+            tbuss003VO = tbuss014VO.formatTask();
+        }else {
+            tbuss003VO = tbuss003MO.fetchByTaid(taid);
+        }
        //阶段的描述
         boolean isManager = true;
         Boolean key = StringUtil.checkString(state);
@@ -129,13 +153,14 @@ public class TaskController {
             isManager = false;
         }
         Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("note",FileUtil.convertClob(tbuss003VO.getNote()));
+        tbuss003VO.setNote(null);
         resultMap.put("task",tbuss003VO);
         resultMap.put("key",key);
         resultMap.put("isManager",isManager);
-        resultMap.put("note",FileUtil.convertClob(tbuss003VO.getNote()));
         if(tbuss003VO.getJied()!=null){
-        String jieddsca=tbuss003MO_Ds.findT3DS_jiedDacaBySyno(tbuss003VO.getJied());
-        resultMap.put("jieddsca",jieddsca);
+            String jieddsca=tbuss003MO_Ds.findT3DS_jiedDacaBySyno(tbuss003VO.getJied());
+            resultMap.put("jieddsca",jieddsca);
         }
         return resultMap;
     }
@@ -152,8 +177,14 @@ public class TaskController {
      */
     @At
     @Ok("jsp:jsp.task.showTask")
-    public Map<String, Object> showTask(@Param("taid")String taid){
-        Tbuss003VO tbuss003VO = tbuss003MO.fetchByTaid(taid);
+    public Map<String, Object> showTask(@Param("taid")String taid,@Param("state")String state){
+        Tbuss003VO tbuss003VO;
+        if(StringUtil.checkString(state)){
+            Tbuss014VO tbuss014VO = bussMoFactory.getTbuss014MO().fetchByRaid(taid);
+            tbuss003VO = tbuss014VO.formatTask();
+        }else{
+            tbuss003VO = tbuss003MO.fetchByTaid(taid);
+        }
         Map<String,Object> resultMap = new HashMap<>();
         resultMap.put("note",FileUtil.convertClob(tbuss003VO.getNote()));
         tbuss003VO.setNote(null);
@@ -251,7 +282,7 @@ public class TaskController {
     @At
     @Ok("json:{dateFormat:'yyyy-MM-dd HH:mm:ss'}")
     public Map<String,Object> queryAllTask(@Param("page")Integer pageNumber,@Param("limit")Integer pageSize,@Param("pdat")String pdat,@Param("key")String key,@Param("grop")String grop,@Param("csid")String csid){
-        Condition cnd0 = composeCnd(csid,key,null,0,null,false);
+        Condition cnd0 = composeCnd(csid,key,null,0,null,false,null);
         Condition cnd1;
         SqlExpressionGroup e0 = null;
         SqlExpressionGroup e1 = null;
@@ -285,7 +316,7 @@ public class TaskController {
     @Ok("json:{dateFormat:'yyyy-MM-dd HH:mm:ss'}")
     public Map<String,Object> queryAllGropTask(@Param("page")Integer pageNumber,@Param("limit")Integer pageSize,@Param("ptno")String ptno,@Param("key")String key,@Param("sta")Integer sta,HttpSession session){
         String usid = StringUtil.getUsid(session);
-        Condition cnd = composeCnd(null,key,sta,null,ptno,false);
+        Condition cnd = composeCnd(null,key,sta,null,ptno,false,null);
         Integer count = tbuss003MO.countGropTask(usid,cnd);
         Pager pager = TableUtil.formatPager(pageSize,pageNumber,count);
         return TableUtil.makeJson(0,"成功",count,tbuss003MO.queryGropAllTask(usid,pager,cnd));
@@ -307,9 +338,10 @@ public class TaskController {
      */
     @At
     @Ok("json:{dateFormat:'yyyy-MM-dd HH:mm:ss'}")
-    public Map<String,Object> queryAllGradeTask(@Param("page")Integer pageNumber, @Param("limit")Integer pageSize, @Param("ptno")String ptno, @Param("key")String key, @Param("sta")Integer sta, HttpSession session){
-        String usid = session.getAttribute("usid").toString();
-        Condition cnd = composeCnd(null,key,sta,null,ptno,true);
+    public Map<String,Object> queryAllGradeTask(@Param("page")Integer pageNumber, @Param("limit")Integer pageSize,
+                                                @Param("ptno")String ptno, @Param("key")String key,@Param("stag")Integer stag,
+                                                @Param("sta")Integer sta,HttpSession session,@Attr("usid")String usid){
+        Condition cnd = composeCnd(null,key,sta,null,ptno,true,stag);
         Integer count = tbuss003MO.countByCnd(cnd);
         Pager pager = TableUtil.formatPager(pageSize,pageNumber,count);
         return TableUtil.makeJson(0,"成功",count,tbuss003MO.queryAllGradeTask(usid,pager,cnd));
@@ -342,7 +374,7 @@ public class TaskController {
             }
         }
         String usid = request.getSession().getAttribute("usid").toString();
-        Condition cnd = composeCnd(usid,key,sta,type,ptno,true);
+        Condition cnd = composeCnd(usid,key,sta,type,ptno,true,null);
         Integer count = tbuss003MO.countByCnd(cnd);
         Pager pager = TableUtil.formatPager(pageSize,pageNumber,count);
         return TableUtil.makeJson(0,"成功",count,tbuss003MO.queryAllByCnd(cnd,pager));
@@ -384,8 +416,8 @@ public class TaskController {
     @At
     @POST
     @Ok("json")
-    public Map<String,Object> insertTask(@Param("..")Tbuss003VO tbuss003VO,@Param("edit") String edit,HttpServletRequest request){
-        String usid = request.getSession().getAttribute("usid").toString();
+    public Map<String,Object> insertTask(@Param("..")Tbuss003VO tbuss003VO,@Param("edit") String edit,
+                                         @Attr("usid")String usid,HttpServletRequest request){
         String msg = "任务添加失败";
         int code = 0;
         if(tbuss003VO!=null && edit != null){
@@ -396,6 +428,7 @@ public class TaskController {
             tbuss003VO.setSta1(0);
             tbuss003VO.setStag(0);
             tbuss003VO.setFahh(0f);
+            tbuss003VO.setRsid(usid);
             tbuss003MO.insertByVO(tbuss003VO);
             msg = "任务添加成功！";
             code = 1;
@@ -418,12 +451,26 @@ public class TaskController {
     @At
     @POST
     @Ok("json")
-    public Map<String,Object> updateTask(@Param("..")Tbuss003VO tbuss003VO,@Param("edit") String edit,HttpServletRequest request){
+    public Map<String,Object> updateTask(@Param("..")Tbuss003VO tbuss003VO,@Param("edit") String edit,@Param("require")Boolean require,
+                                         @Attr("usid")String usid,HttpServletRequest request){
         String msg = "修改任务失败";
-        Integer code = 0;
+        int code = 0;
         if(tbuss003VO.getTaid()!=null && edit !=null){
-            Tbuss003VO tbuss003VOOld = tbuss003MO.fetchByTaid(tbuss003VO.getTaid());
+            Tbuss003VO tbuss003VOOld;
+            Tbuss014VO tbuss014VO = null;
             Clob note = FileUtil.formatClobByString(edit);
+            if(require){
+                tbuss014VO = bussMoFactory.getTbuss014MO().fetchByRaid(tbuss003VO.getTaid());
+                tbuss014VO.setNote(note);
+                tbuss014VO.setStat(1);
+                tbuss003VOOld = tbuss014VO.formatTask();
+                tbuss003VOOld.setUsid(usid);
+                tbuss003VOOld.setSta1(0);
+                tbuss003VOOld.setStag(0);
+                tbuss003VOOld.setFahh(0f);
+            }else {
+                tbuss003VOOld = tbuss003MO.fetchByTaid(tbuss003VO.getTaid());
+            }
             tbuss003VO.setNote(note);
             tbuss003VO.setCdat(tbuss003VOOld.getCdat());
             tbuss003VO.setSta1(tbuss003VOOld.getSta1());
@@ -435,7 +482,8 @@ public class TaskController {
             tbuss003VO.setAdat(tbuss003VOOld.getAdat());
             tbuss003VO.setStag(tbuss003VOOld.getStag());
             tbuss003VO.setFahh(tbuss003VOOld.getFahh());
-            tbuss003MO.updateByVO(tbuss003VO);
+            tbuss003VO.setRsid(usid); // TODO 是否要修改为当前编辑用户？
+            tbuss003MO.updateByVO(tbuss003VO,null,null,tbuss014VO);
             msg = "修改任务成功";
             code = 1;
         }
@@ -458,16 +506,19 @@ public class TaskController {
     @Ok("json")
     public Map<String,Object> insertRule(@Param("..")Cbase011VO cbase011VO,HttpServletRequest request){
         String usid = request.getSession().getAttribute("usid").toString();
-        String msg = "请填入所有内容";
-        Integer code = 0;
-        if(cbase011VO.getCons() != null && cbase011VO.getPjjp()!=null && cbase011VO.getDeti() != null && cbase011VO.getPlsu() !=null && cbase011VO.getDsca() != null){
+        String msg = "服务器异常";
+        int code = 0;
+        if(StringUtil.checkString(cbase011VO.getCons(),cbase011VO.getPjjp(),cbase011VO.getDeti())
+                && StringUtil.checkString(cbase011VO.getPlsu(),cbase011VO.getDsca())){
             cbase011VO.setPjno("P"+FileUtil.getRandomName());
             cbase011VO.setUsid(usid);
             cbase011VO.setUdat(new Date());
             cbase011MO.insert(cbase011VO);
-            msg = "插入规则成功";
             code = 1;
+        }else{
+            msg = "请填入所有内容";
         }
+        msg = code == 1?"成功插入规则":msg;
         return ResultUtil.getResult(code,msg,null);
     }
 
@@ -630,6 +681,23 @@ public class TaskController {
         return ResultUtil.getResult(code,msg,null);
     }
 
+    @At
+    @POST
+    @Ok("json")
+    public Map<String,Object> copyRule(@Param("pjno")String pjno, @Param("::list")String[] pjnos,@Attr("usid")String usid){
+        String msg;
+        Integer code = 0;
+        if(pjno!=null){
+            code = cbase011MO.copyByPjno(pjno,usid);
+        }else if(pjnos != null){
+            for (String PJNO:pjnos) {
+                code = cbase011MO.copyByPjno(PJNO,usid);
+            }
+        }
+        msg = code == 1 ? "复制成功" : "复制失败";
+        return ResultUtil.getResult(code,msg,null);
+    }
+
     /**
      * Delete rule score map.
      *
@@ -728,37 +796,29 @@ public class TaskController {
     }
 
 
-
-
-/*
-    */
-/**
-     * Update sta 1 map.
-     *
-     * @param operate 执行的操作
+    /**
+     * @param stag 评星等级
      * @param taids 任务编号集合
-     * @param remk  执行操作备注
-     * @return the map
-     * @description 修改任务的状态
-     * @author create by jinyuk@foxmail.com.
-     * @version V1.0
-     * @createTime 2017 :09:19 01:09:25.
-     *//*
-
+     * @return TODO
+     * @description TODO
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     */
     @At
     @POST
     @Ok("json")
-    public Map<String,Object> updateSta1(@Param("operate")Integer operate, @Param("stag")Integer stag,
-                                         @Param("::list")String[] taids, @Param("remk")String remk,
-                                         @Param("date")String date, @Param("fahh")Float fahh, AdaptorErrorContext error, HttpSession session)throws Exception{
-
-        //tbuss003MO_Ds.test4();
-        tbuss003MO_Ds.insertBugJieKou();
-       // tbuss003MO_Ds.update();
-
-       return ResultUtil.getResult(0, "推送DS失败", null);
+    public Map<String,Object> markScore(@Param("stag")Integer stag, @Param("::list")String[] taids){
+        int code = 0;
+        String msg = "服务器异常";
+        if(stag != null && taids != null){
+            bussMoFactory.getTbuss003MO().markScore(taids,stag);
+            code = 1;
+        }else{
+            msg = "您未选择任务星级，或者未选择目标任务！";
+        }
+        msg = code == 1 ? "评分成功" :msg;
+       return ResultUtil.getResult(code, msg, null);
     }
-*/
 
 
    /* *//**
@@ -776,96 +836,98 @@ public class TaskController {
     @At
     @POST
     @Ok("json")
-    public Map<String,Object> updateSta1(@Param("operate")Integer operate, @Param("stag")Integer stag,
-                                         @Param("::list")String[] taids, @Param("remk")String remk,
-                                         @Param("date")String date, @Param("fahh")Float fahh,@Param("fini")String fini,
-                                         AdaptorErrorContext error, HttpSession session,@Attr("user") Cbase000VO cbase000VO)throws Exception{
+    public Map<String,Object> updateSta1(@Param("operate")Integer operate,@Param("::list")String[] taids,
+                                         @Param("remk")String remk, @Param("date")String date, @Param("fahh")Float fahh,
+                                         @Param("fini")String fini, AdaptorErrorContext error,@Attr("user") Cbase000VO cbase000VO,
+                                         @Attr("password")String password,@Param("token")String token,
+                                         HttpServletRequest request)throws Exception{
         StringBuilder msg = new StringBuilder("传入参数为空");
         Integer code = 0;
         String status = "";
-        String insertBugCode="";
         if(error == null) {
-            if (operate != null && taids != null && StringUtil.checkString(remk)) {
-                for (String TAID : taids) {
-                    Tbuss003VO tbuss003VO = tbuss003MO.fetchTrans(TAID, "tbuss010VOS", null);
-                    List<Tbuss010VO> tbuss010VOList = tbuss003VO.getTbuss010VOS();
-                    String csid = tbuss003VO.getCsid();
-                    String cnam = tbuss003VO.getCnam();
-                    String ksid = tbuss003VO.getKsid();
-                    String knam = tbuss003VO.getKnam();
-                    String taid = tbuss003VO.getTaid();
-                    String titl = tbuss003VO.getTitl();
-                    String sys = tbuss003VO.getSynonam();
-                    tbuss003VO.setSta1(operate);
-                    if (operate == 1) {
-                        MailUtil.sendmail(csid, "牛逼的" + cnam + ",大Boss又给你下发新任务了那，请尽快查看！否则小蚂怕你忘了呐！", taid, titl, sys);
-                        MailUtil.sendmail(ksid, "尊敬的" + knam + "，您的任务已下发，小蚂已极力催促了！请耐心等待！", taid, titl, sys);
-                        status = "下发";
-                        tbuss003VO.setXdat(new Date());
-                    } else if (operate == 2) {
-                        MailUtil.sendmail(ksid, "尊敬的" + knam + "，您的任务已在努力开发中！计划完成时间：" + DateUtil.formatYMDHMDDate(date), taid, titl, sys);
-                        status = "执行中";
-                        if (StringUtil.checkString(date) && StringUtil.checkString(fini)) {
-                            tbuss003VO.setAdat(new Date());
+            if(StringUtil.checkString(token,password) && EncryUtil.passwordEncode(password,"JINYU").equals(token)) {
+                request.getSession().setAttribute("password","");
+                if (operate != null && taids != null && StringUtil.checkString(remk)) {
+                    for (String TAID : taids) {
+                        Tbuss003VO tbuss003VO = tbuss003MO.fetchTrans(TAID, "tbuss010VOS", null);
+                        List<Tbuss010VO> tbuss010VOList = tbuss003VO.getTbuss010VOS();
+                        String csid = tbuss003VO.getCsid();
+                        String cnam = tbuss003VO.getCnam();
+                        String ksid = tbuss003VO.getKsid();
+                        String knam = tbuss003VO.getKnam();
+                        String taid = tbuss003VO.getTaid();
+                        String titl = tbuss003VO.getTitl();
+                        String sys = tbuss003VO.getSynonam();
+                        int preSta1 = tbuss003VO.getSta1();
+                        tbuss003VO.setSta1(operate);
+                        if (operate == 1) {
+                            MailUtil.sendmail(csid, "牛逼的" + cnam + ",大Boss又给你下发新任务了那，请尽快查看！否则小蚂怕你忘了呐！", taid, titl, sys);
+                            MailUtil.sendmail(ksid, "尊敬的" + knam + "，您的任务已下发，小蚂已极力催促了！请耐心等待！", taid, titl, sys);
+                            status = "下发";
+                            tbuss003VO.setXdat(new Date());
+                        } else if (operate == 2) {
+                            MailUtil.sendmail(ksid, "尊敬的" + knam + "，您的任务已在努力开发中！计划完成时间：" + DateUtil.formatYMDHMDDate(date), taid, titl, sys);
+                            status = "执行中";
+                            if (StringUtil.checkString(date) && StringUtil.checkString(fini)) {
+                                tbuss003VO.setAdat(new Date());
 
-                            Date date_v;
-                            SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            date_v=formatter.parse(date);
+                                Date date_v;
+                                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                date_v = formatter.parse(date);
 
-                            Date fini_v;
-                            SimpleDateFormat formatter1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            fini_v=formatter1.parse(fini);
+                                Date fini_v;
+                                SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                fini_v = formatter1.parse(fini);
 
 
-                            tbuss003VO.setPdat(date_v);
-                            tbuss003VO.setIdat(fini_v);
+                                tbuss003VO.setPdat(date_v);
+                                tbuss003VO.setIdat(fini_v);
+                            }
+                            if (fahh != null) {
+                                tbuss003VO.setFahh(fahh);
+                            }
+                        } else if (operate == 3) {
+                            status = "被驳回";
+                        } else if (operate == 4) {
+                            status = "变更中";
+                        } else if (operate == 6) {
+                            MailUtil.sendmail(tbuss003VO.getRsid(), "尊敬的" + tbuss003VO.getRnam() + "，您的任务已竣工！请验收！", taid, titl, sys);
+                            MailUtil.sendmail(ksid, "尊敬的" + knam + "，您的任务已竣工！请验收！", taid, titl, sys);
+                            status = "验收中";
+                        } else if (operate == 5) {
+                            MailUtil.sendmail(tbuss003VO.getTepr(), "亲爱的" + tbuss003VO.getTnam() + "，你知道么，小蚂想告诉你，你又有新的测试任务了！请尽兴的测试吧！", taid, titl, sys);
+                            MailUtil.sendmail(ksid, "尊敬的" + knam + "，您的任务已竣工！请测试！", taid, titl, sys);
+                            status = "测试中";
+                            tbuss003VO.setTdat(new Date());
+                        } else if (operate == 8) {
+                            status = "测试不通过";
+                        } else if (operate == 10) {
+                            status = "验收不通过";
+                        } else if (operate == 11) {
+                            status = "验收通过";
+                            tbuss003VO.setFdat(new Date());
                         }
-                        if (fahh != null) {
-                            tbuss003VO.setFahh(fahh);
-                        }
-                    } else if (operate == 3) {
-                        status = "被驳回";
-                    } else if (operate == 4) {
-                        status = "变更中";
-                    } else if (operate == 6) {
-                        MailUtil.sendmail(tbuss003VO.getRsid(), "尊敬的" + tbuss003VO.getRnam() + "，您的任务已竣工！请验收！", taid, titl, sys);
-                        MailUtil.sendmail(ksid, "尊敬的" + knam + "，您的任务已竣工！请验收！", taid, titl, sys);
-                        status = "验收中";
-                        tbuss003VO.setFdat(new Date());
-                    } else if (operate == 5) {
-                        MailUtil.sendmail(tbuss003VO.getTepr(), "亲爱的" + tbuss003VO.getTnam() + "，你知道么，小蚂想告诉你，你又有新的测试任务了！请尽兴的测试吧！", taid, titl, sys);
-                        MailUtil.sendmail(ksid, "尊敬的" + knam + "，您的任务已竣工！请测试！", taid, titl, sys);
-                        status = "测试中";
-                        tbuss003VO.setTdat(new Date());
-                    } else if (operate == 8) {
-                        status = "测试不通过";
-                    } else if (operate == 10) {
-                        status = "验收不通过";
-                    } else if (operate == 11) {
-                        System.out.println("stag"+stag);
-                        if (stag != null) {
-                            tbuss003VO.setStag(stag);
-                           // insertBugCode=tbuss003MO_Ds.insertBug(tbuss003VO,cbase000VO);
-                            insertBugCode=tbuss003MO_Ds.insertBugJieKou(tbuss003VO,cbase000VO);
-                            if(!insertBugCode.equals("Success")){
-                            return ResultUtil.getResult(0, "推送DS失败", null);}
+                        sendMail(tbuss010VOList, status, titl);
+                        if (preSta1 == operate) {
+                            throw new KellyException(ResultEnum.POST_DOUBLE);
                         } else {
-                            return ResultUtil.getResult(0, "等级为空，请重新录入", null);
+                            code = tbuss003MO.updateByVO(tbuss003VO, operate, cbase000VO, null);
+                            if (code == 1) {
+                                tbuss004MO.insert(new Tbuss004VO(TAID, operate, new Date(), remk));
+                            }
                         }
                     }
-                    sendMail(tbuss010VOList, status, titl);
-                    code = tbuss003MO.updateByVO(tbuss003VO);
-
-                    if (code == 1) {
-                        tbuss004MO.insert(new Tbuss004VO(TAID, operate, new Date(), remk));
-                    }
+                    msg = new StringBuilder(code == 1 ? "任务操作成功" : msg);
                 }
-                msg = new StringBuilder(code == 1 ? "任务操作成功" : msg);
+            }else{
+                throw new KellyException(ResultEnum.POST_delay);
             }
         }else{
             msg = new StringBuilder("请输入正确的工时！如（5.0）");
         }
-        return ResultUtil.getResult(code, msg.toString(),null);
+        Map<String,String> tokenUtil = TokenUtil.getInstance().makeToken();
+        request.getSession().setAttribute("password",tokenUtil.get("password"));
+        return ResultUtil.getResult(code, msg.toString(),tokenUtil.get("token"));
     }
     /**
      * Query all rule map.
@@ -1045,7 +1107,7 @@ public class TaskController {
     @Ok("void")
     public void printCndTask(@Param("pdat")String pdat,@Param("key")String key,@Param("grop")String grop,@Param("csid")String csid,
                           HttpServletRequest request,HttpServletResponse response){
-        Condition cnd0 = composeCnd(csid,key,null,0,null,false);
+        Condition cnd0 = composeCnd(csid,key,null,0,null,false,null);
         Condition cnd1;
         SqlExpressionGroup e0 = null;
         SqlExpressionGroup e1 = null;
@@ -1079,16 +1141,25 @@ public class TaskController {
      * @version V1.0
      * @createTime 2017 :09:13 03:09:40.
      */
-    private Condition composeCnd(String usid,String key,Integer sta,Integer type,String ptno,Boolean order){
+    private Condition composeCnd(String usid,String key,Integer sta,Integer type,String ptno,Boolean order,Integer stage){
         SqlExpressionGroup e0 = Cnd.exps("0","=","0");
         SqlExpressionGroup e1 = null;
         SqlExpressionGroup e2 = null;
         SqlExpressionGroup e3 = null;
         SqlExpressionGroup e4 = null;
+        SqlExpressionGroup e5 = null;
         if(key != null) {
             e1 = Cnd.exps("cnam","like","%" + key + "%").or("synonam","like","%" + key + "%")
                     .or("sta2nam","like","%" + key + "%").or("sta3nam","like","%" + key + "%")
-                    .or("cnam","like","%"+key+"%").or("titl","like","%" + key + "%");
+                    .or("cnam","like","%"+key+"%").or("titl","like","%" + key + "%").
+                            or("csid","like","%" + key + "%");
+        }
+        if(stage != null){
+            if(stage == 0) {
+                e5 = Cnd.exps("stag","=",0);
+            }else{
+                e5 = Cnd.exps("stag",">",0);
+            }
         }
         if(sta != null){
             if(sta == 0){
@@ -1129,9 +1200,9 @@ public class TaskController {
             e4 = Cnd.exps("ptno","like","%"+ptno+"%");
         }
         if(order) {
-            return Cnd.where(e0).and(e1).and(e2).and(e3).and(e4).desc("cdat");
+            return Cnd.where(e0).and(e1).and(e2).and(e3).and(e4).and(e5).desc("cdat");
         }else{
-            return Cnd.where(e0).and(e1).and(e2).and(e3).and(e4);
+            return Cnd.where(e0).and(e1).and(e2).and(e3).and(e4).and(e5);
         }
     }
 

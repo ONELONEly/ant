@@ -64,8 +64,8 @@
     <table class="layui-table" lay-data="{url:'${base}/task/queryAllTask',initSort:{field:'cdat',type:'desc'},page:true,limit:10,limits:[10,15,20,25,30,50],id:'manage'}" lay-filter="manage">
         <thead>
         <tr>
-            <th lay-data="{field:'taid',align:'center',width:150sort:true}">编号</th>
-            <th lay-data="{field:'perc',align:'center',width:150sort:true}">完成度</th>
+            <th lay-data="{field:'taid',align:'center',width:150,sort:true}">编号</th>
+            <th lay-data="{field:'perc',align:'center',width:150,sort:true}">完成度</th>
             <th lay-data="{field:'titl',align:'center',width:350,toolbar:'#noteTpl'}">标题</th>
             <th lay-data="{field:'synonam',align:'center',width:250}">系统</th>
             <th lay-data="{field:'unam',align:'center',width:150}">创建人</th>

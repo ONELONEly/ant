@@ -14,6 +14,11 @@
     <title>OKR添加</title>
     <kellyj:import url="../../static1.html"/>
     <link rel="stylesheet" href="../static/css/okr.css" media="all">
+    <%--<style>--%>
+        <%--th {--%>
+            <%--now--%>
+        <%--}--%>
+    <%--</style>--%>
 </head>
 <body>
 <div class="x-body">
@@ -26,7 +31,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="6">
+                <td colspan="3">
                     <div class="layui-form-item">
                         <label for="asid" class="layui-form-label">管理对象：</label>
                         <div class="layui-input-block">
@@ -37,7 +42,7 @@
                         </div>
                     </div>
                 </td>
-                <td colspan="2">
+                <td colspan="3">
                     <div class="layui-form-item">
                         <label for="boss" class="layui-form-label">直接上级：</label>
                         <div class="layui-input-block">
@@ -56,42 +61,55 @@
                         </div>
                     </div>
                 </td>
+                <td colspan="2">
+                    <div class="layui-form-item">
+                        <label for="boss" class="layui-form-label">提交类型：</label>
+                        <div class="layui-input-block">
+                            <span id="rule_0" style="float: right"></span>
+                            <select name="rule" lay-filter="rule" id="rule" lay-search>
+                                <option value="" style="display:none;" disabled selected>请选择提交类型</option>
+                                <option value="1">计划</option>
+                                <option value="2">完成</option>
+                            </select>
+                        </div>
+                    </div>
+                </td>
                 <td class="none_border">
 
                 </td>
             </tr>
             <tr id="okr_item_0_0">
-                <th class="center" width="4%">
+                <th class="center" width="4%" nowrap="nowrap">
                     <label>序号</label>
                 </th>
-                <th class="center" width="6%">
+                <th class="center" width="6%" nowrap="nowrap">
                     <label>目标(O)</label>
                 </th>
-                <th class="center" width="10%">
-                    <label>O周期</label>
+                <th class="center" width="10%" nowrap="nowrap">
+                    <label>O周期&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                 </th>
-                <th class="center" width="10%">
+                <th class="center" width="10%" nowrap="nowrap">
                     <label>O类型</label>
                 </th>
-                <th class="center" width="5%">
-                    <label>O权重</label>
+                <th class="center" width="5%"  nowrap="nowrap">
+                    <label>O权重(%)</label>
                 </th>
-                <th class="center" width="10%">
+                <th class="center" width="10%" nowrap="nowrap">
                     <label>O完成情况</label>
                 </th>
-                <th class="center" width="20%">
+                <th class="center" width="20%" nowrap="nowrap">
                     <label>关键成果(KRS)</label>
                 </th>
-                <th class="center" width="7%">
-                    <label>KR权重</label>
+                <th class="center" width="7%" nowrap="nowrap">
+                    <label>KR权重(%)</label>
                 </th>
-                <th class="center" width="18%">
+                <th class="center" width="18%" nowrap="nowrap">
                     <label>KRS完成情况</label>
                 </th>
-                <th class="center" width="8%">
+                <th class="center" width="8%" nowrap="nowrap">
                     <label>自评分</label>
                 </th>
-                <th class="none_border" width="2%">
+                <th class="none_border" width="2%" nowrap="nowrap">
                 </th>
             </tr>
             <tr id="okr_item_1_0">
@@ -128,7 +146,7 @@
                     <input type="text" name="perf_1" id="perf_1" placeholder="请输入完成情况" autocomplete="off" class="excel_input">
                 </td>
                 <td class="none_pdding" zIndex="1" >
-                    <input type="text" name="achi_1_0" id="achi_1_0" placeholder="请输入关键成果" autocomplete="off"  class="excel_input">
+                    <input type="text" name="achi_1_0" id="achi_1_0" placeholder="请输入关键成果" onfocus="jinyu($(this))" onblur="rose($(this))" autocomplete="off"  class="excel_input">
                     <a href="javascript:" class="task_choose" onclick="task_choose($(this))"><i class="layui-icon layui-icon-search"></i></a>
                 </td>
                 <td class="none_pdding" zIndex="1" >
@@ -143,9 +161,9 @@
                 </td>
                 <td class="none_pdding none_border" zIndex="0" rowspan="">
                     <div class="layui-form-item" style="margin: 0 auto;">
-                        <div>
+<%--                        <div>
                             <a href="javascript:" onclick="goal_del($(this))"><i class="layui-icon layui-icon-close layui-bg-red"></i></a>
-                        </div>
+                        </div>--%>
                         <div>
                             <a href="javascript:" onclick="goal_add($(this))"><i class="layui-icon layui-icon-add-1 layui-bg-green"></i></a>
                         </div>
@@ -158,16 +176,16 @@
 </div>
 <div class="x-center x-body" style="bottom: 0;position: fixed;width: 100%;height:50px;background-color:#fff;z-index: 1;">
     <div class="layui-input-inline">
-        <button class="layui-btn layui-btn-radius" id="insert">添加</button>
+        <button class="layui-btn layui-btn-radius" id="insert">保存</button>
     </div>
     <kellyj:if test="${obj.isManager}">
         <div class="layui-input-inline">
-            <a class="layui-btn layui-btn-radius layui-bg-gray" href="./manage">返回</a>
+            <a class="layui-btn layui-btn-radius layui-bg-gray back" href="./manage">返回</a>
         </div>
     </kellyj:if>
     <kellyj:if test="${!obj.isManager}">
         <div class="layui-input-inline">
-            <a class="layui-btn layui-btn-radius layui-bg-gray" href="./index">返回</a>
+            <a class="layui-btn layui-btn-radius layui-bg-gray back" href="./index">返回</a>
         </div>
     </kellyj:if>
 </div>
@@ -216,104 +234,117 @@ layui.use(['form', 'table','jquery','layer',"laydate"], function () {
             asid:'',
             boss:'',
             mdat:'',
+            type:0,
             goals:[]
         };
         var formAll = $(".layui-form").children();
         var inputs = formAll.find("input");
+        var propInput = $("input[name^='prop']");
+        var krPropInput = $("input[name^='krprop_']");
+        var zgradInput = $("input[name^='zgrad_']");
         var texts = formAll.find("textarea");
         var selects = formAll.find("select");
+        var option = $("#rule");
         var param = addToParam(addToParam(null,inputs),selects);
         var goalParam = addToParam(null,texts);
+        var propParam = addToParam(null,propInput);
+        var krPropParam = addToParam(null,krPropInput);
+        var zgradParam = addToParam(null,zgradInput);
         var key = checkManagerData(param);
-        if((isManager && key) || (key && checkFormData(param) && checkFormData(goalParam))){
-            for(var j = 0;j < param.length;j++){
-                if(param[j].name === "asid"){
-                    postDataItem.asid = param[j].value;
-                }else if(param[j].name === "boss"){
-                    postDataItem.boss = param[j].value;
-                }else if(param[j].name === "mdat"){
-                    postDataItem.mdat = param[j].value;
-                }
-            }
-            for(var i = 0;i < goalParam.length;i++){
-                var goal = goalParam[i];
-                var goalItem = {
-                    goal:'',//目标
-                    ndat:'',//周期
-                    type:0,//类型
-                    prop:0,//比重
-                    perf:'',//完成情况
-                    tasks:[]
-                };
-                goalItem.goal = goal.value;
-                var row = goal.name.substring(5),name,value;
-                for(var k = 0;k < param.length;k++){
-                    name = param[k].name;
-                    value = param[k].value;
-                    if(name.match(/\bprop/) !== null){
-                        if(name.substring(5) === row){
-                            goalItem.prop = value;
-                        }
-                    }else if(name.match(/\bperf/) !== null){
-                        if(name.substring(5) === row){
-                            goalItem.perf = value;
-                        }
-                    }else if(name.match(/\bndat/) !== null){
-                        if(name.substring(5) === row){
-                            goalItem.ndat = value;
-                        }
-                    }else if(name.match(/\btype/) !== null){
-                        if(name.substring(5) === row){
-                            goalItem.type = value;
-                        }
+        if((isManager && key) || (key && checkFormData(param,option) && checkFormData(goalParam,null))) {
+            if ((isManager && key) || checkProp(propParam,krPropParam,zgradParam)) {
+                for (var j = 0; j < param.length; j++) {
+                    if (param[j].name === "asid") {
+                        postDataItem.asid = param[j].value;
+                    } else if (param[j].name === "boss") {
+                        postDataItem.boss = param[j].value;
+                    } else if (param[j].name === "mdat") {
+                        postDataItem.mdat = param[j].value;
+                    }else if (param[j].name === "rule") {
+                        postDataItem.type = param[j].value;
                     }
                 }
-                var taskCount = $("[id^=okr_item_"+row+"]").length;
-
-                for (var n = 0; n < taskCount; n++) {
-                    var taskItem = {
-                        achi: '',//关键成果
-                        krprop: 0, //KR权重
-                        krperf:'',//KR完成情况
-                        zgrad:0 //自评成绩
+                for (var i = 0; i < goalParam.length; i++) {
+                    var goal = goalParam[i];
+                    var goalItem = {
+                        goal: '',//目标
+                        ndat: '',//周期
+                        type: 0,//类型
+                        prop: 0,//比重
+                        perf: '',//完成情况
+                        tasks: []
                     };
-                    for (var m = 0; m < param.length; m++) {
-                        name = param[m].name;
-                        value = param[m].value;
-                        if (name === "achi_" + row + "_" + n) {
-                            taskItem.achi = value
-                        } else if (name === "krprop_" + row + "_" + n) {
-                            taskItem.krprop = value;
-                        } else if(name === "krperf_" + row + "_" + n){
-                            taskItem.krperf = value;
-                        } else if(name === "zgrad_" + row + "_" +n){
-                            taskItem.zgrad = value;
+                    goalItem.goal = goal.value;
+                    var row = goal.name.substring(5), name, value;
+                    for (var k = 0; k < param.length; k++) {
+                        name = param[k].name;
+                        value = param[k].value;
+                        if (name.match(/\bprop/) !== null) {
+                            if (name.substring(5) === row) {
+                                goalItem.prop = value;
+                            }
+                        } else if (name.match(/\bperf/) !== null) {
+                            if (name.substring(5) === row) {
+                                goalItem.perf = value;
+                            }
+                        } else if (name.match(/\bndat/) !== null) {
+                            if (name.substring(5) === row) {
+                                goalItem.ndat = value;
+                            }
+                        } else if (name.match(/\btype/) !== null) {
+                            if (name.substring(5) === row) {
+                                goalItem.type = value;
+                            }
                         }
                     }
-                    goalItem.tasks.push(taskItem);
-                }
-                postDataItem.goals.push(goalItem);
-            }
-            $.ajax({
-                type:'POST',
-                url:'./insert',
-                data:postDataItem,
-                dataType:'json',
-                success:function (data) {
-                    if(data.code === 1){
-                        layer.confirm("成功录入，返回主界面？",{btn:['确定返回',"刷新"],offset:'10px',anim:4},function () {
-                            window.location.replace("./index");
-                        },function () {
-                            window.location.reload();
-                        });
-                    }else{
-                        layer.alert(data.msg,{offset:'10px',anim:4});
+                    var taskCount = $("[id^=okr_item_" + row + "_]").length;
+
+                    for (var n = 0; n < taskCount; n++) {
+                        var taskItem = {
+                            achi: '',//关键成果
+                            krprop: 0, //KR权重
+                            krperf: '',//KR完成情况
+                            zgrad: 0 //自评成绩
+                        };
+                        for (var m = 0; m < param.length; m++) {
+                            name = param[m].name;
+                            value = param[m].value;
+                            if (name === "achi_" + row + "_" + n) {
+                                taskItem.achi = value
+                            } else if (name === "krprop_" + row + "_" + n) {
+                                taskItem.krprop = value;
+                            } else if (name === "krperf_" + row + "_" + n) {
+                                taskItem.krperf = value;
+                            } else if (name === "zgrad_" + row + "_" + n) {
+                                taskItem.zgrad = value;
+                            }
+                        }
+                        goalItem.tasks.push(taskItem);
                     }
-                },
-                error:function (kj) {
-                    layer.alert("发生错误:"+kj.status,{offset:'10px'});
+                    postDataItem.goals.push(goalItem);
                 }
-            });
+                console.log(postDataItem)
+                $.ajax({
+                    type: 'POST',
+                    url: './insert',
+                    data: postDataItem,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code === 1) {
+                            layer.confirm("成功录入，返回主界面？", {btn: ['确定返回', "刷新"], offset: '10px', anim: 4}, function () {
+                                window.location.replace($(".back").attr("href"))
+                            }, function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            layer.alert(data.msg, {offset: '10px', anim: 4});
+                        }
+                    },
+                    error: function (kj) {
+                        layer.alert("发生错误:" + kj.status, {offset: '10px'});
+                    }
+                });
+            }
         }
     });
 });

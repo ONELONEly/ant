@@ -1,10 +1,16 @@
 package com.gree.ant;
 
 import com.gree.MyNutTestRunner;
+import com.gree.ant.dao.daoImp.JieKou_Tbuss003DAOImp_Ds;
+import com.gree.ant.dao.daoImp.Tbuss003DAOImp_Ds;
+import com.gree.ant.mo.BaseMoFactory;
 import com.gree.ant.mo.Cbase013MO;
 import com.gree.ant.mo.Cbase016MO;
+import com.gree.ant.mo.Tbuss003MO;
+import com.gree.ant.vo.Cbase000VO;
 import com.gree.ant.vo.Cbase013VO;
 import com.gree.ant.vo.Cbase016VO;
+import com.gree.ant.vo.Tbuss003VO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nutz.dao.Cnd;
@@ -19,38 +25,50 @@ import java.util.List;
 @RunWith(MyNutTestRunner.class)
 public class SystemMOTest {
 
-    @Inject("refer:cbase013MO")
-    private Cbase013MO cbase013MO;
+    @Inject
+    private BaseMoFactory baseMoFactory;
 
-    @Inject("refer:cbase016MO")
-    private Cbase016MO cbase016MO;
+    @Inject
+    private Tbuss003DAOImp_Ds tbuss003DAOImp_ds;
+
+    @Inject
+    private JieKou_Tbuss003DAOImp_Ds jieKou_tbuss003DAOImp_ds;
+
+    @Inject
+    private Tbuss003MO tbuss003MO;
 
    //cbase018MO
 
     @Test
     public void testSystem() throws Exception {
-        SqlExpressionGroup e = null;
-        String key="";
-        if(key != null){
-            e = Cnd.exps("dsca","like","%"+key+"%");
-        }
-        Pager pager = new Pager(1,10);
-        Cnd cnd = Cnd.where(e);
-        List<Cbase013VO> list=cbase013MO.queryAllByCnd(cnd,pager);
-        for (int i = 0; i <list.size() ; i++) {
-            Cbase013VO cbase013VO=list.get(i);
-            System.out.println(cbase013VO.getDsca());
-        }
-        System.out.println(list.size());
 
     }
 
 
     @Test
-    public void testC16() throws Exception {
-        Cbase016VO cbase016VO=cbase016MO.fetchByName("7");
-        System.out.println(cbase016VO.getCtyp());
-        System.out.println(cbase016VO.getDsca());
+    public void testProjectID() throws Exception {
+        String projectName = "电商平台任务";
+        if(projectName.contains("[项目]")){
+            projectName=projectName.replace("[项目]","");
+        }
+        System.out.println(tbuss003DAOImp_ds.findIdByDscaLang(projectName));
+
+    }
+
+    @Test
+    public void testPersonMessage() throws Exception {
+        Tbuss003VO tbuss003VO = tbuss003MO.fetchByTaid("JK83228254");
+        Cbase000VO cbase000VO = baseMoFactory.getCbase000MO().fetchUser("180484");
+        int PersonID =tbuss003DAOImp_ds.findPersonIDByLogin("180484","赖元杰");
+        String result = jieKou_tbuss003DAOImp_ds.inserRuleBug(tbuss003VO,cbase000VO,PersonID,"测试数据","0");
+        System.out.println(result);
+
+    }
+
+    @Test
+    public void testupdateStatus() throws Exception {
+       String result = jieKou_tbuss003DAOImp_ds.updateBugStatus("20499");
+        System.out.println(result);
 
     }
 

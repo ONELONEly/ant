@@ -28,6 +28,12 @@ public class OkrVO {
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      */
     private String mdat;
+
+    /**
+     * @description 提交类型
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     */
+    private Integer type;
     /**
      * @description 目标集合
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
@@ -40,6 +46,14 @@ public class OkrVO {
 
     public void setAsid(String asid) {
         this.asid = asid;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public String getBoss() {
@@ -67,6 +81,6 @@ public class OkrVO {
     }
 
     public Tbuss011VO getOkrManager(){
-        return new Tbuss011VO(this.asid,this.boss,this.mdat);
+        return new Tbuss011VO(this.asid,this.boss,this.mdat,this.type);
     }
 }

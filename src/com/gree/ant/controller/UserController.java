@@ -1,10 +1,7 @@
 package com.gree.ant.controller;
 
 import com.gree.ant.mo.*;
-import com.gree.ant.util.FileUtil;
-import com.gree.ant.util.ResultUtil;
-import com.gree.ant.util.StringUtil;
-import com.gree.ant.util.TableUtil;
+import com.gree.ant.util.*;
 import com.gree.ant.vo.*;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
@@ -130,8 +127,10 @@ public class UserController {
      */
     @At
     @Ok("jsp:jsp.user.board")
-    public String board(){
-        return "success!";
+    public String board(HttpServletRequest request){
+        Map<String,String> tokenMap = TokenUtil.getInstance().makeToken();
+        request.getSession().setAttribute("password",tokenMap.get("password"));
+        return tokenMap.get("token");
     }
 
     /**
@@ -271,12 +270,14 @@ public class UserController {
      */
     @At
     @Ok("raw:jpg")
-    public OutputStream getUserHeader(HttpServletResponse response, HttpServletRequest request,@Param("usid")String usid){
-        if(!StringUtil.checkString(usid)) {
-            usid = request.getSession().getAttribute("usid").toString();
-        }
+    public OutputStream getUserHeader(HttpServletResponse response, HttpServletRequest request,@Attr("usid")String usid){
         Cbase000VO cbase000VO = cbase000MO.fetchByUsid(usid);
-        byte[] bytes = FileUtil.formatByteByBlob(cbase000VO.getBLOB());
+        byte[] bytes;
+        if (cbase000VO.getBLOB() == null){
+            bytes = FileUtil.getNormalHeader(request,"header.gif");
+        }else {
+            bytes = FileUtil.formatByteByBlob(cbase000VO.getBLOB());
+        }
         return FileUtil.getOsByByte(bytes,response);
     }
 
@@ -297,7 +298,7 @@ public class UserController {
         String msg = "用户ID已存在";
         Integer code = 0;
         if(cbase000VO !=null && cbase000MO.fetchByUsid(cbase000VO.getUSID()) == null){
-            cbase000VO.setBLOB(FileUtil.formatBlobByByte(FileUtil.getNormalHeader(request)));
+            cbase000VO.setBLOB(FileUtil.formatBlobByByte(FileUtil.getNormalHeader(request,"header.jpg")));
             cbase000MO.insert(cbase000VO);
             msg = "插入成功";
             code = 1;
@@ -325,6 +326,9 @@ public class UserController {
             if(rePawd.equals(cbase000VO.getPAWD())){
                 Cbase000VO cbase000VO1 = cbase000MO.fetchByUsid(cbase000VO.getUSID());
                 cbase000VO1.setDSCA(cbase000VO.getDSCA());
+                if(StringUtil.checkString(cbase000VO.getPAWD())) {
+                    cbase000VO1.setPAWD(cbase000VO.getPAWD());
+                }
                 if(StringUtil.checkString(cbase000VO.getCPID())) {
                     cbase000VO1.setCPID(cbase000VO.getCPID());
                 }

@@ -19,7 +19,6 @@ public class Tbuss001MOTest {
 
     @Test
     public void queryAllByCnd() throws Exception {
-        System.out.println(tbuss001MO.queryAllByComp("400","2017",new org.nutz.dao.pager.Pager(1,2)));
     }
 
     @Test

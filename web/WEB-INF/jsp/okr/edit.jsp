@@ -27,7 +27,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="6">
+                <td colspan="3">
                     <div class="layui-form-item">
                         <label for="asid" class="layui-form-label">管理对象：</label>
                         <div class="layui-input-block">
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                 </td>
-                <td colspan="2">
+                <td colspan="3">
                     <div class="layui-form-item">
                         <label for="boss" class="layui-form-label">直接上级：</label>
                         <div class="layui-input-block">
@@ -58,42 +58,55 @@
                         </div>
                     </div>
                 </td>
+                <td colspan="2">
+                    <div class="layui-form-item">
+                        <label for="boss" class="layui-form-label">提交类型：</label>
+                        <div class="layui-input-block">
+                            <span id="rule_0" style="float: right"></span>
+                            <select name="rule" lay-filter="rule" id="rule" lay-search>
+                                <option value="" style="display:none;" disabled selected>请选择提交类型</option>
+                                <option value="1">计划</option>
+                                <option value="2">完成</option>
+                            </select>
+                        </div>
+                    </div>
+                </td>
                 <td class="none_border">
 
                 </td>
             </tr>
             <tr id="okr_item_0_0">
-                <th class="center" width="4%">
+                <th class="center" width="4%" nowrap="nowrap">
                     <label>序号</label>
                 </th>
-                <th class="center" width="6%">
+                <th class="center" width="6%" nowrap="nowrap">
                     <label>目标(O)</label>
                 </th>
-                <th class="center" width="10%">
-                    <label>O周期</label>
+                <th class="center" width="10%" nowrap="nowrap">
+                    <label>O周期&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                 </th>
-                <th class="center" width="10%">
+                <th class="center" width="10%" nowrap="nowrap">
                     <label>O类型</label>
                 </th>
-                <th class="center" width="5%">
-                    <label>O权重</label>
+                <th class="center" width="5%" nowrap="nowrap">
+                    <label>O权重(%)</label>
                 </th>
-                <th class="center" width="10%">
+                <th class="center" width="10%" nowrap="nowrap">
                     <label>O完成情况</label>
                 </th>
-                <th class="center" width="20%">
+                <th class="center" width="20%" nowrap="nowrap">
                     <label>关键成果(KRS)</label>
                 </th>
-                <th class="center" width="7%">
-                    <label>KR权重</label>
+                <th class="center" width="7%" nowrap="nowrap">
+                    <label>KR权重(%)</label>
                 </th>
-                <th class="center" width="18%">
+                <th class="center" width="18%" nowrap="nowrap">
                     <label>KRS完成情况</label>
                 </th>
-                <th class="center" width="8%">
+                <th class="center" width="8%" nowrap="nowrap">
                     <label>自评分</label>
                 </th>
-                <th class="none_border" width="2%">
+                <th class="none_border" width="2%" nowrap="nowrap">
                 </th>
             </tr>
         </table>
@@ -103,16 +116,16 @@
 <div class="x-center x-body"
      style="bottom: 0;position: fixed;width: 100%;height:50px;background-color:#fff;z-index: 1;">
     <div class="layui-input-inline">
-        <button class="layui-btn layui-btn-radius" id="update">修改</button>
+        <button class="layui-btn layui-btn-radius" id="update">保存</button>
     </div>
     <kellyj:if test="${obj.isManager}">
         <div class="layui-input-inline">
-            <a class="layui-btn layui-btn-radius layui-bg-gray" href="./manage">返回</a>
+            <a class="layui-btn layui-btn-radius layui-bg-gray back" href="./manage">返回</a>
         </div>
     </kellyj:if>
     <kellyj:if test="${!obj.isManager}">
         <div class="layui-input-inline">
-            <a class="layui-btn layui-btn-radius layui-bg-gray" href="./index">返回</a>
+            <a class="layui-btn layui-btn-radius layui-bg-gray back" href="./index">返回</a>
         </div>
     </kellyj:if>
 </div>
@@ -166,7 +179,7 @@
         </td>
         <td class="none_pdding" zIndex="1">
             <input type="text" name="achi_{{index+1}}_0" id="achi_{{index+1}}_0" placeholder="请输入关键成果"
-                   autocomplete="off" class="excel_input" value="{{task.achi === undefined ? '': task.achi}}">
+                   autocomplete="off" class="excel_input" onfocus="jinyu($(this))" onblur="rose($(this))" value="{{task.achi === undefined ? '': task.achi}}">
             <a href="javascript:" class="task_choose" onclick="task_choose($(this))"><i
                     class="layui-icon layui-icon-search"></i></a>
         </td>
@@ -203,7 +216,7 @@
     <tr id="okr_item_{{index+1}}_{{num}}">
         <td class="none_pdding" zIndex="1">
             <input type="text" name="achi_{{index+1}}_{{num}}" id="achi_{{index+1}}_{{num}}" placeholder="请输入关键成果"
-                   autocomplete="off" class="excel_input" value="{{task.achi === undefined ? '': task.achi}}">
+                   autocomplete="off" class="excel_input" onfocus="jinyu($(this))" onblur="rose($(this))" value="{{task.achi === undefined ? '': task.achi}}">
             <a href="javascript:" class="task_choose" onclick="task_choose($(this))"><i
                     class="layui-icon layui-icon-search"></i></a>
         </td>
@@ -235,6 +248,7 @@
         var form = layui.form, $ = layui.jquery, postDataItem, laydate = layui.laydate,
             laytpl = layui.laytpl, getTpl = okr.innerHTML,isManager = ${obj.isManager};
 
+        $("#rule").val(${obj.okr.TYPE})
         var start = {
             elem: '#mdat',
             type: 'month',
@@ -300,16 +314,25 @@
                 asid: '',
                 boss: '',
                 mdat: '',
+                type:0,
                 goals: []
             };
             var formAll = $(".layui-form").children();
             var inputs = formAll.find("input");
+            var propInput = $("input[name^='prop']");
+            var krPropInput = $("input[name^='krprop_']");
+            var zgradInput = $("input[name^='zgrad_']");
             var texts = formAll.find("textarea");
             var selects = formAll.find("select");
-            var param = addToParam(addToParam(null, inputs), selects);
-            var goalParam = addToParam(null, texts);
+            var option = $("#rule");
+            var param = addToParam(addToParam(null,inputs),selects);
+            var goalParam = addToParam(null,texts);
+            var propParam = addToParam(null,propInput);
+            var krPropParam = addToParam(null,krPropInput);
+            var zgradParam = addToParam(null,zgradInput);
             var key = checkManagerData(param);
-            if ((isManager && key) || (key && checkFormData(param) && checkFormData(goalParam))) {
+            if((isManager && key) || (key && checkFormData(param,option) && checkFormData(goalParam,null))) {
+                if ((isManager && key) || checkProp(propParam,krPropParam,zgradParam)) {
                 for (var j = 0; j < param.length; j++) {
                     if (param[j].name === "asid") {
                         postDataItem.asid = param[j].value;
@@ -317,6 +340,8 @@
                         postDataItem.boss = param[j].value;
                     } else if (param[j].name === "mdat") {
                         postDataItem.mdat = param[j].value;
+                    } else if (param[j].name === "rule") {
+                        postDataItem.type = param[j].value;
                     }
                 }
                 for (var i = 0; i < goalParam.length; i++) {
@@ -352,7 +377,10 @@
                             }
                         }
                     }
-                    var taskCount = $("[id^=okr_item_" + row + "]").length;
+
+                    var taskCount = $("[id^=okr_item_" + row + "_]").length;
+
+                    console.log(row,i,taskCount,"text",$("[id^=okr_item_" + row + "_]"))
 
                     for (var n = 0; n < taskCount; n++) {
                         var taskItem = {
@@ -378,6 +406,7 @@
                     }
                     postDataItem.goals.push(goalItem);
                 }
+                console.log(postDataItem)
                 $.ajax({
                     type: 'POST',
                     url: './update?okid='+${obj.okr.OKID},
@@ -385,8 +414,8 @@
                     dataType: 'json',
                     success: function (data) {
                         if (data.code === 1) {
-                            layer.confirm("成功修改，返回主界面？", {btn: ['确定返回', "刷新"], offset: '10px', anim: 4}, function () {
-                                window.location.replace("./index");
+                            layer.confirm("成功保存，返回主界面？", {btn: ['确定返回', "刷新"], offset: '10px', anim: 4}, function () {
+                               window.location.replace($(".back").attr("href"))
                             }, function () {
                                 window.location.reload();
                             });
@@ -399,7 +428,7 @@
                     }
                 });
             }
-        });
+        }});
     });
 </script>
 <script src="../static/js/okrInsert.js"></script>

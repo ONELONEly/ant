@@ -59,14 +59,12 @@ public static HashMap authenticate(String uid,String psw){
 //        Loop through the search results
             if (answer.hasMoreElements()) {
                 SearchResult sr = (SearchResult) answer.next();
-                //System.out.println(">>>" + sr.getName());
 
                 Attributes attrs = sr.getAttributes();
                 if (attrs != null) {
                     try {
                       for (int i = 0; i < returnedAtts.length; i++) {
                           ret.put(attrs.get(returnedAtts[i]).getID(), attrs.get(returnedAtts[i]).get());
-                          //System.out.println(attrs.get(returnedAtts[i]).getID()+": " + attrs.get(returnedAtts[i]).get());
                       }
 
                     } catch (Exception e) {
@@ -75,13 +73,10 @@ public static HashMap authenticate(String uid,String psw){
                     }
                 }
             }
-            //System.out.println("Total groups: " + totalResults);
             ctx.close();
         }catch (NamingException e) {
-        	 System.out.print(":( 没有此用户");
             return null;
             //e.printStackTrace();
-            //System.err.println("Problem searching directory: " + e);
         }
     return ret;
       

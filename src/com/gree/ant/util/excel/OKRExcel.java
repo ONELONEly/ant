@@ -27,8 +27,11 @@ import java.util.List;
 public class OKRExcel {
 
     public static void export(Tbuss011VO tbuss011VO, HttpServletRequest request, HttpServletResponse response) throws IOException, WriteException {
+        if(tbuss011VO == null){
+            tbuss011VO = new Tbuss011VO();
+        }
         response.setContentType("APPLICATION/OCTET-STREAM");
-        String title = tbuss011VO.getANAM()+"OKR管理表";
+        String title = (tbuss011VO.getANAM() == null ? "" : tbuss011VO.getANAM())+"OKR管理表";
         ExcelUtil.setHeader(request,response,title);
         printExcel(title,tbuss011VO,response.getOutputStream());
         response.setStatus(200);
@@ -49,13 +52,13 @@ public class OKRExcel {
         format = ExcelUtil.getForamat("BOLD", 11, Colour.BLACK);
         format.setAlignment(Alignment.CENTRE);
         format.setBorder(jxl.format.Border.ALL, BorderLineStyle.THIN);
-        cell = new Label(0,2,"管理对象："+ tbuss011VO.getANAM(),format);
+        cell = new Label(0,2,"管理对象："+ (tbuss011VO.getANAM() == null ? "" : tbuss011VO.getANAM()),format);
         sheet.addCell(cell);
         sheet.mergeCells(0,2,5,2);
-        cell = new Label(6,2,"直接上级："+ tbuss011VO.getBNAM(),format);
+        cell = new Label(6,2,"直接上级："+ (tbuss011VO.getBNAM() == null ? "" : tbuss011VO.getBNAM()),format);
         sheet.addCell(cell);
         sheet.mergeCells(6,2,7,2);
-        cell = new Label(6,2,"管理周期："+ tbuss011VO.getMDAT(),format);
+        cell = new Label(8,2,"管理周期："+ (tbuss011VO.getMDAT() == null ? "" : tbuss011VO.getMDAT()),format);
         sheet.addCell(cell);
         sheet.mergeCells(8,2,10,2);
 
@@ -101,6 +104,7 @@ public class OKRExcel {
                 tbuss013VOList = tbuss012VO.getTbuss013VOS();
                 if (tbuss013VOList != null){
                     t13Count = tbuss013VOList.size();
+                    t13Count--;
                 }else{
                     tbuss013VOList = new ArrayList<>();
                 }

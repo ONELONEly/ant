@@ -2,6 +2,7 @@ package com.gree.ant.vo;
 
 import org.nutz.dao.entity.annotation.*;
 
+import java.awt.*;
 import java.util.List;
 
 
@@ -52,6 +53,27 @@ public class Tbuss011VO extends ValueObject{
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      */
     private String MDAT;
+
+    /**
+     * @description 提交类型
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     */
+    private Integer TYPE;
+
+    @Readonly
+    private String TYPENAM;
+
+    @Readonly
+    private String ACCONAM;
+
+    /**
+     * @description 是否是可编辑状态
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     */
+    private Integer stat;
+
+    @Readonly
+    private Float GRADE = Float.valueOf("0");
     /**
      * @description 目标
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
@@ -64,10 +86,25 @@ public class Tbuss011VO extends ValueObject{
 
     }
 
-    public Tbuss011VO(String ASID, String BOSS, String MDAT) {
+    public Tbuss011VO(String ASID, String BOSS, String MDAT,Integer TYPE) {
         this.ASID = ASID;
         this.BOSS = BOSS;
         this.MDAT = MDAT;
+        this.TYPE = TYPE;
+    }
+
+    public Tbuss011VO(String ASID,String ANAM,String BOSS,String BNAM,String MDAT,Integer OKID,Integer stat,Float grade,Integer TYPE,String TYPENAM,String ACCONAM) {
+        this.ASID = ASID;
+        this.ANAM = ANAM;
+        this.BOSS = BOSS;
+        this.BNAM = BNAM;
+        this.MDAT = MDAT;
+        this.OKID = OKID;
+        this.stat = stat;
+        this.GRADE = grade;
+        this.TYPE = TYPE;
+        this.TYPENAM = TYPENAM;
+        this.ACCONAM = ACCONAM;
     }
 
     public Integer getOKID() {
@@ -124,5 +161,45 @@ public class Tbuss011VO extends ValueObject{
 
     public void setTbuss012VOS(List<Tbuss012VO> tbuss012VOS) {
         this.tbuss012VOS = tbuss012VOS;
+    }
+
+    public Integer getStat() {
+        return stat;
+    }
+
+    public void setStat(Integer stat) {
+        this.stat = stat;
+    }
+
+    public Float getGRADE() {
+        return GRADE;
+    }
+
+    public void setGRADE(Float GRADE) {
+        this.GRADE = GRADE;
+    }
+
+    public Integer getTYPE() {
+        return TYPE;
+    }
+
+    public void setTYPE(Integer TYPE) {
+        this.TYPE = TYPE;
+    }
+
+    public String getTYPENAM() {
+        return TYPENAM;
+    }
+
+    public void setTYPENAM(String TYPENAM) {
+        this.TYPENAM = TYPENAM;
+    }
+
+    public String getACCONAM() {
+        return ACCONAM;
+    }
+
+    public void setACCONAM(String ACCONAM) {
+        this.ACCONAM = ACCONAM;
     }
 }
