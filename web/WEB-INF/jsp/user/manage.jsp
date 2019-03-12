@@ -103,6 +103,9 @@
             table.reload("manage",{
                 where:{
                     key:infor.msg
+                },
+                page:{
+                    curr:1
                 }
             });
             return false;

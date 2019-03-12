@@ -49,34 +49,23 @@
         </select>
     </div>
 </form>
-<table class="layui-table" lay-data="{url:'${base}/task/queryAllGradeTask?ptno=${obj.ptno}',initSort:{field:'cdat',type:'desc'},page:true,limit:10,limits:[10,15,20,25,30,50],id:'manage'}" lay-filter="manage">
-    <thead>
-    <tr>
-        <th lay-data="{checkbox:true,width:50,fixed:true}"></th>
-        <th lay-data="{fixed:'left',align:'center',width:150,templet:'#mark'}">状态</th>
-        <th lay-data="{fixed:'left',field:'perc',align:'center',width:150,sort:true}">完成度</th>
-        <th lay-data="{fixed:'left',field:'titl',align:'center',width:350,toolbar:'#noteTpl'}">标题</th>
-        <th lay-data="{field:'fahh',align:'center',width:150,sort:true}">工时</th>
-        <th lay-data="{field:'synonam',align:'center',width:350}">系统</th>
-        <th lay-data="{field:'cnam',align:'center',width:150}">派发给</th>
-        <th lay-data="{field:'sta1nam',align:'center',width:150}">状态</th>
-        <th lay-data="{field:'sta2nam',align:'center',width:150}">紧急状态</th>
-        <th lay-data="{field:'sta3nam',align:'center',width:150}">重要程度</th>
-        <th lay-data="{field:'punonam',align:'center',width:150}">任务类型</th>
-        <th lay-data="{field:'ptypnam',align:'center',width:150}">评分类型</th>
-        <th lay-data="{field:'knam',align:'center',width:150}">关键用户</th>
-        <th lay-data="{field:'adat',align:'center',width:150,sort:true}">执行时间</th>
-        <th lay-data="{field:'pdat',align:'center',width:150,sort:true}">计划时间</th>
-        <th lay-data="{field:'tdat',align:'center',width:150,sort:true}">测试时间</th>
-        <th lay-data="{field:'fdat',align:'center',width:150,sort:true}">验收时间</th>
-        <th lay-data="{field:'cdat',align:'center',width:150,sort:true}">创建时间</th>
-        <th lay-data="{field:'t1dsca',align:'center',width:350}">绩效表主题</th>
-        <th lay-data="{field:'eye',fixed:'right',align:'center',width:200}">关注</th>
-    </tr>
-    </thead>
+<table class="layui-table" id = "manage" lay-filter="manage">
 </table>
 <script type="text/html" id="noteTpl">
     <a href="javascript:" class="layui-table-link" lay-event="show">{{d.titl}}</a>
+</script>
+<script type="text/html" id="stagTpl">
+    {{# if(d.stag == 4){ }}
+    <span style="color:green;">五星</span>
+    {{# }else if(d.stag == 3){ }}
+    <span style="color:green;">四星</span>
+    {{# }else if(d.stag == 2){ }}
+    <span style="color:green;">三星</span>
+    {{# }else if(d.stag == 1){ }}
+    <span style="color:green;">二星</span>
+    {{# }else{ }}
+    <span style="color: #f00;">零星</span>
+    {{# } }}
 </script>
 <script type="text/html" id="mark">
     {{# if(d.stag > 0){ }}
@@ -93,7 +82,42 @@
 <script language="JavaScript">
     layui.use(["laydate","laypage","element","layer","table","jquery","form"],function () {
         var laypage = layui.laypage, element = layui.element, layer = layui.layer,
-            table = layui.table, form = layui.form, $ = layui.jquery;
+            table = layui.table, form = layui.form, $ = layui.jquery,curr_table;
+
+        curr_table = table.render({ //initSort:{field:'cdat',type:'desc'}
+            elem:'#manage',
+            url:'${base}/task/queryAllGradeTask?ptno=${obj.ptno}',
+            cellMinWidth:100,
+            page:true,
+            limit:10,
+            limits:[10,20,30,40,50],
+            initSort:{field:'cdat',type:'desc'},
+            cols:[[
+                {fixed:true,checkbox:true,width:50},
+                {fixed:'left',align:'center',title:'状态',width:150,templet:'#mark'},
+                {fixed:'left',field:'perc',align:'center',title:'完成度',width:150,sort:true},
+                {fixed:'left',field:'titl',align:'center',title:'标题',width:300,toolbar:'#noteTpl'},
+                {field:'fahh',align:'center',title:'工时',width:150,sort:true},
+                {field:'stag',align:'center',width:150,title:'等级',sort:true,templet:'#stagTpl'},
+                {field:'synonam',align:'center',width:350,title:'系统'},
+                {field:'cnam',align:'center',width:150,title:'派发给'},
+                {field:'sta1nam',align:'center',width:150,title:'状态'},
+                {field:'sta2nam',align:'center',width:150,title:'紧急状态'},
+                {field:'sta3nam',align:'center',width:150,title:'重要程度'},
+                {field:'punonam',align:'center',width:150,title:'任务类型'},
+                {field:'ptypnam',align:'center',width:150,title:'评分类型'},
+                {field:'knam',align:'center',width:150,title:'关键用户'},
+                {field:'adat',align:'center',width:150,title:'执行时间',sort:true},
+                {field:'pdat',align:'center',width:150,title:'计划时间',sort:true},
+                {field:'tdat',align:'center',width:150,title:'测试时间',sort:true},
+                {field:'fdat',align:'center',width:150,title:'验收时间',sort:true},
+                {field:'cdat',align:'center',width:150,title:'创建时间',sort:true},
+                {field:'t1dsca',align:'center',width:300,title:'绩效表主题'},
+                {fixed:'right',field:'eye',align:'center',width:200,title:'关注'}
+            ]],
+            response:{
+                statusCode:0
+            }});
 
         scoreFun($("#score"),{
             fen_d:22,//每一个a的宽度
@@ -122,19 +146,25 @@
         });
 
         form.on("select(user)",function (data) {
-            table.reload("manage",{
+            curr_table = table.reload("manage",{
                 where:{
                     key:data.value,
                     stag:$("#status option:selected").val()
+                },
+                page:{
+                    curr:1
                 }
             })
         });
 
         form.on("select(status)",function (data) {
-            table.reload("manage",{
+            curr_table = table.reload("manage",{
                 where:{
                     stag:data.value,
                     key:$("#user option:selected").val()
+                },
+                page:{
+                    curr:1
                 }
             })
         });
@@ -167,10 +197,14 @@
                             },
                             dataType:'json',
                             success:function (res) {
-                                table.reload("manage",{
+                                console.log(curr_table.config.page.curr);
+                                curr_table = table.reload("manage",{
                                     where:{
                                         stag:$("#status option:selected").val(),
                                         key:$("#user option:selected").val()
+                                    },
+                                    page:{
+                                        curr:curr_table.config.page.curr
                                     }
                                 });
                                 layer.msg(res.msg,{offset:'10px'});

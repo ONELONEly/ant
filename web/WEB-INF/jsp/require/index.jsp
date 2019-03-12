@@ -93,6 +93,9 @@
                 where:{
                     key:obj.field.msg,
                     stat:$("#stat option:selected").val()
+                },
+                page:{
+                    curr:1
                 }
             });
             return false;
@@ -159,6 +162,9 @@
                 where:{
                     stat:data.value,
                     key:$("#msg").val()
+                },
+                page:{
+                    curr:1
                 }
             })
         });

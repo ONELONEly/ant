@@ -37,7 +37,7 @@
             <li class="layui-nav-item">
                 <a href="javascript:" data-url="./user/modify" data-icon="&#xe628;" data-title="修改资料" kit-target data-id='修改资料'>
                     <cite class="n-display">修改资料</cite>
-                    <img class="header-img" src="./user/getUserHeader" id="head">
+                    <img class="header-img" src="./user/getUserHeader?usid=${obj.user.USID}" id="head">
                 </a>
             </li>
             <li class="layui-nav-item">

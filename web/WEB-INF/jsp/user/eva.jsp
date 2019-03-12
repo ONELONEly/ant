@@ -44,7 +44,7 @@
                 <th lay-data="{checkbox:true,width:50,fixed:true}"></th>
                 <th lay-data="{field:'pdat',align:'center',width:'30%',sort:true}">月份</th>
                 <th lay-data="{field:'dsca',align:'center',width:'50%',templet:'#themeTpl'}">主题</th>
-                <th lay-data="{field:'count',align:'center',width:'20%'-50,templet:'#countTpl'}">统计</th>
+                <th lay-data="{field:'stage',align:'center',width:'20%'-50,templet:'#stageTpl'}">等级</th>
             </tr>
             </thead>
         </table>
@@ -54,6 +54,13 @@
     </script>
     <script type="text/html" id="countTpl">
         <a href="${base}/user/count?ptno={{d.ptno}}" class="layui-table-link">查看</a>
+    </script>
+    <script type="text/html" id="stageTpl">
+        {{# if(d.stage === null){ }}
+        <span>未生成</span>
+        {{# }else{ }}
+        <span>{{d.stage}}</span>
+        {{# } }}
     </script>
 </div>
 <script language="JavaScript">
@@ -79,6 +86,9 @@
             table.reload("eva",{
                 where:{
                     key:infor.date
+                },
+                page:{
+                    curr:1
                 }
             });
             return false;

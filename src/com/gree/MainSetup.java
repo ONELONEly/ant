@@ -1,5 +1,10 @@
 package com.gree;
 
+import com.gree.ant.mo.Tbuss003MO_Ds;
+import com.gree.ant.util.daemon.SyncDSTaskDaemon;
+import com.gree.ant.vo.util.ButterFlyOrganization;
+import com.gree.ant.vo.util.ButterFlyStaff;
+import com.gree.ant.vo.util.ButterFlyVO;
 import org.nutz.dao.Dao;
 import org.nutz.integration.shiro.NutShiro;
 import org.nutz.ioc.Ioc;
@@ -8,8 +13,8 @@ import org.nutz.mvc.NutConfig;
 import org.nutz.mvc.Setup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.nio.charset.Charset;
+import java.util.Timer;
 
 /**
  * The type Main setup.
@@ -23,6 +28,7 @@ import java.nio.charset.Charset;
 public class MainSetup implements Setup{
 
     private Logger logger = LoggerFactory.getLogger(MainSetup.class);
+    public static Tbuss003MO_Ds tbuss003MO_ds = null;
     /**
      * 启动时，额外逻辑
      *
@@ -35,12 +41,13 @@ public class MainSetup implements Setup{
         if(!Charset.defaultCharset().name().equalsIgnoreCase(Encoding.UTF8)){
             logger.warn("This project must running in UTF-8,pls add -Dfile.encoding=UTF-8 to JAVA_OPTS!");
         }
-
         Ioc ioc = nc.getIoc();
-        Dao dao = ioc.get(Dao.class,"daoFX");
-      // ioc.get(NutQuartzCronJobFactory.class);
-       // TimerUtil t=ioc.get(TimerUtil.class);
-       // t.timer5();
+
+//        Dao dao = ioc.get(Dao.class,"daoFX");
+//        dao.create(ButterFlyStaff.class,true);
+//        tbuss003MO_ds = ioc.get(Tbuss003MO_Ds.class);
+        Timer timer = new Timer();
+        timer.schedule(new SyncDSTaskDaemon(), 2000, 60*1000);// 设定指定的时间time,此处为2000毫秒
     }
 
     /**

@@ -144,6 +144,9 @@
                     key:infor.msg,
                     ptno:ptno,
                     sta:choose
+                },
+                page:{
+                    curr:1
                 }
             });
             return false;
@@ -158,6 +161,9 @@
                     ptno:data.value,
                     key:msg,
                     sta:choose
+                },
+                page:{
+                    curr:1
                 }
             })
         });
@@ -274,6 +280,9 @@
                     sta:value,
                     key:msg,
                     ptno:ptno
+                },
+                page:{
+                    curr:1
                 }
             });
         });
@@ -408,9 +417,11 @@
                 },
                 dataType:'json',
                 success:function (res) {
-                    sessionStorage.setItem("token",res.data);
-                    table.reload("manage");
-                    getCount();
+                    if(res.code !== 506){
+                        getCount();
+                        table.reload("manage");
+                    }
+                    sessionStorage.setItem("token",res.data)
                     return layer.msg(res.msg,{offset:'10px'});
                 },
                 error:function (kellyj) {

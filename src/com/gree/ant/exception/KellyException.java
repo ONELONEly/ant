@@ -12,6 +12,11 @@ public class KellyException extends RuntimeException{
         this.code = resultEnum.getCode();
     }
 
+    public KellyException(Integer code,String msg){
+        super(msg);
+        this.code = code;
+    }
+
     public Integer getCode() {
         return code;
     }

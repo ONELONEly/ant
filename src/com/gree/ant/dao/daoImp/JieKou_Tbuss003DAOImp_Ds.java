@@ -1,6 +1,5 @@
 package com.gree.ant.dao.daoImp;
 
-import com.google.gson.JsonObject;
 import com.gree.ant.dao.JieKou_Tbuss003DAO_Ds;
 import com.gree.ant.exception.KellyException;
 import com.gree.ant.util.HttpRequest;
@@ -21,6 +20,8 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.json.Json;
 import org.nutz.json.JsonFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Clob;
 import java.sql.Connection;
@@ -34,6 +35,8 @@ import java.util.Map;
 
 @IocBean
 public class JieKou_Tbuss003DAOImp_Ds implements JieKou_Tbuss003DAO_Ds{
+
+    private Logger logger = LoggerFactory.getLogger(JieKou_Tbuss003DAOImp_Ds.class);
 
     @Inject("refer:dao1")
     private Dao dao1;
@@ -154,7 +157,7 @@ public class JieKou_Tbuss003DAOImp_Ds implements JieKou_Tbuss003DAO_Ds{
         return statStr;
     }
 
-    public String inserRuleBug(Tbuss003VO tbuss003VO,Cbase000VO cbase000VO, int PersonID, String note_ds, String CrntVersionID)throws SQLException{
+    public String inserRuleBug(Tbuss003VO tbuss003VO,Cbase000VO cbase000VO, int PersonID, String note_ds, String CrntVersionID) throws KellyException{
 
         String url = "http://10.2.4.175/DevTrackAPI/Api/Task/Create?token=8F355D74-CF46-4176-BB16-C76619B9E373";
        // String url = "http://10.3.0.101/DevTrackAPI/api/Task/Create?token=8F355D74-CF46-4176-BB16-C76619B9E373";
@@ -270,12 +273,14 @@ public class JieKou_Tbuss003DAOImp_Ds implements JieKou_Tbuss003DAO_Ds{
 
         String content = response.getContent();
 
+        logger.debug(content);
+
 
         return content.substring(content.indexOf("<Data>")+6,content.indexOf("</Data>"))+","+content.substring(content.indexOf("<Success>")+9,content.indexOf("</Success>"));
     }
 
 
-   public  String updateBugStatus(String bugId){
+   public  String updateBugStatus(String bugId)throws KellyException{
         //http://10.2.4.175/DevTrackAPI/Help/Api/POST-api-Task-Create
        String url = "http://10.2.4.175/DevTrackAPI/Api/Task/Update?token=8F355D74-CF46-4176-BB16-C76619B9E373";
        //String url="http://10.2.4.175/DevTrackAPI/Help/Api/POST-api-Task-Update?token=8F355D74-CF46-4176-BB16-C76619B9E373";
@@ -372,7 +377,7 @@ public class JieKou_Tbuss003DAOImp_Ds implements JieKou_Tbuss003DAO_Ds{
                 response = Http.post3(url,data,header,lazyTime);
             }catch (Exception e){
                 if(count > 0) {
-                    count--;
+                    count --;
                     response = makeRuleBugPost(url, data, header, lazyTime,count);
                 }else{
                     throw new KellyException(ResultEnum.DS_ERROR);

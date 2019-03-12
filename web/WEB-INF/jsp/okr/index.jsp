@@ -53,6 +53,7 @@
     <div class="layui-inline">
         <button class="layui-btn layui-bg-black delete-btn"><i class="layui-icon">&#xe640;</i>批量删除</button>
         <button class="layui-btn post-btn"><i class="layui-icon">&#xe6af;</i>提交</button>
+        <button class="layui-btn layui-bg-black copy-btn"><i class="layui-icon">&#xe6af;</i>复制</button>
     </div>
     <table class="layui-hide" id="okr" lay-filter="okr">
     </table>
@@ -72,7 +73,7 @@
     </script>
 
     <script type="text/html" id="grade">
-        {{# if(d.GRADE == undefined){ }}
+        {{# if(d.GRADE == 0 || d.GRADE == undefined){ }}
         <span style="color: #000;">未评分</span>
         {{# }else{ }}
         <span style="color: #008000;">{{d.GRADE}}</span>
@@ -82,6 +83,7 @@
     <script type="text/html" id="operate">
         {{# if(d.stat !== 1){ }}
         {{# } }}
+        <a href="javascript:" class="layui-btn layui-btn-xs" lay-event="copy">复制</a>
         <a href="./edit?okid={{d.OKID}}&isManager=false" class="layui-btn layui-btn-xs">编辑</a>
         <a href="./outPutOkr?okid={{d.OKID}}" class="layui-btn layui-btn-xs">导出报表</a>
     </script>
@@ -101,6 +103,9 @@
                     where:{
                         mdat:value,
                         msg:$("#msg").val()
+                    },
+                    page:{
+                        curr:1
                     }
                 });
             }
@@ -121,6 +126,7 @@
                 {field:'BNAM',title:'直接领导',align:'center'},
                 {field:'MDAT',title:'管理周期',align:'center',templet:'#mdatTpl'},
                 {field:'GRADE',title:'成绩',align:'center',templet:'#grade'},
+                {field:'AUTHNAM',title:'提交身份',align:'center'},
                 {field:'stat',title:'状态',align:'center',templet:'#status'},
                 {fixed:'right',title:'操作',align:'center',toolbar:'#operate'}
                 ]],
@@ -169,6 +175,26 @@
                     title:'OKR管理表',
                     offset:'10px'
                 });
+            }else if(obj.event === "copy"){
+                var param = {};
+                param[0] = obj.data.OKID;
+                $.ajax({
+                    type:'POST',
+                    url:'./copyOkr',
+                    data:{
+                        list:param
+                    },
+                    dataType:'json',
+                    success:function (res) {
+                        if(res.code === 1){
+                            table.reload("okr");
+                        }
+                        return layer.msg(res.msg,{offset:'10px'});
+                    },
+                    error:function (kellyj) {
+                        layer.alert("发生错误,错误码为:"+kellyj.status);
+                    }
+                });
             }
         });
 
@@ -177,6 +203,9 @@
                 where:{
                     mdat:$('#mdat').val(),
                     msg:$("#msg").val()
+                },
+                page:{
+                    curr:1
                 }
             });
             return false;
@@ -233,6 +262,33 @@
                 }
             });
         });
+
+        $(".copy-btn").click(function () {
+            var choose = table.checkStatus("okr");
+            var data = choose.data;
+            var param = {};
+            for(var i = 0;i < data.length;i++){
+                param[i] = data[i].OKID;
+            }
+            $.ajax({
+                type:'POST',
+                url:'./copyOkr',
+                data:{
+                    list:param
+                },
+                dataType:'json',
+                success:function (res) {
+                    if(res.code === 1){
+                        table.reload("okr");
+                    }
+                    return layer.msg(res.msg,{offset:'10px'});
+                },
+                error:function (kellyj) {
+                    layer.alert("发生错误,错误码为:"+kellyj.status);
+                }
+            });
+        });
+
     });
 </script>
 </body>

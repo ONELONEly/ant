@@ -174,11 +174,18 @@ public class DateUtil {
 
         }
         Integer lastIndex = date.lastIndexOf("-");
-        String prev = date.substring(0,lastIndex+1);
-        Integer num = Integer.parseInt(date.substring(lastIndex+1));
-        String prevStart = prev+(num-2)+"-26"; //前个月26号
-        String startDate = prev+(num-1)+"-26"; //上个月26号
-        String endDate = prev+num+"-26"; //本个月26号
+        int prev = Integer.parseInt(date.substring(0,lastIndex));
+        int num = Integer.parseInt(date.substring(lastIndex+1));
+        String prevStart = ""; //前个月26号
+        String startDate = ""; //上个月26号
+        String endDate = prev + "-" + num + "-26"; //本个月26号
+        if(num > 1) {
+            prevStart = prev + "-" + (num - 2) + "-26"; //前个月26号
+            startDate = prev + "-" + (num - 1) + "-26"; //上个月26号
+        }else{
+            prevStart = (prev-1) +"-11-26";
+            startDate = (prev-1) + "-12-26";
+        }
         resultMap.put("prevDate",prevStart);
         resultMap.put("startDate",startDate);
         resultMap.put("endDate",endDate);

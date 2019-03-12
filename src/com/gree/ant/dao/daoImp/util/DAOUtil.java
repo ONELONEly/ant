@@ -150,6 +150,21 @@ public class DAOUtil {
         return sql.getInt();
     }
 
+    public static String getTxtResult(Sql sql,Dao dao){
+        sql.setCallback(new SqlCallback() {
+            @Override
+            public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
+                String res = "";
+                if(rs.next()) {
+                    res =  rs.getString(1);
+                }
+                return res;
+            }
+        });
+        dao.execute(sql);
+        return sql.getString();
+    }
+
     public static List<ResultVO> getResultVO(String sqlStr,Dao dao){
         Sql sql = Sqls.create(sqlStr);
         dao.execute(setSqlCallback(sql));

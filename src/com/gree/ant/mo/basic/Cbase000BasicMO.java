@@ -1,6 +1,7 @@
 package com.gree.ant.mo.basic;
 
 import com.gree.ant.vo.Cbase000VO;
+import com.gree.ant.vo.util.ExportGradeOkrVO;
 import com.gree.ant.vo.util.GradeVO;
 import com.gree.ant.vo.util.ResultVO;
 import org.nutz.dao.Condition;
@@ -14,8 +15,8 @@ import java.util.List;
  * @author create by jinyuk@foxmail.com.
  * @version V1.0
  * @description 用户实体逻辑操作的MO
- * @title Cbase000BasicMO
  * @createTime 2017 :09:06 06:09:27.
+ * @title Cbase000BasicMO
  */
 public interface Cbase000BasicMO {
 
@@ -76,7 +77,7 @@ public interface Cbase000BasicMO {
      * @param primary 关联字段
      * @param cnd     过滤字段
      * @return 包含关联实体的用户VO
-     * @description 通过usid，primary,cnd查询一条用户记录和他对应的关联实体
+     * @description 通过usid ，primary,cnd查询一条用户记录和他对应的关联实体
      * @author create by jinyuk@foxmail.com.
      * @version V1.0
      * @createTime 2017 :10:13 08:10:41.
@@ -146,6 +147,7 @@ public interface Cbase000BasicMO {
      * Query all grade by pdat list.
      *
      * @param pdat 月份
+     * @param grop
      * @return the list
      * @description 通过月份查询所有人的成绩排名
      * @author create by jinyuk@foxmail.com.
@@ -154,18 +156,59 @@ public interface Cbase000BasicMO {
      */
     List<GradeVO> queryAllGradeByPdat(String pdat,String grop);
 
+
+    /**
+     * @param pdat
+     * @return TODO
+     * @description TODO
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     * @createTime 2019 -01-09 11:15:33
+     */
+    List<ExportGradeOkrVO> queryAllGradeOkrByPdat(String pdat);
+
     /**
      * Query all user list.
      *
      * @param cnd   过滤字段
      * @param pager 分页字段
      * @return the list
-     * @description 通过Cnd,Pager获得表格的用户.
+     * @description 通过Cnd, Pager获得表格的用户.
      * @author create by jinyuk@foxmail.com.
      * @version V1.0
      * @createTime 2017 :10:31 08:10:20.
      */
     List<Cbase000VO> queryAllUser(Condition cnd, Pager pager);
 
+    /**
+     * @param usid
+     * @return TODO
+     * @description 用于存储的全局用户信息
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     * @createTime 2019 -01-09 11:15:34
+     */
     Cbase000VO fetchUser(String usid);
+
+    /**
+     * @param usid
+     * @return 用户实体
+     * @description 查询单条用户的邮箱号和名称
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     * @createTime 2019 -01-09 11:15:34
+     */
+    Cbase000VO ftechUserDC(String usid);
+
+
+    /**
+     * @param grop 团队编号
+     * @param cnd 过滤信息
+     * @return 用户编号和描述的集合
+     * @description 通过团队编号获得该团队的集合
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     * @createTime 2019 -01-09 16:01:58
+     */
+    List<Cbase000VO> queryAllUDByGropCnd(String grop,Condition cnd);
 }

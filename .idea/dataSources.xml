@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="@10.2.12.14" uuid="ba7f8d3c-9777-40ef-a3a7-0bae772746d8">
+    <data-source source="LOCAL" name="Oracle - @10.2.12.14" uuid="e64c9330-5ccc-4f78-b050-281033a1449b">
       <driver-ref>oracle</driver-ref>
       <synchronize>true</synchronize>
-      <configured-by-url>true</configured-by-url>
       <auto-commit>false</auto-commit>
       <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
       <jdbc-url>jdbc:oracle:thin:@//10.2.12.14:1521/ggrdat</jdbc-url>
+      <driver-properties>
+        <property name="v$session.program" value="DataGrip" />
+      </driver-properties>
+    </data-source>
+    <data-source source="LOCAL" name="NewDS@10.2.4.175" uuid="df530c22-766d-402e-8d0e-97b2bf94c0d0">
+      <driver-ref>sqlserver.ms</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
+      <jdbc-url>jdbc:sqlserver://10.2.4.175:1433;databaseName=NewDS</jdbc-url>
+      <driver-properties>
+        <property name="applicationName" value="DataGrip" />
+      </driver-properties>
     </data-source>
   </component>
 </project>

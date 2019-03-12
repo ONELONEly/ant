@@ -134,6 +134,9 @@
                     pdat:pdat,
                     grop:grop,
                     csid:csid
+                },
+                page:{
+                    curr:1
                 }
             });
             return false;
@@ -149,6 +152,9 @@
                     key:msg,
                     grop:grop,
                     csid:csid
+                },
+                page:{
+                    curr:1
                 }
             })
         });
@@ -163,6 +169,9 @@
                     key:msg,
                     pdat:pdat,
                     csid:csid
+                },
+                page:{
+                    curr:1
                 }
             })
         });
@@ -177,6 +186,9 @@
                     key:msg,
                     grop:grop,
                     pdat:pdat
+                },
+                page:{
+                    curr:1
                 }
             })
         });

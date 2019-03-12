@@ -60,8 +60,17 @@ public class Tbuss011VO extends ValueObject{
      */
     private Integer TYPE;
 
+    /**
+     * @description 提交身份
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     */
+    private Integer AUTH;
+
     @Readonly
     private String TYPENAM;
+
+    @Readonly
+    private String AUTHNAM;
 
     @Readonly
     private String ACCONAM;
@@ -86,14 +95,15 @@ public class Tbuss011VO extends ValueObject{
 
     }
 
-    public Tbuss011VO(String ASID, String BOSS, String MDAT,Integer TYPE) {
+    public Tbuss011VO(String ASID, String BOSS, String MDAT,Integer TYPE,Integer AUTH) {
         this.ASID = ASID;
         this.BOSS = BOSS;
         this.MDAT = MDAT;
         this.TYPE = TYPE;
+        this.AUTH = AUTH;
     }
 
-    public Tbuss011VO(String ASID,String ANAM,String BOSS,String BNAM,String MDAT,Integer OKID,Integer stat,Float grade,Integer TYPE,String TYPENAM,String ACCONAM) {
+    public Tbuss011VO(String ASID,String ANAM,String BOSS,String BNAM,String MDAT,Integer OKID,Integer stat,Float grade,Integer TYPE,Integer AUTH,String TYPENAM,String AUTHNAM,String ACCONAM) {
         this.ASID = ASID;
         this.ANAM = ANAM;
         this.BOSS = BOSS;
@@ -103,7 +113,9 @@ public class Tbuss011VO extends ValueObject{
         this.stat = stat;
         this.GRADE = grade;
         this.TYPE = TYPE;
+        this.AUTH = AUTH;
         this.TYPENAM = TYPENAM;
+        this.AUTHNAM = AUTHNAM;
         this.ACCONAM = ACCONAM;
     }
 
@@ -201,5 +213,21 @@ public class Tbuss011VO extends ValueObject{
 
     public void setACCONAM(String ACCONAM) {
         this.ACCONAM = ACCONAM;
+    }
+
+    public Integer getAUTH() {
+        return AUTH;
+    }
+
+    public void setAUTH(Integer AUTH) {
+        this.AUTH = AUTH;
+    }
+
+    public String getAUTHNAM() {
+        return AUTHNAM;
+    }
+
+    public void setAUTHNAM(String AUTHNAM) {
+        this.AUTHNAM = AUTHNAM;
     }
 }

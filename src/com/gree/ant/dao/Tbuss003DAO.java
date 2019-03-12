@@ -127,4 +127,6 @@ public interface Tbuss003DAO extends BaseDAO<Tbuss003VO>{
     List<FahhVO> queryAllNotProjectFahh(String startDate,String endDate);
 
     void markScore(Condition condition,Integer stag);
+
+    Tbuss003VO fetchSta1ByTaid(String taid);
 }

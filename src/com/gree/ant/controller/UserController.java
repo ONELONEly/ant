@@ -127,10 +127,8 @@ public class UserController {
      */
     @At
     @Ok("jsp:jsp.user.board")
-    public String board(HttpServletRequest request){
-        Map<String,String> tokenMap = TokenUtil.getInstance().makeToken();
-        request.getSession().setAttribute("password",tokenMap.get("password"));
-        return tokenMap.get("token");
+    public String board(HttpServletRequest request, @Attr("password")String password){
+        return ResultUtil.getBoardBack(request,password);
     }
 
     /**
@@ -270,7 +268,7 @@ public class UserController {
      */
     @At
     @Ok("raw:jpg")
-    public OutputStream getUserHeader(HttpServletResponse response, HttpServletRequest request,@Attr("usid")String usid){
+    public OutputStream getUserHeader(HttpServletResponse response, HttpServletRequest request,@Param("usid") String usid){
         Cbase000VO cbase000VO = cbase000MO.fetchByUsid(usid);
         byte[] bytes;
         if (cbase000VO.getBLOB() == null){
@@ -445,14 +443,16 @@ public class UserController {
     @POST
     @Ok("json")
     public Map<String,Object> queryUserMarkGrade(@Param("ptno")String ptno,HttpServletRequest request){
-        Integer code = 0;
+        int code = 0;
         List<Tbuss005VO> tbuss005VOList = new ArrayList<>();
         String usid = request.getSession().getAttribute("usid").toString();
         if(ptno != null){
             List<Tbuss005VO> tbuss005VOS = tbuss001MO.fetchTransByNameCnd(ptno,"tbuss005VOS",Cnd.where("csid","=",usid)).getTbuss005VOS();
             if(tbuss005VOS != null){
                 for(Tbuss005VO tbuss005VO:tbuss005VOS) {
-                    tbuss005VOList.add(tbuss005MO.fectchLinkByVO(tbuss005MO.fectchLinkByVO(tbuss005VO,"cbase011VO"),"cbase000VO"));
+                    tbuss005VO = tbuss005MO.fectchLinkByVO(tbuss005VO,"cbase011VO");
+                    tbuss005VO.setCbase000VO(cbase000MO.ftechUserDC(tbuss005VO.getCsid()));
+                    tbuss005VOList.add(tbuss005VO);
                 }
             }
             code = 1;

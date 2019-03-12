@@ -25,13 +25,10 @@
     <div class="layui-form layui-form-panel" style="padding-bottom:50px;">
         <table class="layui-table">
             <tr>
-                <td colspan="10" class="x-center">OKR管理表</td>
-                <td class="none_border">
-
-                </td>
+                <td colspan="11" class="x-center">OKR管理表</td>
             </tr>
             <tr>
-                <td colspan="3">
+                <td colspan="2">
                     <div class="layui-form-item">
                         <label for="asid" class="layui-form-label">管理对象：</label>
                         <div class="layui-input-block">
@@ -42,7 +39,7 @@
                         </div>
                     </div>
                 </td>
-                <td colspan="3">
+                <td colspan="2">
                     <div class="layui-form-item">
                         <label for="boss" class="layui-form-label">直接上级：</label>
                         <div class="layui-input-block">
@@ -57,7 +54,7 @@
                     <div class="layui-form-item">
                         <label for="mdat" class="layui-form-label">管理周期：</label>
                         <div class="layui-input-block">
-                            <input type="text" name="mdat" id="mdat" class="layui-input" style="border:none;">
+                            <input type="text" name="mdat" id="mdat" class="layui-input">
                         </div>
                     </div>
                 </td>
@@ -74,36 +71,48 @@
                         </div>
                     </div>
                 </td>
-                <td class="none_border">
-
+                <td colspan="3" nowrap="nowrap">
+                    <div class="layui-form-item">
+                        <label for="auth" class="layui-form-label">提交身份：</label>
+                        <div class="layui-input-block">
+                            <span id="auth_0" style="float: right"></span>
+                            <select name="auth" lay-filter="auth" id="auth" lay-search>
+                                <option value="" style="display:none;" disabled selected>请选择提交身份</option>
+                                <option value="0">个人</option>
+                                <option value="1">组内</option>
+                                <option value="2">部门</option>
+                                <option value="3">科室</option>
+                            </select>
+                        </div>
+                    </div>
                 </td>
             </tr>
             <tr id="okr_item_0_0">
-                <th class="center" width="4%" nowrap="nowrap">
+                <th class="center" width="6%" nowrap="nowrap">
                     <label>序号</label>
                 </th>
-                <th class="center" width="6%" nowrap="nowrap">
+                <th class="center" width="10%" nowrap="nowrap">
                     <label>目标(O)</label>
                 </th>
                 <th class="center" width="10%" nowrap="nowrap">
-                    <label>O周期&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <label>O周期</label>
                 </th>
                 <th class="center" width="10%" nowrap="nowrap">
                     <label>O类型</label>
                 </th>
-                <th class="center" width="5%"  nowrap="nowrap">
+                <th class="center" width="5%" nowrap="nowrap">
                     <label>O权重(%)</label>
                 </th>
-                <th class="center" width="10%" nowrap="nowrap">
+                <th class="center" width="14%" nowrap="nowrap">
                     <label>O完成情况</label>
                 </th>
-                <th class="center" width="20%" nowrap="nowrap">
+                <th class="center" width="14%" nowrap="nowrap">
                     <label>关键成果(KRS)</label>
                 </th>
                 <th class="center" width="7%" nowrap="nowrap">
                     <label>KR权重(%)</label>
                 </th>
-                <th class="center" width="18%" nowrap="nowrap">
+                <th class="center" width="14%" nowrap="nowrap">
                     <label>KRS完成情况</label>
                 </th>
                 <th class="center" width="8%" nowrap="nowrap">
@@ -235,6 +244,7 @@ layui.use(['form', 'table','jquery','layer',"laydate"], function () {
             boss:'',
             mdat:'',
             type:0,
+            auth:0,
             goals:[]
         };
         var formAll = $(".layui-form").children();
@@ -262,6 +272,8 @@ layui.use(['form', 'table','jquery','layer',"laydate"], function () {
                         postDataItem.mdat = param[j].value;
                     }else if (param[j].name === "rule") {
                         postDataItem.type = param[j].value;
+                    }else if (param[j].name === "auth"){
+                        postDataItem.auth = param[j].value;
                     }
                 }
                 for (var i = 0; i < goalParam.length; i++) {
@@ -323,7 +335,6 @@ layui.use(['form', 'table','jquery','layer',"laydate"], function () {
                     }
                     postDataItem.goals.push(goalItem);
                 }
-                console.log(postDataItem)
                 $.ajax({
                     type: 'POST',
                     url: './insert',

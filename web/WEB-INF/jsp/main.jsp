@@ -68,7 +68,7 @@
 
                 <li class="layui-nav-item" lay-unselect>
                     <a href="javascript:;">
-                        <img class="header-img" src="./user/getUserHeader" id="head">
+                        <img class="header-img" src="./user/getUserHeader?usid=${obj.user.USID}" id="head">
                         <cite>${obj.user.DSCA}</cite>
                         <span class="usid n-display">${obj.user.USID}</span>
                     </a>

@@ -500,7 +500,7 @@ public class DocController {
     @Filters
     public Map<String,Object> queryAllFile(@Param("doid")Long doid){
         List<Tbuss015VO> tbuss015VOList = new ArrayList<>();
-         Tbuss009VO tbuss009VO = tbuss009MO.fetchTransByIDPrimary(doid,"tbuss015VOS",null);
+         Tbuss009VO tbuss009VO = tbuss009MO.fetchTransByIDPrimary(doid,"tbuss015VOS",Cnd.NEW().desc("cdat"));
         if(tbuss009VO != null){
             tbuss015VOList = tbuss009VO.getTbuss015VOS();
         }

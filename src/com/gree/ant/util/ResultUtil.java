@@ -1,5 +1,6 @@
 package com.gree.ant.util;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -75,5 +76,19 @@ public class ResultUtil {
         map.put("fileSize",fileSize);
         map.put("date",date);
         return map;
+    }
+
+    public static Map<String,Object> detailExceptionResult(Exception e, HttpServletRequest request){
+        Map<String,String> tokenUtil = TokenUtil.getInstance().makeToken();
+        request.getSession().setAttribute("password",tokenUtil.get("password"));
+        Map<String,Object> result = HttpRequest.packageException(e);
+        result.put("data",tokenUtil.get("token"));
+        return result;
+    }
+
+    public static String getBoardBack(HttpServletRequest request,String password){
+        Map<String, String> tokenMap = TokenUtil.getInstance().makeToken();
+        request.getSession().setAttribute("password", tokenMap.get("password"));
+        return  tokenMap.get("token");
     }
 }

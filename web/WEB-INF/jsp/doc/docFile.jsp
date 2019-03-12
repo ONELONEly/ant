@@ -25,9 +25,10 @@
     <table class="layui-table" lay-data="{url:'./queryAllFile?doid=${obj}',page:false,id:'file'}" lay-filter="file">
         <thead>
         <tr>
-            <th lay-data="{field:'ffil',align:'center',width:'50%'}">文件名</th>
-            <th lay-data="{field:'fsiz',align:'center',width:'20%'}">大小</th>
-            <th lay-data="{fixed:'right',align:'center',width:'30%',templet:'#operate'}">操作</th>
+            <th lay-data="{field:'ffil',align:'center',width:'40%'}">文件名</th>
+            <th lay-data="{field:'fsiz',align:'center',width:'25%'}">大小</th>
+            <th lay-data="{field:'cdat',align:'center',width:'25%'}">上传日期</th>
+            <th lay-data="{fixed:'right',align:'center',width:'10%',templet:'#operate'}">操作</th>
         </tr>
         </thead>
     </table>

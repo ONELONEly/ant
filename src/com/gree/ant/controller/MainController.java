@@ -67,7 +67,7 @@ public class MainController {
                 thirdLevel.add(cbase002VO);
             }
         }
-        resultMap.put("user",cbase000MO.fetchByUsid(usid));
+        resultMap.put("user",cbase000MO.fetchUser(usid));
         resultMap.put("oneLevel",oneLevel);
         resultMap.put("secondLevel",secondLevel);
         resultMap.put("thirdLevel",thirdLevel);

@@ -127,6 +127,9 @@
                     sdat:sdat,
                     week:week,
                     grop:grop
+                },
+                page:{
+                    curr:1
                 }
             });
         }

@@ -6,6 +6,7 @@ import com.gree.ant.util.TableUtil;
 import com.gree.ant.vo.Cbase000VO;
 import com.gree.ant.vo.Tbuss011VO;
 import com.gree.ant.vo.Tbuss012VO;
+import com.gree.ant.vo.Tbuss013VO;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.QueryResult;
 import org.nutz.dao.pager.Pager;
@@ -210,5 +211,35 @@ public class Tbuss011MO implements TBuss011BasicMO {
             cnd.and("okid","in",okids);
         }
         tbuss011DAOImp.backToUser(cnd);
+    }
+
+    @Override
+    public void copyOkr(final Integer[] okids) {
+        Trans.exec(new Atom() {
+            @Override
+            public void run() {
+                for (Integer okid : okids){
+                    Tbuss011VO tbuss011VO = fetchTransByOkid(okid);
+                    tbuss011VO.setStat(0);
+                    insert(tbuss011VO,getNoneGradeTran(tbuss011VO.getTbuss012VOS()));
+                }
+            }
+        });
+    }
+
+    private List<Tbuss012VO> getNoneGradeTran(List<Tbuss012VO> tbuss012VOS){
+        List<Tbuss012VO> tbuss012VOList = new ArrayList<>();
+        for (Tbuss012VO tbuss012VO:tbuss012VOS){
+            List<Tbuss013VO> tbuss013VOList = new ArrayList<>();
+            List<Tbuss013VO> tbuss013VOS = tbuss012VO.getTbuss013VOS();
+            for (Tbuss013VO tbuss013VO:tbuss013VOS){
+                tbuss013VO.setZgrad(null);
+                tbuss013VO.setMgrad(null);
+                tbuss013VOList.add(tbuss013VO);
+            }
+            tbuss012VO.setTbuss013VOS(tbuss013VOList);
+            tbuss012VOList.add(tbuss012VO);
+        }
+        return tbuss012VOList;
     }
 }

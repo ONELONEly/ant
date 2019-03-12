@@ -1,6 +1,7 @@
 package com.gree.ant.util;
 
 
+import com.gree.ant.exception.KellyException;
 import org.apache.commons.codec.binary.Base64;
 import org.nutz.json.Json;
 import org.nutz.json.JsonFormat;
@@ -250,6 +251,43 @@ public class HttpRequest {
 		}
 
 		return result.toString();
+	}
+
+	public static KellyException detailException(Exception e){
+		e.printStackTrace();
+		Map<String,Object> result = packageException(e);
+		return new KellyException(Integer.valueOf(result.get("code").toString()),result.get("msg").toString());
+	}
+
+	public static Map<String,Object> packageException(Exception e){
+		int code = 888;
+		String msg;
+		if(e instanceof KellyException){
+			KellyException kelly = (KellyException)e;
+			code = kelly.getCode();
+			msg = kelly.getMessage();
+		}else{
+			msg = getExceptionInformation(e);
+		}
+		return ResultUtil.getResult(code,msg,null);
+	}
+
+	public static String getExceptionInformation(Exception e){
+		StringBuilder out = new StringBuilder();
+		StackTraceElement[] trace = e.getStackTrace();
+		for (StackTraceElement element:trace){
+			out.append(element).append("\r\n");
+		}
+		return out.toString();
+	}
+
+	public static String getThrowableInformation(Throwable e){
+		StringBuilder out = new StringBuilder();
+		StackTraceElement[] trace = e.getStackTrace();
+		for (StackTraceElement element:trace){
+			out.append(element).append("\r\n");
+		}
+		return out.toString();
 	}
 
 

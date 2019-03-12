@@ -89,11 +89,17 @@
                 table.reload('project',{
                     where:{
                         date:value
+                    },
+                    page:{
+                        curr:1
                     }
                 });
                 table.reload('notProject',{
                     where:{
                         date:value
+                    },
+                    page:{
+                        curr:1
                     }
                 });
             }

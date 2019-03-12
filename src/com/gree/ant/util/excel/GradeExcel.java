@@ -9,6 +9,8 @@ import com.gree.ant.vo.Cbase011VO;
 import com.gree.ant.vo.Tbuss001VO;
 import com.gree.ant.vo.Tbuss003VO;
 import com.gree.ant.vo.util.Cbase011_Grade_Trans;
+import com.gree.ant.vo.util.ExportGradeOkrVO;
+import com.gree.ant.vo.util.GradeVO;
 import com.gree.ant.vo.util.Tbuss003_Grade_Trans;
 import jxl.CellView;
 import jxl.Workbook;
@@ -79,6 +81,15 @@ public class GradeExcel {
         String title = tbuss001VO.getDsca();
         ExcelUtil.setHeader(request,response,title);
         printExcel(title,tbuss001VO,response.getOutputStream());
+        response.setStatus(200);
+        response.flushBuffer();
+    }
+
+    public static void export(List<ExportGradeOkrVO> gradeOkrVOS,String pdat,HttpServletRequest request, HttpServletResponse response)throws IOException,WriteException {
+        response.setContentType("APPLICATION/OCTET-STREAM");
+        String title = pdat + "月软件应用一室绩效考评等级";
+        ExcelUtil.setHeader(request,response,title);
+        printExcel(gradeOkrVOS,title,response.getOutputStream());
         response.setStatus(200);
         response.flushBuffer();
     }
@@ -312,6 +323,57 @@ public class GradeExcel {
         return col;
     }
 
+    private static void printExcel(List<ExportGradeOkrVO> gradeOkrVOS,String title,OutputStream os) throws IOException,WriteException{
+
+        WritableWorkbook workBook = Workbook.createWorkbook(os);
+        WritableSheet sheet = workBook.createSheet(title,0);
+
+        WritableCellFormat format = ExcelUtil.getForamat("BOLD",20, Colour.BLACK);
+        format.setAlignment(Alignment.CENTRE);
+
+        setRowView_gradeOkr(sheet);
+
+        int col = 0;
+        format = ExcelUtil.getForamat("BOLD", 11, Colour.BLACK);
+        format.setAlignment(Alignment.CENTRE);
+        format.setBorder(Border.ALL,BorderLineStyle.THIN);
+        WritableCell cell = new Label(0, col, "员工编号",format);
+        sheet.addCell(cell);
+        cell = new Label(1, col, "员工姓名", format);
+        sheet.addCell(cell);
+        cell = new Label(2, col, "班组/科室" , format);
+        sheet.addCell(cell);
+        cell = new Label(3, col, "群体类型" , format);
+        sheet.addCell(cell);
+        cell = new Label(4, col, "个人绩效考评分数", format);
+        sheet.addCell(cell);
+        cell = new Label(5, col, "个人绩效考评等级", format);
+        sheet.addCell(cell);
+
+        col = 1;
+        for (ExportGradeOkrVO gradeOkrVO:gradeOkrVOS) {
+            format = ExcelUtil.getForamat("BOLD", 12, Colour.BLACK);
+            format.setAlignment(Alignment.CENTRE);
+            format.setBorder(Border.ALL,BorderLineStyle.THIN);
+            cell = new Label(0, col, gradeOkrVO.getCpid(), format);
+            sheet.addCell(cell);
+            cell = new Label(1, col, gradeOkrVO.getDsca(), format);
+            sheet.addCell(cell);
+            cell = new Label(2, col, "软件应用一室", format);
+            sheet.addCell(cell);
+            cell = new Label(3, col, "员工", format);
+            sheet.addCell(cell);
+            cell = new Label(4, col, gradeOkrVO.getScore()+"", format);
+            sheet.addCell(cell);
+            cell = new Label(5, col, gradeOkrVO.getStage(), format);
+            sheet.addCell(cell);
+            col++;
+        }
+        workBook.write();
+        workBook.close();
+        os.close();
+    }
+
     private static Integer printTask_grade(Integer col, List<Tbuss003_Grade_Trans> grade_trans, List<Cbase011_Grade_Trans> c11_grade_trans, WritableSheet sheet) throws WriteException{
         double grade_result = 0.00;
         col++;
@@ -510,6 +572,14 @@ public class GradeExcel {
             }else{
                 cellView.setSize(10000);
             }
+            sheet.setColumnView(j, cellView);
+        }
+    }
+
+    private static void setRowView_gradeOkr(WritableSheet sheet){
+        CellView cellView = new CellView();
+        for(int j = 0;j < 6;j++){
+            cellView.setSize(5000);
             sheet.setColumnView(j, cellView);
         }
     }

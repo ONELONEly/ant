@@ -82,6 +82,8 @@ public interface Tbuss003BasicMO {
      */
     Tbuss003VO fetchByTaid(String taid);
 
+    Tbuss003VO fetchSta1ByTaid(String taid);
+
     /**
      * Delete by taid integer.
      *

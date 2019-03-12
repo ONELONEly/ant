@@ -1,6 +1,6 @@
 package com.gree.ant.controller;
 
-import com.gree.ant.dao.daoImp.util.DAOUtil;
+import com.gree.ant.dao.daoImp.ButterFlyDAOImp;
 import com.gree.ant.mo.*;
 import com.gree.ant.util.*;
 import com.gree.ant.vo.Cbase000VO;
@@ -8,18 +8,27 @@ import com.gree.ant.vo.Cbase010VO;
 import com.gree.ant.vo.Cbase011VO;
 import com.gree.ant.vo.Tbuss001VO;
 import com.gree.ant.vo.response.GropUser;
+import com.gree.ant.vo.util.ButterFlyFeiyun;
+import com.gree.ant.vo.util.ButterFlyVO;
 import com.gree.ant.vo.util.TaskUtilVO;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
+import org.nutz.dao.QueryResult;
 import org.nutz.dao.pager.Pager;
 import org.nutz.dao.util.cri.SqlExpressionGroup;
+import org.nutz.http.Header;
+import org.nutz.http.Http;
+import org.nutz.http.Response;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.json.Json;
+import org.nutz.json.JsonFormat;
+import org.nutz.mvc.adaptor.JsonAdaptor;
 import org.nutz.mvc.annotation.*;
+import org.nutz.mvc.impl.AdaptorErrorContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.OutputStream;
 import java.util.*;
 
@@ -89,6 +98,45 @@ public class UtilController {
         Map<String,Object> map = new HashMap<>();
        map.put("jieds",tbuss003MO_Ds.findT3DS_jied(syno));
         return map;
+    }
+
+    @Inject
+    private ButterFlyDAOImp butterFlyDAOImp;
+
+    @At
+    @POST
+    @Ok("json")
+    @AdaptBy(type = JsonAdaptor.class)
+    @Filters
+    public Map<String,Object> getUserInfo(@Param("pageNumber")int pageNumber, @Param("pageSize")int pageSize, @Param("order")String order,AdaptorErrorContext error){
+        QueryResult queryResult = null;
+        int code = 200;
+        int count = 0;
+        List<ButterFlyFeiyun> flyFeiyuns = new ArrayList<>();
+        String msg = "请求参数格式错误,请检查请求参数后请求！";
+        if(error == null) {
+            if (pageNumber > 0 && pageSize >= 0) {
+                Condition cnd = Cnd.where("department", "like", "%空调四分厂%").or("department", "like", "%工会%").
+                        or("department", "like", "%商用空调经营部%").or("posts", "like", "%公司领导%");
+                if (order != null && (order.equals("company") || order.equals("department") || order.equals("posts") || order.equals("name") || order.equals("sex") || order.equals("isInStaff"))) {
+                    cnd = ((Cnd) cnd).desc(order);
+                }
+                count = butterFlyDAOImp.countByCnd(cnd);
+                Pager pager = TableUtil.formatPager(pageSize, pageNumber, count);
+                queryResult = butterFlyDAOImp.feiyunQueryAllUser(cnd, pager);
+            } else {
+                code = 101;
+                msg = "请求页码和页数不规范,请检查请求参数后请求！";
+            }
+        }else{
+            code = 100;
+        }
+        msg = code == 200 ? "查询成功" : msg;
+        if(queryResult != null){
+            count = queryResult.getPager().getRecordCount();
+            flyFeiyuns = queryResult.getList(ButterFlyFeiyun.class);
+        }
+        return TableUtil.makeJson(code,msg,count,flyFeiyuns);
     }
 
     /**

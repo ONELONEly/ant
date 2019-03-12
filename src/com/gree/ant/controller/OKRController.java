@@ -252,6 +252,14 @@ public class OKRController {
     @At
     @POST
     @Ok("json")
+    public Map<String,Object>copyOkr(@Param("::list")Integer[] okids){
+        bussMoFactory.getTbuss011MO().copyOkr(okids);
+        return ResultUtil.getResult(1,"复制成功",null);
+    }
+
+    @At
+    @POST
+    @Ok("json")
     public Map<String,Object> backToUser(@Param("::list")Integer[] okids){
         bussMoFactory.getTbuss011MO().backToUser(okids);
         for(Integer okid : okids){

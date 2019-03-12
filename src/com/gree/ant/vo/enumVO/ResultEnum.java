@@ -9,7 +9,8 @@ public enum ResultEnum {
     DS_ERROR(503,"同步DS异常,请再努力尝试一次好么，(*╹▽╹*)！"),
     DS_NONE_ID(504,"DS没有该用户的账号信息，请联系相关人员添加账号，(*╹▽╹*)！"),
     POST_DOUBLE(505,"请勿重复提交"),
-    POST_delay(506,"请等待上次请求完成")
+    POST_delay(506,"请等待上次请求完成"),
+    DS_DEFAULT(507,"同步DS错误，请联系开发人员解决"),
     ;
 
     private Integer code;

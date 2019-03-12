@@ -79,7 +79,7 @@
     </script>
 
     <script type="text/html" id="grade">
-        {{# if(d.GRADE == 0){ }}
+        {{# if(d.GRADE == 0 || d.GRADE == undefined){ }}
         <span style="color: #000;">未评分</span>
         {{# }else{ }}
         <span style="color: #008000;">{{d.GRADE}}</span>
@@ -108,6 +108,9 @@
                         acco:$("#acco option:selected").val(),
                         mdat:value,
                         msg:$("#msg").val()
+                    },
+                    page:{
+                        curr:1
                     }
                 });
             }
@@ -146,6 +149,7 @@
                 {field:'BNAM',title:'直接领导',align:'center'},
                 {field:'MDAT',title:'管理周期',align:'center',templet:'#mdatTpl'},
                 {field:'GRADE',title:'成绩',align:'center',templet:'#grade'},
+                {field:'AUTHNAM',title:'提交身份',align:'center'},
                 {field:'stat',title:'状态',align:'center',templet:'#status'},
                 {fixed:'right',title:'操作',align:'center',toolbar:'#operate'}
             ]],
@@ -224,6 +228,9 @@
                     acco:data.value,
                     mdat:$('#mdat').val(),
                     msg:$("#msg").val()
+                },
+                page:{
+                    curr:1
                 }
             })
         });
@@ -234,6 +241,9 @@
                     acco:$("#acco option:selected").val(),
                     mdat:$('#mdat').val(),
                     msg:$("#msg").val()
+                },
+                page:{
+                    curr:1
                 }
             });;
             return false;

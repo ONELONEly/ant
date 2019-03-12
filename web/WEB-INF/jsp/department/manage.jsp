@@ -110,6 +110,9 @@
             table.reload("department",{
                 where:{
                     key:infor.msg
+                },
+                page:{
+                    curr:1
                 }
             });
             return false;

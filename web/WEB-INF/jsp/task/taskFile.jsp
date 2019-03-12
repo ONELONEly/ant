@@ -16,18 +16,19 @@
 <body>
 <div class="x-nav">
     <span class="layui-breadcrumb">
-        <a href="./showTask?taid=${obj}" style="line-height: 40px;"><cite style="cursor: pointer;">任务详情</cite></a>
+        <a href="./showTask?taid=${obj.taid}&state=${obj.state}" style="line-height: 40px;"><cite style="cursor: pointer;">任务详情</cite></a>
         <a href="javascript:location.replace(location.href);"><cite style="cursor: pointer;">任务附件</cite></a>
         <a class="layui-btn layui-btn-sm layui-btn-radius l-refresh" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon l-center layui-icon-refresh"></i></a>
     </span>
 </div>
 <div class="x-body">
-    <table class="layui-table" lay-data="{url:'./queryAllFile?taid=${obj}',page:false,id:'file'}" lay-filter="file">
+    <table class="layui-table" lay-data="{url:'./queryAllFile?taid=${obj.taid}',page:false,id:'file'}" lay-filter="file">
         <thead>
         <tr>
-            <th lay-data="{field:'ffil',align:'center',width:'50%'}">文件名</th>
-            <th lay-data="{field:'fsiz',align:'center',width:'20%'}">大小</th>
-            <th lay-data="{fixed:'right',align:'center',width:'30%',templet:'#operate'}">操作</th>
+            <th lay-data="{field:'ffil',align:'center',width:'40%'}">文件名</th>
+            <th lay-data="{field:'fsiz',align:'center',width:'25%'}">大小</th>
+            <th lay-data="{field:'cdat',align:'center',width:'25%'}">上传日期</th>
+            <th lay-data="{fixed:'right',align:'center',width:'10%',templet:'#operate'}">操作</th>
         </tr>
         </thead>
     </table>

@@ -119,6 +119,9 @@
                 where:{
                     key:infor.msg,
                     ptno:ptno
+                },
+                page:{
+                    curr:1
                 }
             });
             return false;
@@ -130,6 +133,9 @@
                 where:{
                     ptno:data.value,
                     key:msg
+                },
+                page:{
+                    curr:1
                 }
             })
         });
@@ -243,7 +249,6 @@
             for(var i = 0;i<data.length;i++){
                 param[i] = data[i].taid;
             }
-            console.log(param);
             var url = '${base}/task/printTask?list=' + param;
             $("<form action='"+url+"' method='post'></form>").appendTo("body").submit().remove();
         });

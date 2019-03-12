@@ -84,6 +84,9 @@
             table.reload("company",{
                 where:{
                     key:infor.msg
+                },
+                page:{
+                    curr:1
                 }
             });
             return false;

@@ -1,6 +1,5 @@
 package com.gree.ant.mo;
 
-import com.gree.ant.dao.daoImp.BaseDAOImp;
 import com.gree.ant.dao.daoImp.JieKou_Tbuss003DAOImp_Ds;
 import com.gree.ant.dao.daoImp.Tbuss003DAOImp_Ds;
 import com.gree.ant.exception.KellyException;
@@ -18,6 +17,10 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.json.Json;
 import org.nutz.json.JsonFormat;
+import org.nutz.trans.Atom;
+import org.nutz.trans.Trans;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +29,7 @@ import java.util.Map;
 
 @IocBean
 public class Tbuss003MO_Ds implements Tbuss003BasicMO_Ds {
+    private Logger logger = LoggerFactory.getLogger(Tbuss003MO_Ds.class);
 
     @Inject("refer:dao1")
     private Dao dao1;
@@ -69,38 +73,52 @@ public class Tbuss003MO_Ds implements Tbuss003BasicMO_Ds {
 
     //把任务插入到DS中
     @Override
-    public int insertBug (Tbuss003VO tbuss003VO, Cbase000VO cbase000VO)throws Exception{
+    public Integer insertBug (Tbuss003VO tbuss003VO, Cbase000VO cbase000VO)throws Exception{
         int code=0;
         //根据项目名称查找出项目才能通过名称到LanguageCfgLookupValues找出项目id
         Cbase013VO cbase013VO= cbase013MO.fetchBySyno(tbuss003VO.getSyno());
-        String dsca=cbase000VO.getDSCA();
+        String dsca = cbase013VO.getDsca();
         String projectName="";
-        if(dsca.indexOf("[项目]")!=-1){
+        if(dsca.contains("[项目]")){
             projectName=dsca.replace("[项目]","");
         }
         //去LanguageCfgLookupValues表通过名称找出id
         String CrntVersionID=tbuss003DAOImp_Ds.findIdByDscaLang(projectName);
-        //找出项目最大的BugID
-        int BugID=tbuss003DAOImp_Ds.selectMAX();
         //找出ds系统对应邮箱号的插入任务的人的id
         int PersonID=tbuss003DAOImp_Ds.findPersonIDByLogin(tbuss003VO.getUsid(),tbuss003VO.getUnam());
-          /*任务内容从clob转换成String,内容在去除掉ant系统自带的html的内容*/
-        String note_ds=tbuss003DAOImp_Ds.StringChange(tbuss003VO.getNote());
-        //插入ds系统的任务表Bug
-
-        int insertRuleCode=tbuss003DAOImp_Ds.inserRuleBug(tbuss003VO,BugID,PersonID,note_ds,CrntVersionID);
-
-        //jieKou_Tbuss003DAOImp_Ds
-        String insertRuleCode1=jieKou_Tbuss003DAOImp_Ds.inserRuleBug(tbuss003VO,cbase000VO,PersonID,note_ds,CrntVersionID);
-        //插入ds系统的表CustomerFieldTrackExt(主要插入软件科室和严重程度['关键2'：'严重1':'一般0'])
-        int insertRuleCustomerFieldTrackExtCode=tbuss003DAOImp_Ds.insertRuleCustomerFieldTrackExt(tbuss003VO,BugID,cbase000VO);
-        if(insertRuleCode==1&&insertRuleCustomerFieldTrackExtCode==1){
-            code=1;
+        //判断当前用户是否在DS中存在
+        if(PersonID != 0) {
+            //找出项目最大的BugID
+            int BugID = tbuss003DAOImp_Ds.selectMAX();
+            /*任务内容从clob转换成String,内容在去除掉ant系统自带的html的内容*/
+            String note_ds = tbuss003DAOImp_Ds.StringChange(tbuss003VO.getNote());
+            //插入ds系统的任务表Bug
+            int insertRuleCode = tbuss003DAOImp_Ds.inserRuleBug(tbuss003VO, BugID, PersonID, note_ds, CrntVersionID);
+            //插入ds系统的表CustomerFieldTrackExt(主要插入软件科室和严重程度['关键2'：'严重1':'一般0'])
+            int insertRuleCustomerFieldTrackExtCode = tbuss003DAOImp_Ds.insertRuleCustomerFieldTrackExt(tbuss003VO, BugID, cbase000VO);
+            if (insertRuleCode == 1 && insertRuleCustomerFieldTrackExtCode == 1) {
+                code = 1;
+            }
         }
         return code;
     }
 
-   //找出Ds数据库中所有的项目，系统,然后删ant系统的数据，把ds系统的数据插入到ant系统
+    @Override
+    public Integer deleteBug(final Integer BugID) {
+        final Integer[] result = new Integer[1];
+        Trans.exec(new Atom() {
+            @Override
+            public void run() {
+                result[0] = tbuss003DAOImp_Ds.deleterBug(BugID);
+                if (result[0] == 1) {
+                    result[0] = tbuss003DAOImp_Ds.deleteCustomer(BugID);
+                }
+            }
+        });
+        return result[0];
+    }
+
+    //找出Ds数据库中所有的项目，系统,然后删ant系统的数据，把ds系统的数据插入到ant系统
    @Override
     public List<Cbase013VO> synchronizationDSSystem(){
         List<Cbase013VO> systemList=tbuss003DAOImp_Ds.findAllSystemByDs();
@@ -114,19 +132,21 @@ public class Tbuss003MO_Ds implements Tbuss003BasicMO_Ds {
 
 
     @Override
-    public String insertBugJieKou (Tbuss003VO tbuss003VO,Cbase000VO cbase000VO)throws Exception{
+    public String insertBugJieKou (Tbuss003VO tbuss003VO,Cbase000VO cbase000VO) throws Exception{
 
         Cbase013VO cbase013VO= cbase013MO.fetchBySyno(tbuss003VO.getSyno());
         String dsca=cbase013VO.getDsca();
 
         String projectName="";
+        int BugID;
         if(dsca.contains("[项目]")){
             projectName=dsca.replace("[项目]","");
         }
         //去LanguageCfgLookupValues表通过名称找出id
         String CrntVersionID=tbuss003DAOImp_Ds.findIdByDscaLang(projectName);
-        //找出ds系统对应邮箱号的插入任务的人的id
-        int PersonID=tbuss003DAOImp_Ds.findPersonIDByLogin(tbuss003VO.getCsid(),tbuss003VO.getCnam());
+            //找出ds系统对应邮箱号的插入任务的人的id
+        int PersonID = tbuss003DAOImp_Ds.findPersonIDByLogin(tbuss003VO.getCsid(), tbuss003VO.getCnam());
+
         if(PersonID != 0) {
             /*任务内容从clob转换成String,内容在去除掉ant系统自带的html的内容*/
             String note_ds = tbuss003DAOImp_Ds.StringChange(tbuss003VO.getNote());
@@ -134,12 +154,17 @@ public class Tbuss003MO_Ds implements Tbuss003BasicMO_Ds {
             //jieKou_Tbuss003DAOImp_Ds
             String insertRuleJson = jieKou_Tbuss003DAOImp_Ds.inserRuleBug(tbuss003VO, cbase000VO, PersonID, note_ds, CrntVersionID);
             String[] results = insertRuleJson.split(",");
-            if (results.length > 1) {
+             if (results.length > 1) {
                 String Sussess = results[1];
                 String data = results[0];
                 String updateResult = "";
                 if (Sussess.equals("true")) {
-                    updateResult = jieKou_Tbuss003DAOImp_Ds.updateBugStatus(data);
+                    try{
+                        updateResult = jieKou_Tbuss003DAOImp_Ds.updateBugStatus(data);
+                    }catch (KellyException e){
+                        deleteBug(Integer.parseInt(data));
+                        throw e;
+                    }
                     JSONObject resultJson = JSONObject.fromObject(updateResult);
                     if (Boolean.valueOf(resultJson.get("Success").toString())) {
                         return "Success";

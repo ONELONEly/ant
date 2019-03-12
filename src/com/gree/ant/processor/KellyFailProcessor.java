@@ -1,6 +1,7 @@
 package com.gree.ant.processor;
 
 import com.gree.ant.exception.KellyException;
+import com.gree.ant.util.HttpRequest;
 import com.gree.ant.util.StringUtil;
 import com.gree.ant.vo.util.MVCResultVO;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -14,10 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
 
 @IocBean(singleton = false)
 public class KellyFailProcessor extends ViewProcessor {
@@ -37,12 +35,12 @@ public class KellyFailProcessor extends ViewProcessor {
         Throwable error = ac.getError();
         PrintWriter writer = response.getWriter();
         String method = request.getMethod();
-        String errorString = StringUtil.getStackTraceText(error);
+        error.printStackTrace();
         logger.info(method);
         if("GET".equals(method)) {
             response.setContentType("text/html;charset=UTF-8");
             resultVO = getResultVO(error);
-            writer.write("错误码为 : " + resultVO.getCode() + "<br/>错误信息 : " + resultVO.getMsg());
+            writer.write("错误码为 : (" + resultVO.getCode() + ")<br/>错误信息 : " + resultVO.getMsg());
         }else{
             response.setContentType("application/json;charset=UTF-8");
             resultVO = getResultVO(error);
@@ -57,9 +55,9 @@ public class KellyFailProcessor extends ViewProcessor {
             kelly = (KellyException)error;
             resultVO = new MVCResultVO(kelly.getCode(),kelly.getMessage());
         }else{
-            String msg = error.getMessage();
-            if (StringUtil.checkString(error.getMessage())) {
-                msg = "服务器错误("+error.toString()+")";
+            String msg = HttpRequest.getThrowableInformation(error);
+            if (StringUtil.checkString(msg)) {
+                msg = "服务器错误("+msg+")";
             }
             resultVO = new MVCResultVO(-1,msg);
         }

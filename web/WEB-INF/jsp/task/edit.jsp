@@ -387,8 +387,13 @@
                     return "请选择系统/项目";
                 }
             },
+            puno: function (value) {
+                if (checkForm(value)) {
+                    return "请选择任务类型";
+                }
+            },
             jied:function (value) {
-                if(checkForm(value)){
+                if (checkForm(value)) {
                     return "请选择任务阶段";
                 }
             }

@@ -23,6 +23,15 @@ public class DoubleUtil {
     public static Double format_nice(Double input){
         double result = 0.00;
         if (input != null){
+            DecimalFormat format = new DecimalFormat("#.0000");
+            result = Double.valueOf(format.format(input));
+        }
+        return result;
+    }
+
+    public static Double format_nice_two(Double input){
+        double result = 0.00;
+        if (input != null){
             DecimalFormat format = new DecimalFormat("#.00");
             result = Double.valueOf(format.format(input));
         }

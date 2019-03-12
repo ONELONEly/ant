@@ -2,7 +2,9 @@ package com.gree.ant.controller;
 
 import com.gree.ant.mo.Tbuss003MO;
 import com.gree.ant.mo.Tbuss004MO;
+import com.gree.ant.util.EncryUtil;
 import com.gree.ant.util.ResultUtil;
+import com.gree.ant.util.StringUtil;
 import com.gree.ant.util.TokenUtil;
 import com.gree.ant.vo.Tbuss004VO;
 import org.nutz.dao.Cnd;
@@ -11,6 +13,7 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.util.NutMap;
 import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.Attr;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
@@ -42,10 +45,8 @@ public class BoardController {
 
     @At
     @Ok("jsp:jsp.board.manage")
-    public String manage(HttpServletRequest request){
-        Map<String,String> tokenMap = TokenUtil.getInstance().makeToken();
-        request.getSession().setAttribute("password",tokenMap.get("password"));
-        return tokenMap.get("token");
+    public String manage(HttpServletRequest request, @Attr("password")String password){
+        return ResultUtil.getBoardBack(request,password);
     }
 
     /**
@@ -59,10 +60,8 @@ public class BoardController {
      */
     @At
     @Ok("jsp:jsp.board.user")
-    public String user(HttpServletRequest request){
-        Map<String,String> tokenMap = TokenUtil.getInstance().makeToken();
-        request.getSession().setAttribute("password",tokenMap.get("password"));
-        return tokenMap.get("token");
+    public String user(HttpServletRequest request, @Attr("password")String password){
+        return ResultUtil.getBoardBack(request,password);
     }
 
     /**

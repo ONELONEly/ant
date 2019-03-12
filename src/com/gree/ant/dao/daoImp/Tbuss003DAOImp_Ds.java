@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @IocBean
 public class Tbuss003DAOImp_Ds implements Tbuss003DAO_Ds {
@@ -105,9 +106,9 @@ public class Tbuss003DAOImp_Ds implements Tbuss003DAO_Ds {
         int code=1;
         Sql sql= Sqls.create("insert into CustomerFieldTrackExt(ProjectID,SequenceNo,BugID,Custom_3,Desc_Custom_1) values(417,1,@BugID,@Custom_3,@Desc_Custom_1)");
         //获取严重程度
-        String sta3=trantanceString(tbuss003VO.getSta3());
+        String sta3 = trantanceString(tbuss003VO.getSta3());
         //获取科室名称
-        String dsca=findDscaByAcco(cbase000VO.getACCO());
+        String dsca = findDscaByAcco(cbase000VO.getACCO());
         sql.params().set("BugID",BugID+1).set("BugID",(BugID+1)).set("Custom_3",dsca).set("Desc_Custom_1",sta3);
         try {
             dao1.execute(sql);
@@ -145,7 +146,7 @@ public class Tbuss003DAOImp_Ds implements Tbuss003DAO_Ds {
     }
 
     public int inserRuleBug(Tbuss003VO tbuss003VO, int BugID, int PersonID, String note_ds, String CrntVersionID)throws SQLException{
-        int code=1;
+        int code = 1;
          Sql sql= Sqls.create("insert into Bug(ProjectID,BugID,ProblemID,BugTitle,CreatedByPerson,ProblemDescription,DateCreated,CurrentOwner,ProgressStatusID,CrntBugTypeID,CrntPriorityID,TimeSpent,SubProjectID,CrntVersionID,DateAssigned,PlanedStartDate," +
                 "IssueFinishDate,PlanedEndDate,IssueActualStartDate,DateClosed,AssignedByPersonID,ClosedByPerson)\n" +
                 "values(417,@BugID,@ProblemID,@BugTitle,@CreatedByPerson,@ProblemDescription,@DateCreated,@CurrentOwner,335,@CrntBugTypeID,@CrntPriorityID,@TimeSpent,@SubProjectID,@CrntVersionID,@DateAssigned,@PlanedStartDate," +
@@ -154,8 +155,8 @@ public class Tbuss003DAOImp_Ds implements Tbuss003DAO_Ds {
         sql.params().set("BugID",BugID+1).set("ProblemID","id"+(BugID+1)).set("BugTitle",tbuss003VO.getTitl()).set("CreatedByPerson",PersonID).set("ProblemDescription",note_ds)
                 .set("DateCreated",tbuss003VO.getXdat()).set("CurrentOwner",PersonID).set("CrntBugTypeID",tbuss003VO.getPuno()).set("CrntPriorityID",tbuss003VO.getSta2()).set("TimeSpent",tbuss003VO.getFahh()*60)
         .set("SubProjectID",tbuss003VO.getJied()).set("CrntVersionID",CrntVersionID).set("DateAssigned", DateUtil.formatYMDDate(tbuss003VO.getCdat())).set("PlanedStartDate", DateUtil.formatYMDDate(tbuss003VO.getCdat())).
-                set("IssueActualStartDate", DateUtil.formatYMDDate(tbuss003VO.getCdat())).  set("PlanedEndDate",new Date()).  set("IssueFinishDate", new Date())
-                .set("DateClosed",new Date()).set("AssignedByPersonID",PersonID).set("ClosedByPerson",PersonID);
+                set("IssueActualStartDate", DateUtil.formatYMDDate(tbuss003VO.getCdat())).set("PlanedEndDate",tbuss003VO.getFdat()).  set("IssueFinishDate", tbuss003VO.getFdat())
+                .set("DateClosed",tbuss003VO.getFdat()).set("AssignedByPersonID",PersonID).set("ClosedByPerson",PersonID);
        try {
            dao1.execute(sql);
        }catch (Exception E){
@@ -164,7 +165,35 @@ public class Tbuss003DAOImp_Ds implements Tbuss003DAO_Ds {
        return code;
     }
 
-/*
+    @Override
+    public Integer deleterBug(Integer BugID) {
+        int code = 1;
+        String sqlStr = "delete Bug where BugID = @BugID and ProjectID = @ProjectID";
+        Sql sql = Sqls.create(sqlStr);
+        sql.setParam("BugID",BugID).setParam("ProjectID",417);
+        try {
+            dao1.execute(sql);
+        }catch (Exception e){
+            code = 0;
+        }
+        return code;
+    }
+
+    @Override
+    public Integer deleteCustomer(Integer BugID) {
+        int code = 1;
+        String sqlStr = "delete CustomerFieldTrackExt where BugID = @BugID and ProjectID = @ProjectID";
+        Sql sql = Sqls.create(sqlStr);
+        sql.setParam("BugID",BugID).setParam("ProjectID",417);
+        try {
+            dao1.execute(sql);
+        }catch (Exception e){
+            code = 0;
+        }
+        return code;
+    }
+
+    /*
 
     public  String StringChange(Clob note)throws Exception{
 
@@ -214,7 +243,7 @@ public class Tbuss003DAOImp_Ds implements Tbuss003DAO_Ds {
     }
 
     public int selectMAX(){
-        Sql sql= Sqls.create("select MAX(BugID) from bug where  ProjectID=417");
+        Sql sql= Sqls.create("select MAX(BugID) from bug where ProjectID=417");
 
         sql.setCallback(new SqlCallback() {
             public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
@@ -227,6 +256,22 @@ public class Tbuss003DAOImp_Ds implements Tbuss003DAO_Ds {
         dao1.execute(sql);
         return sql.getInt();
         }
+
+    @Override
+    public Map selctBug(String bugID) {
+        Sql sql= Sqls.create("select MAX(BugID) from bug where ProjectID=417");
+
+        sql.setCallback(new SqlCallback() {
+            public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
+                int  result=0;
+                while (rs.next())
+                    result = rs.getInt(1);
+                return result;
+            }
+        });
+        dao1.execute(sql);
+        return sql.getObject(Map.class);
+    }
 }
 
 

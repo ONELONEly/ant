@@ -4,8 +4,10 @@ import com.gree.ant.dao.daoImp.Cbase009DAOImp;
 import com.gree.ant.mo.basic.Cbase009BasicMO;
 import com.gree.ant.vo.Cbase000VO;
 import com.gree.ant.vo.Cbase009VO;
+import com.gree.ant.vo.Cbase010VO;
 import com.gree.ant.vo.response.GropUser;
 import com.gree.ant.vo.util.ResultVO;
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -22,6 +24,9 @@ public class Cbase009MO implements Cbase009BasicMO{
 
     @Inject
     private Cbase000MO cbase000MO;
+
+    @Inject
+    private Cbase010MO cbase010MO;
 
     @Override
     public List<Cbase009VO> queryAllByCnd(Condition cnd, Pager pager) {
@@ -46,7 +51,9 @@ public class Cbase009MO implements Cbase009BasicMO{
     @Override
     public Cbase009VO fetchC9Trans(String grop,Condition cnd){
         Cbase009VO cbase009VO = fetchByGrop(grop);
-        return cbase009DAOImp.fetchLinks(cbase009VO,"cbase000VOS",cnd);
+        List<Cbase000VO> cbase000VOS = cbase000MO.queryAllUDByGropCnd(grop,cnd);
+        cbase009VO.setCbase000VOS(cbase000VOS);
+        return cbase009VO;
     }
 
     @Override

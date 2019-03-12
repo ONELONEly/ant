@@ -4,11 +4,14 @@ import com.gree.ant.dao.daoImp.Tbuss003DAOImp;
 import com.gree.ant.exception.KellyException;
 import com.gree.ant.mo.basic.Tbuss003BasicMO;
 import com.gree.ant.util.DateUtil;
+import com.gree.ant.util.HttpRequest;
 import com.gree.ant.util.MailUtil;
 import com.gree.ant.util.StringUtil;
+import com.gree.ant.util.daemon.SyncDSTaskDaemon;
 import com.gree.ant.vo.Cbase000VO;
 import com.gree.ant.vo.Tbuss003VO;
 import com.gree.ant.vo.Tbuss014VO;
+import com.gree.ant.vo.daemonVO.SyncDSTaskVO;
 import com.gree.ant.vo.enumVO.ResultEnum;
 import com.gree.ant.vo.response.FahhVO;
 import com.gree.ant.vo.util.TaskUtilVO;
@@ -19,6 +22,8 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.util.List;
@@ -27,6 +32,7 @@ import java.util.Objects;
 
 @IocBean
 public class Tbuss003MO implements Tbuss003BasicMO{
+    private Logger logger = LoggerFactory.getLogger(Tbuss003MO.class);
 
     @Inject("refer:cbase015MO")
     private Cbase015MO cbase015MO;
@@ -82,14 +88,11 @@ public class Tbuss003MO implements Tbuss003BasicMO{
             @Override
             public void run() {
                 if(operate != null && cbase000VO != null && operate == 11){
-                    try {
-                        String insertBugCode = tbuss003MO_ds.insertBugJieKou(tbuss003VO,cbase000VO);
-                        if(insertBugCode.equals("Success")){
-                            code[0] = tbuss003DAOImp.update(tbuss003VO);
-                        }
-                    } catch (Exception e) {
-                        throw new KellyException(ResultEnum.DS_ERROR);
-                    }
+                    code[0] = tbuss003DAOImp.update(tbuss003VO);
+                    Long time0 = System.currentTimeMillis();
+                    makeDSPut(code[0],tbuss003VO,cbase000VO);
+                    Long time1 = System.currentTimeMillis();
+                    logger.error("时间差为二：{}",time1-time0);
                 }else{
                     if(tbuss014VO != null){
                         code[0] = tbuss014MO.updateByVO(tbuss014VO);
@@ -117,6 +120,11 @@ public class Tbuss003MO implements Tbuss003BasicMO{
     @Override
     public Tbuss003VO fetchByTaid(String taid) {
         return tbuss003DAOImp.fetchByName(taid);
+    }
+
+    @Override
+    public Tbuss003VO fetchSta1ByTaid(String taid) {
+        return tbuss003DAOImp.fetchSta1ByTaid(taid);
     }
 
     /**
@@ -265,5 +273,19 @@ public class Tbuss003MO implements Tbuss003BasicMO{
             return r15[0];
         }
         return 0;
+    }
+
+    /**
+     * @param resultCode 系统完成任务提交的结果码
+     * @param tbuss003VO 需要同步的任务详情
+     * @param cbase000VO 同步任务的所属用户
+     * @description 完成用户任务的同步
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     */
+    private void makeDSPut(Integer resultCode, final Tbuss003VO tbuss003VO, final Cbase000VO cbase000VO){
+        if(resultCode == 1){
+            SyncDSTaskDaemon.taskList.add(new SyncDSTaskVO(tbuss003VO,cbase000VO));
+        }
     }
 }

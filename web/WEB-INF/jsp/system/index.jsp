@@ -69,6 +69,9 @@
             table.reload('require',{
                 where:{
                     key:obj.field.msg
+                },
+                page:{
+                    curr:1
                 }
             });
             return false;

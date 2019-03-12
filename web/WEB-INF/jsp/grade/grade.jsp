@@ -121,15 +121,40 @@
             layer = layui.layer,
             table = layui.table,
             form = layui.form,
-            $ = layui.jquery;
+            $ = layui.jquery,
+            grade = {
+                group:'',
+                key:''
+            },
+            allField = JSON.parse(sessionStorage.getItem("moduleAllField"));
 
-        form.on("select(group)",function (data) {
+        if (allField != null){
+
+            $("#verify").val(allField.grade.grade.key)
+            $("#group").val(allField.grade.grade.group)
+
             table.reload("grade",{
-                where:{
-                    group:data.value,
-                    key:$("#verify").val()
+                where:allField.grade.grade,
+                page:{
+                    curr:1
                 }
             });
+        }
+
+
+
+        form.on("select(group)",function (data) {
+            grade = {
+                group:data.value,
+                key:$("#verify").val()
+            }
+            table.reload("grade",{
+                where:grade,
+                page:{
+                    curr:1
+                }
+            });
+            syncField()
         });
 
         var start = {
@@ -181,12 +206,17 @@
 
         form.on("submit(search)", function (data) {
             var infor = data.field;
+            grade = {
+                key: infor.verify,
+                group:$("#group option:selected").val()
+            }
             table.reload("grade", {
-                where: {
-                    key: infor.verify,
-                    group:$("#group option:selected").val()
+                where: grade,
+                page:{
+                    curr:1
                 }
             });
+            syncField()
             return false;
         });
 
@@ -318,6 +348,14 @@
                 }
             });
         });
+
+        function syncField(){
+            if(allField == null){
+                allField = moduleAllField;
+            }
+            allField.grade.grade = grade;
+            sessionStorage.setItem("moduleAllField",JSON.stringify(allField));
+        }
     });
 </script>
 </body>

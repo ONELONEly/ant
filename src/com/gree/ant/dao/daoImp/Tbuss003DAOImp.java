@@ -176,6 +176,25 @@ public class Tbuss003DAOImp extends BaseDAOImp<Tbuss003VO> implements Tbuss003DA
         this.getDao().execute(sql);
     }
 
+    @Override
+    public Tbuss003VO fetchSta1ByTaid(final String taid) {
+        String sqlStr = "select sta1 from Tbuss003 where taid = @taid";
+        Sql sql = Sqls.create(sqlStr);
+        sql.setParam("taid",taid);
+        sql.setCallback(new SqlCallback() {
+            @Override
+            public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
+                Tbuss003VO tbuss003VO = new Tbuss003VO();
+                if (rs.next()){
+                    tbuss003VO.setSta1(rs.getInt("sta1"));
+                }
+                return tbuss003VO;
+            }
+        });
+        getDao().execute(sql);
+        return sql.getObject(Tbuss003VO.class);
+    }
+
     private List<FahhVO> queryFahhResultFormat(String startDate, String endDate, String sqlStr, Dao dao){
         Sql sql = Sqls.create(sqlStr);
         sql.setParam("start",startDate).setParam("end",endDate);

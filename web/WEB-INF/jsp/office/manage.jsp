@@ -80,6 +80,9 @@
             table.reload("office",{
                 where:{
                     key:infor.msg
+                },
+                page:{
+                    curr:1
                 }
             });
             return false;

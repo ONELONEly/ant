@@ -34,6 +34,13 @@ public class OkrVO {
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
      */
     private Integer type;
+
+    /**
+     * @description 提交身份
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     */
+    private Integer auth;
+
     /**
      * @description 目标集合
      * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
@@ -72,6 +79,14 @@ public class OkrVO {
         this.mdat = mdat;
     }
 
+    public Integer getAuth() {
+        return auth;
+    }
+
+    public void setAuth(Integer auth) {
+        this.auth = auth;
+    }
+
     public List<GoalVO> getGoals() {
         return goals;
     }
@@ -81,6 +96,6 @@ public class OkrVO {
     }
 
     public Tbuss011VO getOkrManager(){
-        return new Tbuss011VO(this.asid,this.boss,this.mdat,this.type);
+        return new Tbuss011VO(this.asid,this.boss,this.mdat,this.type,this.auth);
     }
 }

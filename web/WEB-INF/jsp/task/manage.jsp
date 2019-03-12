@@ -120,6 +120,9 @@
                 where:{
                     key:infor.msg,
                     ptno:ptno
+                },
+                page:{
+                    curr:1
                 }
             });
             return false;
@@ -131,6 +134,9 @@
                 where:{
                     ptno:data.value,
                     key:msg
+                },
+                page:{
+                    curr:1
                 }
             })
         });

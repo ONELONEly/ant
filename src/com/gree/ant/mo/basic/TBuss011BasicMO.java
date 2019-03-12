@@ -98,4 +98,6 @@ public interface TBuss011BasicMO {
     void pushToLeader(Integer[] okids);
 
     void backToUser(Integer[] okids);
+
+    void copyOkr(Integer[] okids);
 }

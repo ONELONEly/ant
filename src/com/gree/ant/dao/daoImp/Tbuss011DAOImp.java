@@ -130,7 +130,8 @@ public class Tbuss011DAOImp extends BaseDAOImp<Tbuss011VO> implements Tbuss011DA
                     tbuss011VOS.add(new Tbuss011VO(rs.getString("ASID"),rs.getString("ANAM"),
                             rs.getString("BOSS"),rs.getString("BNAM"),rs.getString("MDAT"),
                             rs.getInt("OKID"),rs.getInt("STAT"),rs.getFloat("GRADE"),
-                            rs.getInt("TYPE"),rs.getString("TYPENAM"),rs.getString("ACCONAM")));
+                            rs.getInt("TYPE"),rs.getInt("AUTH"),rs.getString("TYPENAM"),
+                            rs.getString("AUTHNAM"),rs.getString("ACCONAM")));
                 }
                 return tbuss011VOS;
             }

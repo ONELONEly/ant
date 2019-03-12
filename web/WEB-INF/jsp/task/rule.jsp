@@ -29,10 +29,15 @@
         <div class="layui-form-pane">
             <div class="layui-form-item">
                 <div class="layui-input-inline">
-                    <input type="text" name="msg" id="msg" placeholder="请输入查询信息" lay-verify="msg" class="layui-input"/>
+                    <input type="text" name="msg" id="msg" placeholder="请输入规则描述" lay-verify="msg" class="layui-input"/>
                 </div>
                 <div class="layui-input-inline">
                     <button class="layui-btn layui-btn-radius" lay-filter="search" lay-submit>查询</button>
+                </div>
+                <div class="layui-input-inline">
+                    <select name="usid" id="usid" lay-verify="usid" lay-filter="usid" lay-search>
+                        <option value="" class="n-display" disabled selected>请选择过滤用户</option>
+                    </select>
                 </div>
                 <a href="${base}/task/insertRule" class="layui-btn layui-btn-radius" lay-filter="set">创建</a>
             </div>
@@ -98,16 +103,77 @@
             layer = layui.layer,
             table = layui.table,
             form = layui.form,
-            $ = layui.jquery;
+            $ = layui.jquery,
+            rule = {
+                key:'',
+                usid:''
+            },
+            allField = JSON.parse(sessionStorage.getItem("moduleAllField"));
+        console.log(allField)
+
+        if (allField != null){
+
+            $("#msg").val(allField.task.rule.key)
+            $("#usid").val(allField.task.rule.usid)
+
+            table.reload("rule",{
+                where:allField.task.rule,
+                page:{
+                    curr:1
+                }
+            });
+        }
 
         form.on("submit(search)",function (data) {
             var infor = data.field;
+            rule = {
+                key:infor.msg,
+                usid:infor.usid
+            }
             table.reload("rule",{
-                where:{
-                    key:infor.msg
+                where:rule,
+                page:{
+                    curr:1
                 }
             });
+            syncField()
             return false;
+        });
+
+        form.on("select(usid)",function (data) {
+            rule = {
+                key:$("#msg").val(),
+                usid:data.value
+            }
+            table.reload("rule",{
+                where:rule,
+                page:{
+                    curr:1
+                }
+            });
+            syncField()
+            return false;
+        })
+
+        $.ajax({
+            type:'GET',
+            url:'${base}/util/findC0',
+            dataType:'json',
+            success:function (res) {
+                var data = res.c0;
+                var option = " <option value='' class='n-display' disabled selected>请选择添加的用户</option>";
+                for(var i = 0;i<data.length;i++){
+                    option += "<option value='"+data[i].id+"'>"+data[i].dsca+"</option>";
+                }
+                $("#usid").html(option);
+                if (allField != null) {
+                    $("#usid").val(allField.task.rule.usid);
+                }
+                form.render();
+            },
+            error:function (kj) {
+                layer.alert("发生错误:"+kj.status,{offset:'10px'});
+            }
         });
 
         table.on('edit(rule)',function (obj) {
@@ -214,6 +280,14 @@
                 }
             });
         });
+
+        function syncField(){
+            if(allField == null){
+                allField = moduleAllField;
+            }
+            allField.task.rule = rule;
+            sessionStorage.setItem("moduleAllField",JSON.stringify(allField));
+        }
 
     });
 </script>

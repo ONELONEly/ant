@@ -4,6 +4,7 @@ import com.gree.ant.dao.daoImp.Cbase000DAOImp;
 import com.gree.ant.mo.basic.Cbase000BasicMO;
 import com.gree.ant.util.StringUtil;
 import com.gree.ant.vo.Cbase000VO;
+import com.gree.ant.vo.util.ExportGradeOkrVO;
 import com.gree.ant.vo.util.GradeVO;
 import com.gree.ant.vo.util.ResultVO;
 import org.nutz.dao.Cnd;
@@ -95,6 +96,15 @@ public class Cbase000MO implements Cbase000BasicMO{
     }
 
     @Override
+    public List<ExportGradeOkrVO> queryAllGradeOkrByPdat(String pdat) {
+        Cnd cnd = Cnd.NEW();
+        if(StringUtil.checkString(pdat)){
+            cnd = cnd.and("pdat","like","%"+pdat+"%");
+        }
+        return cbase000DAOImp.queryALlGradeOkrByPdat(cnd);
+    }
+
+    @Override
     public List<Cbase000VO> queryAllUser(Condition cnd, Pager pager) {
         return cbase000DAOImp.queryAllUser(cnd,pager);
     }
@@ -102,5 +112,15 @@ public class Cbase000MO implements Cbase000BasicMO{
     @Override
     public Cbase000VO fetchUser(String usid) {
         return cbase000DAOImp.findUser(usid);
+    }
+
+    @Override
+    public Cbase000VO ftechUserDC(String usid) {
+        return cbase000DAOImp.findUserDC(usid);
+    }
+
+    @Override
+    public List<Cbase000VO> queryAllUDByGropCnd(String grop, Condition cnd) {
+        return cbase000DAOImp.queryAllUDByGropCnd(grop, cnd);
     }
 }

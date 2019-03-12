@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Table("TBUSS003")
 @View("V_TBUSS003")
-public class Tbuss003VO extends ValueObject{
+public class Tbuss003VO extends ValueObject{ //TODO 添加（删除、修改）某字段时，一定得在updateTask方法处对响应字段进行添加或编辑
 
     /**
      * The Taid.

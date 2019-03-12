@@ -21,13 +21,10 @@
     <div class="layui-form layui-form-panel" style="padding-bottom:50px;">
         <table class="layui-table">
             <tr>
-                <td colspan="10" class="x-center">OKR管理表</td>
-                <td class="none_border">
-
-                </td>
+                <td colspan="11" class="x-center">OKR管理表</td>
             </tr>
             <tr>
-                <td colspan="3">
+                <td colspan="2" nowrap="nowrap">
                     <div class="layui-form-item">
                         <label for="asid" class="layui-form-label">管理对象：</label>
                         <div class="layui-input-block">
@@ -38,7 +35,7 @@
                         </div>
                     </div>
                 </td>
-                <td colspan="3">
+                <td colspan="2" nowrap="nowrap">
                     <div class="layui-form-item">
                         <label for="boss" class="layui-form-label">直接上级：</label>
                         <div class="layui-input-block">
@@ -49,18 +46,17 @@
                         </div>
                     </div>
                 </td>
-                <td colspan="2">
+                <td colspan="2" nowrap="nowrap">
                     <div class="layui-form-item">
                         <label for="mdat" class="layui-form-label">管理周期：</label>
                         <div class="layui-input-block">
-                            <input type="text" name="mdat" id="mdat" class="layui-input" style="border:none;"
-                                   value="${obj.okr.MDAT}">
+                            <input type="text" name="mdat" id="mdat" class="layui-input" value="${obj.okr.MDAT}">
                         </div>
                     </div>
                 </td>
-                <td colspan="2">
+                <td colspan="2" nowrap="nowrap">
                     <div class="layui-form-item">
-                        <label for="boss" class="layui-form-label">提交类型：</label>
+                        <label for="rule" class="layui-form-label">提交类型：</label>
                         <div class="layui-input-block">
                             <span id="rule_0" style="float: right"></span>
                             <select name="rule" lay-filter="rule" id="rule" lay-search>
@@ -71,19 +67,31 @@
                         </div>
                     </div>
                 </td>
-                <td class="none_border">
-
+                <td colspan="3" nowrap="nowrap">
+                    <div class="layui-form-item">
+                        <label for="auth" class="layui-form-label">提交身份：</label>
+                        <div class="layui-input-block">
+                            <span id="auth_0" style="float: right"></span>
+                            <select name="auth" lay-filter="auth" id="auth" lay-search>
+                                <option value="" style="display:none;" disabled selected>请选择提交身份</option>
+                                <option value="0">个人</option>
+                                <option value="1">组内</option>
+                                <option value="2">部门</option>
+                                <option value="3">科室</option>
+                            </select>
+                        </div>
+                    </div>
                 </td>
             </tr>
             <tr id="okr_item_0_0">
-                <th class="center" width="4%" nowrap="nowrap">
+                <th class="center" width="6%" nowrap="nowrap">
                     <label>序号</label>
                 </th>
-                <th class="center" width="6%" nowrap="nowrap">
+                <th class="center" width="10%" nowrap="nowrap">
                     <label>目标(O)</label>
                 </th>
                 <th class="center" width="10%" nowrap="nowrap">
-                    <label>O周期&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <label>O周期</label>
                 </th>
                 <th class="center" width="10%" nowrap="nowrap">
                     <label>O类型</label>
@@ -91,16 +99,16 @@
                 <th class="center" width="5%" nowrap="nowrap">
                     <label>O权重(%)</label>
                 </th>
-                <th class="center" width="10%" nowrap="nowrap">
+                <th class="center" width="14%" nowrap="nowrap">
                     <label>O完成情况</label>
                 </th>
-                <th class="center" width="20%" nowrap="nowrap">
+                <th class="center" width="14%" nowrap="nowrap">
                     <label>关键成果(KRS)</label>
                 </th>
                 <th class="center" width="7%" nowrap="nowrap">
                     <label>KR权重(%)</label>
                 </th>
-                <th class="center" width="18%" nowrap="nowrap">
+                <th class="center" width="14%" nowrap="nowrap">
                     <label>KRS完成情况</label>
                 </th>
                 <th class="center" width="8%" nowrap="nowrap">
@@ -249,6 +257,7 @@
             laytpl = layui.laytpl, getTpl = okr.innerHTML,isManager = ${obj.isManager};
 
         $("#rule").val(${obj.okr.TYPE})
+        $("#auth").val(${obj.okr.AUTH})
         var start = {
             elem: '#mdat',
             type: 'month',
@@ -315,6 +324,7 @@
                 boss: '',
                 mdat: '',
                 type:0,
+                auth:0,
                 goals: []
             };
             var formAll = $(".layui-form").children();
@@ -342,6 +352,8 @@
                         postDataItem.mdat = param[j].value;
                     } else if (param[j].name === "rule") {
                         postDataItem.type = param[j].value;
+                    } else if(param[j].name === "auth"){
+                        postDataItem.auth = param[j].value;
                     }
                 }
                 for (var i = 0; i < goalParam.length; i++) {
@@ -379,8 +391,6 @@
                     }
 
                     var taskCount = $("[id^=okr_item_" + row + "_]").length;
-
-                    console.log(row,i,taskCount,"text",$("[id^=okr_item_" + row + "_]"))
 
                     for (var n = 0; n < taskCount; n++) {
                         var taskItem = {

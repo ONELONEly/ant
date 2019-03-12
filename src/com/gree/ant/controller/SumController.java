@@ -71,6 +71,12 @@ public class SumController {
     }
 
     @At
+    @Ok("jsp:jsp.sum.gradeOkrSearch")
+    public String gradeOkrSearch(){
+        return "handsome";
+    }
+
+    @At
     @Ok("json")
     public Map<String,Object> queryAllProjectFahh(@Param("date")String date){
         List<FahhVO> resultData = bussMoFactory.getTbuss003MO().queryAllProjectFahh(date);

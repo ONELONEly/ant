@@ -478,7 +478,7 @@ function checkProp(propParam,krPropParam,zgradParam) {
 function checkManagerData(param) {   // TODO 之后改善
     for (var i = 0; i < param.length; i++) {
         if (checkForm(param[i].value)) {
-            if ((param[i].name).match(/\b(asid|boss|rule)/) !== null) {
+            if ((param[i].name).match(/\b(asid|boss|rule|auth)/) !== null) {
                 layer.tips("请选择数据", "#" + param[i].name + "_0");
                 return false;
             } else if ((param[i].name).match(/\bmdat/) !== null) {

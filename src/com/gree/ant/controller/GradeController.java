@@ -6,11 +6,8 @@ import com.gree.ant.util.*;
 import com.gree.ant.util.excel.GradeExcel;
 import com.gree.ant.vo.*;
 import com.gree.ant.vo.response.GropUser;
-import com.gree.ant.vo.util.Cbase011_Grade_Trans;
-import com.gree.ant.vo.util.GradeVO;
-import com.gree.ant.vo.util.Tbuss003_Grade_Trans;
-import com.gree.ant.vo.util.Tbuss005_Grade_Trans;
-import com.sun.xml.internal.ws.api.model.MEP;
+import com.gree.ant.vo.response.UserEva;
+import com.gree.ant.vo.util.*;
 import jxl.write.WriteException;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
@@ -20,6 +17,8 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.ViewModel;
 import org.nutz.mvc.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +40,8 @@ import java.util.*;
 @IocBean
 public class GradeController {
 
+    private Logger logger = LoggerFactory.getLogger(GradeController.class);
+
     @Inject("refer:cbase000MO")
     private Cbase000MO cbase000MO;
 
@@ -53,7 +54,6 @@ public class GradeController {
     @Inject("refer:cbase010MO")
     private Cbase010MO cbase010MO;
 
-
     @Inject("refer:cbase011MO")
     private Cbase011MO cbase011MO;
 
@@ -65,6 +65,9 @@ public class GradeController {
 
     @Inject("refer:tbuss005MO")
     private Tbuss005MO tbuss005MO;
+
+    @Inject
+    private BussMoFactory bussMoFactory;
 
     /**
      * Index string.
@@ -249,8 +252,12 @@ public class GradeController {
         count = tbuss001MO.countByCnd(Cnd.where(e1).and(e2));
         pager = TableUtil.formatPager(pageSize,pageNumber,count);
         tbuss001VOList = tbuss001MO.queryAllByCnd(Cnd.where(e1).and(e2).desc("pdat"),pager);
-
-        return TableUtil.makeJson(0,"成功",count,tbuss001VOList);
+        List<UserEva> userEvas = new ArrayList<>();
+        for(Tbuss001VO tbuss001VO:tbuss001VOList){
+            TBuss017VO tBuss017VO = bussMoFactory.getTbuss017MO().fetchByUsidPdat(usid,tbuss001VO.getPdat());
+            userEvas.add(new UserEva(tbuss001VO.getPtno(),tbuss001VO.getDsca(),tbuss001VO.getPdat(),tBuss017VO.getStage()));
+        }
+        return TableUtil.makeJson(0,"成功",count,userEvas);
     }
 
     /**
@@ -652,7 +659,7 @@ public class GradeController {
             List<Cbase000VO> cbase000VOS = cbase009MO.fetchC9Trans(grop,null).getCbase000VOS();
             if(cbase000VOS!=null) {
                 for (Cbase000VO cbase000VO : cbase000VOS) {
-                    Double cons = 0.0;
+                    double cons = 0.0;
                     Condition cnd = Cnd.where("csid", "=", cbase000VO.getUSID()).and("ptno", "=", ptno);
                     List<Tbuss005VO> tbuss005VOS = tbuss005MO.queryAllByCndPager(cnd, null);
                     for (Tbuss005VO tbuss005VO : tbuss005VOS) {
@@ -680,7 +687,7 @@ public class GradeController {
     @POST
     @Ok("json")
     public Map<String,Object> queryGropMarkGrade(@Param("ptno")String ptno,@Param("grop")String grop){
-        Integer code = 0;
+        int code = 0;
         Map<String,Object> map = new HashMap<>();
         if(ptno != null && grop != null){
             List<Cbase011VO> cbase011VOS = tbuss001MO.fetchTransByNameCnd(ptno,"cbase011VOS",null).getCbase011VOS();
@@ -693,7 +700,7 @@ public class GradeController {
                         List<Tbuss005VO> tbuss005VOS = tbuss001MO.fetchTransByNameCnd(ptno, "tbuss005VOS", Cnd.where("csid", "=", cbase000VO.getUSID())
                                 .and("pjno","=",cbase011VO.getPjno())).getTbuss005VOS();
                         for (Tbuss005VO tbuss005VO:tbuss005VOS){
-                            tbuss005VO = tbuss005MO.fectchLinkByVO(tbuss005VO,"cbase000VO");
+                            tbuss005VO.setCbase000VO(cbase000MO.ftechUserDC(tbuss005VO.getCsid())); //查询到用户的名字
                             tbuss005VOList.add(tbuss005VO);
                         }
                     }
@@ -843,10 +850,150 @@ public class GradeController {
         return cbase000MO.queryAllGradeByPdat(pdat,grop);
     }
 
+    /**
+     * @param pdat 考核月份
+     * @param S S绩效等级数量
+     * @param A A绩效等级数量
+     * @param C C绩效等级数量
+     * @param request
+     * @param response
+     * @description 打印出绩效成绩
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     * @createTime 2019 -01-09 10:36:35
+     */
+    @At
+    @Ok("void")
+    public void printGradeOkr(@Param("pdat")String pdat, @Param("S")Integer S, @Param("A")Integer A, @Param("C")Integer C,
+                               HttpServletRequest request,HttpServletResponse response){
+        List<ExportGradeOkrVO> gradeVOS = cbase000MO.queryAllGradeOkrByPdat(pdat);
+        try {
+            GradeExcel.export(gradeMarkStage(gradeVOS,S,A,C,pdat),pdat,request,response);
+        } catch (IOException | WriteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param pdat 考核月份
+     * @param request
+     * @param response
+     * @description 打印已有成绩的绩效成绩
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     * @createTime 2019 -01-09 11:30:07
+     */
+    @At
+    @Ok("void")
+    public void printOldGradeOkr(@Param("pdat")String pdat,HttpServletRequest request,HttpServletResponse response){
+        try {
+            GradeExcel.export(bussMoFactory.getTbuss017MO().queryAllByPdatAcco(pdat,"3"),pdat,request,response);
+        } catch (IOException | WriteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param pdat 考核月份
+     * @param S S绩效等级数量
+     * @param A A绩效等级数量
+     * @param C C绩效等级数量
+     * @return 绩效成绩数据的标准返回格式
+     * @description 获得绩效成绩的数据
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     * @createTime 2019 -01-09 10:36:55
+     */
+    @At
+    @Ok("json")
+    public Map<String,Object> gradeOkrData(@Param("pdat")String pdat, @Param("S")Integer S, @Param("A")Integer A, @Param("C")Integer C){
+        List<ExportGradeOkrVO> gradeVOS = cbase000MO.queryAllGradeOkrByPdat(pdat);
+        return ResultUtil.getResult(1,"",gradeMarkStage(gradeVOS,S,A,C,pdat));
+    }
+
     private Map<String,Object> formatModel(String grop,String ptno){
         Map<String,Object> map = new HashMap<>();
         map.put("grop",grop);
         map.put("ptno",ptno);
         return map;
+    }
+
+    /**
+     * @param gradeVOS 绩效成绩
+     * @param pdat 考核月份
+     * @param S S绩效等级数量
+     * @param A A绩效等级数量
+     * @param C C绩效等级数量
+     * @return 返回已经评等级的绩效成绩
+     * @description 对绩效成绩进行评分并且存进数据库
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     * @createTime 2019 -01-09 10:37:31
+     */
+    private List<ExportGradeOkrVO> gradeMarkStage(List<ExportGradeOkrVO> gradeVOS,Integer S,Integer A,Integer C,String pdat){
+        List<ExportGradeOkrVO> gradeOkrVOS = new ArrayList<>();
+        int gradeCount = gradeVOS.size();
+        if(gradeCount <= S){
+
+            for(ExportGradeOkrVO gradeVO:gradeVOS){
+                gradeVO.setCpid("A");
+                gradeOkrVOS.add(gradeVO);
+            }
+
+        }else if(gradeCount <= (S + A)){
+
+            for (int i = gradeCount-1;i >= 0;i--){
+                ExportGradeOkrVO gradeVO = gradeVOS.get(i);
+                if(i >= gradeCount - S){
+                    gradeVO.setStage("S");
+                }else{
+                    gradeVO.setStage("A");
+                }
+                gradeOkrVOS.add(gradeVO);
+            }
+
+        }else if(gradeCount >  (S + A) && gradeCount <= (S + A + C)){
+
+            for (int i = gradeCount-1;i >= 0;i--){
+                ExportGradeOkrVO gradeVO = gradeVOS.get(i);
+                if(i >= gradeCount - S){
+                    gradeVO.setStage("S");
+                }else if (i >= gradeCount - S - A){
+                    gradeVO.setStage("A");
+                }else{
+                    gradeVO.setStage("C");
+                }
+                gradeOkrVOS.add(gradeVO);
+            }
+
+        }else{
+
+            for (int i = gradeCount-1;i >= 0;i--){
+                ExportGradeOkrVO gradeVO = gradeVOS.get(i);
+                if (i >= gradeCount - S) {
+                    gradeVO.setStage("S");
+                } else if (i >= gradeCount - S - A) {
+                    gradeVO.setStage("A");
+                } else if (i >= C){
+                    gradeVO.setStage("B");
+                } else{
+                    gradeVO.setStage("C");
+                }
+                gradeOkrVOS.add(gradeVO);
+            }
+
+        }
+
+        List<TBuss017VO> tBuss017VOS = new ArrayList<>();
+        for(ExportGradeOkrVO gradeOkrVO:gradeVOS){
+            tBuss017VOS.add(new TBuss017VO(pdat,"3",gradeOkrVO.getCsid(),gradeOkrVO.getScore()+"",gradeOkrVO.getStage()));
+        }
+        if(bussMoFactory.getTbuss017MO().countByPdatAcco(pdat,"3") > 0) {
+            bussMoFactory.getTbuss017MO().updateByVOS(tBuss017VOS);
+        }else{
+            bussMoFactory.getTbuss017MO().insertByVOS(tBuss017VOS);
+        }
+
+        return gradeOkrVOS;
     }
 }
