@@ -45,7 +45,7 @@ public class MainSetup implements Setup{
 
 //        Dao dao = ioc.get(Dao.class,"daoFX");
 //        dao.create(ButterFlyStaff.class,true);
-//        tbuss003MO_ds = ioc.get(Tbuss003MO_Ds.class);
+        tbuss003MO_ds = ioc.get(Tbuss003MO_Ds.class);
         Timer timer = new Timer();
         timer.schedule(new SyncDSTaskDaemon(), 2000, 60*1000);// 设定指定的时间time,此处为2000毫秒
     }

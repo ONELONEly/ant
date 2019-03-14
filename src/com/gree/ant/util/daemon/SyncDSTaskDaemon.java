@@ -55,6 +55,7 @@ public class SyncDSTaskDaemon extends TimerTask {
                         "转交直接操作数据库进行处理，【注意对响应任务进行监督】",cbase000VO.getUSID(),tbuss003VO.getTaid(),code,errorMsg);
                 tbuss003MO_ds.insertBug(tbuss003VO,cbase000VO);
             } catch (Exception kelly) {
+                kelly.printStackTrace();
                 logger.error("同步DS失败，【执行直接对数据库进行处理】，该用户：{}，所属任务ID为：{}，错误码为：{},错误信息为：{}",cbase000VO.getUSID(),tbuss003VO.getTaid(),code,errorMsg);
             }
         }
