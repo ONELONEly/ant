@@ -1,15 +1,18 @@
 package com.gree.ant;
 
+import com.gree.MainSetup;
 import com.gree.MyNutTestRunner;
 import com.gree.ant.dao.daoImp.ButterFlyDAOImp;
 import com.gree.ant.dao.daoImp.JieKou_Tbuss003DAOImp_Ds;
 import com.gree.ant.dao.daoImp.Tbuss003DAOImp_Ds;
+import com.gree.ant.exception.KellyException;
 import com.gree.ant.mo.*;
 import com.gree.ant.util.SyncButterFlyData;
 import com.gree.ant.vo.Cbase000VO;
 import com.gree.ant.vo.Cbase013VO;
 import com.gree.ant.vo.Cbase016VO;
 import com.gree.ant.vo.Tbuss003VO;
+import com.gree.ant.vo.daemonVO.SyncDSTaskVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nutz.dao.Cnd;
@@ -18,12 +21,16 @@ import org.nutz.dao.pager.Pager;
 import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 @IocBean
 @RunWith(MyNutTestRunner.class)
 public class SystemMOTest {
+
+    private Logger logger = LoggerFactory.getLogger(SystemMOTest.class);
 
     @Inject
     private BaseMoFactory baseMoFactory;
@@ -68,11 +75,17 @@ public class SystemMOTest {
 
     @Test
     public void testPersonMessage() throws Exception {
-//        Tbuss003VO tbuss003VO = tbuss003MO.fetchByTaid("JK61631277");
-//        Cbase000VO cbase000VO = baseMoFactory.getCbase000MO().fetchUser("180484");
-//        Integer code = tbuss003MO_Ds.insertBug(tbuss003VO,cbase000VO);
-        Integer code = tbuss003MO_Ds.deleteBug(22111);
-        System.out.println(code);
+//        String[] args = {"JK67686088","JK85150291","JK92198135","JK83811659"};
+//        for(String arg:args) {
+//            Tbuss003VO tbuss003VO = tbuss003MO.fetchByTaid(arg);
+//            Cbase000VO cbase000VO = baseMoFactory.getCbase000MO().fetchUser("180389");
+//            Integer code = tbuss003MO_Ds.insertBug(tbuss003VO, cbase000VO);
+////        Integer code = tbuss003MO_Ds.deleteBug(22111);
+//            System.out.println(code);
+//        }
+
+        Tbuss003VO tbuss003VO = tbuss003MO.fetchByTaid("JK36451061");
+        Cbase000VO cbase000VO = baseMoFactory.getCbase000MO().fetchUser("180484");
 
     }
 

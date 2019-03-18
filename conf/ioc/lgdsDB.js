@@ -4,10 +4,10 @@
 
 var ant = {
 
-		 config : {
+		 conf : {
 		        type : "org.nutz.ioc.impl.PropertiesProxy",
 		        fields : {
-		            paths : ["jdbc.properties"]
+		            paths : ["jdbc.properties","quartz.properties"]
 		        }
 		 },
 
@@ -18,9 +18,9 @@ var ant = {
                 depose : "close"
             },
             fields : {
-                url : {java : "$config.get('ant.url')"},
-                username : {java : "$config.get('ant.user')"},
-                password : {java : "$config.get('ant.password')"},
+                url : {java : "$conf.get('ant.url')"},
+                username : {java : "$conf.get('ant.user')"},
+                password : {java : "$conf.get('ant.password')"},
                 maxWait : 10000, // 若不配置此项,如果数据库未启动,druid会一直等可用连接,卡住启动过程
                 defaultAutoCommit :false, // 提高fastInsert的性能,
                 initialSize:5,

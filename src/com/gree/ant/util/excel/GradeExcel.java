@@ -1,9 +1,6 @@
 package com.gree.ant.util.excel;
 
-import com.gree.ant.util.DateUtil;
-import com.gree.ant.util.DoubleUtil;
-import com.gree.ant.util.FileUtil;
-import com.gree.ant.util.HTMLUtil;
+import com.gree.ant.util.*;
 import com.gree.ant.vo.Cbase000VO;
 import com.gree.ant.vo.Cbase011VO;
 import com.gree.ant.vo.Tbuss001VO;
@@ -417,17 +414,7 @@ public class GradeExcel {
                 double grade = 0.00;
                 double average = DoubleUtil.format_nice((double)Integer.parseInt(cbase011VO.getCons())/gradeTrans.getCount());
                 if(sta1 == 11) {
-                    if (stag == 0) {
-                        grade = average * 0.6;
-                    } else if (stag == 1) {
-                        grade = average * 0.7;
-                    } else if (stag == 2) {
-                        grade = average * 0.8;
-                    } else if (stag == 3) {
-                        grade = average * 0.9;
-                    } else if (stag == 4) {
-                        grade = average;
-                    }
+                    grade = CountUtil.getConsByAverageAndStage(average,stag);
                 }
                 grade_result += grade;
 

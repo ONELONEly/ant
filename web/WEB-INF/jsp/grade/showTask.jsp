@@ -99,6 +99,7 @@
                 {fixed:'left',field:'titl',align:'center',title:'标题',width:300,toolbar:'#noteTpl'},
                 {field:'fahh',align:'center',title:'工时',width:150,sort:true},
                 {field:'stag',align:'center',width:150,title:'等级',sort:true,templet:'#stagTpl'},
+                {field:'lastCons',align:'center',width:150,title:'分数',sort:true},
                 {field:'synonam',align:'center',width:350,title:'系统'},
                 {field:'cnam',align:'center',width:150,title:'派发给'},
                 {field:'sta1nam',align:'center',width:150,title:'状态'},

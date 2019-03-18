@@ -367,6 +367,14 @@ public class Tbuss003VO extends ValueObject{ //TODO 添加（删除、修改）�
     @Readonly
     private String t1dsca;
 
+    /**
+     * @description 该条任务得分
+     * @createTime 2019 -03-18 10:50:44
+     * @version 1.0
+     */
+    @Readonly
+    private Double lastCons;
+
     public void setJied(String jied) {
         this.jied = jied;
     }
@@ -860,5 +868,13 @@ public class Tbuss003VO extends ValueObject{ //TODO 添加（删除、修改）�
 
     public void setTdat(Date tdat) {
         this.tdat = tdat;
+    }
+
+    public Double getLastCons() {
+        return lastCons;
+    }
+
+    public void setLastCons(Double lastCons) {
+        this.lastCons = lastCons;
     }
 }

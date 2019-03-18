@@ -602,22 +602,12 @@ public class GradeController {
                     Integer count = tbuss003MO.countByCnd(Cnd.where(e));
                     if (count != 0) {
                         double average = DoubleUtil.format_nice(Double.parseDouble(cbase011VO.getCons())/ count);
-                        double result = 0;
+                        double result = 0.00;
                         List<Tbuss003VO> tbuss003VOList = tbuss003MO.queryAllByCnd(Cnd.where(e).and("sta1", "=", "11"),null);
                         if(tbuss003VOList != null){
                             for(Tbuss003VO tbuss003VO:tbuss003VOList){
                                 Integer stag = tbuss003VO.getStag();
-                                if(stag == 0){
-                                    result += average*0.6;
-                                }else if(stag == 1){
-                                    result += average*0.7;
-                                }else if(stag == 2){
-                                    result += average*0.8;
-                                }else if(stag == 3){
-                                    result += average*0.9;
-                                }else if(stag == 4){
-                                    result += average;
-                                }
+                                result = CountUtil.getConsByAverageAndStage(average,stag);
                             }
                         }
                         Tbuss005VO tbuss005VO = new Tbuss005VO(ptno, cbase000VO.getUSID(), cbase011VO.getPjno(), DoubleUtil.format_nice(result) + "", "自动打分", new Date(), new Date());

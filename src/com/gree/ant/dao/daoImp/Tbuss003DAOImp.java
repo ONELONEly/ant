@@ -2,6 +2,8 @@ package com.gree.ant.dao.daoImp;
 
 import com.gree.ant.dao.Tbuss003DAO;
 import com.gree.ant.dao.daoImp.util.DAOUtil;
+import com.gree.ant.util.CountUtil;
+import com.gree.ant.util.DoubleUtil;
 import com.gree.ant.util.FileUtil;
 import com.gree.ant.vo.Tbuss003VO;
 import com.gree.ant.vo.response.FahhVO;
@@ -38,7 +40,8 @@ public class Tbuss003DAOImp extends BaseDAOImp<Tbuss003VO> implements Tbuss003DA
     @Override
     public List<Tbuss003VO> queryAllGradeTask(String usid, Pager pager,Condition condition) {
         String sqlStr = "select t.taid,t.titl,t.cdat,t.cnam,t.sta1nam,t.sta2nam,t.sta3nam,t.pdat,t.knam,t.synonam,t.punonam,t.ptypnam,t.fdat,t.tdat,t.adat," +
-                "t.perc,(select count(*) from TBUSS010 s where s.USID = @usid AND s.TAID = t.TAID)coun,t.fahh,(select t1.dsca from tbuss001 t1 where t1.ptno = t.ptno)t1dsca,t.stag from V_TBUSS003 t $condition";
+                "t.perc,(select count(*) from TBUSS010 s where s.USID = @usid AND s.TAID = t.TAID)coun,t.fahh," +
+                "(select t1.dsca from tbuss001 t1 where t1.ptno = t.ptno)t1dsca,t.stag,t.taskCount,t.cons from V_TBUSS003 t $condition";
         Sql sql = Sqls.create(sqlStr);
         sql.setParam("usid",usid);
         sql.setPager(pager);
@@ -57,7 +60,14 @@ public class Tbuss003DAOImp extends BaseDAOImp<Tbuss003VO> implements Tbuss003DA
                     tbuss003VO.setPerc(rs.getDouble("perc"));
                     tbuss003VO.setEye(rs.getInt("coun"));
                     tbuss003VO.setT1dsca(rs.getString("t1dsca"));
-                    tbuss003VO.setStag(rs.getInt("stag"));
+                    int count = rs.getInt("taskCount");
+                    double getCons = 0.00;
+                    int stag = rs.getInt("stag");
+                    tbuss003VO.setStag(stag);
+                    if(count != 0 && stag != 0) {
+                        getCons = CountUtil.getConsByAverageAndStage(DoubleUtil.format_nice(rs.getDouble("cons") / count),stag);
+                    }
+                    tbuss003VO.setLastCons(getCons);
                     tbuss003VOS.add(tbuss003VO);
                 }
                 return tbuss003VOS;
