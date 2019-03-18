@@ -15,7 +15,7 @@ public class QuartzModule {
 
     public void add(){
         JobKey jobKey = new JobKey("butterFlyUserKey","feiYun");
-        Trigger trigger = TriggerBuilder.newTrigger().withIdentity("butterFlyUserTrigger","feiYun").startNow().withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(2).repeatForever()).build();
+        Trigger trigger = TriggerBuilder.newTrigger().withIdentity("butterFlyUserTrigger","feiYun").withSchedule(CronScheduleBuilder.cronSchedule("0 0 0 * * ?")).startNow().build();
         JobDetail jobDetail = JobBuilder.newJob(ButterFlyUserJob.class).withIdentity("butterFlyUserJob","feiYun").build();
         QuartzJob quartzJob = new QuartzJob(jobKey,trigger,jobDetail);
         quartzManager.add(quartzJob);
