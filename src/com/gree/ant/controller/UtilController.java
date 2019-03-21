@@ -1,6 +1,7 @@
 package com.gree.ant.controller;
 
 import com.gree.ant.dao.daoImp.ButterFlyDAOImp;
+import com.gree.ant.dao.daoImp.ContractDAOImp;
 import com.gree.ant.mo.*;
 import com.gree.ant.util.*;
 import com.gree.ant.vo.Cbase000VO;
@@ -10,6 +11,7 @@ import com.gree.ant.vo.Tbuss001VO;
 import com.gree.ant.vo.response.GropUser;
 import com.gree.ant.vo.util.ButterFlyFeiyun;
 import com.gree.ant.vo.util.ButterFlyVO;
+import com.gree.ant.vo.util.ContractVO;
 import com.gree.ant.vo.util.TaskUtilVO;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
@@ -92,12 +94,47 @@ public class UtilController {
     @Inject("refer:tbuss003MO_Ds")
     private Tbuss003MO_Ds tbuss003MO_Ds;
 
+    @Inject
+    private ContractDAOImp contractDAOImp;
+
     @At
     @Ok("json")
     public Map<String,Object> findT3DS_jied(String syno){
         Map<String,Object> map = new HashMap<>();
        map.put("jieds",tbuss003MO_Ds.findT3DS_jied(syno));
         return map;
+    }
+
+    /**
+     * 飞云调用合同系统接口
+     * @param htCoid 合同编号
+     * @param errorContext
+     * @return 返回合同编号以及付款信息
+     */
+    @At
+    @POST
+    @Ok("json")
+    @AdaptBy(type = JsonAdaptor.class)
+    @Filters
+    public Map<String, Object> getContractInfor(@Param("htCoid") String htCoid, AdaptorErrorContext errorContext){
+        QueryResult queryResult = null;
+        int code = 200;
+        int count = 1;
+        List<ContractVO> contractVOList = new ArrayList<>();
+        String msg = "请求合同错误，请检查合同编号!";
+        htCoid = "WW-15114";
+        if(null == errorContext){
+            if(null != htCoid){
+                contractVOList = contractDAOImp.queryContractInfor(htCoid);
+            }else {
+                code = 101;
+                msg = "合同编号不能为空，请检查合同编号再请求！";
+            }
+        }else{
+            code = 100;
+        }
+        msg = code == 200 ? "查询成功" : msg;
+        return TableUtil.makeJson(code, msg, count, contractVOList);
     }
 
     @Inject

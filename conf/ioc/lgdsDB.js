@@ -66,5 +66,21 @@ var ant = {
             type:"org.nutz.dao.impl.NutDao",
             args:[{refer:"dataSource1"}]
 
+        },
+    dataSourceHT:{
+        type:"com.alibaba.druid.pool.DruidDataSource",
+        fields : {
+            driverClassName:"oracle.jdbc.OracleDriver",
+            url :"jdbc:oracle:thin:@//10.2.12.77:1521/bea8",
+            username : "cx",
+            password : "cx2009"
+        },
+        events:{
+            depose:"close"
         }
+    },
+    daoHT:{
+        type:"org.nutz.dao.impl.NutDao",
+        args:[{refer:"dataSourceHT"}]
+    }
 };
