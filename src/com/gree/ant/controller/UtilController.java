@@ -153,8 +153,9 @@ public class UtilController {
         String msg = "请求参数格式错误,请检查请求参数后请求！";
         if(error == null) {
             if (pageNumber > 0 && pageSize >= 0) {
-                Condition cnd = Cnd.where("department", "like", "%空调四分厂%").or("department", "like", "%工会%").
-                        or("department", "like", "%商用空调经营部%").or("posts", "like", "%公司领导%");
+//                Condition cnd = Cnd.where("department", "like", "%空调四分厂%").or("department", "like", "%工会%").
+//                        or("department", "like", "%商用空调经营部%").or("posts", "like", "%公司领导%");
+                Condition cnd = Cnd.where("companyNumber","=",100);
                 if (order != null && (order.equals("company") || order.equals("department") || order.equals("posts") || order.equals("name") || order.equals("sex") || order.equals("isInStaff"))) {
                     cnd = ((Cnd) cnd).desc(order);
                 }
