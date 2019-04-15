@@ -48,7 +48,7 @@ public class Tbuss003MO implements Tbuss003BasicMO{
 
     @Override
     public List<Tbuss003VO> queryAllByCnd(Condition cnd, Pager pager) {
-        return tbuss003DAOImp.queryAllByCndPager(cnd, pager);
+        return tbuss003DAOImp.queryByCndPager(cnd, pager);
     }
 
     @Override

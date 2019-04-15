@@ -7,6 +7,7 @@ import org.nutz.json.Json;
 import org.nutz.json.JsonFormat;
 
 import javax.servlet.ServletContext;
+import java.util.Map;
 
 public class MyUtil {
 
@@ -16,13 +17,14 @@ public class MyUtil {
         return sc.getRealPath(path);
     }
 
-    private String makePost(){
+    public static String makePost(){
         String url = "http://10.2.8.188/GreeBIWebapi/api/ticket"; //职层='中层干部'
         String params1 = "{\"serverip\":\"10.2.4.88\",\"username\":\"erpuser\",\"password\":\"erp*951\",\"sitename\":\"ComputerBI\"}";
         System.out.println(params1);
         Map<String, Object> params2 = (Map<String, Object>) Json.fromJson(params1);
         Header headers = Header.create().set("Content-Type", "application/json");
         Response response = Http.post3(url, Json.toJson(params2, JsonFormat.compact()), headers, 200000, 2000);
-        return response.getContent();
+        String responseContent = response.getContent();
+        return responseContent.substring(responseContent.indexOf(">")+1,responseContent.lastIndexOf("<"));
     }
 }

@@ -80,7 +80,7 @@ public class ButterFlyVO {
      */
     @Column("postsNumber")
     @Comment("岗位编码")
-    @ColDefine(type = ColType.INT,width = 8,notNull = true)
+    @ColDefine(type = ColType.INT,width = 20,notNull = true)
     private Integer postsNumber;
 
     /**

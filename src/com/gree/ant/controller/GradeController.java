@@ -607,7 +607,7 @@ public class GradeController {
                         if(tbuss003VOList != null){
                             for(Tbuss003VO tbuss003VO:tbuss003VOList){
                                 Integer stag = tbuss003VO.getStag();
-                                result = CountUtil.getConsByAverageAndStage(average,stag);
+                                result += CountUtil.getConsByAverageAndStage(average,stag);
                             }
                         }
                         Tbuss005VO tbuss005VO = new Tbuss005VO(ptno, cbase000VO.getUSID(), cbase011VO.getPjno(), DoubleUtil.format_nice(result) + "", "自动打分", new Date(), new Date());
