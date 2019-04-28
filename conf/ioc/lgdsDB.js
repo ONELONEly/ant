@@ -67,6 +67,7 @@ var ant = {
             args:[{refer:"dataSource1"}]
 
         },
+
     dataSourceHT:{
         type:"com.alibaba.druid.pool.DruidDataSource",
         fields : {
@@ -82,5 +83,22 @@ var ant = {
     daoHT:{
         type:"org.nutz.dao.impl.NutDao",
         args:[{refer:"dataSourceHT"}]
+    },
+
+    dataSourceBaan197:{
+        type:"com.alibaba.druid.pool.DruidDataSource",
+        fields : {
+            driverClassName:"oracle.jdbc.OracleDriver",
+            url :"jdbc:oracle:thin:@//10.1.1.197:1521/infor",
+            username : "ssaln",
+            password : "ZB35infor89"
+        },
+        events:{
+            depose:"close"
+        }
+    },
+    daoBaan197:{
+        type:"org.nutz.dao.impl.NutDao",
+        args:[{refer:"dataSourceBaan197"}]
     }
 };

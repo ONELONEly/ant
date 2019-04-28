@@ -1,7 +1,6 @@
 package com.gree.ant.controller;
 
-import com.gree.ant.dao.daoImp.ButterFlyDAOImp;
-import com.gree.ant.dao.daoImp.ContractDAOImp;
+import com.gree.ant.dao.daoImp.*;
 import com.gree.ant.mo.*;
 import com.gree.ant.util.*;
 import com.gree.ant.vo.Cbase000VO;
@@ -9,10 +8,7 @@ import com.gree.ant.vo.Cbase010VO;
 import com.gree.ant.vo.Cbase011VO;
 import com.gree.ant.vo.Tbuss001VO;
 import com.gree.ant.vo.response.GropUser;
-import com.gree.ant.vo.util.ButterFlyFeiyun;
-import com.gree.ant.vo.util.ButterFlyVO;
-import com.gree.ant.vo.util.ContractVO;
-import com.gree.ant.vo.util.TaskUtilVO;
+import com.gree.ant.vo.util.*;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.QueryResult;
@@ -97,12 +93,41 @@ public class UtilController {
     @Inject
     private ContractDAOImp contractDAOImp;
 
+    @Inject
+    private BaanTfgld010400DAOImp baanTfgld010400DAOImp;
+
+    @Inject
+    private BaanTfgld008400DAOImp baanTfgld008400DAOImp;
+
+    @Inject
+    private BaanTcmcs008400DAOImp baanTcmcs008400DAOImp;
+
     @At
     @Ok("json")
     public Map<String,Object> findT3DS_jied(String syno){
         Map<String,Object> map = new HashMap<>();
        map.put("jieds",tbuss003MO_Ds.findT3DS_jied(syno));
         return map;
+    }
+
+    @At
+    @POST
+    @Ok("json")
+    @AdaptBy(type = JsonAdaptor.class)
+    @Filters
+    public Map<String, Object> getBaan197Infor() {
+        int code = 200;
+        int count = 1;
+        String msg = "";
+        List<BaanTcmcs008400VO> baanTcmcs008400VOList = baanTcmcs008400DAOImp.queryBaanTcmcs008400Infor();
+        List<BaanTfgld008400VO> baanTfgld008400VOList = baanTfgld008400DAOImp.queryBaanTfgld008400Infor();
+        List<BaanTfgld010400VO> baanTfgld010400VOList = baanTfgld010400DAOImp.queryBaanTfgld010400Infor();
+        Baan197InforVO baan197InforVO = new Baan197InforVO();
+        baan197InforVO.setRate(baanTcmcs008400VOList);
+        baan197InforVO.setSubjectTable(baanTfgld008400VOList);
+        baan197InforVO.setSubAccount(baanTfgld010400VOList);
+        msg = code == 200 ? "查询成功" : msg;
+        return TableUtil.makeJson(code, msg, count, baan197InforVO);
     }
 
     /**
@@ -116,10 +141,10 @@ public class UtilController {
     @Ok("json")
     @AdaptBy(type = JsonAdaptor.class)
     @Filters
-    public Map<String, Object> getContractInfor(@Param("htCoid") String htCoid, AdaptorErrorContext errorContext){
+        public Map<String, Object> getContractInfor(@Param("htCoid") String htCoid, AdaptorErrorContext errorContext){
         QueryResult queryResult = null;
         int code = 200;
-        int count = 1;
+        int count = 0;
         List<ContractVO> contractVOList = new ArrayList<>();
         String msg = "请求合同错误，请检查合同编号!";
         htCoid = "WW-15114";
