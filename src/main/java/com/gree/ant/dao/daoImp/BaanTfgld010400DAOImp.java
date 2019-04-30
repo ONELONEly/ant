@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+//okay
 public class BaanTfgld010400DAOImp extends BaseDAOImp<BaanTfgld010400VO> implements BaanTfgld010400DAO {
 
     @Inject("refer:daoBaan197")

@@ -28,8 +28,8 @@ public class ButterFlyUserJob implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         logger.info("执行同步金蝶用户开始，时间为{}", DateUtil.formatYMDHMSDate(new Date()));
-//        SyncButterFlyData syncButterFlyData = SyncButterFlyData.createSyncDataUtil();
-//        syncButterFlyData.carrySync(dao,butterFlyDAOImp);
+        SyncButterFlyData syncButterFlyData = SyncButterFlyData.createSyncDataUtil();
+        syncButterFlyData.carrySync(dao,butterFlyDAOImp);
         logger.info("执行同步金蝶用户结束，时间为{}",DateUtil.formatYMDHMSDate(new Date()));
     }
 }

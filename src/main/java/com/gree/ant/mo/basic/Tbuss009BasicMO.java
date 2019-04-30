@@ -12,8 +12,8 @@ import java.util.List;
  * @author create by jinyuk@foxmail.com.
  * @version V1.0
  * @description 发表文档表的逻辑操作
- * @title Tbuss009BasicMO
  * @createTime 2017 :09:20 05:09:55.
+ * @title Tbuss009BasicMO
  */
 public interface Tbuss009BasicMO {
 
@@ -134,12 +134,23 @@ public interface Tbuss009BasicMO {
     List<Tbuss009VO> queryAllDoc(String usid, Condition cnd,String stage,Pager pager);
 
     /**
+     * @param type 文档类型
+     * @param key 搜索关键字
+     * @return 搜查的文档
+     * @description 通过文档类型和文档关键字查找文档
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     * @createTime 2019 -04-30 11:18:39
+     */
+    List<Tbuss009VO> queryAllDOc(String type,String key);
+
+    /**
      * Query all dt list.
      *
      * @param cnd   过滤字段
      * @param pager 分页字段
      * @return 文档集合 list
-     * @description 查询文档的详情，除去具体内容
+     * @description 查询文档的详情 ，除去具体内容
      * @author create by jinyuk@foxmail.com.
      * @version V1.0
      * @createTime 2017 :12:05 02:12:34.

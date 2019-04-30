@@ -1,6 +1,7 @@
 package com.gree.ant.vo;
 
 
+import com.gree.ant.vo.response.DocVO;
 import org.nutz.dao.entity.annotation.*;
 
 import java.sql.Clob;
@@ -176,6 +177,13 @@ public class Tbuss009VO extends ValueObject{
     public Tbuss009VO() {
     }
 
+    public Tbuss009VO(Long doid, Date cdat, String unam, String tilt) {
+        this.doid = doid;
+        this.cdat = cdat;
+        this.unam = unam;
+        this.tilt = tilt;
+    }
+
     public Tbuss009VO(Long doid, Date cdat, String usid, String unam, String csid, String cnam, String ctyp, String ctypnam, Integer stat, String statnam, Integer sta2, String sta2nam, String tilt) {
         this.doid = doid;
         this.cdat = cdat;
@@ -314,5 +322,9 @@ public class Tbuss009VO extends ValueObject{
 
     public void setSta2nam(String sta2nam) {
         this.sta2nam = sta2nam;
+    }
+
+    public DocVO getDocVO(){
+        return new DocVO(this.doid,this.tilt,this.cdat,this.unam);
     }
 }

@@ -1,6 +1,5 @@
 package com.gree;
 
-import com.gree.MainModule;
 import org.junit.runners.model.InitializationError;
 import org.nutz.ioc.Ioc;
 import org.nutz.mock.NutTestRunner;

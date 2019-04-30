@@ -45,6 +45,14 @@ public class Tbuss009DAOImp extends BaseDAOImp<Tbuss009VO> implements Tbuss009DA
     }
 
     @Override
+    public List<Tbuss009VO> queryAllSearchDoc(Condition cnd) {
+        String sqlStr = "select a.DOID,a.CDAT,a.TILT,a.UNAM from v_tbuss009 a $condition";
+        Sql sql = Sqls.create(sqlStr);
+        sql.setCondition(cnd);
+        return DAOUtil.getT9Search(sql,this.getDao());
+    }
+
+    @Override
     public Integer countAllDoc(String usid, Condition cnd, String stage) {
         String sqlStr = "select count(*) from V_TBUSS009 a $condition and (a.usid in (select b.usid from CBASE000 b where " +
                 "b."+stage+" = (select c."+stage+" from CBASE000 c where c.usid = @usid)) or csid = @csid) order by cdat desc";

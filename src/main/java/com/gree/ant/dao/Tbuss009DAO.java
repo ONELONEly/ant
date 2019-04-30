@@ -45,6 +45,8 @@ public interface Tbuss009DAO extends BaseDAO<Tbuss009VO>{
      */
     List<Tbuss009VO> queryAllDocNormal(Condition cnd,Pager pager);
 
+    List<Tbuss009VO> queryAllSearchDoc(Condition cnd);
+
     /**
      * Count all doc integer.
      *

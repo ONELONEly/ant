@@ -1,5 +1,6 @@
 package com.gree.ant.vo;
 
+import com.gree.ant.vo.response.DocTypeVO;
 import org.nutz.dao.entity.annotation.Name;
 import org.nutz.dao.entity.annotation.Table;
 
@@ -57,5 +58,9 @@ public class Cbase016VO extends ValueObject{
 
     public void setDsca(String dsca) {
         this.dsca = dsca;
+    }
+
+    public DocTypeVO builderBussiness(){
+        return new DocTypeVO(Integer.parseInt(ctyp),dsca);
     }
 }

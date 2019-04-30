@@ -3,8 +3,10 @@ package com.gree.ant.mo;
 import com.gree.ant.dao.daoImp.Tbuss009DAOImp;
 import com.gree.ant.mo.basic.Tbuss009BasicMO;
 import com.gree.ant.vo.Tbuss009VO;
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
+import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import java.util.List;
@@ -131,6 +133,15 @@ public class Tbuss009MO implements Tbuss009BasicMO{
     @Override
     public List<Tbuss009VO> queryAllDoc(String usid,Condition cnd,String stage,Pager pager) {
         return tbuss009DAOImp.queryAllDoc(usid,cnd,stage,pager);
+    }
+
+    @Override
+    public List<Tbuss009VO> queryAllDOc(String type, String key) {
+        SqlExpressionGroup e1 = Cnd.exps("ctyp","like","%"+type+"%").and("ctyp",">",99);
+        SqlExpressionGroup e2 = Cnd.exps("tilt","like","%"+key+"%")
+                .or("unam","like","%"+key+"%")
+                .or("cdat","like","%"+key+"%");
+        return tbuss009DAOImp.queryAllSearchDoc(Cnd.where(e1).and(e2));
     }
 
     @Override

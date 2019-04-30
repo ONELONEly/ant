@@ -107,6 +107,22 @@ public class DAOUtil {
         return sql.getList(Tbuss009VO.class);
     }
 
+    public static List<Tbuss009VO> getT9Search(Sql sql, Dao dao){
+        sql.setCallback(new SqlCallback() {
+            @Override
+            public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
+                List<Tbuss009VO> tbuss009VOList = new ArrayList<>();
+                while(rs.next()){
+                    tbuss009VOList.add(new Tbuss009VO(rs.getLong("doid"),
+                            rs.getDate("cdat"),rs.getString("unam"),rs.getString("tilt")));
+                }
+                return tbuss009VOList;
+            }
+        });
+        dao.execute(sql);
+        return sql.getList(Tbuss009VO.class);
+    }
+
     public static List<TaskUtilVO> getTU(Sql sql, Dao dao){
         sql.setCallback(new SqlCallback() {
             @Override

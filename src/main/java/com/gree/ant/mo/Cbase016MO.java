@@ -3,6 +3,7 @@ package com.gree.ant.mo;
 import com.gree.ant.dao.daoImp.Cbase016DAOImp;
 import com.gree.ant.mo.basic.Cbase016BasicMO;
 import com.gree.ant.vo.Cbase016VO;
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -33,6 +34,10 @@ public class Cbase016MO implements Cbase016BasicMO{
         return cbase016DAOImp.queryByCndPager(cnd,pager);
     }
 
+    @Override
+    public List<Cbase016VO> queryAllSearch() {
+        return cbase016DAOImp.queryAllSearch(Cnd.NEW().and("ctyp",">",99));
+    }
 
     public Cbase016VO fetchByName(String ctyp) {
         return cbase016DAOImp.fetchByName(ctyp);

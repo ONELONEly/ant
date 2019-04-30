@@ -30,4 +30,6 @@ public interface Cbase016BasicMO {
      */
     List<Cbase016VO> queryAllByCndPager(Condition cnd, Pager pager);
 
+    List<Cbase016VO> queryAllSearch();
+
 }

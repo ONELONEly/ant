@@ -74,7 +74,8 @@ public class SyncButterFlyData {
                     String comp = result.get("所属组织长编码").substring(3, 6);
                     String dept = result.get("所属组织长编码").length() >= 15? result.get("所属组织长编码").substring(7, 15):comp;
                     String card = result.get("身份证号码") == null ? "" : result.get("身份证号码");
-                    String posts =  butterFlyDAOImp.fetchPostsByStaff(result.get("所属岗位"), result.get("所属岗位编码"));
+                    String postsNumber = StringUtil.checkString(result.get("所属岗位编码")) ? result.get("所属岗位编码") : "0";
+                    String posts =  butterFlyDAOImp.fetchPostsByStaff(result.get("所属岗位"),postsNumber) ;
                     String department = result.get("所属组织长编码").length() >= 15?butterFlyDAOImp.fetchDeptByNumber(dept):"";
                     String email = "";
                     if(StringUtil.checkString(card)){
@@ -91,7 +92,7 @@ public class SyncButterFlyData {
                         department = result.get("所属组织");
                     }
                     flyVOS.add(new ButterFlyVO(comp, getCompnayName(Integer.parseInt(comp)), dept,
-                            department,posts,result.get("所属岗位"),Integer.parseInt(result.get("所属岗位编码")), result.get("员工编号"),
+                            department,posts,result.get("所属岗位"),Integer.parseInt(postsNumber), result.get("员工编号"),
                             result.get("员工姓名"), result.get("性别"), card, email, result.get("是否占编"), result.get("所属组织长编码")));
                 }
             }
