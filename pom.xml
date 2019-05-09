@@ -20,6 +20,8 @@
         <nutz.version>1.r.67</nutz.version>
         <poi.version>4.0.0</poi.version>
         <openoffice.version>4.1.2</openoffice.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -385,9 +387,15 @@
             <groupId>org.slf4j</groupId>
             <artifactId>log4j-over-slf4j</artifactId>
             <version>1.7.25</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
-        <!--sqljdbc应用于jdk1.8及以上，sqljdbc4应用于jdk1.8以后-->
+        <!--sqljdbc应用于jdk1.8及以上，sqljdbc4应用于jdk1.8以后（eg:1.7）-->
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>sqljdbc</artifactId>
@@ -415,7 +423,7 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.0</version>
+            <version>3.0.1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -432,6 +440,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
                 </configuration>
@@ -440,6 +449,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>

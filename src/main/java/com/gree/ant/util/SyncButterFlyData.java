@@ -70,30 +70,39 @@ public class SyncButterFlyData {
             List<Map<String, String>> resultMap = (List<Map<String, String>>) responseMap.get("Items");
             List<ButterFlyVO> flyVOS = new ArrayList<>();
             for (Map<String, String> result : resultMap) {
-                if(result.get("是否占编").equals("是")) {
-                    String comp = result.get("所属组织长编码").substring(3, 6);
-                    String dept = result.get("所属组织长编码").length() >= 15? result.get("所属组织长编码").substring(7, 15):comp;
-                    String card = result.get("身份证号码") == null ? "" : result.get("身份证号码");
-                    String postsNumber = StringUtil.checkString(result.get("所属岗位编码")) ? result.get("所属岗位编码") : "0";
-                    String posts =  butterFlyDAOImp.fetchPostsByStaff(result.get("所属岗位"),postsNumber) ;
-                    String department = result.get("所属组织长编码").length() >= 15?butterFlyDAOImp.fetchDeptByNumber(dept):"";
-                    String email = "";
-                    if(StringUtil.checkString(card)){
-                        email = butterFlyDAOImp.fetchEmailByCard(card);
-                    }
-                    if(!StringUtil.checkString(posts)){
-                        if(result.get("所属岗位").equals("董事长")) {
-                            posts = "董事长";
-                        }else{
-                            posts = "员工";
+                String isOrganizer = result.get("是否占编");
+                if(isOrganizer.equals("是")) {
+                    String organization = result.get("所属组织长编码");
+                    if (StringUtil.checkString(organization)) {
+                        String comp = organization.substring(3, 6);
+                        String dept = organization.length() >= 15 ? organization.substring(7, 15) : comp;
+                        String card = result.get("身份证号码") == null ? "" : result.get("身份证号码");
+                        String postsNumber = StringUtil.checkString(result.get("所属岗位编码")) ? result.get("所属岗位编码") : "0";
+                        String postsName = StringUtil.checkString(result.get("所属岗位")) ? result.get("所属岗位") : "离职员工岗位";
+                        String posts = butterFlyDAOImp.fetchPostsByStaff(postsName, postsNumber);
+                        String department = organization.length() >= 15 ? butterFlyDAOImp.fetchDeptByNumber(dept) : "";
+                        String email = "";
+                        String sex = StringUtil.checkString(result.get("性别")) ? result.get("性别") : "未知性别";
+                        String flag = StringUtil.checkString(result.get("员工编号")) ? result.get("员工编号") : "未知员工编号";
+                        String userName = StringUtil.checkString(result.get("员工姓名")) ? result.get("员工姓名") : "未知员工姓名";
+                        if (StringUtil.checkString(card)) {
+                            email = butterFlyDAOImp.fetchEmailByCard(card);
                         }
+                        if (!StringUtil.checkString(posts)) {
+                            if (result.get("所属岗位").equals("董事长")) {
+                                posts = "董事长";
+                            } else {
+                                posts = "员工";
+                            }
+                        }
+                        if (!StringUtil.checkString(department)) {
+                            department = result.get("所属组织");
+                        }
+
+                        flyVOS.add(new ButterFlyVO(comp, getCompnayName(Integer.parseInt(comp)), dept,
+                                department, posts, postsName, Integer.parseInt(postsNumber), flag,
+                                userName, sex, card, email, isOrganizer, organization));
                     }
-                    if(!StringUtil.checkString(department)){
-                        department = result.get("所属组织");
-                    }
-                    flyVOS.add(new ButterFlyVO(comp, getCompnayName(Integer.parseInt(comp)), dept,
-                            department,posts,result.get("所属岗位"),Integer.parseInt(postsNumber), result.get("员工编号"),
-                            result.get("员工姓名"), result.get("性别"), card, email, result.get("是否占编"), result.get("所属组织长编码")));
                 }
             }
             butterFlyDAOImp.insert(flyVOS);

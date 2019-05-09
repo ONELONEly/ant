@@ -64,7 +64,7 @@ public class Tbuss011DAOImp extends BaseDAOImp<Tbuss011VO> implements Tbuss011DA
     @Override
     public List<Tbuss011VO> queryByGrop(String grop, Condition condition, Pager pager) {
         String sqlStr = "select * from v_tbuss011 $condition and ((asid in (select usid from cbase000 where grop = @grop) " +
-                "or (BOSS in (select usid from cbase000 where grop = @grop))))";
+                "or (BOSS in (select usid from cbase000 where grop = @grop)))) order by mdat desc";
         Sql sql = Sqls.create(sqlStr);
         sql.setParam("grop",grop);
         sql.setCondition(condition);
@@ -75,7 +75,7 @@ public class Tbuss011DAOImp extends BaseDAOImp<Tbuss011VO> implements Tbuss011DA
     @Override
     public List<Tbuss011VO> queryByAcco(String acco, Condition condition, Pager pager) {
         String sqlStr = "select * from v_tbuss011 $condition and ((asid in (select usid from cbase000 where acco = @acco) " +
-                "or (BOSS in (select usid from cbase000 where acco = @acco))))";
+                "or (BOSS in (select usid from cbase000 where acco = @acco)))) order by mdat desc";
         Sql sql = Sqls.create(sqlStr);
         sql.setParam("acco",acco);
         sql.setCondition(condition);
@@ -86,7 +86,7 @@ public class Tbuss011DAOImp extends BaseDAOImp<Tbuss011VO> implements Tbuss011DA
     @Override
     public List<Tbuss011VO> queryByComp(String comp, Condition condition, Pager pager) {
         String sqlStr = "select * from v_tbuss011 $condition and ((asid in (select usid from cbase000 where comp = @comp) " +
-                "or (BOSS in (select usid from cbase000 where comp = @comp))))";
+                "or (BOSS in (select usid from cbase000 where comp = @comp)))) order by mdat desc";
         Sql sql = Sqls.create(sqlStr);
         sql.setParam("comp",comp);
         sql.setCondition(condition);
@@ -97,7 +97,7 @@ public class Tbuss011DAOImp extends BaseDAOImp<Tbuss011VO> implements Tbuss011DA
     @Override
     public List<Tbuss011VO> queryByDept(String dept, Condition condition, Pager pager) {
         String sqlStr = "select * from v_tbuss011 $condition and ((asid in (select usid from cbase000 where dept = @dept) " +
-                "or (BOSS in (select usid from cbase000 where dept = @dept))))";
+                "or (BOSS in (select usid from cbase000 where dept = @dept)))) order by mdat desc";
         Sql sql = Sqls.create(sqlStr);
         sql.setParam("dept",dept);
         sql.setCondition(condition);

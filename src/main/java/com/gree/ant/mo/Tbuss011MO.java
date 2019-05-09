@@ -127,7 +127,7 @@ public class Tbuss011MO implements TBuss011BasicMO {
             cnd = cnd.and(e1).and(e0).and(e2);
             count = tbuss011DAOImp.countByCnd(cnd);
             pager = TableUtil.formatPager(pageSize,pageNumber,count);
-            tbuss011VOS = tbuss011DAOImp.queryByCndPager(cnd,pager);
+            tbuss011VOS = tbuss011DAOImp.queryByCndPager(cnd.orderBy("mdat","desc"),pager);
         }else if (sta2 == 1) {
             cnd = cnd.and(e0).and(e2);
             count = tbuss011DAOImp.countByGrop(grop, cnd);
