@@ -30,8 +30,8 @@ public class DocToPdfUtil extends Thread{
      */
     public DocToPdfUtil(String fileName) {
         this.docFile = new File(Constants.docFilePath+fileName);
-        this.pdfFile = new File(Constants.pdfFilePath+FileUtil.getFileName(fileName)+".pdf");
-        this.swfFile = new File(Constants.swfFilePath+FileUtil.getFileName(fileName)+".swf");
+        this.pdfFile = new File(Constants.pdfFilePath+FileUtil.createFileUtil().getFileName(fileName)+".pdf");
+        this.swfFile = new File(Constants.swfFilePath+FileUtil.createFileUtil().getFileName(fileName)+".swf");
     }
 
     @Override

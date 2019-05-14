@@ -21,7 +21,7 @@ public class ReadGradeExcel {
     private static Boolean key = true;
 
     public static void readGrade(TempFile file) throws IOException{
-        String suffix = FileUtil.getFileSuffix(file.getSubmittedFileName());
+        String suffix = FileUtil.createFileUtil().getFileSuffix(file.getSubmittedFileName());
         InputStream is = file.getInputStream();
 
         if(suffix.equals(".xlsx")) {

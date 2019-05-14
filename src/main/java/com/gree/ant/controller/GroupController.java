@@ -147,7 +147,7 @@ public class GroupController {
         String msg = "";
         if(StringUtil.checkString(dsca)){
             if(!cbase009MO.insertCheck(dsca)) {
-                cbase009MO.insert(new Cbase009VO("AN" + FileUtil.getRandomName(), dsca));
+                cbase009MO.insert(new Cbase009VO("AN" + FileUtil.createFileUtil().getRandomName(), dsca));
                 code = 1;
             }else{
                 msg = "团队已存在！请确认后输入！";

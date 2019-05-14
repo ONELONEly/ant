@@ -119,7 +119,7 @@ public class Cbase011MO implements Cbase011BasicMO{
         int code = 0;
         Cbase011VO cbase011VO = fetchTransByPjno(pjno);
         cbase011VO.setUsid(usid);
-        cbase011VO.setPjno("P"+ FileUtil.getRandomName());
+        cbase011VO.setPjno("P"+ FileUtil.createFileUtil().getRandomName());
         cbase011VO = cbase011DAOImp.insertWith(cbase011VO,"cbase012VOS");
         if (cbase011VO != null){
             code = 1;

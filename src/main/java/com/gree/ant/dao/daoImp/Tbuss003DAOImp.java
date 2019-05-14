@@ -240,7 +240,7 @@ public class Tbuss003DAOImp extends BaseDAOImp<Tbuss003VO> implements Tbuss003DA
                 List<Tbuss003VO> tbuss003VOS = new ArrayList<>();
                 while(rs.next()){
                     Tbuss003VO tbuss003VO = formatResultVO(rs);
-                    tbuss003VO.setNote(FileUtil.formatClobByString(rs.getString("note")));
+                    tbuss003VO.setNote(FileUtil.createFileUtil().formatClobByString(rs.getString("note")));
                     tbuss003VO.setFahh(rs.getFloat("fahh"));
                     tbuss003VOS.add(tbuss003VO);
                 }

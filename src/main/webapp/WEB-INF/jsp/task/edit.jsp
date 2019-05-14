@@ -293,7 +293,10 @@
     layui.use(['form','jquery','element','layer','layedit','upload','table'],function () {
         var form = layui.form,$ = layui.jquery,element = layui.element,table=layui.table,
             layer = layui.layer,layedit = layui.layedit,upload = layui.upload;
-        var fileList = $("#fileList"),taid = $("#taid").val(),usid = $("#usid").val();
+        var fileList = $("#fileList"),taid = $("#taid").val(),usid = $("#usid").val(),ptno = "${obj.task.ptno}";
+
+
+        getPtnoAfter(ptno)
 
         var layEditOption = {
             height:'300px',
@@ -496,26 +499,7 @@
         }
 
         form.on('select(ptno)',function (data) {
-            var tOption ="";
-            $.ajax({
-                type:'GET',
-                url:'${base}/util/findtaskInsertC11',
-                data:{
-                    ptno:data.value
-                },
-                dataType:'json',
-                success:function (data) {
-                    var type = data.rule;
-                    for (var m = 0; m < type.length; m++) {
-                        tOption += "<option value='" + type[m].pjno + "'>" + type[m].dsca + "</option>";
-                    }
-                    $("#ptyp").html(tOption);
-                    form.render();
-                },
-                error:function (kj) {
-                    layer.alert("发生错误:"+kj.status,{offset:'10px'});
-                }
-            });
+            getPtnoAfter(data.value)
         });
 
         $.ajax({
@@ -551,6 +535,29 @@
 
         var uploadList = upload.render(fileUploadOption);
         var note = layedit.build('note',layEditOption);
+
+        function getPtnoAfter(ptno) {
+            var tOption ="";
+            $.ajax({
+                type:'GET',
+                url:'${base}/util/findtaskInsertC11',
+                data:{
+                    ptno:ptno
+                },
+                dataType:'json',
+                success:function (data) {
+                    var type = data.rule;
+                    for (var m = 0; m < type.length; m++) {
+                        tOption += "<option value='" + type[m].pjno + "'>" + type[m].dsca + "</option>";
+                    }
+                    $("#ptyp").html(tOption);
+                    form.render();
+                },
+                error:function (kj) {
+                    layer.alert("发生错误:"+kj.status,{offset:'10px'});
+                }
+            });
+        }
     });
 </script>
 </body>

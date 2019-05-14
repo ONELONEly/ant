@@ -107,7 +107,7 @@ public class SystemController {
     public Map<String,Object> insertSystem(@Param("..")Cbase013VO cbase013VO, HttpServletRequest request){
         String msg = "";
         Integer code = 0;
-        cbase013VO.setSyno("S"+ FileUtil.getRandomName5());
+        cbase013VO.setSyno("S"+ FileUtil.createFileUtil().getRandomName5());
         if(cbase013VO.getDsca()!=null){
             cbase013MO.insert(cbase013VO);
             code = 1;

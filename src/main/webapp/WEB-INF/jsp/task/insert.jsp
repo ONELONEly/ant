@@ -219,7 +219,7 @@
     layui.use(['form', 'jquery', 'element', 'layer', 'layedit', 'upload'], function () {
         var form = layui.form, $ = layui.jquery, element = layui.element,
             layer = layui.layer, layedit = layui.layedit, upload = layui.upload;
-        var fileList = $("#fileList"), taid = $("#taid").val();
+        var fileList = $("#fileList"), taid = $("#taid").val(),user_usid = "${obj.user.USID}";
 
         var layEditOption = {
             height: '300px',
@@ -342,6 +342,7 @@
                     }
                     $("#ptyp").html(tOption);
                     $("#csid").html(uOption);
+                    $("#csid").val(user_usid);
                     form.render();
                 },
                 error: function (kj) {
@@ -440,6 +441,8 @@
                 $("#syno").append(sOption);
                 $("#puno").append(pOption);
                 $("#ptno").append(jOption);
+                $("#ksid").val(user_usid);
+                $("#tepr").val(user_usid);
                 form.render();
             },
             error: function (kellyj) {

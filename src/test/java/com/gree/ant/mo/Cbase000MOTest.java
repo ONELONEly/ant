@@ -29,7 +29,7 @@ public class Cbase000MOTest {
     public void insert() throws Exception {
         Cbase000VO cbase000VO = cbase000MO.fetchUser("180484");
         HttpServletRequest request = null;
-        cbase000VO.setBLOB(FileUtil.formatBlobByByte(FileUtil.getNormalHeader(request,"")));
+        cbase000VO.setBLOB(FileUtil.createFileUtil().formatBlobByByte(FileUtil.createFileUtil().getNormalHeader(request,"")));
         cbase000MO.updateByVO(cbase000VO);
     }
 

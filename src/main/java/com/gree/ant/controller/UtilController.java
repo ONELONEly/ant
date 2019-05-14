@@ -569,7 +569,7 @@ public class UtilController {
     @Ok("raw:jpg")
     public OutputStream normal(HttpServletRequest request,HttpServletResponse response){
 //        response.setHeader("Content-Type"," text/html");
-        return FileUtil.getOsByByte(FileUtil.getNormalHeader(request,"header.jpg"),response);
+        return FileUtil.createFileUtil().getOsByByte(FileUtil.createFileUtil().getNormalHeader(request,"header.jpg"),response);
     }
 
     /**

@@ -20,10 +20,10 @@ import java.util.UUID;
 
 public class FileUtil {
 
-    private static FileInputStream fis;
-    private static FileOutputStream fos;
-    private static InputStream is;
-    private static OutputStream os;
+    private FileInputStream fis;
+    private FileOutputStream fos;
+    private InputStream is;
+    private OutputStream os;
     private static Integer BUFFER_SIZE = 1024;
 
     //1.本地文件存储地址
@@ -46,6 +46,10 @@ public class FileUtil {
     private static String NORMALIMAGE = "static\\images\\";
 
 
+    public static FileUtil createFileUtil() {
+        return new FileUtil();
+    }
+
     /**
      * Copy integer.
      *
@@ -57,12 +61,12 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :09:04 02:09:25.
      */
-    private static Integer copy(FileInputStream fis,FileOutputStream fos){
+    private Integer copy(FileInputStream fis,FileOutputStream fos){
         Integer byteCount = 0;
         Integer bytesRead;
         byte[] buffer = new byte[BUFFER_SIZE];
         try {
-            while((bytesRead = fis.read(buffer))!=-1){
+            while((bytesRead = fis.read(buffer,0,BUFFER_SIZE))!=-1){
                 fos.write(buffer,0,bytesRead);
                 byteCount += bytesRead;
             }
@@ -84,7 +88,7 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :09:06 09:09:09.
      */
-    public static byte[] formatByteByFile(TempFile file){
+    public byte[] formatByteByFile(TempFile file){
         byte[] buffer = null;
         try {
             is = file.getInputStream();
@@ -114,7 +118,7 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :09:06 09:09:09.
      */
-    public static byte[] formatByteByBlob(Blob blob){
+    public byte[] formatByteByBlob(Blob blob){
         byte[] buffer = null;
         try {
             is = blob.getBinaryStream();
@@ -144,7 +148,7 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :09:07 11:09:18.
      */
-    public static Clob formatClobByString(String note){
+    public Clob formatClobByString(String note){
         Clob clob = null;
         if(note!=null) {
             try {
@@ -166,7 +170,7 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :09:07 01:09:26.
      */
-    public static String convertClob(Clob clob){
+    public String convertClob(Clob clob){
         String result = "";
         if(clob != null) {
             try {
@@ -196,7 +200,7 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :09:07 01:09:44.
      */
-    public static Blob formatBlobByByte(byte[] buffer){
+    public Blob formatBlobByByte(byte[] buffer){
         Blob blob = null;
         if(buffer!=null) {
             try {
@@ -207,7 +211,7 @@ public class FileUtil {
         }
         return blob;
     }
-    public static String getRandomName5(){
+    public String getRandomName5(){
         return   ""+(int)(10000+Math.random()*(99999-10000));
     }
     /**
@@ -221,7 +225,7 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :09:06 09:09:12.
      */
-    public static OutputStream getOsByByte(byte[] buffer, HttpServletResponse response){
+    public OutputStream getOsByByte(byte[] buffer, HttpServletResponse response){
         try {
             os = response.getOutputStream();
             os.write(buffer);
@@ -243,7 +247,7 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :09:06 09:09:47.
      */
-    public static byte[] getNormalHeader(HttpServletRequest request,String IMAGE_NAME){
+    public byte[] getNormalHeader(HttpServletRequest request,String IMAGE_NAME){
         String path = request.getSession().getServletContext().getRealPath(NORMALIMAGE+IMAGE_NAME);
         byte[] buffer = null;
         try {
@@ -268,7 +272,7 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :09:07 03:09:38.
      */
-    public static Map<String,Object> upload(TempFile file){
+    public Map<String,Object> upload(TempFile file){
         String oldFileName = file.getSubmittedFileName().replaceAll(" ","");
         String suffix = getFileSuffix(oldFileName);
         String fileName = getRandomName13()+suffix;
@@ -277,17 +281,19 @@ public class FileUtil {
         checkSavePath(savePath);
         Date date = null;
         try {
-            fis = (FileInputStream) file.getInputStream();
+            fis = new FileInputStream(file.getFile());
             fos = new FileOutputStream(new File(savePath+fileName));
             fileSize = copy(fis,fos);
             date = new Date();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            close();
         }
         return ResultUtil.getUploadResult(getAcceptPath(savePath+fileName),fileName,oldFileName,fileSize,date);
     }
 
-    public static void download(HttpServletResponse response,String duta,String fileName){
+    public void download(HttpServletResponse response,String duta,String fileName){
         String suffix = getFileSuffix(fileName);
         String realName = duta.substring(2);
         String path = getSavePath(suffix);
@@ -303,19 +309,16 @@ public class FileUtil {
             fis = new FileInputStream(new File(path+realName+suffix));
             os = response.getOutputStream();
             byte[] buffer = new byte[BUFFER_SIZE];
-            Integer byteRead;
-            while((byteRead = fis.read(buffer))!=-1){
+            int byteRead;
+            while((byteRead = fis.read(buffer,0,BUFFER_SIZE))!=-1){
                 os.write(buffer,0,byteRead);
             }
-            fis.close();
-            os.close();
-            os.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void deleteFileByFileName(String fileName){
+    public void deleteFileByFileName(String fileName){
         if(StringUtil.checkString(fileName)) {
             String suffix = getFileSuffix(fileName);
             String savePath = getSavePath(suffix);
@@ -336,7 +339,7 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :10:18 11:10:01.
      */
-    public static void deleteFileByDuta(String duta,String fileName){
+    public void deleteFileByDuta(String duta,String fileName){
         if(StringUtil.checkString(duta) && StringUtil.checkString(fileName)) {
             String suffix = getFileSuffix(fileName);
             String savePath = getSavePath(suffix);
@@ -397,8 +400,8 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :10:18 09:10:45.
      */
-    public static String getFileName(String fileName){
-        Integer postion = fileName.indexOf(".");
+    public String getFileName(String fileName){
+        int postion = fileName.indexOf(".");
         return fileName.substring(0,postion);
     }
 
@@ -412,8 +415,8 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :10:20 03:10:18.
      */
-    public static String getFileSuffix(String fileName){
-        Integer position = fileName.indexOf(".");
+    public String getFileSuffix(String fileName){
+        int position = fileName.indexOf(".");
         return fileName.substring(position);
     }
 
@@ -427,8 +430,8 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :12:12 09:12:37.
      */
-    public static String getFileOrigion(String filePath){
-        Integer postion = filePath.lastIndexOf("\\");
+     public String getFileOrigion(String filePath){
+        int postion = filePath.lastIndexOf("\\");
         return filePath.substring(postion+1);
     }
 
@@ -441,7 +444,7 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :09:04 02:09:00.
      */
-    public static Long getSyFileName(){
+    public Long getSyFileName(){
         return System.currentTimeMillis();
     }
 
@@ -454,7 +457,7 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :09:07 10:09:28.
      */
-    public static Integer getRandomName(){
+    public Integer getRandomName(){
         return (int)(10000000+Math.random()*(99999999-10000000));
     }
 
@@ -467,7 +470,7 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :10:24 02:10:15.
      */
-    public static String getRandomName13(){
+    public String getRandomName13(){
         return getRandomName()+""+(int)(10000+Math.random()*(99999-10000));
     }
 
@@ -480,7 +483,7 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :09:04 02:09:34.
      */
-    public static String getUUIDName(){
+     public String getUUIDName(){
         return UUID.randomUUID().toString()+"";
     }
 
@@ -493,7 +496,7 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :09:04 02:09:00.
      */
-    public static String getDateName(){
+     public String getDateName(){
         return new SimpleDateFormat("yyyyMMddHHmmdd").format(new Date());
     }
 
@@ -508,7 +511,7 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :12:06 09:12:31.
      */
-    public static String genHttpRespHeaderContentDisposition(String fnm, String ua) {
+     public String genHttpRespHeaderContentDisposition(String fnm, String ua) {
         try {
             // Safari 狗屎
             if (null != ua && ua.contains(" Safari/")) {
@@ -534,7 +537,7 @@ public class FileUtil {
      * @version V1.0
      * @createTime 2017 :09:06 09:09:34.
      */
-    private static void close(){
+    private void close(){
         if (fis != null) {
             try {
                 fis.close();

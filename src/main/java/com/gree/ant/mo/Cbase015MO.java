@@ -66,14 +66,14 @@ public class Cbase015MO implements Cbase015BasicMO{
         Condition cnd = Cnd.where("djid","=",taid);
         for (Cbase015VO cbase015VO : queryAllByCndPager(cnd, null)) {
             code = cbase015DAOImp.deleteByName(cbase015VO.getDuta());
-            FileUtil.deleteFileByDuta(cbase015VO.getDuta(),cbase015VO.getFfil());
+            FileUtil.createFileUtil().deleteFileByDuta(cbase015VO.getDuta(),cbase015VO.getFfil());
         }
         return code;
     }
 
     @Override
     public Integer deleteByName(String duta,String fileName) {
-        FileUtil.deleteFileByDuta(duta,fileName);
+        FileUtil.createFileUtil().deleteFileByDuta(duta,fileName);
         return cbase015DAOImp.deleteByName(duta);
     }
 }

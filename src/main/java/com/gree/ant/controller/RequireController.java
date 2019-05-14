@@ -67,7 +67,7 @@ public class RequireController {
     @At
     @Ok("jsp:jsp.require.insert")
     public String insert(){
-        return "JK"+ FileUtil.getRandomName();
+        return "JK"+ FileUtil.createFileUtil().getRandomName();
     }
 
     /**
@@ -85,7 +85,7 @@ public class RequireController {
     public Map<String,Object> modify(@Param("raid")String raid){
         HashMap<String,Object> map = new HashMap<>();
         Tbuss014VO tbuss014VO = bussMoFactory.getTbuss014MO().fetchByRaid(raid);
-        map.put("note",FileUtil.convertClob(tbuss014VO.getNote()));
+        map.put("note",FileUtil.createFileUtil().convertClob(tbuss014VO.getNote()));
         tbuss014VO.setNote(null);
         map.put("ydat", DateUtil.formatYMDHMSDate(tbuss014VO.getYdat()));
         map.put("task",tbuss014VO);
@@ -183,7 +183,7 @@ public class RequireController {
         String msg = "系统异常";
         int code = 0;
         if(StringUtil.checkString(tbuss014VO.getRaid(),tbuss014VO.getCsid(),tbuss014VO.getTitl()) && StringUtil.checkString(edit)){
-            Clob note = FileUtil.formatClobByString(edit);
+            Clob note = FileUtil.createFileUtil().formatClobByString(edit);
             tbuss014VO.setNote(note);
             tbuss014VO.setStat(0);
             tbuss014VO.setUsid(usid);
@@ -246,7 +246,7 @@ public class RequireController {
         String raid = tbuss014VO.getRaid();
         if(StringUtil.checkString(raid) && StringUtil.checkString(tbuss014VO.getSyno(),tbuss014VO.getTitl(),tbuss014VO.getCsid())) {
             Tbuss014VO tbuss014VO1 = bussMoFactory.getTbuss014MO().fetchByRaid(raid);
-            tbuss014VO.setNote(FileUtil.formatClobByString(edit));
+            tbuss014VO.setNote(FileUtil.createFileUtil().formatClobByString(edit));
             tbuss014VO.setStat(0);
             tbuss014VO.setUsid(usid);
             tbuss014VO.setCdat(tbuss014VO1.getCdat());

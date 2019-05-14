@@ -189,7 +189,7 @@ public class UserController {
     @At
     @Ok("jsp:jsp.user.weekNews")
     public Long weekNews(){
-        return FileUtil.getSyFileName();
+        return FileUtil.createFileUtil().getSyFileName();
     }
 
     /**
@@ -272,11 +272,11 @@ public class UserController {
         Cbase000VO cbase000VO = cbase000MO.fetchByUsid(usid);
         byte[] bytes;
         if (cbase000VO.getBLOB() == null){
-            bytes = FileUtil.getNormalHeader(request,"header.gif");
+            bytes = FileUtil.createFileUtil().getNormalHeader(request,"header.gif");
         }else {
-            bytes = FileUtil.formatByteByBlob(cbase000VO.getBLOB());
+            bytes = FileUtil.createFileUtil().formatByteByBlob(cbase000VO.getBLOB());
         }
-        return FileUtil.getOsByByte(bytes,response);
+        return FileUtil.createFileUtil().getOsByByte(bytes,response);
     }
 
     /**
@@ -296,7 +296,7 @@ public class UserController {
         String msg = "用户ID已存在";
         Integer code = 0;
         if(cbase000VO !=null && cbase000MO.fetchByUsid(cbase000VO.getUSID()) == null){
-            cbase000VO.setBLOB(FileUtil.formatBlobByByte(FileUtil.getNormalHeader(request,"header.jpg")));
+            cbase000VO.setBLOB(FileUtil.createFileUtil().formatBlobByByte(FileUtil.createFileUtil().getNormalHeader(request,"header.jpg")));
             cbase000MO.insert(cbase000VO);
             msg = "插入成功";
             code = 1;
@@ -389,7 +389,7 @@ public class UserController {
         Cbase000VO cbase000VO = cbase000MO.fetchByUsid(usid);
         if(file!=null) {
             try {
-                cbase000VO.setBLOB(new SerialBlob(FileUtil.formatByteByFile(file)));
+                cbase000VO.setBLOB(new SerialBlob(FileUtil.createFileUtil().formatByteByFile(file)));
             } catch (SQLException e) {
                 e.printStackTrace();
             }

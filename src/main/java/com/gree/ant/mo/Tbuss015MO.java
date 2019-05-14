@@ -53,7 +53,7 @@ public class Tbuss015MO implements Tbuss015BasicMO{
 
     @Override
     public Integer deleteByDuta(String duta,String fileName) {
-        FileUtil.deleteFileByDuta(duta,fileName);
+        FileUtil.createFileUtil().deleteFileByDuta(duta,fileName);
         return tbuss015DAOImp.deleteByName(duta);
     }
 

@@ -43,7 +43,7 @@ public class Tbuss014MO implements Tbuss014BasicMO{
                 if(raids != null){
                     for(String raid:raids){
                         Tbuss014VO tbuss014VO = fetchByRaid(raid);
-                        tbuss014VO.setRaid("JK"+ FileUtil.getRandomName());
+                        tbuss014VO.setRaid("JK"+ FileUtil.createFileUtil().getRandomName());
                         tbuss014VO.setStat(0);
                         tbuss014VO.setCdat(new Date());
                         tbuss014VO.setUsid(usid);

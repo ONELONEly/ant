@@ -113,7 +113,7 @@ public class TaskController {
         }
         resultMap.put("isManager",isManager);
         resultMap.put("user",cbase000VO);
-        resultMap.put("taid","JK"+FileUtil.getRandomName());
+        resultMap.put("taid","JK"+FileUtil.createFileUtil().getRandomName());
         return resultMap;
     }
 
@@ -159,7 +159,7 @@ public class TaskController {
             isManager = false;
         }
         Map<String,Object> resultMap = new HashMap<>();
-        resultMap.put("note",FileUtil.convertClob(tbuss003VO.getNote()));
+        resultMap.put("note",FileUtil.createFileUtil().convertClob(tbuss003VO.getNote()));
         tbuss003VO.setNote(null);
         resultMap.put("task",tbuss003VO);
         resultMap.put("key",key);
@@ -193,7 +193,7 @@ public class TaskController {
         }else{
             tbuss003VO = tbuss003MO.fetchByTaid(taid);
         }
-        resultMap.put("note",FileUtil.convertClob(tbuss003VO.getNote()));
+        resultMap.put("note",FileUtil.createFileUtil().convertClob(tbuss003VO.getNote()));
         tbuss003VO.setNote(null);
         resultMap.put("task",tbuss003VO);
         return resultMap;
@@ -212,7 +212,7 @@ public class TaskController {
         Map<String,Object> resultMap = new HashMap<>();
         Tbuss003VO tbuss003VO = tbuss003MO.fetchByTaid(taid);
 
-        resultMap.put("note",FileUtil.convertClob(tbuss003VO.getNote()));
+        resultMap.put("note",FileUtil.createFileUtil().convertClob(tbuss003VO.getNote()));
         tbuss003VO.setNote(null);
         resultMap.put("task",tbuss003VO);
         String jieddsca = "";
@@ -410,7 +410,7 @@ public class TaskController {
     @AdaptBy(type = UploadAdaptor.class)
     public Map<String,Object> insertImage(@Param("file")TempFile file, HttpServletResponse response){
         response.setHeader("Content-Type","text/html");
-        return ResultUtil.getResult(0,"上传成功",FileUtil.upload(file));
+        return ResultUtil.getResult(0,"上传成功",FileUtil.createFileUtil().upload(file));
     }
 
     /**
@@ -433,7 +433,7 @@ public class TaskController {
         String msg = "任务添加失败";
         int code = 0;
         if(tbuss003VO!=null && edit != null){
-            Clob note = FileUtil.formatClobByString(edit);
+            Clob note = FileUtil.createFileUtil().formatClobByString(edit);
             tbuss003VO.setNote(note);
             tbuss003VO.setCdat(new Date());
             tbuss003VO.setUsid(usid);
@@ -472,7 +472,7 @@ public class TaskController {
         if(tbuss003VO.getTaid()!=null && edit !=null){
             Tbuss003VO tbuss003VOOld;
             Tbuss014VO tbuss014VO = null;
-            Clob note = FileUtil.formatClobByString(edit);
+            Clob note = FileUtil.createFileUtil().formatClobByString(edit);
             if(require){
                 tbuss014VO = bussMoFactory.getTbuss014MO().fetchByRaid(tbuss003VO.getTaid());
                 tbuss014VO.setNote(note);
@@ -525,7 +525,7 @@ public class TaskController {
         int code = 0;
         if(StringUtil.checkString(cbase011VO.getCons(),cbase011VO.getPjjp(),cbase011VO.getDeti())
                 && StringUtil.checkString(cbase011VO.getPlsu(),cbase011VO.getDsca())){
-            cbase011VO.setPjno("P"+FileUtil.getRandomName());
+            cbase011VO.setPjno("P"+FileUtil.createFileUtil().getRandomName());
             cbase011VO.setUsid(usid);
             cbase011VO.setUdat(new Date());
             cbase011MO.insert(cbase011VO);
@@ -595,8 +595,8 @@ public class TaskController {
         String usid = request.getSession().getAttribute("usid").toString();
         Integer code = 0;
         for (TempFile file : files) {
-            Map<String,Object> map = FileUtil.upload(file);
-            Cbase015VO cbase015VO = new Cbase015VO("ff"+FileUtil.getFileName(map.get("duta").toString()), taid,
+            Map<String,Object> map = FileUtil.createFileUtil().upload(file);
+            Cbase015VO cbase015VO = new Cbase015VO("ff"+FileUtil.createFileUtil().getFileName(map.get("duta").toString()), taid,
                     map.get("title").toString(), Integer.parseInt(map.get("fileSize").toString()), usid,new Date());
             cbase015MO.insert(cbase015VO);
             code = 1;
@@ -619,7 +619,7 @@ public class TaskController {
     @Filters
     @Ok("void")
     public void downloadFile(@Param("duta")String duta,@Param("ffil")String ffil,HttpServletResponse response){
-        FileUtil.download(response,duta,ffil);
+        FileUtil.createFileUtil().download(response,duta,ffil);
     }
 
     /**
@@ -788,7 +788,8 @@ public class TaskController {
         if(taids != null){
             for (String taid:taids) {
                Tbuss003VO tbuss003VO = tbuss003MO.fetchByTaid(taid);
-               tbuss003VO.setTaid("JK"+FileUtil.getRandomName());
+               tbuss003VO.setTitl(tbuss003VO.getTitl()+"( 复制 )");
+               tbuss003VO.setTaid("JK"+FileUtil.createFileUtil().getRandomName());
                tbuss003VO.setCdat(new Date());
                tbuss003VO.setSta1(0);
                tbuss003VO.setStag(0);

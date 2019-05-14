@@ -124,7 +124,7 @@ public class OfficeController {
         String msg = "";
         if(StringUtil.checkString(dsca)){
             if(!cbase017MO.insertCheck(dsca)) {
-                cbase017MO.insert(new Cbase017VO("KO" + FileUtil.getRandomName(), dsca));
+                cbase017MO.insert(new Cbase017VO("KO" + FileUtil.createFileUtil().getRandomName(), dsca));
                 code = 1;
             }else{
                 msg = "科室已存在！请确认后输入！";

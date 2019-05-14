@@ -212,9 +212,10 @@ public class GradeController {
                 i++;
             }
             e2 = Cnd.exps("grop","in",grops);
-            count = tbuss001MO.countByCnd(Cnd.where(e1).and(e2));
+            e3 = Cnd.exps("grop","like","%"+group+"%");
+            count = tbuss001MO.countByCnd(Cnd.where(e1).and(e2).and(e3));
             pager = TableUtil.formatPager(pageSize,pageNumber,count);
-            tbuss001VOList = tbuss001MO.queryAllByCnd(Cnd.where(e1).and(e2).desc("pdat"),pager);
+            tbuss001VOList = tbuss001MO.queryAllByCnd(Cnd.where(e1).and(e2).and(e3).desc("pdat"),pager);
         }else if(author == 2){
             count = tbuss001MO.countByAcco(acco,date,group);
             pager = TableUtil.formatPager(pageSize,pageNumber,count);
@@ -408,7 +409,7 @@ public class GradeController {
         String usid = request.getSession().getAttribute("usid").toString();
         if(tbuss001VO.getPdat() !=null && tbuss001VO.getDsca() != null && tbuss001VO.getGrop() != null){
             if(tbuss001MO.insertCheck(tbuss001VO.getPdat(),tbuss001VO.getGrop())) {
-                tbuss001VO.setPtno("PT"+FileUtil.getRandomName());
+                tbuss001VO.setPtno("PT"+FileUtil.createFileUtil().getRandomName());
                 tbuss001VO.setUdat(new Date());
                 tbuss001VO.setUsid(usid);
                 tbuss001VO.setSta1(1);
@@ -438,17 +439,18 @@ public class GradeController {
     @POST
     @Ok("json")
     public Map<String,Object> copyProject(@Param("::list")String[] ptnos, HttpServletRequest request){
-        Integer code = 0;
+        int code = 0;
         String usid = request.getSession().getAttribute("usid").toString();
         if(ptnos!=null) {
             for (String ptno:ptnos) {
                 Tbuss001VO tbuss001VO = tbuss001MO.fetchTransByNameCnd(ptno, "cbase011VOS", null);
                 if(tbuss001VO != null) {
-                    tbuss001VO.setPtno("PT" + FileUtil.getRandomName());
+                    tbuss001VO.setPtno("PT" + FileUtil.createFileUtil().getRandomName());
                     tbuss001VO.setUsid(usid);
                     tbuss001VO.setSta1(1);
                     tbuss001VO.setSta2(1);
                     tbuss001VO.setUdat(new Date());
+                    tbuss001VO.setDsca(tbuss001VO.getDsca()+"( 复制 )");
                     tbuss001MO.insert(tbuss001VO);
                     tbuss001MO.insertRelation(tbuss001VO);
                     code = 1;

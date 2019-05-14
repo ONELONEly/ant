@@ -128,21 +128,6 @@
             },
             allField = JSON.parse(sessionStorage.getItem("moduleAllField"));
 
-        if (allField != null){
-
-            $("#verify").val(allField.grade.grade.key)
-            $("#group").val(allField.grade.grade.group)
-
-            table.reload("grade",{
-                where:allField.grade.grade,
-                page:{
-                    curr:1
-                }
-            });
-        }
-
-
-
         form.on("select(group)",function (data) {
             grade = {
                 group:data.value,
@@ -233,6 +218,7 @@
                 $("#team").append(option);
                 $("#group").append(option);
                 form.render();
+                reloadPage()
             },
             error: function (kj) {
                 alert("发生错误,错误码为:" + kj.status);
@@ -355,6 +341,21 @@
             }
             allField.grade.grade = grade;
             sessionStorage.setItem("moduleAllField",JSON.stringify(allField));
+        }
+
+        function reloadPage() {
+            if (allField != null){
+                $("#verify").val(allField.grade.grade.key)
+                $("#group").val(allField.grade.grade.group)
+                form.render()
+
+                table.reload("grade",{
+                    where:allField.grade.grade,
+                    page:{
+                        curr:1
+                    }
+                });
+            }
         }
     });
 </script>

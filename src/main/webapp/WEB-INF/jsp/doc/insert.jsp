@@ -34,7 +34,7 @@
     <div class="x-body">
         <form class="layui-form layui-form-panel">
             <div style="padding-bottom: 40px;">
-                <input type="hidden" value="${obj}" id="doid">
+                <input type="hidden" value="${obj.doid}" id="doid">
                 <div class="layui-form-item">
                     <div class="x-center">
                         <input type="text" class="layui-input x-center" name="tilt" id="tilt" placeholder="请输入标题" lay-verify="required|tilt" required/>
@@ -92,7 +92,7 @@
             var layedit = layui.layedit,element = layui.element,$ = layui.jquery,
                 form = layui.form,upload = layui.upload,table = layui.table;
 
-            var fileList = $("#fileList"),doid = $("#doid").val();
+            var fileList = $("#fileList"),doid = $("#doid").val(),user_usid = "${obj.usid}";
 
             var files,fileUploadOption = {
                 elem:'#uploadList',
@@ -171,6 +171,7 @@
                     }
                     $("#csid").append(option);
                     $("#ctyp").append(dOprtion);
+                    $("#csid").val(user_usid);
                     form.render();
                 },
                 error:function (kj) {

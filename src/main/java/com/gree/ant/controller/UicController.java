@@ -92,7 +92,7 @@ public class UicController {
     @At
     @Ok("jsp:jsp.doc.insert")
     public Long insert(){
-        return FileUtil.getSyFileName();
+        return FileUtil.createFileUtil().getSyFileName();
     }
 
     /**
@@ -112,7 +112,7 @@ public class UicController {
         Boolean primary = false;
         Map<String,Object> resultMap = new HashMap<>();
         resultMap.put("doc",tbuss009VO);
-        resultMap.put("note",FileUtil.convertClob(tbuss009VO.getNote()));
+        resultMap.put("note",FileUtil.createFileUtil().convertClob(tbuss009VO.getNote()));
         if(StringUtil.checkString(key)){
             primary = true;
         }
@@ -183,7 +183,7 @@ public class UicController {
     public Map<String, Object> showDoc(@Param("doid")Long doid){
         Tbuss009VO tbuss009VO = tbuss009MO.fetchByID(doid);
         Map<String,Object> resultMap = new HashMap<>();
-        resultMap.put("note",FileUtil.convertClob(tbuss009VO.getNote()));
+        resultMap.put("note",FileUtil.createFileUtil().convertClob(tbuss009VO.getNote()));
         resultMap.put("doc",tbuss009VO);
         return resultMap;
     }
@@ -194,7 +194,7 @@ public class UicController {
     public Map<String, Object> showDoc1(@Param("doid")Long doid){
         Tbuss009VO tbuss009VO = tbuss009MO.fetchByID(doid);
         Map<String,Object> resultMap = new HashMap<>();
-        resultMap.put("note",FileUtil.convertClob(tbuss009VO.getNote()));
+        resultMap.put("note",FileUtil.createFileUtil().convertClob(tbuss009VO.getNote()));
         resultMap.put("doc",tbuss009VO);
         return resultMap;
     }
@@ -228,7 +228,7 @@ public class UicController {
         if(StringUtil.checkString(note,tilt,csid) && doid != null){
             Tbuss009VO tbuss009VO = new Tbuss009VO();
             tbuss009VO.setDoid(doid);
-            tbuss009VO.setNote(FileUtil.formatClobByString(note));
+            tbuss009VO.setNote(FileUtil.createFileUtil().formatClobByString(note));
             tbuss009VO.setCdat(new Date());
             tbuss009VO.setUsid(usid);
             tbuss009VO.setCsid(csid);
@@ -270,7 +270,7 @@ public class UicController {
         Integer code = 0;
         String msg = "";
         if(tbuss009VO.getDoid() != null && StringUtil.checkString(edit) && StringUtil.checkString(date)){
-            tbuss009VO.setNote(FileUtil.formatClobByString(edit));
+            tbuss009VO.setNote(FileUtil.createFileUtil().formatClobByString(edit));
             tbuss009VO.setCdat(DateUtil.formatDate(date));
             code = tbuss009MO.updateByVO(tbuss009VO);
         }else{
@@ -478,8 +478,8 @@ public class UicController {
         String usid = request.getSession().getAttribute("usid").toString();
         Integer code = 0;
         for (TempFile file : files) {
-            Map<String,Object> map = FileUtil.upload(file);
-            Tbuss015VO tbuss015VO = new Tbuss015VO("ff"+FileUtil.getFileName(map.get("duta").toString()), map.get("title").toString(),doid,
+            Map<String,Object> map = FileUtil.createFileUtil().upload(file);
+            Tbuss015VO tbuss015VO = new Tbuss015VO("ff"+FileUtil.createFileUtil().getFileName(map.get("duta").toString()), map.get("title").toString(),doid,
                     Integer.parseInt(map.get("fileSize").toString()), usid,new Date());
             tbuss015MO.insert(tbuss015VO);
             code = 1;

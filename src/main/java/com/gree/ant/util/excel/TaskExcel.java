@@ -82,7 +82,7 @@ public class TaskExcel {
         for(Tbuss003VO tbuss003VO:tbuss003VOS){
             cell = new Label(0,cut,tbuss003VO.getTitl() == null?"":tbuss003VO.getTitl(),format);
             sheet.addCell(cell);
-            cell = new Label(1,cut,tbuss003VO.getNote() == null?"": HTMLUtil.delHTMLTag(FileUtil.convertClob(tbuss003VO.getNote())),format);
+            cell = new Label(1,cut,tbuss003VO.getNote() == null?"": HTMLUtil.delHTMLTag(FileUtil.createFileUtil().convertClob(tbuss003VO.getNote())),format);
             sheet.addCell(cell);
             cell = new Label(2,cut,tbuss003VO.getPtnonam() == null?"":tbuss003VO.getPunonam(),format);
             sheet.addCell(cell);

@@ -253,7 +253,7 @@ public class GradeExcel {
                 sheet.addCell(cell);
                 cell = new Label(4, col, tbuss003VO.getTitl() == null ? "" : tbuss003VO.getTitl(), format);
                 sheet.addCell(cell);
-                cell = new Label(5, col, tbuss003VO.getNote() == null ? "" : HTMLUtil.delHTMLTag(FileUtil.convertClob(tbuss003VO.getNote())), format);
+                cell = new Label(5, col, tbuss003VO.getNote() == null ? "" : HTMLUtil.delHTMLTag(FileUtil.createFileUtil().convertClob(tbuss003VO.getNote())), format);
                 sheet.addCell(cell);
                 cell = new Label(6, col, tbuss003VO.getKsid() == null ? "" : tbuss003VO.getKdnam(), format);
                 sheet.addCell(cell);
@@ -428,7 +428,7 @@ public class GradeExcel {
                 sheet.addCell(cell);
                 cell = new Label(4, col, tbuss003VO.getTitl() == null ? "" : tbuss003VO.getTitl(), format);
                 sheet.addCell(cell);
-                cell = new Label(5, col, tbuss003VO.getNote() == null ? "" : HTMLUtil.delHTMLTag(FileUtil.convertClob(tbuss003VO.getNote())), format);
+                cell = new Label(5, col, tbuss003VO.getNote() == null ? "" : HTMLUtil.delHTMLTag(FileUtil.createFileUtil().convertClob(tbuss003VO.getNote())), format);
                 sheet.addCell(cell);
                 cell = new Label(6, col, tbuss003VO.getKsid() == null ? "" : tbuss003VO.getKdnam(), format);
                 sheet.addCell(cell);
