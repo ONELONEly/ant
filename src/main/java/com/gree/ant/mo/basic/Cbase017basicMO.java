@@ -103,4 +103,6 @@ public interface Cbase017basicMO {
      * @createTime 2017 :10:27 05:10:08.
      */
     List<ResultVO> queryAllAD();
+
+    List<String> queryAllBoss(String officeNumber);
 }

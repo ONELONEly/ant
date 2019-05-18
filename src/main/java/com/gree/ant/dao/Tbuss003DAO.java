@@ -129,4 +129,6 @@ public interface Tbuss003DAO extends BaseDAO<Tbuss003VO>{
     void markScore(Condition condition,Integer stag);
 
     Tbuss003VO fetchSta1ByTaid(String taid);
+
+    Integer getUserScoreByPtnoUsid(String ptno,String usid);
 }

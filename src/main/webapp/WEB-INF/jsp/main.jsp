@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="./layui/css/layui.css" media="all">
     <link rel="stylesheet" href="./static/css/admin-1.css" media="all">
     <link rel="stylesheet" href="./css/admin.css" media="all">
-
+    <link rel="shortcut icon" href="./static/images/logo/logo.ico" type="image/x-icon" />
     <script>
         ///^http(s*):\/\//.test(location.href) || alert('请先部署到 localhost 下再访问');
     </script>

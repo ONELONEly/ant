@@ -82,7 +82,7 @@ public class Cbase000MO implements Cbase000BasicMO{
     }
 
     @Override
-    public List<GradeVO> queryAllGradeByPdat(String pdat,String grop) {
+    public List<GradeVO> queryAllGradeByPdat(String pdat,String grop,String officeNumber) {
         Cnd cnd = Cnd.NEW();
         Cnd cnd2 = Cnd.NEW();
         if(StringUtil.checkString(pdat)){
@@ -92,16 +92,16 @@ public class Cbase000MO implements Cbase000BasicMO{
             cnd = cnd.and("grop","=",grop);
             cnd2 = cnd2.and("grop","=",grop);
         }
-        return cbase000DAOImp.queryAllGradeByPdat(cnd,cnd2);
+        return cbase000DAOImp.queryAllGradeByPdat(cnd,cnd2,officeNumber);
     }
 
     @Override
-    public List<ExportGradeOkrVO> queryAllGradeOkrByPdat(String pdat) {
+    public List<ExportGradeOkrVO> queryAllGradeOkrByPdat(String pdat, String officeNumber) {
         Cnd cnd = Cnd.NEW();
         if(StringUtil.checkString(pdat)){
             cnd = cnd.and("pdat","like","%"+pdat+"%");
         }
-        return cbase000DAOImp.queryALlGradeOkrByPdat(cnd);
+        return cbase000DAOImp.queryALlGradeOkrByPdat(cnd,officeNumber);
     }
 
     @Override

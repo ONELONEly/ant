@@ -47,6 +47,15 @@
         <hr class="layui-bg-green">
         <form action="../grade/printGradeOkr" class="layui-form layui-form-pane">
             <div class="layui-form-item">
+                <label class="layui-form-label">考评科室</label>
+                <span id="accoTip"></span>
+                <div class="layui-input-block">
+                    <select name="officeNumber" id="acco" lay-filter="acco" lay-verify="acco" lay-search>
+                        <option value="" disabled selected>选择科室</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
                 <label class="layui-form-label">考评月份</label>
                 <div class="layui-input-block">
                     <input type="text" name="pdat" id="pdat" placeholder="考评月份" lay-verify="mdat" autocomplete="off"
@@ -119,8 +128,13 @@
             max:0,
             btns:['now','confirm'],
             done: function (value,obj) {
-                var url = "../grade/printOldGradeOkr?pdat="+value;
-                $("<form action='"+url+"' method='post'></form>").appendTo("body").submit().remove();
+                let officeNumber = $("#acco option:selected").val();
+                if(!checkForm(officeNumber)){
+                    var url = "../grade/printOldGradeOkr?pdat="+value+"&officeNumber="+officeNumber;
+                    $("<form action='"+url+"' method='post'></form>").appendTo("body").submit().remove();
+                }else{
+                    layer.tips("请选择科室","#accoTip",{tips:[1,'#dd414c']})
+                }
             }
         };
         laydate.render(start);
@@ -134,6 +148,7 @@
                 page:false,
                 where:{
                     pdat:$("#pdat").val(),
+                    officeNumber: $("#acco option:selected").val(),
                     S:$("#S").val(),
                     A:$("#A").val(),
                     C:$("#C").val()
@@ -151,12 +166,35 @@
            return false;
         });
 
+        $.ajax({
+            type:'POST',
+            url:'../util/findC17',
+            dataType:'json',
+            success:function (data) {
+                var accos = data.acco;
+                var uOption = "";
+                for(var i = 0;i<accos.length;i++){
+                    uOption += "<option value='"+accos[i].id+"'>"+accos[i].dsca+"</option>";
+                }
+                $("#acco").append(uOption);
+                form.render();
+            },
+            error:function (kellyj) {
+                layer.alert("发生错误，错误码为:"+kellyj.status,{offset:'10px',anim:1});
+            }
+        });
+
 
 
         form.verify({
             mdat:function (value) {
                 if(checkForm(value)){
                     return "请选择月份";
+                }
+            },
+            acco:function (value) {
+                if(checkForm(value)){
+                    return "请选择科室";
                 }
             },
             S:function (value) {

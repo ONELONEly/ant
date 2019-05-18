@@ -493,6 +493,7 @@ public class UtilController {
         Map<String,Object> map = new HashMap<>();
         map.put("pdat",tbuss001MO.queryAllPdat());
         map.put("grop",cbase009MO.queryAllGD());
+        map.put("acco",cbase017MO.queryAllAD());
         return map;
     }
 

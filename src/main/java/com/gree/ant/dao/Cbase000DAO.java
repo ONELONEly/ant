@@ -55,7 +55,7 @@ public interface Cbase000DAO extends BaseDAO<Cbase000VO> {
      * @version V1.0
      * @createTime 2017 :10:27 04:10:01.
      */
-    List<GradeVO> queryAllGradeByPdat(Condition cnd,Condition condition);
+    List<GradeVO> queryAllGradeByPdat(Condition cnd,Condition condition,String officeNumber);
 
 
     /**
@@ -66,7 +66,7 @@ public interface Cbase000DAO extends BaseDAO<Cbase000VO> {
      * @version 1.0
      * @createTime 2019 -01-09 15:47:57
      */
-    List<ExportGradeOkrVO> queryALlGradeOkrByPdat(Condition cnd);
+    List<ExportGradeOkrVO> queryALlGradeOkrByPdat(Condition cnd,String officeNumber);
 
     /**
      * Query all user list.

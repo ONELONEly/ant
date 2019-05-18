@@ -48,7 +48,7 @@
         <table class="layui-table" lay-data="{url:'./queryAllProjectFahh',id:'project'}" lay-filter="project">
             <thead>
             <tr>
-                <th lay-data="{align:'center'}" colspan="2">项目工时</th>
+                <th lay-data="{align:'center'}" colspan="3">项目工时</th>
             </tr>
             <tr>
                 <th lay-data="{field:'csid',align:'center',width:'40%',sort:true,templet:'#user'}">用户</th>
@@ -62,7 +62,7 @@
         <table class="layui-table" lay-data="{url:'./queryAllNotProjectFahh',id:'notProject'}" lay-filter="notProject">
             <thead>
             <tr>
-                <th lay-data="{align:'center',}" colspan="2">非项目工时</th>
+                <th lay-data="{align:'center',}" colspan="3">非项目工时</th>
             </tr>
             <tr>
                 <th lay-data="{field:'csid',align:'center',width:'40%',sort:true,templet:'#user'}">用户</th>

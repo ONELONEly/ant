@@ -10,6 +10,7 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @IocBean
@@ -118,7 +119,9 @@ public class Cbase011MO implements Cbase011BasicMO{
     public Integer copyByPjno(String pjno,String usid) {
         int code = 0;
         Cbase011VO cbase011VO = fetchTransByPjno(pjno);
+        cbase011VO.setDsca(cbase011VO.getDsca()+"（复制）");
         cbase011VO.setUsid(usid);
+        cbase011VO.setUdat(new Date());
         cbase011VO.setPjno("P"+ FileUtil.createFileUtil().getRandomName());
         cbase011VO = cbase011DAOImp.insertWith(cbase011VO,"cbase012VOS");
         if (cbase011VO != null){

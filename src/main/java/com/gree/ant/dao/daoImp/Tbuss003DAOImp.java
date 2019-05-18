@@ -205,6 +205,17 @@ public class Tbuss003DAOImp extends BaseDAOImp<Tbuss003VO> implements Tbuss003DA
         return sql.getObject(Tbuss003VO.class);
     }
 
+    @Override
+    public Integer getUserScoreByPtnoUsid(String ptno, String usid) {
+        String sqlStr = "select sum(case when res.STAG = 0 then res.perc * 0.6 when res.STAG = 1 then res.perc * 0.7 " +
+                "when res.STAG = 2 then res.perc * 0.8 when res.STAG = 3 then res.perc * 0.9 when res.STAG = 4 then res.perc " +
+                "else 0 end)totalScore from (select CSID,t.stag,(t.cons / t.taskCount) as perc from V_TBUSS003 t  " +
+                "WHERE (ptno LIKE @ptno) and CSID = @usid )res group by CSID";
+        Sql sql = Sqls.create(sqlStr);
+        sql.setParam("ptno","%"+ptno+"%").setParam("usid",usid);
+        return DAOUtil.getTiCount(sql,this.getDao());
+    }
+
     private List<FahhVO> queryFahhResultFormat(String startDate, String endDate, String sqlStr, Dao dao){
         Sql sql = Sqls.create(sqlStr);
         sql.setParam("start",startDate).setParam("end",endDate);

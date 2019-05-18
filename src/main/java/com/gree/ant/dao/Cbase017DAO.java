@@ -38,4 +38,6 @@ public interface Cbase017DAO extends BaseDAO<Cbase017VO>{
      * @createTime 2017 :10:27 05:10:08.
      */
     List<ResultVO> queryAllAD();
+
+    List<String> queryAllBoos(String officeNumber);
 }

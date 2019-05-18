@@ -69,6 +69,9 @@ public class GradeController {
     @Inject
     private BussMoFactory bussMoFactory;
 
+    @Inject
+    private BaseMoFactory baseMoFactory;
+
     /**
      * Index string.
      *
@@ -809,12 +812,12 @@ public class GradeController {
     @At
     @POST
     @Ok("json")
-    public Map<String,Object> pushGrade(@Param("ptno")String ptno, HttpSession session){
-        String usid = session.getAttribute("usid").toString();
+    public Map<String,Object> pushGrade(@Param("ptno")String ptno,@Attr("user")Cbase000VO cbase000VO){
         String msg = "推送成功！";
         if(StringUtil.checkString(ptno)) {
-            String[] csid = {"180043", "180246"};
-            String[] copyTo = {usid};
+            List<String> bosses = baseMoFactory.getCbase017MO().queryAllBoss(cbase000VO.getACCO());
+            String[] csid = bosses.toArray(new String[0]);
+            String[] copyTo = {cbase000VO.getUSID()};
             MailUtil.sendmail(csid, copyTo, ptno, tbuss001MO.fectchByName(ptno).getGropnam());
         }else{
             msg = "发生未知错误！";
@@ -835,11 +838,11 @@ public class GradeController {
     @At
     @POST
     @Ok("json")
-    public List<GradeVO> getRank(@Param("pdat")String pdat,@Param("grop")String grop){
+    public List<GradeVO> getRank(@Param("pdat")String pdat,@Param("grop")String grop,@Param("officeNumber")String officeNumber){
         if(!StringUtil.checkString(pdat)){
             pdat = DateUtil.formatYMDate(new Date());
         }
-        return cbase000MO.queryAllGradeByPdat(pdat,grop);
+        return cbase000MO.queryAllGradeByPdat(pdat,grop,officeNumber);
     }
 
     /**
@@ -856,11 +859,12 @@ public class GradeController {
      */
     @At
     @Ok("void")
-    public void printGradeOkr(@Param("pdat")String pdat, @Param("S")Integer S, @Param("A")Integer A, @Param("C")Integer C,
+    public void printGradeOkr(@Param("pdat")String pdat,@Param("officeNumber")String officeNumber,
+                              @Param("S")Integer S, @Param("A")Integer A, @Param("C")Integer C,
                                HttpServletRequest request,HttpServletResponse response){
-        List<ExportGradeOkrVO> gradeVOS = cbase000MO.queryAllGradeOkrByPdat(pdat);
+        List<ExportGradeOkrVO> gradeVOS = cbase000MO.queryAllGradeOkrByPdat(pdat, officeNumber);
         try {
-            GradeExcel.export(gradeMarkStage(gradeVOS,S,A,C,pdat),pdat,request,response);
+            GradeExcel.export(gradeMarkStage(gradeVOS,S,A,C,pdat,officeNumber),pdat,request,response);
         } catch (IOException | WriteException e) {
             e.printStackTrace();
         }
@@ -877,9 +881,9 @@ public class GradeController {
      */
     @At
     @Ok("void")
-    public void printOldGradeOkr(@Param("pdat")String pdat,HttpServletRequest request,HttpServletResponse response){
+    public void printOldGradeOkr(@Param("pdat")String pdat,@Param("officeNumber")String officeNumber, HttpServletRequest request,HttpServletResponse response){
         try {
-            GradeExcel.export(bussMoFactory.getTbuss017MO().queryAllByPdatAcco(pdat,"3"),pdat,request,response);
+            GradeExcel.export(bussMoFactory.getTbuss017MO().queryAllByPdatAcco(pdat,officeNumber),pdat,request,response);
         } catch (IOException | WriteException e) {
             e.printStackTrace();
         }
@@ -898,9 +902,10 @@ public class GradeController {
      */
     @At
     @Ok("json")
-    public Map<String,Object> gradeOkrData(@Param("pdat")String pdat, @Param("S")Integer S, @Param("A")Integer A, @Param("C")Integer C){
-        List<ExportGradeOkrVO> gradeVOS = cbase000MO.queryAllGradeOkrByPdat(pdat);
-        return ResultUtil.getResult(1,"",gradeMarkStage(gradeVOS,S,A,C,pdat));
+    public Map<String,Object> gradeOkrData(@Param("pdat")String pdat,@Param("officeNumber")String officeNumber,
+                                           @Param("S")Integer S, @Param("A")Integer A, @Param("C")Integer C){
+        List<ExportGradeOkrVO> gradeVOS = cbase000MO.queryAllGradeOkrByPdat(pdat, officeNumber);
+        return ResultUtil.getResult(1,"",gradeMarkStage(gradeVOS,S,A,C,pdat,officeNumber));
     }
 
     private Map<String,Object> formatModel(String grop,String ptno){
@@ -922,13 +927,13 @@ public class GradeController {
      * @version 1.0
      * @createTime 2019 -01-09 10:37:31
      */
-    private List<ExportGradeOkrVO> gradeMarkStage(List<ExportGradeOkrVO> gradeVOS,Integer S,Integer A,Integer C,String pdat){
+    private List<ExportGradeOkrVO> gradeMarkStage(List<ExportGradeOkrVO> gradeVOS,Integer S,Integer A,Integer C,String pdat,String officeNumber){
         List<ExportGradeOkrVO> gradeOkrVOS = new ArrayList<>();
         int gradeCount = gradeVOS.size();
         if(gradeCount <= S){
 
             for(ExportGradeOkrVO gradeVO:gradeVOS){
-                gradeVO.setCpid("A");
+                gradeVO.setStage("S");
                 gradeOkrVOS.add(gradeVO);
             }
 
@@ -978,9 +983,9 @@ public class GradeController {
 
         List<TBuss017VO> tBuss017VOS = new ArrayList<>();
         for(ExportGradeOkrVO gradeOkrVO:gradeVOS){
-            tBuss017VOS.add(new TBuss017VO(pdat,"3",gradeOkrVO.getCsid(),gradeOkrVO.getScore()+"",gradeOkrVO.getStage()));
+            tBuss017VOS.add(new TBuss017VO(pdat,officeNumber,gradeOkrVO.getCsid(),gradeOkrVO.getScore()+"",gradeOkrVO.getStage()));
         }
-        if(bussMoFactory.getTbuss017MO().countByPdatAcco(pdat,"3") > 0) {
+        if(bussMoFactory.getTbuss017MO().countByPdatAcco(pdat,officeNumber) > 0) {
             bussMoFactory.getTbuss017MO().updateByVOS(tBuss017VOS);
         }else{
             bussMoFactory.getTbuss017MO().insertByVOS(tBuss017VOS);

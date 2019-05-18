@@ -38,6 +38,11 @@
                 <option value="" class="n-select" disabled selected>过滤团队</option>
             </select>
         </div>
+        <div class="layui-input-inline">
+            <select name="acco" id="acco" lay-filter="acco" lay-search="">
+                <option value="" class="n-select" disabled selected>过滤科室</option>
+            </select>
+        </div>
     </form>
     <hr class="layui-bg-orange"/>
     <div id="main" style="width: 100%;height:100px;"></div>
@@ -51,15 +56,19 @@
             url:'${base}/util/findPdat',
             dataType:'json',
             success:function (res) {
-                var pdat = res.pdat,grop = res.grop,pOption = "",gOption = "";
+                var pdat = res.pdat,grop = res.grop,acco = res.acco,pOption = "",gOption = "",aOption = "";
                 for (var k = 0; k < pdat.length; k++) {
                     pOption += "<option value='" + pdat[k] + "'>" + pdat[k] + "</option>";
                 }
                 for (var g = 0; g < grop.length; g++) {
                     gOption += "<option value='" + grop[g].id + "'>" + grop[g].dsca + "</option>";
                 }
+                for (var a = 0; a < acco.length; a++) {
+                    aOption += "<option value='" + acco[a].id + "'>" + acco[a].dsca + "</option>";
+                }
                 $('#pdat').append(pOption);
                 $('#grop').append(gOption);
+                $('#acco').append(aOption);
                 form.render();
             },
             error:function (kellyj) {
@@ -120,19 +129,23 @@
         getScore(null);
 
         form.on('select(pdat)',function (data) {
-            getScore(data.value,$("select#grop option:selected").val());
+            getScore(data.value,$("select#grop option:selected").val(),$("select#acco option:selected").val());
         });
         form.on('select(grop)',function (data) {
-            getScore($("select#pdat option:selected").val(),data.value);
+            getScore($("select#pdat option:selected").val(),data.value,$("select#acco option:selected").val());
+        });
+        form.on('select(acco)',function (data) {
+            getScore($("select#pdat option:selected").val(),$("select#grop option:selected").val(),data.value);
         });
 
-        function getScore(pdat,grop) {
+        function getScore(pdat,grop,acco) {
             $.ajax({
                 type:'POST',
                 url:'${base}/grade/getRank',
                 data:{
                     pdat:pdat,
-                    grop:grop
+                    grop:grop,
+                    officeNumber:acco
                 },
                 dataType:'json',
                 success:function (res) {

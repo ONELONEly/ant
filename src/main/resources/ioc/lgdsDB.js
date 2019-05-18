@@ -33,7 +33,7 @@ var ant = {
                 testWhileIdle:true,
                 keepAlive:true,
                 removeAbandoned:true,
-                removeAbandonedTimeout:80,
+                removeAbandonedTimeout:180,
                 logAbandoned:true,
                 poolPreparedStatements:true,
                 maxPoolPreparedStatementPerConnectionSize:20,

@@ -216,5 +216,7 @@ public interface Tbuss003BasicMO {
 
     List<FahhVO> queryAllNotProjectFahh(String date);
 
+    Integer getUserScoreByPtnoUsid(String ptno, String usid);
+
     void markScore(String[] taids,Integer stage);
 }

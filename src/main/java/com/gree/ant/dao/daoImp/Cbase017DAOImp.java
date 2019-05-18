@@ -8,9 +8,16 @@ import com.gree.ant.vo.util.ResultVO;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
+import org.nutz.dao.Sqls;
+import org.nutz.dao.sql.Sql;
+import org.nutz.dao.sql.SqlCallback;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @IocBean
@@ -27,5 +34,21 @@ public class Cbase017DAOImp extends BaseDAOImp<Cbase017VO> implements Cbase017DA
     public List<ResultVO> queryAllAD() {
         String sqlStr = "select acco,dsca from cbase017 order by dsca asc";
         return DAOUtil.getResultVO(sqlStr,this.getDao());
+    }
+
+    @Override
+    public List<String> queryAllBoos(String officeNumber) {
+        String sqlStr = "select BossNumber from cbase020 where officeNumber = @officeNumber";
+        Sql sql = Sqls.create(sqlStr);
+        sql.setParam("officeNumber",officeNumber);
+        sql.setCallback((conn, rs, sql1) -> {
+            List<String> result = new ArrayList<>();
+            while (rs.next()){
+                result.add(rs.getString(1));
+            }
+            return result;
+        });
+        getDao().execute(sql);
+        return sql.getList(String.class);
     }
 }

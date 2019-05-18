@@ -919,7 +919,7 @@ public class TaskController {
         }
         Integer count = cbase011MO.countByCnd(Cnd.where(e1).and(e2));
         Pager pager = TableUtil.formatPager(pageSize,pageNumber,count);
-        return TableUtil.makeJson(0,"成功",count,cbase011MO.queryAllByCnd(Cnd.where(e1).and(e2),pager));
+        return TableUtil.makeJson(0,"成功",count,cbase011MO.queryAllByCnd(Cnd.where(e1).and(e2).desc("udat"),pager));
     }
 
     /**
@@ -1093,6 +1093,23 @@ public class TaskController {
         } catch (ServletException | IOException | WriteException e) {
             e.printStackTrace();
         }
+    }
+
+    @At
+    @POST
+    @Ok("json")
+    public Map<String,Object> getUserScore(@Param("ptno")String ptno, @Param("usid")String usid){
+        int code = 0;
+        String msg = "服务器异常";
+        Integer userScore = 0;
+        if(StringUtil.checkString(ptno, usid)){
+            userScore = bussMoFactory.getTbuss003MO().getUserScoreByPtnoUsid(ptno, usid);
+            code = userScore != null ? 1 : 0;
+        }else{
+            msg = "请按照正常步骤调用！";
+        }
+        msg = code == 1?"请求成功":msg;
+        return ResultUtil.getResult(code,msg,userScore);
     }
 
     /**

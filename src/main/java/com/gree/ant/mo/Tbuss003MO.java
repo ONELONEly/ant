@@ -275,6 +275,11 @@ public class Tbuss003MO implements Tbuss003BasicMO{
         return 0;
     }
 
+    @Override
+    public Integer getUserScoreByPtnoUsid(String ptno, String usid) {
+        return tbuss003DAOImp.getUserScoreByPtnoUsid(ptno, usid);
+    }
+
     /**
      * @param resultCode 系统完成任务提交的结果码
      * @param tbuss003VO 需要同步的任务详情

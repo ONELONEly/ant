@@ -55,4 +55,9 @@ public class Cbase017MO implements Cbase017basicMO{
     public List<ResultVO> queryAllAD() {
         return cbase017DAOImp.queryAllAD();
     }
+
+    @Override
+    public List<String> queryAllBoss(String officeNumber) {
+        return cbase017DAOImp.queryAllBoos(officeNumber);
+    }
 }

@@ -154,7 +154,7 @@ public interface Cbase000BasicMO {
      * @version V1.0
      * @createTime 2017 :10:27 04:10:01.
      */
-    List<GradeVO> queryAllGradeByPdat(String pdat,String grop);
+    List<GradeVO> queryAllGradeByPdat(String pdat,String grop,String officeNumber);
 
 
     /**
@@ -165,7 +165,7 @@ public interface Cbase000BasicMO {
      * @version 1.0
      * @createTime 2019 -01-09 11:15:33
      */
-    List<ExportGradeOkrVO> queryAllGradeOkrByPdat(String pdat);
+    List<ExportGradeOkrVO> queryAllGradeOkrByPdat(String pdat, String officeNumber);
 
     /**
      * Query all user list.

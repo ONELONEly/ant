@@ -203,6 +203,28 @@
     left: 0;
     cursor: pointer;
 }
+
+.score-show {
+    height: 38px;
+    line-height: 38px;
+    padding: 0 10px;
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+
+.score-show .title {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.score-show .content {
+    color: #00FF00;
+    font-size: 16px;
+}
+
+.x-shadow {
+    box-shadow: 0 2px 1px -1px rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 1px 3px 0 rgba(0,0,0,.12);
+}
 /*.x-slide_left:hover{
   background-position: -21px 0px;
 }*/
@@ -371,6 +393,7 @@ body .layui-layer-dir .layui-layer-content{padding: 10px; max-height: 280px; ove
 
 .site-block{padding: 20px; border: 1px solid #eee;}
 .site-block .layui-form{margin-right: 200px;}
+
 
 
 /* 演示 */

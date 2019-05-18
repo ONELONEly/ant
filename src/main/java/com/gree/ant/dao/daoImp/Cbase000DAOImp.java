@@ -4,19 +4,26 @@ import com.gree.ant.dao.Cbase000DAO;
 import com.gree.ant.dao.daoImp.util.DAOUtil;
 import com.gree.ant.util.DoubleUtil;
 import com.gree.ant.vo.Cbase000VO;
+import com.gree.ant.vo.Cbase010VO;
 import com.gree.ant.vo.util.ExportGradeOkrVO;
 import com.gree.ant.vo.util.GradeVO;
 import com.gree.ant.vo.util.ResultVO;
+import oracle.sql.ARRAY;
+import oracle.sql.ArrayDescriptor;
+import oracle.sql.TypeDescriptor;
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Sqls;
+import org.nutz.dao.jdbc.ValueAdaptor;
 import org.nutz.dao.pager.Pager;
+import org.nutz.dao.sql.Criteria;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.sql.SqlCallback;
 import org.nutz.ioc.loader.annotation.IocBean;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @IocBean
@@ -50,11 +57,12 @@ public class Cbase000DAOImp extends BaseDAOImp<Cbase000VO> implements Cbase000DA
      * @return
      */
     @Override
-    public List<GradeVO> queryAllGradeByPdat(Condition cnd,Condition condition) {
+    public List<GradeVO> queryAllGradeByPdat(Condition cnd,Condition condition,String officeNumber) {
         String sqlStr = "SELECT * from(SELECT a.USID,a.DSCA,(SELECT sum(CONS) from TBUSS005 b where b.CSID = a.USID and b.PTNO in\n" +
-                "(SELECT c.PTNO from TBUSS001 c $condition))res from CBASE000 a where usid in (select usid from cbase010 $condition1) and USID not in ('180246','180043') and acco = @acco)e ORDER BY res asc NULLS FIRST";
+                "(SELECT c.PTNO from TBUSS001 c $condition))res from CBASE000 a where usid in (select usid from cbase010 $condition1) " +
+                "and USID not in (select BossNumber from cbase020 where officeNumber = @officeNumber) and acco = @officeNumber)e ORDER BY res asc NULLS FIRST";
         Sql sql = Sqls.create(sqlStr);
-        sql.setVar("condition",cnd).setVar("condition1",condition).setParam("acco","3");
+        sql.setVar("condition",cnd).setVar("condition1",condition).setParam("officeNumber",officeNumber);
         sql.setCallback(new SqlCallback() {
             @Override
             public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
@@ -70,12 +78,12 @@ public class Cbase000DAOImp extends BaseDAOImp<Cbase000VO> implements Cbase000DA
     }
 
     @Override
-    public List<ExportGradeOkrVO> queryALlGradeOkrByPdat(Condition cnd) {
+    public List<ExportGradeOkrVO> queryALlGradeOkrByPdat(Condition cnd,String officeNumber) {
         String sqlStr = "SELECT * from(SELECT a.USID,a.CPID,a.DSCA,(SELECT sum(CONS) from TBUSS005 b where b.CSID = a.USID and b.PTNO in" +
-                "(SELECT c.PTNO from TBUSS001 c $condition))res from CBASE000 a where usid in (select usid from cbase010) and USID not in ('180246','180043') " +
-                "and acco = @acco)e ORDER BY res asc NULLS FIRST";
+                "(SELECT c.PTNO from TBUSS001 c $condition))res from CBASE000 a where usid in (select usid from cbase010) and USID not in " +
+                "(select BossNumber from cbase020 where officeNumber = @officeNumber) and acco = @officeNumber)e ORDER BY res asc NULLS FIRST";
         Sql sql = Sqls.create(sqlStr);
-        sql.setVar("condition",cnd).setParam("acco","3");
+        sql.setVar("condition",cnd).setParam("officeNumber",officeNumber);
         sql.setCallback(new SqlCallback() {
             @Override
             public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {

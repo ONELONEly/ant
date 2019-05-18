@@ -48,11 +48,21 @@
             <option value="1">已评分</option>
         </select>
     </div>
+    <div class="layui-input-inline score">
+    </div>
 </form>
 <table class="layui-table" id = "manage" lay-filter="manage">
 </table>
 <script type="text/html" id="noteTpl">
     <a href="javascript:" class="layui-table-link" lay-event="show">{{d.titl}}</a>
+</script>
+<script type="text/html" id="scoreShow">
+    {{# if(d.score != undefined){ }}
+        <div class="score-show x-shadow">
+            <span class="title">总分:</span>
+            <span class="content">{{ d.score }}</span>
+        </div>
+    {{# } }}
 </script>
 <script type="text/html" id="stagTpl">
     {{# if(d.stag == 4){ }}
@@ -80,9 +90,11 @@
 </div>
 </div>
 <script language="JavaScript">
-    layui.use(["laydate","laypage","element","layer","table","jquery","form"],function () {
+    layui.use(["laydate","laypage","element","layer","table","jquery","form","laytpl"],function () {
         var laypage = layui.laypage, element = layui.element, layer = layui.layer,
-            table = layui.table, form = layui.form, $ = layui.jquery,curr_table;
+            table = layui.table, form = layui.form, $ = layui.jquery,curr_table,layTpl = layui.laytpl;
+
+        var userScore = undefined
 
         curr_table = table.render({ //initSort:{field:'cdat',type:'desc'}
             elem:'#manage',
@@ -118,7 +130,10 @@
             ]],
             response:{
                 statusCode:0
-            }});
+            },
+            done: function (res, curr, count) {
+            }
+        });
 
         scoreFun($("#score"),{
             fen_d:22,//每一个a的宽度
@@ -147,6 +162,7 @@
         });
 
         form.on("select(user)",function (data) {
+            showUserTotal()
             curr_table = table.reload("manage",{
                 where:{
                     key:data.value,
@@ -198,7 +214,6 @@
                             },
                             dataType:'json',
                             success:function (res) {
-                                console.log(curr_table.config.page.curr);
                                 curr_table = table.reload("manage",{
                                     where:{
                                         stag:$("#status option:selected").val(),
@@ -270,6 +285,52 @@
                 });
             }
         });
+
+        function showUserTotal () {
+            getUserScore().then((res) => {
+                if(res >= 0){
+                    var scoreTpl = scoreShow.innerHTML
+                    var showData = {
+                        score: res
+                    }
+                    layTpl(scoreTpl).render(showData, function (html) {
+                        $(".score").html(html)
+                    })
+                }
+            }).catch(err => {
+                layer.msg(err)
+            })
+        }
+
+        function getUserScore() {
+            return new Promise((resolve, reject) => {
+                var selectVal = $("#user option:selected").val()
+                if (!checkForm(selectVal)) {
+                    $.ajax({
+                        url: '${base}/task/getUserScore',
+                        data: {
+                            ptno: '${obj.ptno}',
+                            usid: $("#user option:selected").val()
+                        },
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function (res) {
+                            if (res.code === 1) {
+                                resolve(res.data)
+                            } else {
+                                reject("发生错误,错误信息:" + res.msg);
+                            }
+                        },
+                        error: function (kj) {
+                            reject("发生错误,错误码为:" + kj.status);
+                        }
+                    });
+                }else{
+                    $('.score').html('')
+                    resolve
+                }
+            })
+        }
     });
 </script>
 </body>
