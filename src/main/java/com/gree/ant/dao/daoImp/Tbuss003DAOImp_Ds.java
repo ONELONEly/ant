@@ -86,7 +86,7 @@ public class Tbuss003DAOImp_Ds implements Tbuss003DAO_Ds {
 
 
     public List<Cbase013VO> findAllSystemByDs(){
-        Sql sql= Sqls.create("select SubProjectID,Title from SubProject where SubProjectType =98 and ProjectID=417");
+        Sql sql= Sqls.create("select SubProjectID,Title from SubProject where SubProjectType = 98 and ProjectID=417");
         sql.setCallback(new SqlCallback() {
             @Override
             public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {

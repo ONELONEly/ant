@@ -24,9 +24,6 @@
         </div>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
-                <a href="./search/doc/index">文档搜索</a>
-            </li>
-            <li class="layui-nav-item">
                 <a href="./login">登陆</a>
             </li>
         </ul>

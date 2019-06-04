@@ -24,7 +24,7 @@ var adaptors =
         // 是否忽略空文件, 默认为 false
         ignoreNull : true,
         // 单个文件最大尺寸(大约的值，单位为字节，即 1048576 为 1M)
-        maxFileSize : 1073741824,
+        maxFileSize : 2147483648,
         // 正则表达式匹配可以支持的文件名
         nameFilter : '^(.+[.])(gif|jpg|png|txt|rp|pdf|doc|xls|rar|zip|7z|docx|xlsx)$'
 }

@@ -25,10 +25,10 @@ var ant = {
                 defaultAutoCommit :false, // 提高fastInsert的性能,
                 initialSize:5,
                 minIdle:5,
-                maxActive:10,
-                timeBetweenEvictionRunsMillis:60000,
-                minEvictableIdleTimeMillis:30000,
-                testOnBorrow:false,
+                maxActive:50,
+                timeBetweenEvictionRunsMillis:60000, //配置间隔多久进行一次检测，检测需要关闭的空闲连接 ms
+                minEvictableIdleTimeMillis:300000, //配置一个连接在池中最小生存时间 ms
+                testOnBorrow:true, //设置为True,防止取到的连接不可用
                 testOnReturn:false,
                 testWhileIdle:true,
                 keepAlive:true,

@@ -141,7 +141,7 @@ public class Tbuss009MO implements Tbuss009BasicMO{
         SqlExpressionGroup e2 = Cnd.exps("tilt","like","%"+key+"%")
                 .or("unam","like","%"+key+"%")
                 .or("cdat","like","%"+key+"%");
-        return tbuss009DAOImp.queryAllSearchDoc(Cnd.where(e1).and(e2));
+        return tbuss009DAOImp.queryAllSearchDoc(Cnd.where(e1).and(e2).orderBy("cdat","desc"));
     }
 
     @Override
