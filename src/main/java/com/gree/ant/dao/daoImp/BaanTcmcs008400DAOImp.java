@@ -21,7 +21,7 @@ public class BaanTcmcs008400DAOImp extends BaseDAOImp<BaanTcmcs008400VO> impleme
     private Dao daoBaan197;
 
     public List<BaanTcmcs008400VO> queryBaanTcmcs008400Infor(){
-        String sqlStr = "select distinct a.t$bcur, a.t$ccur, a.t$rtyp, a.t$stdt, a.t$rate, a.t$apdt from ttcmcs008400 a where  a.t$apdt =  (select max(t$apdt) from ttcmcs008400 b where  b.t$bcur = a.t$bcur and b.t$ccur = a.t$ccur and b.t$rtyp =a.t$rtyp  ) order by a.t$bcur, a.t$ccur, a.t$rtyp, a.t$apdt desc";
+        String sqlStr = "select distinct a.t$bcur, a.t$ccur, a.t$rtyp, a.t$stdt, a.t$rate, a.t$apdt from ttcmcs008400 a where  a.t$apdt =  (select max(t$apdt) from ttcmcs008400 b where  b.t$bcur = a.t$bcur and b.t$ccur = a.t$ccur and b.t$rtyp =a.t$rtyp) and a.t$rtyp = 'STD' order by a.t$bcur, a.t$ccur, a.t$rtyp, a.t$apdt desc";
         sqlStr = sqlStr.replaceAll("\\$", "\\$\\$");
         Sql sql = Sqls.create(sqlStr);
         sql.setCallback(new SqlCallback() {

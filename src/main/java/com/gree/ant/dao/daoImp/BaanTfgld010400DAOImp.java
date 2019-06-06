@@ -21,7 +21,7 @@ public class BaanTfgld010400DAOImp extends BaseDAOImp<BaanTfgld010400VO> impleme
     private Dao daoBaan197;
 
     public List<BaanTfgld010400VO> queryBaanTfgld010400Infor(){
-        String sqlStr = "select t.t$dimx, t.t$desc from ttfgld010400 t where t.t$dtyp = 3 and t.t$bloc = 1";
+        String sqlStr = "select t.t$dimx, t.t$desc, t.t$subl, t.t$atyp, t.t$pdix, t.t$emno, t.t$bloc from ttfgld010400 t where t.t$dtyp = 3 and t.t$bloc in ('0', '1') and t.t$subl = 0";
         sqlStr = sqlStr.replaceAll("\\$", "\\$\\$");
         Sql sql = Sqls.create(sqlStr);
         sql.setCallback(new SqlCallback() {
@@ -32,6 +32,11 @@ public class BaanTfgld010400DAOImp extends BaseDAOImp<BaanTfgld010400VO> impleme
                     BaanTfgld010400VO baanTfgld010400VO = new BaanTfgld010400VO();
                     baanTfgld010400VO.setDimx(resultSet.getString("t$dimx") == null ? "" : resultSet.getString("t$dimx").trim());
                     baanTfgld010400VO.setSubAccountDesc(resultSet.getString("t$desc") == null ? "" : resultSet.getString("t$desc").trim());
+                    baanTfgld010400VO.setSubl(resultSet.getInt("t$subl"));
+                    baanTfgld010400VO.setAtyp(resultSet.getInt("t$atyp"));
+                    baanTfgld010400VO.setPdix(resultSet.getString("t$pdix") == null ? "" : resultSet.getString("t$pdix").trim());
+                    baanTfgld010400VO.setEmno(resultSet.getString("t$emno") == null ? "" : resultSet.getString("t$emno").trim());
+                    baanTfgld010400VO.setBloc(resultSet.getInt("t$bloc"));
                     baanTfgld010400VOList.add(baanTfgld010400VO);
                 }
                 return baanTfgld010400VOList;
