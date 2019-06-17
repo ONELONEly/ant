@@ -33,13 +33,13 @@ public class BaanTfgld008400DAOImp extends BaseDAOImp<BaanTfgld008400VO> impleme
                     baanTfgld008400VO.setLeac(resultSet.getString("t$leac") == null ? "" : resultSet.getString("t$leac").trim());
                     baanTfgld008400VO.setSubl(resultSet.getString("t$subl") == null ? "" : resultSet.getString("t$subl").trim());
                     baanTfgld008400VO.setSubjectDesc(resultSet.getString("t$desc") == null ? "" : resultSet.getString("t$desc").trim());
-                    baanTfgld008400VO.setAtyp(resultSet.getInt("t$atyp"));
-                    baanTfgld008400VO.setDbcr(resultSet.getInt("t$dbcr"));
-                    baanTfgld008400VO.setDim1(resultSet.getInt("t$dim1"));
-                    baanTfgld008400VO.setDim2(resultSet.getInt("t$dim2"));
-                    baanTfgld008400VO.setDim3(resultSet.getInt("t$dim3"));
-                    baanTfgld008400VO.setDim4(resultSet.getInt("t$dim4"));
-                    baanTfgld008400VO.setDim5(resultSet.getInt("t$dim5"));
+                    baanTfgld008400VO.setAtyp(resultSet.getByte("t$atyp"));
+                    baanTfgld008400VO.setDbcr(resultSet.getByte("t$dbcr"));
+                    baanTfgld008400VO.setDim1(resultSet.getByte("t$dim1"));
+                    baanTfgld008400VO.setDim2(resultSet.getByte("t$dim2"));
+                    baanTfgld008400VO.setDim3(resultSet.getByte("t$dim3"));
+                    baanTfgld008400VO.setDim4(resultSet.getByte("t$dim4"));
+                    baanTfgld008400VO.setDim5(resultSet.getByte("t$dim5"));
                     baanTfgld008400VOList.add(baanTfgld008400VO);
                 }
                 return baanTfgld008400VOList;

@@ -9,35 +9,31 @@ public class ContractVO {
      */
     private String htCoid;
 
+
+    /**
+     * 合同总金额
+     */
+    private Float htPric;
+
+    /**
+     * 合同生效日期
+     */
+    private Date htEdat;
+
+    /**
+     * 供应商代码
+     */
+    private String htPartCode;
+
     /**
      * 对方单位
      */
     private String htPart;
 
     /**
-     * 结算条件
+     * 供应商银行行号
      */
-    private String htPcon;
-
-    /**
-     * 结算币种
-     */
-    private String htFmor;
-
-    /**
-     * 结算日期
-     */
-    private Date htFdat;
-
-    /**
-     * 结算金额
-     */
-    private Double htFpic;
-
-    /**
-     * 结算方式
-     */
-    private String htModl;
+    private String partBankNo;
 
     public String getHtCoid() {
         return htCoid;
@@ -45,6 +41,38 @@ public class ContractVO {
 
     public void setHtCoid(String htCoid) {
         this.htCoid = htCoid;
+    }
+
+    public Float getHtPric() {
+        return htPric;
+    }
+
+    public void setHtPric(Float htPric) {
+        this.htPric = htPric;
+    }
+
+    public Date getHtEdat() {
+        return htEdat;
+    }
+
+    public void setHtEdat(Date htEdat) {
+        this.htEdat = htEdat;
+    }
+
+    public String getHtPartCode() {
+        return htPartCode;
+    }
+
+    public void setHtPartCode(String htPartCode) {
+        this.htPartCode = htPartCode;
+    }
+
+    public String getHtPartCoid() {
+        return htPartCode;
+    }
+
+    public void setHtPartCoid(String htPartCoid) {
+        this.htPartCode = htPartCoid;
     }
 
     public String getHtPart() {
@@ -55,43 +83,11 @@ public class ContractVO {
         this.htPart = htPart;
     }
 
-    public String getHtPcon() {
-        return htPcon;
+    public String getPartBankNo() {
+        return partBankNo;
     }
 
-    public void setHtPcon(String htPcon) {
-        this.htPcon = htPcon;
-    }
-
-    public String getHtFmor() {
-        return htFmor;
-    }
-
-    public void setHtFmor(String htFmor) {
-        this.htFmor = htFmor;
-    }
-
-    public Date getHtFdat() {
-        return htFdat;
-    }
-
-    public void setHtFdat(Date htFdat) {
-        this.htFdat = htFdat;
-    }
-
-    public Double getHtFpic() {
-        return htFpic;
-    }
-
-    public void setHtFpic(Double htFpic) {
-        this.htFpic = htFpic;
-    }
-
-    public String getHtModl() {
-        return htModl;
-    }
-
-    public void setHtModl(String htModl) {
-        this.htModl = htModl;
+    public void setPartBankNo(String partBankNo) {
+        this.partBankNo = partBankNo;
     }
 }
