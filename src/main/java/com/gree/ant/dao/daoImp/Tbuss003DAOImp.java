@@ -164,17 +164,17 @@ public class Tbuss003DAOImp extends BaseDAOImp<Tbuss003VO> implements Tbuss003DA
     }
 
     @Override
-    public List<FahhVO> queryAllProjectFahh(String startDate, String endDate) {
+    public List<FahhVO> queryAllProjectFahh(String startDate, String endDate, String acco) {
         String sqlStr = "select sum(FAHH) as SCORE,count(TAID) as num,CNAM,CSID from v_TBUSS003 where sta1 = 11 and SYNO in (select SYNO from CBASE013 where DSCA like '[项目]%') and" +
-                "  (FDAT >= to_date(@start,'yyyy-MM-dd') and FDAT <= to_date(@end,'YYYY-MM-DD')) group by CNAM,CSID";
-        return queryFahhResultFormat(startDate,endDate,sqlStr,this.getDao());
+                "  (FDAT >= to_date(@start,'yyyy-MM-dd') and FDAT <= to_date(@end,'YYYY-MM-DD')) and CSID in (select USID from CBASE000 where ACCO = @acco) group by CNAM,CSID";
+        return queryFahhResultFormat(startDate,endDate,acco,sqlStr,this.getDao());
     }
 
     @Override
-    public List<FahhVO> queryAllNotProjectFahh(String startDate, String endDate) {
+    public List<FahhVO> queryAllNotProjectFahh(String startDate, String endDate, String acco) {
         String sqlStr = "select sum(FAHH) as SCORE,count(TAID) as num,CNAM,CSID from v_TBUSS003 where sta1 = 11 and SYNO not in (select SYNO from CBASE013 where DSCA like '[项目]%') and" +
-                "  (FDAT >= to_date(@start,'yyyy-MM-dd') and FDAT <= to_date(@end,'YYYY-MM-DD')) group by CNAM,CSID";
-        return queryFahhResultFormat(startDate,endDate,sqlStr,this.getDao());
+                "  (FDAT >= to_date(@start,'yyyy-MM-dd') and FDAT <= to_date(@end,'YYYY-MM-DD')) and CSID in (select USID from CBASE000 where ACCO = @acco) group by CNAM,CSID";
+        return queryFahhResultFormat(startDate,endDate,acco,sqlStr,this.getDao());
     }
 
     @Override
@@ -216,9 +216,9 @@ public class Tbuss003DAOImp extends BaseDAOImp<Tbuss003VO> implements Tbuss003DA
         return DAOUtil.getTiCount(sql,this.getDao());
     }
 
-    private List<FahhVO> queryFahhResultFormat(String startDate, String endDate, String sqlStr, Dao dao){
+    private List<FahhVO> queryFahhResultFormat(String startDate, String endDate, String acco, String sqlStr, Dao dao){
         Sql sql = Sqls.create(sqlStr);
-        sql.setParam("start",startDate).setParam("end",endDate);
+        sql.setParam("start",startDate).setParam("end",endDate).setParam("acco",acco);
         sql.setCallback(new SqlCallback() {
             @Override
             public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {

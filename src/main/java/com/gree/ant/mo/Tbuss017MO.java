@@ -38,6 +38,11 @@ public class Tbuss017MO implements BasicMO<TBuss017VO>, TBuss017BasicMO {
     }
 
     @Override
+    public Integer deleteByName(String name) {
+        return null;
+    }
+
+    @Override
     public Integer updateByVO(TBuss017VO vo) {
         return tBuss017DAOImp.update(vo);
     }

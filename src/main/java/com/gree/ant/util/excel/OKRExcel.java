@@ -114,7 +114,7 @@ public class OKRExcel {
                 cell = new Label(1, col, tbuss012VO.getGoal() != null ? tbuss012VO.getGoal():"", format);
                 sheet.addCell(cell);
                 sheet.mergeCells(1,col,1,col+t13Count);
-                cell = new Label(2, col,tbuss012VO.getNdat() == null ? "" : (tbuss012VO.getNdat().equals("4") ? "年度":(tbuss012VO.getNdat().equals("3") ?  "季度":(tbuss012VO.getNdat().equals("2") ? "半季度" : (tbuss012VO.getNdat().equals("1") ? "月度" : "")))), format);
+                cell = new Label(2, col,tbuss012VO.getNdat() == null ? "" : (tbuss012VO.getNdat().equals("4") ? "年度":(tbuss012VO.getNdat().equals("3") ?  "半年度":(tbuss012VO.getNdat().equals("2") ? "季度" : (tbuss012VO.getNdat().equals("1") ? "月度" : "")))), format);
                 sheet.addCell(cell);
                 sheet.mergeCells(2,col,2,col+t13Count);
                 cell = new Label(3, col, tbuss012VO.getType() == null ? "": (tbuss012VO.getType() == 4 ? "创新类":(tbuss012VO.getType() == 3 ?  "管理类":(tbuss012VO.getType() == 2 ? "质量类" : (tbuss012VO.getType() == 1 ? "项目类" : "")))), format);

@@ -194,6 +194,7 @@ public class TaskController {
             tbuss003VO = tbuss003MO.fetchByTaid(taid);
         }
         resultMap.put("note",FileUtil.createFileUtil().convertClob(tbuss003VO.getNote()));
+        System.out.println(resultMap.get("note"));
         tbuss003VO.setNote(null);
         resultMap.put("task",tbuss003VO);
         return resultMap;

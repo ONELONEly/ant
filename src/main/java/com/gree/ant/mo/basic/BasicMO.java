@@ -42,6 +42,16 @@ public interface BasicMO<T> {
     Integer deleteByVO(T vo);
 
     /**
+     * @param name 删除的数据实体Id
+     * @return 删除的数据数量
+     * @description 根据实体，深处单条数据
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     * @createTime 2019 -01-09 09:32:17
+     */
+    Integer deleteByName(String name);
+
+    /**
      * @param vo 修改的数据
      * @return 修改的数据数量
      * @description 修改单条数据
