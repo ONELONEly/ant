@@ -94,6 +94,9 @@ public class UtilController {
     private ContractDAOImp contractDAOImp;
 
     @Inject
+    private ContractPayPlanDAOImp contractPayPlanDAOImp;
+
+    @Inject
     private BaanTfgld010400DAOImp baanTfgld010400DAOImp;
 
     @Inject
@@ -144,13 +147,19 @@ public class UtilController {
         public Map<String, Object> getContractInfor(@Param("htCoid") String htCoid, AdaptorErrorContext errorContext){
         QueryResult queryResult = null;
         int code = 200;
-        int count = 0;
+        int count = 1;
+        String comp = "400";
         List<ContractVO> contractVOList = new ArrayList<>();
+        List<ContractPayPlanVO> contractPayPlanVOList = new ArrayList<>();
+        ContractInforVO contractInforVO = new ContractInforVO();
         String msg = "请求合同错误，请检查合同编号!";
-        htCoid = "WW-15114";
+        htCoid = "WW-19032";
         if(null == errorContext){
             if(null != htCoid){
-                contractVOList = contractDAOImp.queryContractInfor(htCoid);
+                contractVOList = contractDAOImp.queryContractInfor(htCoid, comp);
+                contractPayPlanVOList = contractPayPlanDAOImp.queryContractPayPlanInfor(htCoid);
+                contractInforVO.setContractVOList(contractVOList);
+                contractInforVO.setContractPayPlanVOList(contractPayPlanVOList);
             }else {
                 code = 101;
                 msg = "合同编号不能为空，请检查合同编号再请求！";
@@ -159,7 +168,7 @@ public class UtilController {
             code = 100;
         }
         msg = code == 200 ? "查询成功" : msg;
-        return TableUtil.makeJson(code, msg, count, contractVOList);
+        return TableUtil.makeJson(code, msg, count, contractInforVO);
     }
 
     @Inject

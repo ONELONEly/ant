@@ -32,11 +32,11 @@ public class BaanTfgld010400DAOImp extends BaseDAOImp<BaanTfgld010400VO> impleme
                     BaanTfgld010400VO baanTfgld010400VO = new BaanTfgld010400VO();
                     baanTfgld010400VO.setDimx(resultSet.getString("t$dimx") == null ? "" : resultSet.getString("t$dimx").trim());
                     baanTfgld010400VO.setSubAccountDesc(resultSet.getString("t$desc") == null ? "" : resultSet.getString("t$desc").trim());
-                    baanTfgld010400VO.setSubl(resultSet.getInt("t$subl"));
-                    baanTfgld010400VO.setAtyp(resultSet.getInt("t$atyp"));
+                    baanTfgld010400VO.setSubl(resultSet.getByte("t$subl"));
+                    baanTfgld010400VO.setAtyp(resultSet.getByte("t$atyp"));
                     baanTfgld010400VO.setPdix(resultSet.getString("t$pdix") == null ? "" : resultSet.getString("t$pdix").trim());
                     baanTfgld010400VO.setEmno(resultSet.getString("t$emno") == null ? "" : resultSet.getString("t$emno").trim());
-                    baanTfgld010400VO.setBloc(resultSet.getInt("t$bloc"));
+                    baanTfgld010400VO.setBloc(resultSet.getByte("t$bloc"));
                     baanTfgld010400VOList.add(baanTfgld010400VO);
                 }
                 return baanTfgld010400VOList;
