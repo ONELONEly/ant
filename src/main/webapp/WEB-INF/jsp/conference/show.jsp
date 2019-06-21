@@ -105,75 +105,78 @@
         </div>
     </form>
     <hr class="layui-bg-orange"/>
-    <div class="layui-container" style="padding-bottom: 15px">
+    <div class="layui-container layui-collapse">
     </div>
 </div>
 
 <script id="conference" type="text/html">
     {{# layui.each(d, function(index, item) { }}
-    <div class="layui-container-item">
-        <div class="layui-row layui-col-space8 margin-50" >
-            <div class="layui-col-md12">
-                <label class="title"><span class="item-count">{{ index + 1 }}&nbsp;)</span>{{ item.title }}</label>
-            </div>
-        </div>
-        <div class="layui-row table-content margin-5">
-            <div class="layui-col-md2 table-label">
-                <label class="table-label-content">项目开始时间</label>
-            </div>
-            <div class="layui-col-md10 table-content-right">
-                <div class="layui-input-block table-input">
-                    {{ item.startDateTxt }}
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">{{ index + 1 }}.&nbsp;{{ item.title }}</h2>
+        <div class="layui-container-item layui-colla-content">
+            <div class="layui-row layui-col-space8" >
+                <div class="layui-col-md12">
+                    <label class="title"><span class="item-count">{{ index + 1 }}&nbsp;)</span>{{ item.title }}</label>
                 </div>
             </div>
-        </div>
-        <div class="layui-row table-content">
-            <div class="layui-col-md2 table-label">
-                <label class="table-label-content">项目计划上线时间</label>
-            </div>
-            <div class="layui-col-md10 table-content-right">
-                <div class="layui-input-block table-input">
-                    {{ item.scheduleDateTxt }}
+            <div class="layui-row table-content margin-5">
+                <div class="layui-col-md2 table-label">
+                    <label class="table-label-content">项目开始时间</label>
+                </div>
+                <div class="layui-col-md10 table-content-right">
+                    <div class="layui-input-block table-input">
+                        {{ item.startDateTxt }}
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="layui-row table-content">
-            <div class="layui-col-md2 table-label">
-                <label class="table-label-content">项目跟进人</label>
-            </div>
-            <div class="layui-col-md10 table-content-right">
-                <div class="layui-input-block table-input">
-                    {{ item.follower }}
+            <div class="layui-row table-content">
+                <div class="layui-col-md2 table-label">
+                    <label class="table-label-content">项目计划上线时间</label>
+                </div>
+                <div class="layui-col-md10 table-content-right">
+                    <div class="layui-input-block table-input">
+                        {{ item.scheduleDateTxt }}
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="layui-row table-content">
-            <div class="layui-col-md2 table-label">
-                <label class="table-label-content">项目上周完成</label>
-            </div>
-            <div class="layui-col-md10 table-content-right">
-                <div class="layui-input-block table-input">
-                    {{ item.preWeekDoneTxt }}
+            <div class="layui-row table-content">
+                <div class="layui-col-md2 table-label">
+                    <label class="table-label-content">项目跟进人</label>
+                </div>
+                <div class="layui-col-md10 table-content-right">
+                    <div class="layui-input-block table-input">
+                        {{ item.follower }}
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="layui-row table-content">
-            <div class="layui-col-md2 table-label">
-                <label class="table-label-content">项目本周计划</label>
-            </div>
-            <div class="layui-col-md10 table-content-right">
-                <div class="layui-input-block table-input">
-                    {{ item.nowWeekScheduleTxt }}
+            <div class="layui-row table-content">
+                <div class="layui-col-md2 table-label">
+                    <label class="table-label-content">项目上周完成</label>
+                </div>
+                <div class="layui-col-md10 table-content-right">
+                    <div class="layui-input-block table-input">
+                        {{ item.preWeekDoneTxt }}
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="layui-row table-content-last">
-            <div class="layui-col-md2 table-label">
-                <label class="table-label-content">其它</label>
+            <div class="layui-row table-content">
+                <div class="layui-col-md2 table-label">
+                    <label class="table-label-content">项目本周计划</label>
+                </div>
+                <div class="layui-col-md10 table-content-right">
+                    <div class="layui-input-block table-input">
+                        {{ item.nowWeekScheduleTxt }}
+                    </div>
+                </div>
             </div>
-            <div class="layui-col-md10 table-content-right">
-                <div class="layui-input-block table-input">
-                    {{ item.othersTxt }}
+            <div class="layui-row table-content-last">
+                <div class="layui-col-md2 table-label">
+                    <label class="table-label-content">其它</label>
+                </div>
+                <div class="layui-col-md10 table-content-right">
+                    <div class="layui-input-block table-input">
+                        {{ item.othersTxt }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -181,8 +184,9 @@
     {{# }) }}
 </script>
 <script language="JavaScript">
-    layui.use(["table","jquery","form",'laydate'],function () {
-        var table = layui.table, form = layui.form, $ = layui.jquery,laydate = layui.laydate,laytpl = layui.laytpl;
+    layui.use(["table","jquery","form",'laydate',"element"],function () {
+        var table = layui.table, form = layui.form, $ = layui.jquery,
+            laydate = layui.laydate,laytpl = layui.laytpl,element = layui.element
 
         $.ajax({
             type:'POST',
@@ -235,6 +239,7 @@
                         data = res.data;
                         laytpl(getTpl).render(data,function (html) {
                             $(".layui-container").append(html)
+                            element.init();
                         });
                     }else{
                         layer.msg(res.msg,{offset:'10px'})
