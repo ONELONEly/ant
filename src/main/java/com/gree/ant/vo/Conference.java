@@ -88,14 +88,6 @@ public class Conference {
     private String othersTxt;
 
     /**
-     * @description 月份
-     * @createTime 2019 -06-11 15:53:52
-     * @version 1.0
-     */
-    @Column(value = "month")
-    private String month;
-
-    /**
      * @description 周数
      * @createTime 2019 -06-11 15:53:54
      * @version 1.0
@@ -231,16 +223,6 @@ public class Conference {
     public void setVersion(Integer version) {
         this.version = version;
     }
-
-
-    public String getMonth() {
-        return month;
-    }
-
-    public void setMonth(String month) {
-        this.month = month;
-    }
-
 
     public Integer getWeek() {
         return week;

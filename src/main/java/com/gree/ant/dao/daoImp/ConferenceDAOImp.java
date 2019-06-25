@@ -12,7 +12,6 @@ import org.nutz.ioc.loader.annotation.IocBean;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +21,7 @@ public class ConferenceDAOImp extends BaseDAOImp<Conference> implements Conferen
 
     @Override
     public List<Conference> queryTableByCndPager(Condition condition, Pager pager) {
-        String sqlStr = "SELECT conference_guid,title,month,week,create_date FROM CONFERENCE $condition";
+        String sqlStr = "SELECT conference_guid,title,week,create_date FROM CONFERENCE $condition";
         Sql sql = Sqls.create(sqlStr);
         sql.setPager(pager);
         sql.setCondition(condition);
@@ -31,7 +30,7 @@ public class ConferenceDAOImp extends BaseDAOImp<Conference> implements Conferen
 
     @Override
     public List<Conference> queryShowByCnd(Condition condition) {
-        String sqlStr = "SELECT title,startDate,scheduleDate,follower,pre_week_done,now_week_schedule,others FROM CONFERENCE $condition";
+        String sqlStr = "SELECT title,startDate,scheduleDate,follower,pre_week_done,now_week_schedule,others FROM CONFERENCE $condition order by creator desc";
         Sql sql = Sqls.create(sqlStr);
         sql.setCondition(condition);
         return queryResultShowFormat(sql,this.getDao());
@@ -44,7 +43,6 @@ public class ConferenceDAOImp extends BaseDAOImp<Conference> implements Conferen
                 Conference conference = new Conference();
                 conference.setConference(rs.getString("conference_guid"));
                 conference.setTitle(rs.getString("title"));
-                conference.setMonth(rs.getString("month"));
                 conference.setWeek(rs.getInt("week"));
                 conference.setCreateDate(fromDate(rs.getDate("create_date")));
                 conferences.add(conference);

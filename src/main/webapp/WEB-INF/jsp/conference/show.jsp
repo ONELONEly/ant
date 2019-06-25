@@ -82,21 +82,6 @@
         <div class="layui-form-panel">
             <div class="layui-form-item">
                 <div class="layui-input-inline">
-                    <input type="text" name="month" id="month" placeholder="月份过滤" autocomplete="off"
-                           class="layui-input"/>
-                </div>
-
-                <div class="layui-input-inline">
-                    <select name="week" id="week" lay-filter="week">
-                        <option value=""  disabled selected>周数过滤</option>
-                        <option value="1" >第一周</option>
-                        <option value="2" >第二周</option>
-                        <option value="3" >第三周</option>
-                        <option value="4" >第四周</option>
-                    </select>
-                </div>
-
-                <div class="layui-input-inline">
                     <select name="acco" id="acco" lay-filter="acco" lay-search="">
                         <option value="" class="n-select" disabled selected>过滤科室</option>
                     </select>
@@ -206,19 +191,6 @@
             }
         });
 
-        var start = {
-            elem: '#month',
-            type: 'month',
-            done: function (value,obj) {
-                reload(value, $("#week option:selected").val() , $("#acco option:selected").val())
-            }
-        };
-        laydate.render(start);
-
-        form.on("select(week)",function (data) {
-            reload($("#month").val(),data.value, $("#acco option:selected").val())
-        })
-
         form.on("select(acco)",function (data) {
             reload($("#month").val(), $("#week option:selected").val(),data.value)
         })
@@ -238,7 +210,7 @@
                     if(res.code === 1){
                         data = res.data;
                         laytpl(getTpl).render(data,function (html) {
-                            $(".layui-container").append(html)
+                            $(".layui-container").html(html)
                             element.init();
                         });
                     }else{

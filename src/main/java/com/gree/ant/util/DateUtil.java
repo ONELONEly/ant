@@ -8,6 +8,57 @@ import java.util.*;
 
 public class DateUtil {
 
+    public enum DateTypeEnum {
+        week_of_year, //week of year
+        day_of_month, //month of year
+        week_of_month //week of month
+    }
+
+    public static Integer getWeek () {
+        Calendar calendar = getCalendar();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY); //当前的小时数
+        int minute = calendar.get(Calendar.MINUTE); //当前的分钟数
+        int day = calendar.get(Calendar.DAY_OF_WEEK); //当前是一周的第几天
+        int week = calendar.get(Calendar.WEEK_OF_YEAR); //当前是一年的第几周
+        if ((day != 1 && ((hour == 8 && minute > 35) || hour > 8))) {
+            week = week + 1;
+        }
+        return week;
+    }
+
+    public static Integer dayNumber (DateTypeEnum dateTypeEnum) {
+        return dayNumber(new Date(), dateTypeEnum);
+    }
+
+
+    public static Integer dayNumber (Date date, DateTypeEnum dateTypeEnum) {
+        if (date == null) {
+            date = new Date();
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int result;
+        switch (dateTypeEnum) {
+            case week_of_year:
+                result = calendar.get(Calendar.WEEK_OF_YEAR);break;
+            case day_of_month:
+                result = calendar.get(Calendar.DAY_OF_MONTH);break;
+            case week_of_month:
+                result = calendar.get(Calendar.WEEK_OF_MONTH);break;
+            default:
+                result = 0;
+        }
+        return result;
+    }
+
+    private static Calendar getCalendar () {
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.SUNDAY); //设置一周的第一天是星期几
+        calendar.setTime(date);
+        return calendar;
+    }
+
     /**
      * Add second date.
      *
@@ -168,6 +219,8 @@ public class DateUtil {
         SimpleDateFormat simple = new SimpleDateFormat("dd");
         return simple.format(date);
     }
+
+
 
     public static String formatYMDHMSDate(Date date){
         SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd hh:MM:ss");

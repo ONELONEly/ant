@@ -24,7 +24,7 @@
     </span>
 </div>
 <div class="x-body">
-    <form class="layui-form" style="width:50%;margin: 10px 0;">
+<%--    <form class="layui-form" style="width:50%;margin: 10px 0;">
         <div class="layui-form-pane" style="margin-top: 15px;">
             <div class="layui-input-inline">
                 <input type="text" name="month" id="month" placeholder="请选择日期" class="layui-input"/>
@@ -41,14 +41,12 @@
             <div class="layui-input-inline">
                 <button class="layui-btn layui-btn-radius" lay-filter="search" lay-submit="">查询</button>
             </div>
-            <div class="layui-input-inline">
-                <a href="./add" class="layui-btn layui-btn-radius" lay-filter="set">创建</a>
-            </div>
         </div>
-    </form>
-    <div class="layui-inline">
+    </form>--%>
+    <div class="layui-inline" style="margin-top: 10px;">
         <button class="layui-btn layui-bg-black delete-btn"><i class="layui-icon">&#xe640;</i>批量删除</button>
-        <button class="layui-btn layui-bg-black copy-btn"><i class="layui-icon">&#xe6af;</i>复制</button>
+        <a href="./add" class="layui-btn"><i class="layui-icon">&#xe6af;</i>创建</a>
+        <span>&nbsp;当前：第<span style="color: red;font-weight: bold;">${obj}</span>周</span>
     </div>
     <div class="layui-box">
         <table class="layui-table" id="eva" lay-filter="eva">
@@ -58,21 +56,12 @@
         <a href="javascript:" class="layui-table-link" lay-event="show">{{d.title}}</a>
     </script>
     <script type="text/html" id="operate">
+        <a  href="./copy?conference={{d.conference}}" class="layui-btn layui-btn-xs">复制</a>
         <a  href="./update?conference={{d.conference}}" class="layui-btn layui-btn-xs">编辑</a>
         <a class="layui-btn layui-btn-xs layui-bg-black" lay-event="del">删除</a>
     </script>
     <script type="text/html" id="weekTpl">
-        {{# if(d.week === null){ }}
-        <span>错误数据</span>
-        {{# }else if (d.week === 1){ }}
-        <span>第一周</span>
-        {{# }else if (d.week === 2){ }}
-        <span>第二周</span>
-        {{# }else if (d.week === 3){ }}
-        <span>第三周</span>
-        {{# }else if (d.week === 4){ }}
-        <span>第四周</span>
-        {{# } }}
+        <span>第{{d.week}}周</span>
     </script>
 </div>
 <script language="JavaScript">
@@ -95,14 +84,13 @@
             page:true,
             limit:10,
             limits:[10,20,30,40,50],
-            initSort:{field:'month',type:'desc'},
+            initSort:{field:'week',type:'desc'},
             cols:[[
                 {fixed:true,checkbox:true,width:50},
-                {field:'conference',align:'center',title:'编号',width:'20%'},
-                {field:'title',align:'center',width:'20%',title:'标题',toolbar:'#titleTpl'},
-                {field:'month',align:'center',width:'20%',title:'月份'},
-                {field:'week',align:'center',width:'20%',title:'周数',templet:'#weekTpl'},
-                {fixed:'right',align:'center',width:'20%'-50,toolbar:'#operate'}
+                {field:'conference',align:'center',title:'编号',width:'25%'},
+                {field:'title',align:'center',width:'25%',title:'标题',toolbar:'#titleTpl'},
+                {field:'week',align:'center',width:'25%',title:'周数',sort:true,templet:'#weekTpl'},
+                {fixed:'right',align:'center',width:'25%'-50,toolbar:'#operate'}
             ]],
             response:{
                 statusCode:0

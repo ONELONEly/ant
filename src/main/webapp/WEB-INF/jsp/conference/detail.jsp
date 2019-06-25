@@ -93,14 +93,10 @@
             <div class="layui-col-md6">
                 <label class="layui-form-label">周数：</label>
                 <div class="layui-input-block">
-                    <span class="content">${obj.week == 1 ? '第一周': obj.week == 2 ? "第二周" : obj.week == 3 ? "第三周" : obj.week == 4 ? "第四周" : "错误数据"}</span>
+                    <span class="content">第${obj.week}周</span>
                 </div>
             </div>
-            <div class="layui-col-md6" style="float: right">
-                <label class="layui-form-label">月份：</label>
-                <div class="layui-input-block">
-                    <span class="content">${obj.month}</span>
-                </div>
+            <div class="layui-col-md6">
             </div>
         </div>
         <div class="layui-row table-content margin-20">

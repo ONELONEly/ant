@@ -22,6 +22,5 @@ public class Cbase016MOTest {
     @Test
     public void queryAllSearch() {
         FileUtil fileUtil = FileUtil.createFileUtil();
-        System.out.println(conferenceMO.loadShowData("2019-06",2,"3"));
     }
 }

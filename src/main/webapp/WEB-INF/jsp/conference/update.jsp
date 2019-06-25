@@ -66,21 +66,7 @@
                     <input type="text" name="title" id="title" placeholder="请录入标题" value="${obj.title}" class="layui-input" lay-verify="title"/>
                 </div>
             </div>
-            <div class="layui-col-md4">
-                <div class="layui-input-block">
-                    <select name="week" id="week" lay-verify="week">
-                        <option value=""  disabled selected>请选择周数</option>
-                        <option value="1" >第一周</option>
-                        <option value="2" >第二周</option>
-                        <option value="3" >第三周</option>
-                        <option value="4" >第四周</option>
-                    </select>
-                </div>
-            </div>
-            <div class="layui-col-md4" style="float: right">
-                <div class="layui-input-block">
-                    <input type="text" name="month" id="date" placeholder="请选择日期" value="${obj.month}" class="layui-input" lay-verify="month" readonly/>
-                </div>
+            <div class="layui-col-md8">
             </div>
         </div>
         <div class="layui-row table-content margin-20">
@@ -193,16 +179,6 @@
             title:function (value) {
                 if(checkForm(value)){
                     return "请录入标题";
-                }
-            },
-            week:function (value) {
-                if (checkForm(value)) {
-                    return "请选择周数"
-                }
-            },
-            month:function (value) {
-                if(checkForm(value)){
-                    return "请选择月份";
                 }
             },
             startDate:function (value) {

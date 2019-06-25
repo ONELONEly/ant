@@ -9,6 +9,6 @@ public interface ConferenceBasicMO {
 
 
     QueryResult loadTableData (String usid, String month, Integer week, Integer pageNumber, Integer pageSize);
-    List<Conference> loadShowData (String month,Integer week,String acco);
+    List<Conference> loadShowData (String acco);
     Conference fetchData (String conferenceGuid);
 }

@@ -10,6 +10,8 @@ import org.nutz.mvc.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @At("/conference")
@@ -22,14 +24,26 @@ public class ConferenceController {
 
     @At
     @Ok("jsp:jsp.conference.index")
-    public String index () {
-        return "";
+    public Integer index () {
+        return DateUtil.dayNumber(DateUtil.DateTypeEnum.week_of_year);
     }
 
     @At
     @Ok("jsp:jsp.conference.add")
     public String add () {
-        return null;
+        return "";
+    }
+
+    @At
+    @Ok("jsp:jsp.conference.add")
+    public Conference copy (@Param("conference")String conference) {
+        FileUtil fileUtil = FileUtil.createFileUtil();
+        Conference conferenceVO = conferenceMO.fetchData(conference);
+        conferenceVO.setNowWeekScheduleTxt(fileUtil.convertClob(conferenceVO.getNowWeekSchedule()).replaceAll("<br/>","\n"));
+        conferenceVO.setNowWeekSchedule(null);
+        conferenceVO.setPreWeekDone(null);
+        conferenceVO.setOthers(null);
+        return conferenceVO;
     }
 
     @At
@@ -75,6 +89,7 @@ public class ConferenceController {
         if(StringUtil.checkString(othersTxt)) {
             conference.setOthers(fileUtil.formatClobByString(othersTxt));
         }
+        conference.setWeek(DateUtil.getWeek());
         conference.setModifyUser(usid);
         conference.setModifyDate(LocalDateTime.now());
         conference.setVersion(1);
@@ -98,8 +113,7 @@ public class ConferenceController {
         preConference.setModifyDate(LocalDateTime.now());
         preConference.setModifyUser(usid);
         preConference.setTitle(conference.getTitle());
-        preConference.setMonth(conference.getMonth());
-        preConference.setWeek(conference.getWeek());
+        preConference.setWeek(DateUtil.getWeek());
         preConference.setStartDate(conference.getStartDate());
         preConference.setScheduleDate(conference.getScheduleDate());
         preConference.setFollower(conference.getFollower());
@@ -185,7 +199,7 @@ public class ConferenceController {
     @At
     @POST
     @Ok("json")
-    public Map<String,Object> loadShowData (@Param("month")String month,@Param("week")Integer week,@Param("acco")String acco) {
-        return ResultUtil.getResult(1, "成功",conferenceMO.loadShowData(month, week, acco));
+    public Map<String,Object> loadShowData (@Param("acco")String acco) {
+        return ResultUtil.getResult(1, "成功",conferenceMO.loadShowData(acco));
     }
 }

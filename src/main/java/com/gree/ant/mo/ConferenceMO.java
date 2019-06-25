@@ -75,10 +75,9 @@ public class ConferenceMO implements BasicMO<Conference>, ConferenceBasicMO {
     }
 
     @Override
-    public List<Conference> loadShowData(String month, Integer week,String acco) {
+    public List<Conference> loadShowData(String acco) {
         Cnd cnd = Cnd.NEW();
-        cnd.and("month","=",month);
-        cnd.and("week","=",week);
+        cnd.and("week","=", DateUtil.dayNumber(DateUtil.DateTypeEnum.week_of_year));
         if (StringUtil.checkString(acco) && baseMoFactory.getCbase017MO().fetchByAcco(acco) != null) {
             cnd.and("creator", "in", "select usid from cbase000 where acco = '" + acco+"'");
             return conferenceDAOImp.queryShowByCnd(cnd);
