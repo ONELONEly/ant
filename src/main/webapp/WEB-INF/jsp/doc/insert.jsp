@@ -109,7 +109,7 @@
                     obj.preview(function (index,file,result) {//读取本地文件
                         var tr = $(['<tr id="upload-'+ index +'">'
                             ,'<td>'+ file.name +'</td>'
-                            ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
+                            ,'<td>'+ (file.size/1024).toFixed(1) +'kb</td>'
                             ,'<td>等待上传</td>'
                             ,'<td>'
 //                            ,'<button class="layui-btn layui-btn-xs demo-re layui-hide">重传</button>'

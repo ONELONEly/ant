@@ -20,3 +20,16 @@ function replaceAll(str,f,e) {
     var reg = new RegExp(f, "g")
     return str.replace(reg, e)
 }
+
+var xhrOnProgress = function (fun) {
+    xhrOnProgress.onprogress = fun;
+    return function () {
+        var xhr = $.ajaxSettings.xhr();
+        if(typeof xhrOnProgress.onprogress !== 'function')
+            return xhr
+        if(xhrOnProgress.onprogress && xhr.upload) {
+            xhr.upload.onprogress = xhrOnProgress.onprogress
+        }
+        return xhr
+    }
+}

@@ -27,10 +27,10 @@ public class FileUtil {
     private static Integer BUFFER_SIZE = 1024;
 
     //1.本地文件存储地址
-/*    private static String IMAGE_SAVEPATH = "E:\\filePath\\";
+    private static String IMAGE_SAVEPATH = "E:\\filePath\\";
     private static String FILE_SAVEPATH = "E:\\filePath\\";
     private static String BASIC_SAVEPATH = "E:\\filePath\\";
-   private static String NORMALIMAGE = "static\\images\\header.jpg";*/
+   private static String NORMALIMAGE = "static\\images\\header.jpg";
 
     //2.本地访问服务器文件存储地址
 //    private static String IMAGE_SAVEPATH = "\\\\10.1.18.83\\ant\\image\\";
@@ -40,10 +40,10 @@ public class FileUtil {
 
     //3.服务器文件存储地址
 
-    private static String IMAGE_SAVEPATH = "\\\\192.13.183.83\\ant\\image\\";
-    private static String FILE_SAVEPATH = "\\\\192.13.183.83\\ant\\file\\";
-    private static String BASIC_SAVEPATH = "\\\\192.13.183.83\\ant\\";
-    private static String NORMALIMAGE = "static\\images\\";
+//    private static String IMAGE_SAVEPATH = "\\\\192.13.183.83\\ant\\image\\";
+//    private static String FILE_SAVEPATH = "\\\\192.13.183.83\\ant\\file\\";
+//    private static String BASIC_SAVEPATH = "\\\\192.13.183.83\\ant\\";
+//    private static String NORMALIMAGE = "static\\images\\";
 
 
     public static FileUtil createFileUtil() {

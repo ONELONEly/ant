@@ -102,6 +102,10 @@
     margin: 5px;
 }
 
+.x-margin-20 {
+    margin-top: 20px;
+}
+
 .xblock{
     display: block;
     margin-bottom: 10px;
