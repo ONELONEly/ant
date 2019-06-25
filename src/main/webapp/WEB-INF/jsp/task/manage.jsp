@@ -227,7 +227,7 @@
                 dataType:'json',
                 success:function (res) {
                     if(res.code === 1){
-                        layer.confirm(res.msg,function (index) {
+                        layer.confirm(res.msg, {offset:'10px'},function (index) {
                             layer.close(index);
                             table.reload("manage");
                         });

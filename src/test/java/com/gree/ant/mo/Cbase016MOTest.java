@@ -1,6 +1,7 @@
 package com.gree.ant.mo;
 
 import com.gree.MyNutTestRunner;
+import com.gree.ant.util.FileUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -15,8 +16,12 @@ public class Cbase016MOTest {
     @Inject
     private Cbase016MO cbase016MO;
 
+    @Inject
+    private ConferenceMO conferenceMO;
+
     @Test
     public void queryAllSearch() {
-        System.out.println(cbase016MO.queryAllSearch());
+        FileUtil fileUtil = FileUtil.createFileUtil();
+        System.out.println(conferenceMO.loadShowData("2019-06",2,"3"));
     }
 }

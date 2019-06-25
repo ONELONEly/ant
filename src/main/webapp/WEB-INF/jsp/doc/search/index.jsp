@@ -119,8 +119,8 @@
         }
         .x-docList{
             width: 100%;
-            margin: 20px 0 0;
-            text-align: center;
+            margin: 20px;
+            text-align: left;
         }
         .doc-search-page{
             width: 100%;

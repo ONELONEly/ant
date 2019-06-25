@@ -15,6 +15,7 @@ import com.gree.ant.vo.daemonVO.SyncDSTaskVO;
 import com.gree.ant.vo.enumVO.ResultEnum;
 import com.gree.ant.vo.response.FahhVO;
 import com.gree.ant.vo.util.TaskUtilVO;
+import com.mchange.v2.lang.StringUtils;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
@@ -26,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -227,15 +229,23 @@ public class Tbuss003MO implements Tbuss003BasicMO{
     }
 
     @Override
-    public List<FahhVO> queryAllProjectFahh(String date) {
+    public List<FahhVO> queryAllProjectFahh(String date, String acco) {
         Map<String,String> dateMap = DateUtil.getStartEndDate(date);
-        return tbuss003DAOImp.queryAllProjectFahh(dateMap.get("startDate"),dateMap.get("endDate"));
+        if(StringUtil.checkString(acco)) {
+            return tbuss003DAOImp.queryAllProjectFahh(dateMap.get("startDate"), dateMap.get("endDate"), acco);
+        }else{
+            return new ArrayList<>();
+        }
     }
 
     @Override
-    public List<FahhVO> queryAllNotProjectFahh(String date) {
+    public List<FahhVO> queryAllNotProjectFahh(String date, String acco) {
         Map<String,String> dateMap = DateUtil.getStartEndDate(date);
-        return tbuss003DAOImp.queryAllNotProjectFahh(dateMap.get("startDate"),dateMap.get("endDate"));
+        if (StringUtil.checkString(acco)) {
+            return tbuss003DAOImp.queryAllNotProjectFahh(dateMap.get("startDate"),dateMap.get("endDate"), acco);
+        }else{
+            return new ArrayList<>();
+        }
     }
 
     @Override

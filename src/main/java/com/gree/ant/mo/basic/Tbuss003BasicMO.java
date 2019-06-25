@@ -212,9 +212,9 @@ public interface Tbuss003BasicMO {
 
     List<TaskUtilVO> queryAllByPagerMsg(Pager pager,TaskUtilVO taskUtilVO,String sort,String order);
 
-    List<FahhVO> queryAllProjectFahh(String date);
+    List<FahhVO> queryAllProjectFahh(String date, String acco);
 
-    List<FahhVO> queryAllNotProjectFahh(String date);
+    List<FahhVO> queryAllNotProjectFahh(String date, String acco);
 
     Integer getUserScoreByPtnoUsid(String ptno, String usid);
 

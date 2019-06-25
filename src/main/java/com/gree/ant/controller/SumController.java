@@ -78,15 +78,15 @@ public class SumController {
 
     @At
     @Ok("json")
-    public Map<String,Object> queryAllProjectFahh(@Param("date")String date){
-        List<FahhVO> resultData = bussMoFactory.getTbuss003MO().queryAllProjectFahh(date);
+    public Map<String,Object> queryAllProjectFahh(@Param("date")String date,@Param("acco")String acco){
+        List<FahhVO> resultData = bussMoFactory.getTbuss003MO().queryAllProjectFahh(date,acco);
         return TableUtil.makeJson(0,"",resultData.size(),resultData);
     }
 
     @At
     @Ok("json")
-    public Map<String,Object> queryAllNotProjectFahh(@Param("date")String date){
-        List<FahhVO> resultData = bussMoFactory.getTbuss003MO().queryAllNotProjectFahh(date);
+    public Map<String,Object> queryAllNotProjectFahh(@Param("date")String date,@Param("acco")String acco){
+        List<FahhVO> resultData = bussMoFactory.getTbuss003MO().queryAllNotProjectFahh(date,acco);
         return TableUtil.makeJson(0,"",resultData.size(),resultData);
     }
 

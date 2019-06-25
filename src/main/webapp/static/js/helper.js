@@ -15,3 +15,8 @@ function checkForm(content) {
     }
     return status;
 }
+
+function replaceAll(str,f,e) {
+    var reg = new RegExp(f, "g")
+    return str.replace(reg, e)
+}

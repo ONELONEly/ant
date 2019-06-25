@@ -2,6 +2,8 @@ package com.gree.ant.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class DateUtil {
@@ -22,6 +24,11 @@ public class DateUtil {
         cal.setTime(date);
         cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + second);
         return cal.getTime();
+    }
+
+    public static String formDateToString(LocalDateTime dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return dateTime.format(formatter);
     }
 
     /**

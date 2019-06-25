@@ -122,9 +122,9 @@ public interface Tbuss003DAO extends BaseDAO<Tbuss003VO>{
 
     List<TaskUtilVO> queryAllTaskByPagerCnd(Pager pager, Cnd cnd);
 
-    List<FahhVO> queryAllProjectFahh(String startDate,String endDate);
+    List<FahhVO> queryAllProjectFahh(String startDate,String endDate,String acco);
 
-    List<FahhVO> queryAllNotProjectFahh(String startDate,String endDate);
+    List<FahhVO> queryAllNotProjectFahh(String startDate,String endDate,String acco);
 
     void markScore(Condition condition,Integer stag);
 

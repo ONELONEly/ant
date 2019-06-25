@@ -100,7 +100,7 @@
                 <td class="center" rowspan="{{item.tasks.length}}">{{index+1}}</td>
                 <td class="center" rowspan="{{item.tasks.length}}"><a href="javascript:" class="layui-table-link" onclick="showGoal($(this))">{{item.goal === undefined ? '': item.goal}}</a></td>
                 <td class="center" rowspan="{{item.tasks.length}}">
-                    {{ item.ndat === '4' ? '年度':(item.ndat === '3' ?  '季度':(item.ndat === '2' ? '半季度' : (item.ndat === '1' ? '月度' : ''))) }}
+                    {{ item.ndat === '4' ? '年度':(item.ndat === '3' ?  '半年度':(item.ndat === '2' ? '季度' : (item.ndat === '1' ? '月度' : ''))) }}
                 </td>
                 <td class="center" rowspan="{{item.tasks.length}}">
                     {{ item.type === 4 ? '创新类':(item.type === 3 ?  '管理类':(item.type === 2 ? '质量类' : (item.type === 1 ? '项目类' : ''))) }}

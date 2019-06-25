@@ -35,10 +35,14 @@
         <div class="layui-form-panel">
             <div class="layui-form-item">
                 <div class="layui-input-inline">
-                    <div class="layui-input-inline">
-                        <input type="text" name="mdat" id="mdat" placeholder="日期过滤" lay-verify="mdat" autocomplete="off"
+                    <input type="text" name="mdat" id="mdat" placeholder="日期过滤" lay-verify="mdat" autocomplete="off"
                                class="layui-input"/>
-                    </div>
+                </div>
+
+                <div class="layui-input-inline">
+                    <select name="acco" id="acco" lay-filter="acco" lay-search="">
+                        <option value="" class="n-select" disabled selected>过滤科室</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -82,29 +86,55 @@
     layui.use(["table","jquery","form",'laydate'],function () {
         var table = layui.table, form = layui.form, $ = layui.jquery,laydate = layui.laydate;
 
+        $.ajax({
+            type:'POST',
+            url:'../util/findC17',
+            dataType:'json',
+            success:function (data) {
+                var accos = data.acco;
+                var uOption = "";
+                for(var i = 0;i<accos.length;i++){
+                    uOption += "<option value='"+accos[i].id+"'>"+accos[i].dsca+"</option>";
+                }
+                $("#acco").append(uOption);
+                form.render();
+            },
+            error:function (kellyj) {
+                layer.alert("发生错误，错误码为:"+kellyj.status,{offset:'10px',anim:1});
+            }
+        });
+
         var start = {
             elem: '#mdat',
             type: 'month',
             done: function (value,obj) {
-                table.reload('project',{
-                    where:{
-                        date:value
-                    },
-                    page:{
-                        curr:1
-                    }
-                });
-                table.reload('notProject',{
-                    where:{
-                        date:value
-                    },
-                    page:{
-                        curr:1
-                    }
-                });
+                reload(value,$("#acco option:selected").val())
             }
         };
         laydate.render(start);
+
+        form.on("select(acco)",function (data) {
+            reload($("#date").val(), data.value)
+        })
+
+        function reload (date, acco) {
+            let where = {
+                date:date,
+                acco:acco
+            }
+            table.reload('project',{
+                where:where,
+                page:{
+                    curr:1
+                }
+            });
+            table.reload('notProject',{
+                where:where,
+                page:{
+                    curr:1
+                }
+            });
+        }
     });
 </script>
 </html>
