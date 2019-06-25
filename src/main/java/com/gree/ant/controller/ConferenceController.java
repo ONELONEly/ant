@@ -7,11 +7,7 @@ import org.nutz.dao.QueryResult;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.*;
-
-import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 @At("/conference")
