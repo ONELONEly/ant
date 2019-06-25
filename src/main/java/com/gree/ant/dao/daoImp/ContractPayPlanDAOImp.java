@@ -24,7 +24,7 @@ public class ContractPayPlanDAOImp extends BaseDAOImp<ContractPayPlanVO> impleme
     @Override
     public List<ContractPayPlanVO> queryContractPayPlanInfor(String coid) {
 
-        String sqlStr = "select tc5.pcon, tc5.fpic, tc5.modl, tc5.plva, tc5.fdat  from tcont002 tc2, tcont005 tc5 where tc2.cono = tc5.cono and tc2.coid = @coid";
+        String sqlStr = "select tc5.pcon, tc5.fpic, tc5.modl, tc5.plva, tc5.fmor, tc5.fdat  from tcont002 tc2, tcont005 tc5 where tc2.cono = tc5.cono and tc2.coid = @coid";
         Sql sql = Sqls.create(sqlStr);
         sql.params().set("coid", coid);
         sql.setCallback(new SqlCallback() {
@@ -36,6 +36,7 @@ public class ContractPayPlanDAOImp extends BaseDAOImp<ContractPayPlanVO> impleme
                     contractPayPlanVO.setPcon(resultSet.getString("pcon") == null ? "" : resultSet.getString("pcon").trim());
                     contractPayPlanVO.setFpric(resultSet.getFloat("fpic"));
                     contractPayPlanVO.setPlva(resultSet.getFloat("plva"));
+                    contractPayPlanVO.setCurrency(resultSet.getString("fmor") == null ? "" : resultSet.getString("fmor").trim());
                     contractPayPlanVO.setFdate(resultSet.getDate("fdat"));
                     list.add(contractPayPlanVO);
                 }
