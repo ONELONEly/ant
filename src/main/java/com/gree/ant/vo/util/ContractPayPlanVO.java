@@ -24,6 +24,12 @@ public class ContractPayPlanVO {
      */
     private float plva;
 
+    /**
+     * 币种
+     * @return
+     */
+    private String currency;
+
     public String getPcon() {
         return pcon;
     }
@@ -54,5 +60,13 @@ public class ContractPayPlanVO {
 
     public void setPlva(float plva) {
         this.plva = plva;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }
