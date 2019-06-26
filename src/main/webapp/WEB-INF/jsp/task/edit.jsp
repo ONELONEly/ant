@@ -252,6 +252,9 @@
             <div class="layui-form-item">
                 <div class="layui-upload">
                     <button type="button" class="layui-btn layui-btn-radius layui-bg-black" id="uploadList">选择多文件</button>
+                    <div id="layui-progress">
+
+                    </div>
                     <div class="layui-upload-list">
                         <table class="layui-table">
                             <thead>
@@ -294,7 +297,10 @@
         var form = layui.form,$ = layui.jquery,element = layui.element,table=layui.table,
             layer = layui.layer,layedit = layui.layedit,upload = layui.upload;
         var fileList = $("#fileList"),taid = $("#taid").val(),usid = $("#usid").val(),ptno = "${obj.task.ptno}";
-
+        var progressItem = {
+            currentProgress: 0,
+            maxProgressValue: 0,
+        },itemCount = 0,valueCount = 0,totalValue = [];
 
         getPtnoAfter(ptno)
 
@@ -317,9 +323,29 @@
             multiple:true,
             auto:false,
             bindAction:'#upload',
+            xhr: xhrOnProgress,
+            progress: function (value, loaded, total) {
+                if( value > 0 && value < 100) {
+                    if (valueCount === 0 && progressItem.currentProgress === 0) {
+                        progressItem.maxProgressValue = loaded
+
+                        progressItem.currentProgress = value
+                    } else {
+                        if (loaded > progressItem.maxProgressValue && value > progressItem.currentProgress) {
+                            progressItem.maxProgressValue = loaded
+                            progressItem.currentProgress = value
+                        }
+                    }
+                    if (totalValue.indexOf(total) === -1) {
+                        valueCount ++;
+                    }
+                }
+                element.progress('upload',progressItem.currentProgress + '%')
+            },
             choose:function (obj) {
                 files = obj.pushFile();//将每次选择的文件追加到文件队列
                 obj.preview(function (index,file) {//读取本地文件
+                    itemCount++;
                     var tr = $(['<tr id="upload-'+ index +'">'
                         ,'<td>'+ file.name +'</td>'
                         ,'<td>'+ (file.size/1024).toFixed(1) +'kb</td>'
@@ -340,22 +366,39 @@
                     });
                     fileList.append(tr);
                 });
+                var progressStr = '<div class="layui-progress x-margin x-margin-20" lay-showPercent="true" lay-filter="upload">' +
+                    '                    <div class="layui-progress-bar layui-bg-green" lay-percent="0%"></div>' +
+                    '</div>';
+                $("#layui-progress").html(progressStr)
+                element.render()
+                progressItem.currentProgress = 0
             },
             done:function (res,index,upload) { //上传完毕
+                itemCount--
+                if (itemCount === 0) {
+                    progressItem.currentProgress = 100
+                }
                 if(res.code === 1){//上传成功
                     table.reload("file");
                     var tr = fileList.find("tr#upload-"+index),tds = tr.children();
                     tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
                     tds.eq(3).html(''); // 清空操作
                     delete files[index];
+                    element.progress('upload',progressItem.currentProgress + '%')
                     return;
                 }
                 this.error(index,upload);
+                element.progress('upload',progressItem.currentProgress + '%')
             },
             error:function (index,upload) {
+                itemCount--
+                if (itemCount === 0) {
+                    progressItem.currentProgress = 100
+                }
                 var tr = fileList.find("tr#upload-"+index),tds = tr.children();
                 tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
                 tds.eq(3).find(".demo-reload").removeClass('layui-hide');
+                element.progress('upload',progressItem.currentProgress + '%')
             }
         };
 
