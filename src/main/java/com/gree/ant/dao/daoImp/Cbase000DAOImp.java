@@ -45,6 +45,15 @@ public class Cbase000DAOImp extends BaseDAOImp<Cbase000VO> implements Cbase000DA
     }
 
     @Override
+    public Boolean updatePawd(String password, String userId) {
+        String sqlStr = "update CBASE000 set pawd = @pawd where usid = @usid";
+        Sql sql = Sqls.create(sqlStr);
+        sql.params().set("usid",userId).set("pawd",password);
+        this.getDao().execute(sql);
+        return true;
+    }
+
+    @Override
     public List<ResultVO> queryAllUD() {
         String sqlStr = "select c.usid,c.dsca from cbase000 c order by c.dsca asc";
         return DAOUtil.getResultVO(sqlStr,this.getDao());

@@ -33,6 +33,8 @@ public interface Cbase000DAO extends BaseDAO<Cbase000VO> {
      */
     Boolean loginCheck(String usid,String pawd);
 
+    Boolean updatePawd (String password, String userId);
+
     /**
      * Query all usiddsca list.
      *

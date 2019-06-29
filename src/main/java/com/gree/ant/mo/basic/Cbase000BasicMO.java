@@ -46,6 +46,8 @@ public interface Cbase000BasicMO {
      */
     Boolean loginCheck(String usid,String pawd);
 
+    Boolean updatePassword (String userId, String password);
+
     /**
      * Insert cbase 000 vo.
      *

@@ -240,6 +240,7 @@
         });
 
         function decideShow(data){
+            setSingle(data.length);
             data.length > 10 ? page(data,$) : setHtml(data,$);
         }
         //调用分页
@@ -251,6 +252,7 @@
                 ,layout: ['prev', 'page', 'next', 'refresh', 'skip']
                 ,jump: function(obj,first){
                     var showData = data.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
+                    setSingle(showData.length);
                     setHtml(showData,$);
                 }
             });
@@ -267,7 +269,6 @@
             layTpl(getTpl).render(showData,function (html) {
                 $(".x-docList").html(html);
             });
-            setSingle(showData.length);
             titleClickEvent($)
         }
 

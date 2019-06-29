@@ -860,11 +860,11 @@ public class GradeController {
     @At
     @Ok("void")
     public void printGradeOkr(@Param("pdat")String pdat,@Param("officeNumber")String officeNumber,
-                              @Param("S")Integer S, @Param("A")Integer A, @Param("C")Integer C,
+                              @Param("S")Integer S, @Param("A")Integer A,@Param("BPlus")Integer BPlus, @Param("C")Integer C,
                                HttpServletRequest request,HttpServletResponse response){
         List<ExportGradeOkrVO> gradeVOS = cbase000MO.queryAllGradeOkrByPdat(pdat, officeNumber);
         try {
-            GradeExcel.export(gradeMarkStage(gradeVOS,S,A,C,pdat,officeNumber),pdat,request,response);
+            GradeExcel.export(gradeMarkStage(gradeVOS,S,A,BPlus,C,pdat,officeNumber),pdat,request,response);
         } catch (IOException | WriteException e) {
             e.printStackTrace();
         }
@@ -903,9 +903,9 @@ public class GradeController {
     @At
     @Ok("json")
     public Map<String,Object> gradeOkrData(@Param("pdat")String pdat,@Param("officeNumber")String officeNumber,
-                                           @Param("S")Integer S, @Param("A")Integer A, @Param("C")Integer C){
+                                           @Param("S")Integer S, @Param("A")Integer A,@Param("BPlus")Integer BPlus,@Param("C")Integer C){
         List<ExportGradeOkrVO> gradeVOS = cbase000MO.queryAllGradeOkrByPdat(pdat, officeNumber);
-        return ResultUtil.getResult(1,"",gradeMarkStage(gradeVOS,S,A,C,pdat,officeNumber));
+        return ResultUtil.getResult(1,"",gradeMarkStage(gradeVOS,S,A,BPlus,C,pdat,officeNumber));
     }
 
     private Map<String,Object> formatModel(String grop,String ptno){
@@ -927,7 +927,8 @@ public class GradeController {
      * @version 1.0
      * @createTime 2019 -01-09 10:37:31
      */
-    private List<ExportGradeOkrVO> gradeMarkStage(List<ExportGradeOkrVO> gradeVOS,Integer S,Integer A,Integer C,String pdat,String officeNumber){
+    private List<ExportGradeOkrVO> gradeMarkStage(List<ExportGradeOkrVO> gradeVOS,Integer S,Integer A,
+        Integer BPlus,Integer C,String pdat,String officeNumber){
         List<ExportGradeOkrVO> gradeOkrVOS = new ArrayList<>();
         int gradeCount = gradeVOS.size();
         if(gradeCount <= S){
@@ -949,7 +950,7 @@ public class GradeController {
                 gradeOkrVOS.add(gradeVO);
             }
 
-        }else if(gradeCount >  (S + A) && gradeCount <= (S + A + C)){
+        }else if(gradeCount <= (S + A + BPlus)){
 
             for (int i = gradeCount-1;i >= 0;i--){
                 ExportGradeOkrVO gradeVO = gradeVOS.get(i);
@@ -957,6 +958,22 @@ public class GradeController {
                     gradeVO.setStage("S");
                 }else if (i >= gradeCount - S - A){
                     gradeVO.setStage("A");
+                }else{
+                    gradeVO.setStage("B+");
+                }
+                gradeOkrVOS.add(gradeVO);
+            }
+
+        }else if(gradeCount >  (S + A +BPlus) && gradeCount <= (S + A + C + BPlus)){
+
+            for (int i = gradeCount-1;i >= 0;i--){
+                ExportGradeOkrVO gradeVO = gradeVOS.get(i);
+                if(i >= gradeCount - S){
+                    gradeVO.setStage("S");
+                }else if (i >= gradeCount - S - A){
+                    gradeVO.setStage("A");
+                }else if (i >= gradeCount - S - A - BPlus){
+                    gradeVO.setStage("B+");
                 }else{
                     gradeVO.setStage("C");
                 }
@@ -971,6 +988,8 @@ public class GradeController {
                     gradeVO.setStage("S");
                 } else if (i >= gradeCount - S - A) {
                     gradeVO.setStage("A");
+                }  else if (i >= gradeCount - S - A - BPlus) {
+                    gradeVO.setStage("B+");
                 } else if (i >= C){
                     gradeVO.setStage("B");
                 } else{

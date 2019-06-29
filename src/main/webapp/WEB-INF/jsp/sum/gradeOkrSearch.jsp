@@ -80,6 +80,14 @@
             </div>
 
             <div class="layui-form-item">
+                <label class="layui-form-label">B+绩效</label>
+                <div class="layui-input-block">
+                    <input type="text" name="BPlus" id="BPlus" placeholder="请录入B+绩效的数量" lay-verify="BPlus|number" autocomplete="off"
+                           class="layui-input"/>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
                 <label class="layui-form-label">C绩效</label>
                 <div class="layui-input-block">
                     <input type="text" name="C" id="C" placeholder="请录入C绩效的数量" lay-verify="C|number" autocomplete="off"
@@ -151,6 +159,7 @@
                     officeNumber: $("#acco option:selected").val(),
                     S:$("#S").val(),
                     A:$("#A").val(),
+                    BPlus:$("#BPlus").val(),
                     C:$("#C").val()
                 },
                 cols:[[
@@ -205,6 +214,11 @@
             A:function (value) {
                 if(checkForm(value)){
                     return "请录入绩效为A的数量";
+                }
+            },
+            BPlus:function (value) {
+                if(checkForm(value)){
+                    return "请录入绩效为B+的数量";
                 }
             },
             C:function (value) {

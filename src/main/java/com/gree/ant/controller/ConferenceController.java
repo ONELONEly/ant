@@ -26,8 +26,8 @@ public class ConferenceController {
 
     @At
     @Ok("jsp:jsp.conference.add")
-    public String add () {
-        return "";
+    public Conference add () {
+        return new Conference();
     }
 
     @At

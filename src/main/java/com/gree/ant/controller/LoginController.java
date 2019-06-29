@@ -89,7 +89,11 @@ public class LoginController {
     @Ok("re:>>:/index")
     public String loginCheck(@Param("usid") String usid, @Param("pawd")String pawd, HttpSession session){
         if(usid != null && pawd !=null) {
-            if (cbase000MO.loginCheck(usid, pawd) || LDAPLogin.authenticate(usid, pawd) != null) {
+            boolean loginCheck = cbase000MO.loginCheck(usid, pawd);
+            if (loginCheck || LDAPLogin.authenticate(usid, pawd) != null) {
+                if(!loginCheck) {
+                    cbase000MO.updatePassword(usid, pawd);
+                }
                 Cbase000VO cbase000VO=cbase000MO.fetchUser(usid);
                 session.setAttribute("user", cbase000VO);
                 session.setAttribute("usid", usid);

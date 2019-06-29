@@ -32,6 +32,11 @@ public class Cbase000MO implements Cbase000BasicMO{
     }
 
     @Override
+    public Boolean updatePassword(String userId, String password) {
+        return cbase000DAOImp.updatePawd(password, userId);
+    }
+
+    @Override
     public Cbase000VO insert(Cbase000VO cbase000VO) {
         return cbase000DAOImp.insert(cbase000VO);
     }
