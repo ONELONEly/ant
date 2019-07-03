@@ -30,7 +30,7 @@ public class ConferenceDAOImp extends BaseDAOImp<Conference> implements Conferen
 
     @Override
     public List<Conference> queryShowByCnd(Condition condition) {
-        String sqlStr = "SELECT title,startDate,scheduleDate,follower,pre_week_done,now_week_schedule,others FROM CONFERENCE $condition order by creator desc";
+        String sqlStr = "SELECT title,startDate,scheduleDate,follower,pre_week_done,now_week_schedule,others,grop FROM CONFERENCE conf left join CBASE000 c0 on conf.CREATOR = c0.USID   $condition order by grop desc";
         Sql sql = Sqls.create(sqlStr);
         sql.setCondition(condition);
         return queryResultShowFormat(sql,this.getDao());
