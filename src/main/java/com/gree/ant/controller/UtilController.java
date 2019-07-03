@@ -119,19 +119,18 @@ public class UtilController {
     @AdaptBy(type = JsonAdaptor.class)
     @Filters
     public Map<String, Object> getBaan197Infor() {
-        /*int code = 200;
+        int code = 200;
         int count = 1;
         String msg = "";
         List<BaanTcmcs008400VO> baanTcmcs008400VOList = baanTcmcs008400DAOImp.queryBaanTcmcs008400Infor();
-        List<BaanTfgld008400VO> baanTfgld008400VOList = baanTfgld008400DAOImp.queryBaanTfgld008400Infor();
-        List<BaanTfgld010400VO> baanTfgld010400VOList = baanTfgld010400DAOImp.queryBaanTfgld010400Infor();
+        /*List<BaanTfgld008400VO> baanTfgld008400VOList = baanTfgld008400DAOImp.queryBaanTfgld008400Infor();
+        List<BaanTfgld010400VO> baanTfgld010400VOList = baanTfgld010400DAOImp.queryBaanTfgld010400Infor();*/
         Baan197InforVO baan197InforVO = new Baan197InforVO();
         baan197InforVO.setRate(baanTcmcs008400VOList);
-        baan197InforVO.setSubjectTable(baanTfgld008400VOList);
-        baan197InforVO.setSubAccount(baanTfgld010400VOList);
+        /*baan197InforVO.setSubjectTable(baanTfgld008400VOList);
+        baan197InforVO.setSubAccount(baanTfgld010400VOList);*/
         msg = code == 200 ? "查询成功" : msg;
-        return TableUtil.makeJson(code, msg, count, baan197InforVO);*/
-        return null;
+        return TableUtil.makeJson(code, msg, count, baan197InforVO);
     }
 
     /**
