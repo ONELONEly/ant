@@ -119,7 +119,7 @@ public class UtilController {
     @AdaptBy(type = JsonAdaptor.class)
     @Filters
     public Map<String, Object> getBaan197Infor() {
-        int code = 200;
+        /*int code = 200;
         int count = 1;
         String msg = "";
         List<BaanTcmcs008400VO> baanTcmcs008400VOList = baanTcmcs008400DAOImp.queryBaanTcmcs008400Infor();
@@ -130,7 +130,8 @@ public class UtilController {
         baan197InforVO.setSubjectTable(baanTfgld008400VOList);
         baan197InforVO.setSubAccount(baanTfgld010400VOList);
         msg = code == 200 ? "查询成功" : msg;
-        return TableUtil.makeJson(code, msg, count, baan197InforVO);
+        return TableUtil.makeJson(code, msg, count, baan197InforVO);*/
+        return null;
     }
 
     /**
