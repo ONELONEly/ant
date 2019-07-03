@@ -30,6 +30,12 @@ public class ContractPayPlanVO {
      */
     private String currency;
 
+    /**
+     * 结算方式
+     * @return
+     */
+    private String modl;
+
     public String getPcon() {
         return pcon;
     }
@@ -68,5 +74,13 @@ public class ContractPayPlanVO {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public String getModl() {
+        return modl;
+    }
+
+    public void setModl(String modl) {
+        this.modl = modl;
     }
 }
