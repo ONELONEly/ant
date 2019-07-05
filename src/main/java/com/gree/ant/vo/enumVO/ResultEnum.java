@@ -11,6 +11,7 @@ public enum ResultEnum {
     POST_DOUBLE(505,"请勿重复提交"),
     POST_delay(506,"请等待上次请求完成"),
     DS_DEFAULT(507,"同步DS错误，请联系开发人员解决"),
+    DATA_WEEK_HAVING(508, "项目当周已存在记录")
     ;
 
     private Integer code;

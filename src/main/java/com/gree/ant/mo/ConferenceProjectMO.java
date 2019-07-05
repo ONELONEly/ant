@@ -8,6 +8,7 @@ import com.gree.ant.util.StringUtil;
 import com.gree.ant.util.TableUtil;
 import com.gree.ant.vo.ConferenceProject;
 import com.gree.ant.vo.ConferenceProjectUser;
+import com.gree.ant.vo.util.ResultVO;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.QueryResult;
 import org.nutz.dao.pager.Pager;
@@ -34,9 +35,9 @@ public class ConferenceProjectMO implements ConferenceProjectBasicMO,BasicMO<Con
         if (StringUtil.checkString(acco)) {
             cnd.and("creator","in","(select usid from cbase000 where acco = "+acco+")");
         }
-        int count = projectDAOImp.clearByCnd(cnd);
+        int count = projectDAOImp.countByCnd(cnd);
         Pager pager = TableUtil.formatPager(pageSize, pageNumber, count);
-        List<ConferenceProject> projects = projectDAOImp.queryByCndPager(cnd, pager);
+        List<ConferenceProject> projects = projectDAOImp.queryAllByCndPage(cnd, pager);
         QueryResult queryResult = new QueryResult();
         queryResult.setList(projects);
         queryResult.setPager(pager);
@@ -48,9 +49,9 @@ public class ConferenceProjectMO implements ConferenceProjectBasicMO,BasicMO<Con
         Cnd cnd = Cnd.NEW();
         userId = userId == null ? "" : userId;
         cnd.and("creator","like","%"+userId+"%");
-        int count = projectDAOImp.clearByCnd(cnd);
+        int count = projectDAOImp.countByCnd(cnd);
         Pager pager = TableUtil.formatPager(pageSize, pageNumber, count);
-        List<ConferenceProject> projects = projectDAOImp.queryByCndPager(cnd, pager);
+        List<ConferenceProject> projects = projectDAOImp.queryAllByCndPage(cnd, pager);
         QueryResult queryResult = new QueryResult();
         queryResult.setList(projects);
         queryResult.setPager(pager);
@@ -128,5 +129,17 @@ public class ConferenceProjectMO implements ConferenceProjectBasicMO,BasicMO<Con
     @Override
     public Integer updateByVOS(List<ConferenceProject> vos) {
         return projectDAOImp.update(vos);
+    }
+
+    @Override
+    public ConferenceProject fetchProject(String conference_project_id) {
+        ConferenceProject conferenceProject = projectDAOImp.fetchByName(conference_project_id);
+        conferenceProject.setProjectUsers(projectDAOImp.queryALLUserById(conference_project_id));
+        return conferenceProject;
+    }
+
+    @Override
+    public List<ResultVO> queryAllAD() {
+        return projectDAOImp.queryAllAD();
     }
 }

@@ -77,9 +77,9 @@ public class ConferenceMO implements BasicMO<Conference>, ConferenceBasicMO {
     @Override
     public List<Conference> loadShowData(String acco) {
         Cnd cnd = Cnd.NEW();
-        cnd.and("week","=", DateUtil.dayNumber(DateUtil.DateTypeEnum.week_of_year));
+        cnd.and("conf.week","=", DateUtil.dayNumber(DateUtil.DateTypeEnum.week_of_year));
         if (StringUtil.checkString(acco) && baseMoFactory.getCbase017MO().fetchByAcco(acco) != null) {
-            cnd.and("creator", "in", "select usid from cbase000 where acco = '" + acco+"'");
+            cnd.and("conf.creator", "in", "select usid from cbase000 where acco = '" + acco+"'");
             return conferenceDAOImp.queryShowByCnd(cnd);
         } else {
             return new ArrayList<>();
@@ -96,5 +96,10 @@ public class ConferenceMO implements BasicMO<Conference>, ConferenceBasicMO {
         conferenceVO.setNowWeekScheduleTxt(fileUtil.convertClob(conferenceVO.getNowWeekSchedule()));
         conferenceVO.setOthersTxt(fileUtil.convertClob(conferenceVO.getOthers()));
         return conferenceVO;
+    }
+
+    @Override
+    public Boolean checkByWeekProjectId(Integer week, String projectId) {
+        return conferenceDAOImp.queryByCnd(Cnd.where("week","=",week).and("project_guid","=",projectId)).size() == 0;
     }
 }

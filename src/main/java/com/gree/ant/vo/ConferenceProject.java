@@ -37,6 +37,9 @@ public class ConferenceProject {
      */
     @Column("startDate")
     private LocalDateTime startDate;
+
+    @Readonly
+    private String startDateTxt;
     /**
      * @description 计划上线时间
      * @createTime 2019 -06-26 16:26:13
@@ -44,6 +47,9 @@ public class ConferenceProject {
      */
     @Column("onlineDate")
     private LocalDateTime  onlineDate;
+
+    @Readonly
+    private String onlineDateTxt;
     /**
      * @description 顺序号码
      * @createTime 2019 -06-26 16:26:13
@@ -58,6 +64,18 @@ public class ConferenceProject {
      */
     @Column("state")
     private Integer state;
+
+    @Readonly
+    private String stateTxt;
+
+    /**
+     * @description 创建人
+     * @createTime 2019 -07-04 10:00:41
+     * @version 1.0
+     */
+    @Column("creator")
+    private String creator;
+
 
     /**
      * @description 最后修改日期
@@ -79,9 +97,9 @@ public class ConferenceProject {
      * @version 1.0
      */
     @Column("version")
-    private Integer version;
+    private int version;
 
-    @Readonly
+    @Many(target = ConferenceProjectUser.class, field = "projectGuid", key = "projectGuid")
     private List<ConferenceProjectUser> projectUsers;
 
     public ConferenceProject() {
@@ -103,11 +121,11 @@ public class ConferenceProject {
         this.modifyUser = modifyUser;
     }
 
-    public Integer getVersion() {
+    public int getVersion() {
         return version;
     }
 
-    public void setVersion(Integer version) {
+    public void setVersion(int version) {
         this.version = version;
     }
 
@@ -165,5 +183,37 @@ public class ConferenceProject {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public String getStartDateTxt() {
+        return startDateTxt;
+    }
+
+    public void setStartDateTxt(String startDateTxt) {
+        this.startDateTxt = startDateTxt;
+    }
+
+    public String getOnlineDateTxt() {
+        return onlineDateTxt;
+    }
+
+    public void setOnlineDateTxt(String onlineDateTxt) {
+        this.onlineDateTxt = onlineDateTxt;
+    }
+
+    public String getStateTxt() {
+        return stateTxt;
+    }
+
+    public void setStateTxt(String stateTxt) {
+        this.stateTxt = stateTxt;
     }
 }

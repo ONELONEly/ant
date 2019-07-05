@@ -7,6 +7,7 @@ import com.gree.ant.dao.daoImp.Tbuss003DAOImp_Ds;
 import com.gree.ant.mo.*;
 import com.gree.ant.util.SyncButterFlyData;
 import com.gree.ant.vo.Cbase000VO;
+import com.gree.ant.vo.ConferenceProject;
 import com.gree.ant.vo.Tbuss003VO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +41,7 @@ public class SystemMOTest {
     private Tbuss003MO_Ds tbuss003MO_Ds;
 
     @Inject
-    private ButterFlyDAOImp butterFlyDAOImp;
+    private ConferenceProjectMO conferenceProjectMO;
 
     @Inject("refer:daoFX")
     private Dao dao;
@@ -48,8 +49,8 @@ public class SystemMOTest {
 
     @Test
     public void testSystem() throws Exception {
-        SyncButterFlyData syncButterFlyData = SyncButterFlyData.createSyncDataUtil();
-        syncButterFlyData.carrySync(dao,butterFlyDAOImp);
+        ConferenceProject conferenceProject = conferenceProjectMO.fetchProject("1146680637600563200");
+        System.out.println(conferenceProject.getProjectUsers());
     }
 
 

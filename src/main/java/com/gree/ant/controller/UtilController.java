@@ -87,6 +87,9 @@ public class UtilController {
     @Inject
     private BussMoFactory bussMoFactory;
 
+    @Inject
+    private ConferenceProjectMO projectMO;
+
     @Inject("refer:tbuss003MO_Ds")
     private Tbuss003MO_Ds tbuss003MO_Ds;
 
@@ -243,6 +246,20 @@ public class UtilController {
     public Map<String,Object> findC17(){
         Map<String,Object> map = new HashMap<>();
         map.put("acco",cbase017MO.queryAllAD());
+        return map;
+    }
+
+    /**
+     * @return
+     * @description ConferenceProject-会议项目表的数据请求【okr.manager】
+     * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
+     * @version 1.0
+     */
+    @At
+    @Ok("json")
+    public Map<String,Object> findConferenceProject(){
+        Map<String,Object> map = new HashMap<>();
+        map.put("project",projectMO.queryAllAD());
         return map;
     }
 

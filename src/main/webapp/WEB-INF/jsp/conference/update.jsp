@@ -63,7 +63,9 @@
             <div class="layui-col-md4">
                 <label class="layui-form-label">标题：</label>
                 <div class="layui-input-block">
-                    <input type="text" name="title" id="title" placeholder="请录入标题" value="${obj.title}" class="layui-input" lay-verify="title"/>
+                    <select name="title" id="title" lay-filter="title" lay-verify="title">
+
+                    </select>
                 </div>
             </div>
             <div class="layui-col-md8">
@@ -210,6 +212,8 @@
 
         form.on("submit(update)",function (data) {
             var postData = data.field;
+            postData.projectGuid = $('#title').val()
+            postData.title = $('#title').find("option:selected").text()
             postData.preWeekDoneTxt = replaceAll(postData.preWeekDone,"\n","<br/>")
             postData.nowWeekScheduleTxt = replaceAll(postData.nowWeekSchedule,"\n","<br/>")
             postData.othersTxt = replaceAll(postData.others,"\n","<br/>")
@@ -224,7 +228,7 @@
                 success:function (res) {
                     console.log(res);
                     if (res.code === 1) {
-                        layer.confirm("创建会议成功,返回上一页？",{offset:'10px'},function(){
+                        layer.confirm("成功修改会议,返回上一页？",{offset:'10px'},function(){
                             window.location.replace("./index");
                         },function () {
                             window.location.reload();
@@ -239,6 +243,61 @@
             });
             return false;
         });
+
+        form.on("select(title)",function (data) {
+            fetchProject(data.value)
+        });
+
+        function fetchProject (projectGuid) {
+            $.ajax({
+                type:'POST',
+                url:'../conferenceProject/fetchData',
+                data: {
+                    projectGuid
+                },
+                dataType:'json',
+                success:function (res) {
+                    if (res.code === 1) {
+                        $("#startDate").val(res.data.startDateTxt)
+                        $("#scheduleDate").val(res.data.onlineDateTxt)
+                        var users = res.data.projectUsers,user = '';
+                        for(var i = 0;i < users.length;i++) {
+                            if(i === users.length - 1) {
+                                user += users[i].userName;
+                            }else {
+                                user += users[i].userName + ',';
+                            }
+                        }
+                        $("#follower").val(user)
+                    } else {
+                        layer.alert("错误信息："+ res.msg)
+                    }
+                },
+                error:function (kj) {
+                    layer.alert("发生错误:"+kj.status,{offset:'10px'});
+                }
+            });
+        }
+
+        $.ajax({
+            type:'GET',
+            url:'${base}/util/findConferenceProject',
+            dataType:'json',
+            success:function (res) {
+                var data = res.project;
+                var option = "<option value='' class='n-display' disabled selected>请选择标题</option>";
+                for(var i = 0;i<data.length;i++){
+                    option += "<option value='"+data[i].id+"'>"+data[i].dsca+"</option>";
+                }
+                $("#title").html(option);
+                $("#title").val('${obj.projectGuid}')
+                form.render();
+            },
+            error:function (kj) {
+                layer.alert("发生错误:"+kj.status,{offset:'10px'});
+            }
+        });
+
 
         laydate.render(month);
         laydate.render(startDate);

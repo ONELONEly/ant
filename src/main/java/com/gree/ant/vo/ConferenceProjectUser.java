@@ -1,9 +1,6 @@
 package com.gree.ant.vo;
 
-import org.nutz.dao.entity.annotation.Column;
-import org.nutz.dao.entity.annotation.Id;
-import org.nutz.dao.entity.annotation.PK;
-import org.nutz.dao.entity.annotation.Table;
+import org.nutz.dao.entity.annotation.*;
 
 /**
  * @author create by jinyuk@foxmail.com(180365@gree.com.cn).
@@ -12,7 +9,6 @@ import org.nutz.dao.entity.annotation.Table;
  * @createTime 2019 -06-26 16:37:13
  */
 @Table("ConferenceProjectUser")
-@PK("project_user_id")
 public class ConferenceProjectUser {
 
     /**
@@ -22,6 +18,7 @@ public class ConferenceProjectUser {
      */
     @Id
     @Column("project_user_id")
+    @Prev(@SQL("select nvl(max(project_user_id)+1,1) from ConferenceProjectUser"))
     private Integer projectUserId;
     /**
      * @description 项目编号
@@ -38,7 +35,18 @@ public class ConferenceProjectUser {
     @Column("user_id")
     private String userId;
 
+    @Readonly
+    private String userName;
+
     public ConferenceProjectUser() {
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public Integer getProjectUserId() {

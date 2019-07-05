@@ -57,7 +57,9 @@
     </script>
     <script type="text/html" id="operate">
         <a  href="./copy?conference={{d.conference}}" class="layui-btn layui-btn-xs">复制</a>
+        {{# if(d.week > ${obj}){ }}
         <a  href="./update?conference={{d.conference}}" class="layui-btn layui-btn-xs">编辑</a>
+        {{# } }}
         <a class="layui-btn layui-btn-xs layui-bg-black" lay-event="del">删除</a>
     </script>
     <script type="text/html" id="weekTpl">
@@ -90,7 +92,7 @@
                 {field:'conference',align:'center',title:'编号',width:'25%'},
                 {field:'title',align:'center',width:'25%',title:'标题',toolbar:'#titleTpl'},
                 {field:'week',align:'center',width:'25%',title:'周数',sort:true,templet:'#weekTpl'},
-                {fixed:'right',align:'center',width:'25%'-50,toolbar:'#operate'}
+                {fixed:'right',align:'center',width:'25%'-50,toolbar:'#operate',title:'操作'}
             ]],
             response:{
                 statusCode:0

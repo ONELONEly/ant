@@ -136,6 +136,16 @@
             </div>
             <div class="layui-row table-content">
                 <div class="layui-col-md2 table-label">
+                    <label class="table-label-content">项目上周计划</label>
+                </div>
+                <div class="layui-col-md10 table-content-right">
+                    <div class="layui-input-block table-input">
+                        {{ item.preWeekScheduleTxt === undefined ? '' : item.preWeekScheduleTxt }}
+                    </div>
+                </div>
+            </div>
+            <div class="layui-row table-content">
+                <div class="layui-col-md2 table-label">
                     <label class="table-label-content">项目上周完成</label>
                 </div>
                 <div class="layui-col-md10 table-content-right">

@@ -56,6 +56,14 @@ public class Conference {
      */
     @Column(value = "follower")
     private String follower;
+
+    /**
+     * @description 项目上周计划完成
+     * @createTime 2019 -07-05 17:24:13
+     * @version 1.0
+     */
+    @Readonly
+    private String preWeekScheduleTxt;
     /**
      * @description 项目上周已完成
      * @createTime 2019 -06-11 11:37:52
@@ -133,7 +141,31 @@ public class Conference {
     @Column(value = "create_date")
     private LocalDateTime createDate;
 
+    /**
+     * @description 项目编号
+     * @createTime 2019 -07-05 15:02:32
+     * @version 1.0
+     */
+    @Column(value = "project_guid")
+    private String projectGuid;
+
     public Conference() {
+    }
+
+    public String getPreWeekScheduleTxt() {
+        return preWeekScheduleTxt;
+    }
+
+    public void setPreWeekScheduleTxt(String preWeekScheduleTxt) {
+        this.preWeekScheduleTxt = preWeekScheduleTxt;
+    }
+
+    public String getProjectGuid() {
+        return projectGuid;
+    }
+
+    public void setProjectGuid(String projectGuid) {
+        this.projectGuid = projectGuid;
     }
 
     public String getConference() {

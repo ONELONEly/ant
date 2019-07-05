@@ -30,7 +30,10 @@ public class ConferenceDAOImp extends BaseDAOImp<Conference> implements Conferen
 
     @Override
     public List<Conference> queryShowByCnd(Condition condition) {
-        String sqlStr = "SELECT title,startDate,scheduleDate,follower,pre_week_done,now_week_schedule,others,grop FROM CONFERENCE conf left join CBASE000 c0 on conf.CREATOR = c0.USID   $condition order by grop desc";
+        String sqlStr = "SELECT conf.title,conf.startDate,conf.scheduleDate,conf.follower,conf0.NOW_WEEK_SCHEDULE as " +
+                "pre_week_schedule,conf.pre_week_done,conf.now_week_schedule,conf.others,grop FROM CONFERENCE conf left " +
+                "join CBASE000 c0 on conf.CREATOR = c0.USID left join CONFERENCE conf0 on conf.WEEK = conf0.WEEK + 1 and " +
+                "conf.PROJECT_GUID = conf0.PROJECT_GUID $condition order by c0.grop desc";
         Sql sql = Sqls.create(sqlStr);
         sql.setCondition(condition);
         return queryResultShowFormat(sql,this.getDao());
@@ -66,6 +69,7 @@ public class ConferenceDAOImp extends BaseDAOImp<Conference> implements Conferen
                 conference.setStartDateTxt(DateUtil.formDateToString(conference.getStartDate()));
                 conference.setScheduleDateTxt(DateUtil.formDateToString(conference.getScheduleDate()));
 
+                conference.setPreWeekScheduleTxt(rs.getString("pre_week_schedule"));
                 conference.setPreWeekDoneTxt(rs.getString("pre_week_done"));
                 conference.setNowWeekScheduleTxt(rs.getString("now_week_schedule"));
                 conference.setOthersTxt(rs.getString("others") == null ? "" : rs.getString("others"));
