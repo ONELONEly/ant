@@ -6,10 +6,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.nutz.json.Json;
 import org.nutz.json.JsonFormat;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
@@ -273,21 +270,26 @@ public class HttpRequest {
 	}
 
 	public static String getExceptionInformation(Exception e){
-		StringBuilder out = new StringBuilder();
-		StackTraceElement[] trace = e.getStackTrace();
-		for (StackTraceElement element:trace){
-			out.append(element).append("\r\n");
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		PrintStream printStream = new PrintStream(out);
+		e.printStackTrace(printStream);
+		String rest = new String(out.toByteArray());
+		printStream.close();
+		try {
+			out.close();
+		} catch (Exception ex) {
+			return "获取异常输出流失败";
 		}
-		return out.toString();
+		return "Caused by:"+rest;
 	}
 
 	public static String getThrowableInformation(Throwable e){
-		StringBuilder out = new StringBuilder();
-		StackTraceElement[] trace = e.getStackTrace();
-		for (StackTraceElement element:trace){
-			out.append(element).append("\r\n");
-		}
-		return out.toString();
+		StringWriter stringWriter = new StringWriter();
+		PrintWriter printWriter = new PrintWriter(stringWriter,true);
+		e.printStackTrace(printWriter);
+		printWriter.flush();
+		stringWriter.flush();
+		return "Caused by:"+stringWriter.toString();
 	}
 
 

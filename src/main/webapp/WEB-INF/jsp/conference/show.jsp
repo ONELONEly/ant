@@ -41,12 +41,13 @@
             padding: 0 10px;
             margin-left: 0 !important;
             line-height: 56px;
+            font-size: 22px;
         }
         .table-label-content {
             display: block;
             padding: 9px 15px;
-            font-weight: 400;
-            line-height: 20px;
+            font-size: 22px;
+            line-height: 22px;
             text-align: center;
         }
         .content {
@@ -62,9 +63,9 @@
             display: block;
             padding: 9px 15px;
             font-weight: bold;
-            line-height: 20px;
+            line-height: 22px;
             text-align: right;
-            font-size: 16px;
+            font-size: 24px;
         }
     </style>
 </head>
@@ -90,7 +91,7 @@
         </div>
     </form>
     <hr class="layui-bg-orange"/>
-    <div class="layui-container layui-collapse">
+    <div class="layui-container layui-collapse" style="width: 90%">
     </div>
 </div>
 

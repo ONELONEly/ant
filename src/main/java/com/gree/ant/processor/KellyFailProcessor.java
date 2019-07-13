@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @IocBean(singleton = false)
 public class KellyFailProcessor extends ViewProcessor {
@@ -36,7 +38,6 @@ public class KellyFailProcessor extends ViewProcessor {
         PrintWriter writer = response.getWriter();
         String method = request.getMethod();
         error.printStackTrace();
-        logger.info(method);
         if("GET".equals(method)) {
             response.setContentType("text/html;charset=UTF-8");
             resultVO = getResultVO(error);
@@ -57,7 +58,11 @@ public class KellyFailProcessor extends ViewProcessor {
         }else{
             String msg = HttpRequest.getThrowableInformation(error);
             if (StringUtil.checkString(msg)) {
-                msg = "服务器错误("+msg+")";
+                String regEx = "Caused by:(.*)";
+                Pattern pattern = Pattern.compile(regEx);
+                Matcher matcher = pattern.matcher(msg);
+                boolean rs = matcher.find();
+                msg = rs ? "服务器错误("+matcher.group(1)+")" : "服务器错误";
             }
             resultVO = new MVCResultVO(-1,msg);
         }

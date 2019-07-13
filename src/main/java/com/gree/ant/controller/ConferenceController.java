@@ -27,7 +27,7 @@ public class ConferenceController {
     @At
     @Ok("jsp:jsp.conference.index")
     public Integer index () {
-        return DateUtil.dayNumber(DateUtil.DateTypeEnum.week_of_year);
+        return DateUtil.getWeek() - 1;
     }
 
     @At

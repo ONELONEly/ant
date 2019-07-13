@@ -33,7 +33,7 @@ public class ConferenceProjectMO implements ConferenceProjectBasicMO,BasicMO<Con
     public QueryResult loadProjectData(Integer pageNumber, Integer pageSize, String acco) {
         Cnd cnd = Cnd.NEW();
         if (StringUtil.checkString(acco)) {
-            cnd.and("creator","in","(select usid from cbase000 where acco = "+acco+")");
+            cnd.and("creator","in","(select usid from cbase000 where acco = '"+acco+"')");
         }
         int count = projectDAOImp.countByCnd(cnd);
         Pager pager = TableUtil.formatPager(pageSize, pageNumber, count);
