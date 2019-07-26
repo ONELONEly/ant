@@ -10,16 +10,19 @@ import com.gree.ant.util.HttpRequest;
 import com.gree.ant.util.SyncButterFlyData;
 import com.gree.ant.vo.Cbase000VO;
 import com.gree.ant.vo.ConferenceProject;
+import com.gree.ant.vo.Tbuss001VO;
 import com.gree.ant.vo.Tbuss003VO;
 import com.gree.ant.vo.enumVO.ResultEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -84,13 +87,16 @@ public class SystemMOTest {
 
     @Test
     public void testPersonMessage() throws Exception {
-//        String[] args = {"JK67686088","JK85150291","JK92198135","JK83811659"};
+//        String[] args = {"PT54778159"};
 //        for(String arg:args) {
-//            Tbuss003VO tbuss003VO = tbuss003MO.fetchByTaid(arg);
-//            Cbase000VO cbase000VO = baseMoFactory.getCbase000MO().fetchUser("180389");
-//            Integer code = tbuss003MO_Ds.insertBug(tbuss003VO, cbase000VO);
+//            Tbuss001VO tbuss001VO = bussMoFactory.getTbuss001MO().fetchTransByNameCnd(arg,"tbuss003VOS", Cnd.where("csid","=","180366"));
+//            List<Tbuss003VO> tbuss003VOs = tbuss001VO.getTbuss003VOS();
+//            for (Tbuss003VO tbuss003VO: tbuss003VOs) {
+//                Cbase000VO cbase000VO = baseMoFactory.getCbase000MO().fetchUser("180366");
+//                Integer code = tbuss003MO_Ds.insertBug(tbuss003VO, cbase000VO);
 ////        Integer code = tbuss003MO_Ds.deleteBug(22111);
-//            System.out.println(code);
+//                System.out.println(code + tbuss003VO.getTaid());
+//            }
 //        }
 
         Tbuss003VO tbuss003VO = tbuss003MO.fetchByTaid("JK36451061");

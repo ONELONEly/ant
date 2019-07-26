@@ -1,0 +1,5 @@
+##ant gitIgnore文件##
+.idea
+target
+out
+*.iml

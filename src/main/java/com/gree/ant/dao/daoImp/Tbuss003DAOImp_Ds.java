@@ -12,15 +12,11 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.dao.sql.SqlCallback;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.json.Json;
 
-import java.sql.Clob;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.sql.*;
+import java.util.*;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 @IocBean
 public class Tbuss003DAOImp_Ds implements Tbuss003DAO_Ds {
@@ -90,9 +86,8 @@ public class Tbuss003DAOImp_Ds implements Tbuss003DAO_Ds {
         sql.setCallback(new SqlCallback() {
             @Override
             public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
-                List cbase013VOList = new ArrayList<>();
+                List<Cbase013VO> cbase013VOList = new ArrayList<>();
                 while(rs.next()){
-
                     cbase013VOList.add(new Cbase013VO(rs.getString("SubProjectID"),rs.getString("Title")));
                 }
                 return cbase013VOList;

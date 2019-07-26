@@ -115,13 +115,13 @@
 
         form.on("select(acco)",function (data) {
             reload($("#date").val(), data.value)
-        })
+        });
 
         function reload (date, acco) {
             let where = {
                 date:date,
                 acco:acco
-            }
+            };
             table.reload('project',{
                 where:where,
                 page:{
